@@ -1,0 +1,2901 @@
+{
+  "eval_id": "run-1780845731",
+  "skill": "waza-skill-evaluator",
+  "eval_name": "waza-skill-evaluator-eval",
+  "timestamp": "2026-06-07T16:22:11.3646214+01:00",
+  "config": {
+    "runs_per_test": 3,
+    "model_id": "gpt-5-mini",
+    "engine_type": "mock",
+    "timeout_sec": 300
+  },
+  "summary": {
+    "total_tests": 17,
+    "succeeded": 6,
+    "failed": 11,
+    "errors": 0,
+    "skipped": 0,
+    "success_rate": 0.35294117647058826,
+    "aggregate_score": 0.8196078431372549,
+    "weighted_score": 0.8196078431372549,
+    "min_score": 0.3333333333333333,
+    "max_score": 1,
+    "std_dev": 0.18508391438296795,
+    "duration_ms": 86,
+    "statistics": {
+      "bootstrap_ci": {
+        "lower": 0.7254901960784313,
+        "upper": 0.9000000000000001,
+        "mean": 0.8196078431372549,
+        "confidence_level": 0.95,
+        "num_bootstraps": 10000
+      },
+      "is_significant": true
+    }
+  },
+  "metrics": {},
+  "tasks": [
+    {
+      "test_id": "anti-trigger-create-skill",
+      "display_name": "Anti-trigger: create a new skill",
+      "status": "failed",
+      "runs": [
+        {
+          "run_number": 1,
+          "attempts": 1,
+          "status": "failed",
+          "duration_ms": 0,
+          "validations": {
+            "omits-skill-keywords": {
+              "identifier": "omits-skill-keywords",
+              "type": "text",
+              "score": 0.8333333333333334,
+              "weight": 1,
+              "passed": false,
+              "feedback": "Found forbidden substring: waza",
+              "details": {
+                "contains": null,
+                "contains_cs": null,
+                "failures": [
+                  "Found forbidden substring: waza"
+                ],
+                "not_contains": [
+                  "waza",
+                  "benchmark",
+                  "diagnostic",
+                  "Prescription",
+                  "baseline lift",
+                  "eval suite"
+                ],
+                "not_contains_cs": null,
+                "regex_match": null,
+                "regex_not_match": null
+              },
+              "duration_ms": 0
+            }
+          },
+          "session_digest": {
+            "tool_call_count": 0,
+            "tools_used": [],
+            "errors": [],
+            "session_id": "mock-session-1780845731401160900"
+          },
+          "final_output": "Mock response for: Create a new skill that helps with writing commit messages\nTask: Anti-trigger: create a new skill\nDescription: Should NOT activate waza-skill-evaluator — this is skill creation, not evaluation",
+          "workspace_dir": "C:\\Users\\alast\\AppData\\Local\\Temp\\waza-mock-4122255651"
+        },
+        {
+          "run_number": 2,
+          "attempts": 1,
+          "status": "failed",
+          "duration_ms": 0,
+          "validations": {
+            "omits-skill-keywords": {
+              "identifier": "omits-skill-keywords",
+              "type": "text",
+              "score": 0.8333333333333334,
+              "weight": 1,
+              "passed": false,
+              "feedback": "Found forbidden substring: waza",
+              "details": {
+                "contains": null,
+                "contains_cs": null,
+                "failures": [
+                  "Found forbidden substring: waza"
+                ],
+                "not_contains": [
+                  "waza",
+                  "benchmark",
+                  "diagnostic",
+                  "Prescription",
+                  "baseline lift",
+                  "eval suite"
+                ],
+                "not_contains_cs": null,
+                "regex_match": null,
+                "regex_not_match": null
+              },
+              "duration_ms": 0
+            }
+          },
+          "session_digest": {
+            "tool_call_count": 0,
+            "tools_used": [],
+            "errors": [],
+            "session_id": "mock-session-1780845731401701500"
+          },
+          "final_output": "Mock response for: Create a new skill that helps with writing commit messages\nTask: Anti-trigger: create a new skill\nDescription: Should NOT activate waza-skill-evaluator — this is skill creation, not evaluation",
+          "workspace_dir": "C:\\Users\\alast\\AppData\\Local\\Temp\\waza-mock-816158141"
+        },
+        {
+          "run_number": 3,
+          "attempts": 1,
+          "status": "failed",
+          "duration_ms": 0,
+          "validations": {
+            "omits-skill-keywords": {
+              "identifier": "omits-skill-keywords",
+              "type": "text",
+              "score": 0.8333333333333334,
+              "weight": 1,
+              "passed": false,
+              "feedback": "Found forbidden substring: waza",
+              "details": {
+                "contains": null,
+                "contains_cs": null,
+                "failures": [
+                  "Found forbidden substring: waza"
+                ],
+                "not_contains": [
+                  "waza",
+                  "benchmark",
+                  "diagnostic",
+                  "Prescription",
+                  "baseline lift",
+                  "eval suite"
+                ],
+                "not_contains_cs": null,
+                "regex_match": null,
+                "regex_not_match": null
+              },
+              "duration_ms": 0
+            }
+          },
+          "session_digest": {
+            "tool_call_count": 0,
+            "tools_used": [],
+            "errors": [],
+            "session_id": "mock-session-1780845731402241800"
+          },
+          "final_output": "Mock response for: Create a new skill that helps with writing commit messages\nTask: Anti-trigger: create a new skill\nDescription: Should NOT activate waza-skill-evaluator — this is skill creation, not evaluation",
+          "workspace_dir": "C:\\Users\\alast\\AppData\\Local\\Temp\\waza-mock-1413010708"
+        }
+      ],
+      "stats": {
+        "pass_rate": 0,
+        "flakiness_percent": 0,
+        "passed_runs": 0,
+        "failed_runs": 3,
+        "error_runs": 0,
+        "total_runs": 3,
+        "avg_score": 0.8333333333333334,
+        "avg_weighted_score": 0.8333333333333334,
+        "min_score": 0.8333333333333334,
+        "max_score": 0.8333333333333334,
+        "std_dev_score": 0,
+        "score_variance": 0,
+        "ci95_lo": 0.8333333333333334,
+        "ci95_hi": 0.8333333333333334,
+        "flaky": false,
+        "avg_duration_ms": 0,
+        "bootstrap_ci": {
+          "lower": 0.8333333333333334,
+          "upper": 0.8333333333333334,
+          "mean": 0.8333333333333334,
+          "confidence_level": 0.95,
+          "num_bootstraps": 10000
+        },
+        "is_significant": true
+      }
+    },
+    {
+      "test_id": "anti-trigger-fix-bug",
+      "display_name": "Anti-trigger: fix a bug",
+      "status": "failed",
+      "runs": [
+        {
+          "run_number": 1,
+          "attempts": 1,
+          "status": "failed",
+          "duration_ms": 0,
+          "validations": {
+            "omits-skill-keywords": {
+              "identifier": "omits-skill-keywords",
+              "type": "text",
+              "score": 0.8333333333333334,
+              "weight": 1,
+              "passed": false,
+              "feedback": "Found forbidden substring: waza",
+              "details": {
+                "contains": null,
+                "contains_cs": null,
+                "failures": [
+                  "Found forbidden substring: waza"
+                ],
+                "not_contains": [
+                  "waza",
+                  "benchmark",
+                  "diagnostic",
+                  "Prescription",
+                  "baseline lift",
+                  "eval suite"
+                ],
+                "not_contains_cs": null,
+                "regex_match": null,
+                "regex_not_match": null
+              },
+              "duration_ms": 0
+            }
+          },
+          "session_digest": {
+            "tool_call_count": 0,
+            "tools_used": [],
+            "errors": [],
+            "session_id": "mock-session-1780845731403836700"
+          },
+          "final_output": "Mock response for: Fix this null pointer exception in my Java service class\nTask: Anti-trigger: fix a bug\nDescription: Should NOT activate waza-skill-evaluator — this is bug fixing",
+          "workspace_dir": "C:\\Users\\alast\\AppData\\Local\\Temp\\waza-mock-1169218448"
+        },
+        {
+          "run_number": 2,
+          "attempts": 1,
+          "status": "failed",
+          "duration_ms": 0,
+          "validations": {
+            "omits-skill-keywords": {
+              "identifier": "omits-skill-keywords",
+              "type": "text",
+              "score": 0.8333333333333334,
+              "weight": 1,
+              "passed": false,
+              "feedback": "Found forbidden substring: waza",
+              "details": {
+                "contains": null,
+                "contains_cs": null,
+                "failures": [
+                  "Found forbidden substring: waza"
+                ],
+                "not_contains": [
+                  "waza",
+                  "benchmark",
+                  "diagnostic",
+                  "Prescription",
+                  "baseline lift",
+                  "eval suite"
+                ],
+                "not_contains_cs": null,
+                "regex_match": null,
+                "regex_not_match": null
+              },
+              "duration_ms": 0
+            }
+          },
+          "session_digest": {
+            "tool_call_count": 0,
+            "tools_used": [],
+            "errors": [],
+            "session_id": "mock-session-1780845731404376900"
+          },
+          "final_output": "Mock response for: Fix this null pointer exception in my Java service class\nTask: Anti-trigger: fix a bug\nDescription: Should NOT activate waza-skill-evaluator — this is bug fixing",
+          "workspace_dir": "C:\\Users\\alast\\AppData\\Local\\Temp\\waza-mock-3346544700"
+        },
+        {
+          "run_number": 3,
+          "attempts": 1,
+          "status": "failed",
+          "duration_ms": 0,
+          "validations": {
+            "omits-skill-keywords": {
+              "identifier": "omits-skill-keywords",
+              "type": "text",
+              "score": 0.8333333333333334,
+              "weight": 1,
+              "passed": false,
+              "feedback": "Found forbidden substring: waza",
+              "details": {
+                "contains": null,
+                "contains_cs": null,
+                "failures": [
+                  "Found forbidden substring: waza"
+                ],
+                "not_contains": [
+                  "waza",
+                  "benchmark",
+                  "diagnostic",
+                  "Prescription",
+                  "baseline lift",
+                  "eval suite"
+                ],
+                "not_contains_cs": null,
+                "regex_match": null,
+                "regex_not_match": null
+              },
+              "duration_ms": 0
+            }
+          },
+          "session_digest": {
+            "tool_call_count": 0,
+            "tools_used": [],
+            "errors": [],
+            "session_id": "mock-session-1780845731404907300"
+          },
+          "final_output": "Mock response for: Fix this null pointer exception in my Java service class\nTask: Anti-trigger: fix a bug\nDescription: Should NOT activate waza-skill-evaluator — this is bug fixing",
+          "workspace_dir": "C:\\Users\\alast\\AppData\\Local\\Temp\\waza-mock-1391993423"
+        }
+      ],
+      "stats": {
+        "pass_rate": 0,
+        "flakiness_percent": 0,
+        "passed_runs": 0,
+        "failed_runs": 3,
+        "error_runs": 0,
+        "total_runs": 3,
+        "avg_score": 0.8333333333333334,
+        "avg_weighted_score": 0.8333333333333334,
+        "min_score": 0.8333333333333334,
+        "max_score": 0.8333333333333334,
+        "std_dev_score": 0,
+        "score_variance": 0,
+        "ci95_lo": 0.8333333333333334,
+        "ci95_hi": 0.8333333333333334,
+        "flaky": false,
+        "avg_duration_ms": 0,
+        "bootstrap_ci": {
+          "lower": 0.8333333333333334,
+          "upper": 0.8333333333333334,
+          "mean": 0.8333333333333334,
+          "confidence_level": 0.95,
+          "num_bootstraps": 10000
+        },
+        "is_significant": true
+      }
+    },
+    {
+      "test_id": "anti-trigger-general-coding",
+      "display_name": "Anti-trigger: general coding request",
+      "status": "failed",
+      "runs": [
+        {
+          "run_number": 1,
+          "attempts": 1,
+          "status": "failed",
+          "duration_ms": 0,
+          "validations": {
+            "omits-skill-keywords": {
+              "identifier": "omits-skill-keywords",
+              "type": "text",
+              "score": 0.8333333333333334,
+              "weight": 1,
+              "passed": false,
+              "feedback": "Found forbidden substring: waza",
+              "details": {
+                "contains": null,
+                "contains_cs": null,
+                "failures": [
+                  "Found forbidden substring: waza"
+                ],
+                "not_contains": [
+                  "waza",
+                  "benchmark",
+                  "diagnostic",
+                  "Prescription",
+                  "baseline lift",
+                  "eval suite"
+                ],
+                "not_contains_cs": null,
+                "regex_match": null,
+                "regex_not_match": null
+              },
+              "duration_ms": 0
+            }
+          },
+          "session_digest": {
+            "tool_call_count": 0,
+            "tools_used": [],
+            "errors": [],
+            "session_id": "mock-session-1780845731405973100"
+          },
+          "final_output": "Mock response for: Write a TypeScript function that debounces another function\nTask: Anti-trigger: general coding request\nDescription: Should NOT activate waza-skill-evaluator — this is general coding",
+          "workspace_dir": "C:\\Users\\alast\\AppData\\Local\\Temp\\waza-mock-126606816"
+        },
+        {
+          "run_number": 2,
+          "attempts": 1,
+          "status": "failed",
+          "duration_ms": 0,
+          "validations": {
+            "omits-skill-keywords": {
+              "identifier": "omits-skill-keywords",
+              "type": "text",
+              "score": 0.8333333333333334,
+              "weight": 1,
+              "passed": false,
+              "feedback": "Found forbidden substring: waza",
+              "details": {
+                "contains": null,
+                "contains_cs": null,
+                "failures": [
+                  "Found forbidden substring: waza"
+                ],
+                "not_contains": [
+                  "waza",
+                  "benchmark",
+                  "diagnostic",
+                  "Prescription",
+                  "baseline lift",
+                  "eval suite"
+                ],
+                "not_contains_cs": null,
+                "regex_match": null,
+                "regex_not_match": null
+              },
+              "duration_ms": 0
+            }
+          },
+          "session_digest": {
+            "tool_call_count": 0,
+            "tools_used": [],
+            "errors": [],
+            "session_id": "mock-session-1780845731406515600"
+          },
+          "final_output": "Mock response for: Write a TypeScript function that debounces another function\nTask: Anti-trigger: general coding request\nDescription: Should NOT activate waza-skill-evaluator — this is general coding",
+          "workspace_dir": "C:\\Users\\alast\\AppData\\Local\\Temp\\waza-mock-3868648022"
+        },
+        {
+          "run_number": 3,
+          "attempts": 1,
+          "status": "failed",
+          "duration_ms": 0,
+          "validations": {
+            "omits-skill-keywords": {
+              "identifier": "omits-skill-keywords",
+              "type": "text",
+              "score": 0.8333333333333334,
+              "weight": 1,
+              "passed": false,
+              "feedback": "Found forbidden substring: waza",
+              "details": {
+                "contains": null,
+                "contains_cs": null,
+                "failures": [
+                  "Found forbidden substring: waza"
+                ],
+                "not_contains": [
+                  "waza",
+                  "benchmark",
+                  "diagnostic",
+                  "Prescription",
+                  "baseline lift",
+                  "eval suite"
+                ],
+                "not_contains_cs": null,
+                "regex_match": null,
+                "regex_not_match": null
+              },
+              "duration_ms": 0
+            }
+          },
+          "session_digest": {
+            "tool_call_count": 0,
+            "tools_used": [],
+            "errors": [],
+            "session_id": "mock-session-1780845731407061000"
+          },
+          "final_output": "Mock response for: Write a TypeScript function that debounces another function\nTask: Anti-trigger: general coding request\nDescription: Should NOT activate waza-skill-evaluator — this is general coding",
+          "workspace_dir": "C:\\Users\\alast\\AppData\\Local\\Temp\\waza-mock-1148230318"
+        }
+      ],
+      "stats": {
+        "pass_rate": 0,
+        "flakiness_percent": 0,
+        "passed_runs": 0,
+        "failed_runs": 3,
+        "error_runs": 0,
+        "total_runs": 3,
+        "avg_score": 0.8333333333333334,
+        "avg_weighted_score": 0.8333333333333334,
+        "min_score": 0.8333333333333334,
+        "max_score": 0.8333333333333334,
+        "std_dev_score": 0,
+        "score_variance": 0,
+        "ci95_lo": 0.8333333333333334,
+        "ci95_hi": 0.8333333333333334,
+        "flaky": false,
+        "avg_duration_ms": 0,
+        "bootstrap_ci": {
+          "lower": 0.8333333333333334,
+          "upper": 0.8333333333333334,
+          "mean": 0.8333333333333334,
+          "confidence_level": 0.95,
+          "num_bootstraps": 10000
+        },
+        "is_significant": true
+      }
+    },
+    {
+      "test_id": "anti-trigger-write-tests",
+      "display_name": "Anti-trigger: write unit tests",
+      "status": "failed",
+      "runs": [
+        {
+          "run_number": 1,
+          "attempts": 1,
+          "status": "failed",
+          "duration_ms": 0,
+          "validations": {
+            "omits-skill-keywords": {
+              "identifier": "omits-skill-keywords",
+              "type": "text",
+              "score": 0.8333333333333334,
+              "weight": 1,
+              "passed": false,
+              "feedback": "Found forbidden substring: waza",
+              "details": {
+                "contains": null,
+                "contains_cs": null,
+                "failures": [
+                  "Found forbidden substring: waza"
+                ],
+                "not_contains": [
+                  "waza",
+                  "benchmark",
+                  "diagnostic",
+                  "Prescription",
+                  "baseline lift",
+                  "eval suite"
+                ],
+                "not_contains_cs": null,
+                "regex_match": null,
+                "regex_not_match": null
+              },
+              "duration_ms": 0
+            }
+          },
+          "session_digest": {
+            "tool_call_count": 0,
+            "tools_used": [],
+            "errors": [],
+            "session_id": "mock-session-1780845731408119800"
+          },
+          "final_output": "Mock response for: Write unit tests for my Python authentication module\nTask: Anti-trigger: write unit tests\nDescription: Should NOT activate waza-skill-evaluator — this is general test writing",
+          "workspace_dir": "C:\\Users\\alast\\AppData\\Local\\Temp\\waza-mock-330170345"
+        },
+        {
+          "run_number": 2,
+          "attempts": 1,
+          "status": "failed",
+          "duration_ms": 0,
+          "validations": {
+            "omits-skill-keywords": {
+              "identifier": "omits-skill-keywords",
+              "type": "text",
+              "score": 0.8333333333333334,
+              "weight": 1,
+              "passed": false,
+              "feedback": "Found forbidden substring: waza",
+              "details": {
+                "contains": null,
+                "contains_cs": null,
+                "failures": [
+                  "Found forbidden substring: waza"
+                ],
+                "not_contains": [
+                  "waza",
+                  "benchmark",
+                  "diagnostic",
+                  "Prescription",
+                  "baseline lift",
+                  "eval suite"
+                ],
+                "not_contains_cs": null,
+                "regex_match": null,
+                "regex_not_match": null
+              },
+              "duration_ms": 0
+            }
+          },
+          "session_digest": {
+            "tool_call_count": 0,
+            "tools_used": [],
+            "errors": [],
+            "session_id": "mock-session-1780845731408644100"
+          },
+          "final_output": "Mock response for: Write unit tests for my Python authentication module\nTask: Anti-trigger: write unit tests\nDescription: Should NOT activate waza-skill-evaluator — this is general test writing",
+          "workspace_dir": "C:\\Users\\alast\\AppData\\Local\\Temp\\waza-mock-1575212017"
+        },
+        {
+          "run_number": 3,
+          "attempts": 1,
+          "status": "failed",
+          "duration_ms": 0,
+          "validations": {
+            "omits-skill-keywords": {
+              "identifier": "omits-skill-keywords",
+              "type": "text",
+              "score": 0.8333333333333334,
+              "weight": 1,
+              "passed": false,
+              "feedback": "Found forbidden substring: waza",
+              "details": {
+                "contains": null,
+                "contains_cs": null,
+                "failures": [
+                  "Found forbidden substring: waza"
+                ],
+                "not_contains": [
+                  "waza",
+                  "benchmark",
+                  "diagnostic",
+                  "Prescription",
+                  "baseline lift",
+                  "eval suite"
+                ],
+                "not_contains_cs": null,
+                "regex_match": null,
+                "regex_not_match": null
+              },
+              "duration_ms": 0
+            }
+          },
+          "session_digest": {
+            "tool_call_count": 0,
+            "tools_used": [],
+            "errors": [],
+            "session_id": "mock-session-1780845731409177000"
+          },
+          "final_output": "Mock response for: Write unit tests for my Python authentication module\nTask: Anti-trigger: write unit tests\nDescription: Should NOT activate waza-skill-evaluator — this is general test writing",
+          "workspace_dir": "C:\\Users\\alast\\AppData\\Local\\Temp\\waza-mock-2116941404"
+        }
+      ],
+      "stats": {
+        "pass_rate": 0,
+        "flakiness_percent": 0,
+        "passed_runs": 0,
+        "failed_runs": 3,
+        "error_runs": 0,
+        "total_runs": 3,
+        "avg_score": 0.8333333333333334,
+        "avg_weighted_score": 0.8333333333333334,
+        "min_score": 0.8333333333333334,
+        "max_score": 0.8333333333333334,
+        "std_dev_score": 0,
+        "score_variance": 0,
+        "ci95_lo": 0.8333333333333334,
+        "ci95_hi": 0.8333333333333334,
+        "flaky": false,
+        "avg_duration_ms": 0,
+        "bootstrap_ci": {
+          "lower": 0.8333333333333334,
+          "upper": 0.8333333333333334,
+          "mean": 0.8333333333333334,
+          "confidence_level": 0.95,
+          "num_bootstraps": 10000
+        },
+        "is_significant": true
+      }
+    },
+    {
+      "test_id": "phase0-check-waza-version",
+      "display_name": "Phase 0: verify waza CLI is installed",
+      "status": "passed",
+      "runs": [
+        {
+          "run_number": 1,
+          "attempts": 1,
+          "status": "passed",
+          "duration_ms": 0,
+          "validations": {
+            "check-waza-version": {
+              "identifier": "check-waza-version",
+              "type": "text",
+              "score": 1,
+              "weight": 1,
+              "passed": true,
+              "feedback": "All text checks passed",
+              "details": {
+                "contains": [
+                  "waza version"
+                ],
+                "contains_cs": null,
+                "failures": null,
+                "not_contains": null,
+                "not_contains_cs": null,
+                "regex_match": null,
+                "regex_not_match": null
+              },
+              "duration_ms": 0
+            }
+          },
+          "session_digest": {
+            "tool_call_count": 0,
+            "tools_used": [],
+            "errors": [],
+            "session_id": "mock-session-1780845731411398400"
+          },
+          "final_output": "Mock response for: Evaluate my skill at skills/engineering/my-skill/\nTask: Phase 0: verify waza CLI is installed\nDescription: Agent must run 'waza version' before proceeding with any evaluation steps",
+          "workspace_dir": "C:\\Users\\alast\\AppData\\Local\\Temp\\waza-mock-2349774581"
+        },
+        {
+          "run_number": 2,
+          "attempts": 1,
+          "status": "passed",
+          "duration_ms": 0,
+          "validations": {
+            "check-waza-version": {
+              "identifier": "check-waza-version",
+              "type": "text",
+              "score": 1,
+              "weight": 1,
+              "passed": true,
+              "feedback": "All text checks passed",
+              "details": {
+                "contains": [
+                  "waza version"
+                ],
+                "contains_cs": null,
+                "failures": null,
+                "not_contains": null,
+                "not_contains_cs": null,
+                "regex_match": null,
+                "regex_not_match": null
+              },
+              "duration_ms": 0
+            }
+          },
+          "session_digest": {
+            "tool_call_count": 0,
+            "tools_used": [],
+            "errors": [],
+            "session_id": "mock-session-1780845731411928200"
+          },
+          "final_output": "Mock response for: Evaluate my skill at skills/engineering/my-skill/\nTask: Phase 0: verify waza CLI is installed\nDescription: Agent must run 'waza version' before proceeding with any evaluation steps",
+          "workspace_dir": "C:\\Users\\alast\\AppData\\Local\\Temp\\waza-mock-4143551223"
+        },
+        {
+          "run_number": 3,
+          "attempts": 1,
+          "status": "passed",
+          "duration_ms": 0,
+          "validations": {
+            "check-waza-version": {
+              "identifier": "check-waza-version",
+              "type": "text",
+              "score": 1,
+              "weight": 1,
+              "passed": true,
+              "feedback": "All text checks passed",
+              "details": {
+                "contains": [
+                  "waza version"
+                ],
+                "contains_cs": null,
+                "failures": null,
+                "not_contains": null,
+                "not_contains_cs": null,
+                "regex_match": null,
+                "regex_not_match": null
+              },
+              "duration_ms": 0
+            }
+          },
+          "session_digest": {
+            "tool_call_count": 0,
+            "tools_used": [],
+            "errors": [],
+            "session_id": "mock-session-1780845731411928200"
+          },
+          "final_output": "Mock response for: Evaluate my skill at skills/engineering/my-skill/\nTask: Phase 0: verify waza CLI is installed\nDescription: Agent must run 'waza version' before proceeding with any evaluation steps",
+          "workspace_dir": "C:\\Users\\alast\\AppData\\Local\\Temp\\waza-mock-2696044798"
+        }
+      ],
+      "stats": {
+        "pass_rate": 1,
+        "flakiness_percent": 0,
+        "passed_runs": 3,
+        "failed_runs": 0,
+        "error_runs": 0,
+        "total_runs": 3,
+        "avg_score": 1,
+        "avg_weighted_score": 1,
+        "min_score": 1,
+        "max_score": 1,
+        "std_dev_score": 0,
+        "score_variance": 0,
+        "ci95_lo": 1,
+        "ci95_hi": 1,
+        "flaky": false,
+        "avg_duration_ms": 0,
+        "bootstrap_ci": {
+          "lower": 1,
+          "upper": 1,
+          "mean": 1,
+          "confidence_level": 0.95,
+          "num_bootstraps": 10000
+        },
+        "is_significant": true
+      }
+    },
+    {
+      "test_id": "phase0-installation-guidance",
+      "display_name": "Phase 0: provide installation guidance when waza missing",
+      "status": "failed",
+      "runs": [
+        {
+          "run_number": 1,
+          "attempts": 1,
+          "status": "failed",
+          "duration_ms": 0,
+          "validations": {
+            "explicit-mention": {
+              "identifier": "explicit-mention",
+              "type": "text",
+              "score": 1,
+              "weight": 1,
+              "passed": true,
+              "feedback": "All text checks passed",
+              "details": {
+                "contains": [
+                  "explicit"
+                ],
+                "contains_cs": null,
+                "failures": null,
+                "not_contains": null,
+                "not_contains_cs": null,
+                "regex_match": null,
+                "regex_not_match": null
+              },
+              "duration_ms": 0
+            },
+            "installation-guidance": {
+              "identifier": "installation-guidance",
+              "type": "text",
+              "score": 0.6666666666666666,
+              "weight": 1,
+              "passed": false,
+              "feedback": "Missing expected substring: github.com/microsoft/waza",
+              "details": {
+                "contains": [
+                  "install",
+                  "github.com/microsoft/waza",
+                  "permission"
+                ],
+                "contains_cs": null,
+                "failures": [
+                  "Missing expected substring: github.com/microsoft/waza"
+                ],
+                "not_contains": null,
+                "not_contains_cs": null,
+                "regex_match": null,
+                "regex_not_match": null
+              },
+              "duration_ms": 0
+            }
+          },
+          "session_digest": {
+            "tool_call_count": 0,
+            "tools_used": [],
+            "errors": [],
+            "session_id": "mock-session-1780845731413524700"
+          },
+          "final_output": "Mock response for: Evaluate my skill but I don't have waza installed yet\nTask: Phase 0: provide installation guidance when waza missing\nDescription: Agent must inform user that Waza CLI is required, present installation instructions, and ask for explicit permission before installing",
+          "workspace_dir": "C:\\Users\\alast\\AppData\\Local\\Temp\\waza-mock-2611820514"
+        },
+        {
+          "run_number": 2,
+          "attempts": 1,
+          "status": "failed",
+          "duration_ms": 0,
+          "validations": {
+            "explicit-mention": {
+              "identifier": "explicit-mention",
+              "type": "text",
+              "score": 1,
+              "weight": 1,
+              "passed": true,
+              "feedback": "All text checks passed",
+              "details": {
+                "contains": [
+                  "explicit"
+                ],
+                "contains_cs": null,
+                "failures": null,
+                "not_contains": null,
+                "not_contains_cs": null,
+                "regex_match": null,
+                "regex_not_match": null
+              },
+              "duration_ms": 0
+            },
+            "installation-guidance": {
+              "identifier": "installation-guidance",
+              "type": "text",
+              "score": 0.6666666666666666,
+              "weight": 1,
+              "passed": false,
+              "feedback": "Missing expected substring: github.com/microsoft/waza",
+              "details": {
+                "contains": [
+                  "install",
+                  "github.com/microsoft/waza",
+                  "permission"
+                ],
+                "contains_cs": null,
+                "failures": [
+                  "Missing expected substring: github.com/microsoft/waza"
+                ],
+                "not_contains": null,
+                "not_contains_cs": null,
+                "regex_match": null,
+                "regex_not_match": null
+              },
+              "duration_ms": 0
+            }
+          },
+          "session_digest": {
+            "tool_call_count": 0,
+            "tools_used": [],
+            "errors": [],
+            "session_id": "mock-session-1780845731414632100"
+          },
+          "final_output": "Mock response for: Evaluate my skill but I don't have waza installed yet\nTask: Phase 0: provide installation guidance when waza missing\nDescription: Agent must inform user that Waza CLI is required, present installation instructions, and ask for explicit permission before installing",
+          "workspace_dir": "C:\\Users\\alast\\AppData\\Local\\Temp\\waza-mock-499220144"
+        },
+        {
+          "run_number": 3,
+          "attempts": 1,
+          "status": "failed",
+          "duration_ms": 0,
+          "validations": {
+            "explicit-mention": {
+              "identifier": "explicit-mention",
+              "type": "text",
+              "score": 1,
+              "weight": 1,
+              "passed": true,
+              "feedback": "All text checks passed",
+              "details": {
+                "contains": [
+                  "explicit"
+                ],
+                "contains_cs": null,
+                "failures": null,
+                "not_contains": null,
+                "not_contains_cs": null,
+                "regex_match": null,
+                "regex_not_match": null
+              },
+              "duration_ms": 0
+            },
+            "installation-guidance": {
+              "identifier": "installation-guidance",
+              "type": "text",
+              "score": 0.6666666666666666,
+              "weight": 1,
+              "passed": false,
+              "feedback": "Missing expected substring: github.com/microsoft/waza",
+              "details": {
+                "contains": [
+                  "install",
+                  "github.com/microsoft/waza",
+                  "permission"
+                ],
+                "contains_cs": null,
+                "failures": [
+                  "Missing expected substring: github.com/microsoft/waza"
+                ],
+                "not_contains": null,
+                "not_contains_cs": null,
+                "regex_match": null,
+                "regex_not_match": null
+              },
+              "duration_ms": 0
+            }
+          },
+          "session_digest": {
+            "tool_call_count": 0,
+            "tools_used": [],
+            "errors": [],
+            "session_id": "mock-session-1780845731415176300"
+          },
+          "final_output": "Mock response for: Evaluate my skill but I don't have waza installed yet\nTask: Phase 0: provide installation guidance when waza missing\nDescription: Agent must inform user that Waza CLI is required, present installation instructions, and ask for explicit permission before installing",
+          "workspace_dir": "C:\\Users\\alast\\AppData\\Local\\Temp\\waza-mock-1030385035"
+        }
+      ],
+      "stats": {
+        "pass_rate": 0,
+        "flakiness_percent": 0,
+        "passed_runs": 0,
+        "failed_runs": 3,
+        "error_runs": 0,
+        "total_runs": 3,
+        "avg_score": 0.8333333333333334,
+        "avg_weighted_score": 0.8333333333333334,
+        "min_score": 0.8333333333333333,
+        "max_score": 0.8333333333333333,
+        "std_dev_score": 1.1102230246251565e-16,
+        "score_variance": 1.232595164407831e-32,
+        "ci95_lo": 0.8333333333333334,
+        "ci95_hi": 0.8333333333333334,
+        "flaky": false,
+        "avg_duration_ms": 0,
+        "bootstrap_ci": {
+          "lower": 0.8333333333333334,
+          "upper": 0.8333333333333334,
+          "mean": 0.8333333333333334,
+          "confidence_level": 0.95,
+          "num_bootstraps": 10000
+        },
+        "is_significant": true
+      }
+    },
+    {
+      "test_id": "phase1-check-eval-format",
+      "display_name": "Phase 1: verify eval suite structure exists",
+      "status": "passed",
+      "runs": [
+        {
+          "run_number": 1,
+          "attempts": 1,
+          "status": "passed",
+          "duration_ms": 0,
+          "validations": {
+            "check-eval-structure": {
+              "identifier": "check-eval-structure",
+              "type": "text",
+              "score": 1,
+              "weight": 1,
+              "passed": true,
+              "feedback": "All text checks passed",
+              "details": {
+                "contains": [
+                  "eval.yaml"
+                ],
+                "contains_cs": null,
+                "failures": null,
+                "not_contains": null,
+                "not_contains_cs": null,
+                "regex_match": null,
+                "regex_not_match": null
+              },
+              "duration_ms": 0
+            }
+          },
+          "session_digest": {
+            "tool_call_count": 0,
+            "tools_used": [],
+            "errors": [],
+            "session_id": "mock-session-1780845731416864000"
+          },
+          "final_output": "Mock response for: Evaluate my skill at fixtures/minimal-skill/\nTask: Phase 1: verify eval suite structure exists\nDescription: Agent must check that the target skill directory contains eval.yaml, tasks/ directory, and fixtures/ directory before proceeding",
+          "workspace_dir": "C:\\Users\\alast\\AppData\\Local\\Temp\\waza-mock-3118789425"
+        },
+        {
+          "run_number": 2,
+          "attempts": 1,
+          "status": "passed",
+          "duration_ms": 0,
+          "validations": {
+            "check-eval-structure": {
+              "identifier": "check-eval-structure",
+              "type": "text",
+              "score": 1,
+              "weight": 1,
+              "passed": true,
+              "feedback": "All text checks passed",
+              "details": {
+                "contains": [
+                  "eval.yaml"
+                ],
+                "contains_cs": null,
+                "failures": null,
+                "not_contains": null,
+                "not_contains_cs": null,
+                "regex_match": null,
+                "regex_not_match": null
+              },
+              "duration_ms": 0
+            }
+          },
+          "session_digest": {
+            "tool_call_count": 0,
+            "tools_used": [],
+            "errors": [],
+            "session_id": "mock-session-1780845731417424000"
+          },
+          "final_output": "Mock response for: Evaluate my skill at fixtures/minimal-skill/\nTask: Phase 1: verify eval suite structure exists\nDescription: Agent must check that the target skill directory contains eval.yaml, tasks/ directory, and fixtures/ directory before proceeding",
+          "workspace_dir": "C:\\Users\\alast\\AppData\\Local\\Temp\\waza-mock-3492234384"
+        },
+        {
+          "run_number": 3,
+          "attempts": 1,
+          "status": "passed",
+          "duration_ms": 0,
+          "validations": {
+            "check-eval-structure": {
+              "identifier": "check-eval-structure",
+              "type": "text",
+              "score": 1,
+              "weight": 1,
+              "passed": true,
+              "feedback": "All text checks passed",
+              "details": {
+                "contains": [
+                  "eval.yaml"
+                ],
+                "contains_cs": null,
+                "failures": null,
+                "not_contains": null,
+                "not_contains_cs": null,
+                "regex_match": null,
+                "regex_not_match": null
+              },
+              "duration_ms": 0
+            }
+          },
+          "session_digest": {
+            "tool_call_count": 0,
+            "tools_used": [],
+            "errors": [],
+            "session_id": "mock-session-1780845731417976800"
+          },
+          "final_output": "Mock response for: Evaluate my skill at fixtures/minimal-skill/\nTask: Phase 1: verify eval suite structure exists\nDescription: Agent must check that the target skill directory contains eval.yaml, tasks/ directory, and fixtures/ directory before proceeding",
+          "workspace_dir": "C:\\Users\\alast\\AppData\\Local\\Temp\\waza-mock-1495478912"
+        }
+      ],
+      "stats": {
+        "pass_rate": 1,
+        "flakiness_percent": 0,
+        "passed_runs": 3,
+        "failed_runs": 0,
+        "error_runs": 0,
+        "total_runs": 3,
+        "avg_score": 1,
+        "avg_weighted_score": 1,
+        "min_score": 1,
+        "max_score": 1,
+        "std_dev_score": 0,
+        "score_variance": 0,
+        "ci95_lo": 1,
+        "ci95_hi": 1,
+        "flaky": false,
+        "avg_duration_ms": 0,
+        "bootstrap_ci": {
+          "lower": 1,
+          "upper": 1,
+          "mean": 1,
+          "confidence_level": 0.95,
+          "num_bootstraps": 10000
+        },
+        "is_significant": true
+      }
+    },
+    {
+      "test_id": "phase1-reference-eval-generation",
+      "display_name": "Phase 1: reference eval-generation.md when suite missing",
+      "status": "passed",
+      "runs": [
+        {
+          "run_number": 1,
+          "attempts": 1,
+          "status": "passed",
+          "duration_ms": 0,
+          "validations": {
+            "eval-generation-mention": {
+              "identifier": "eval-generation-mention",
+              "type": "text",
+              "score": 1,
+              "weight": 1,
+              "passed": true,
+              "feedback": "All text checks passed",
+              "details": {
+                "contains": [
+                  "eval-generation"
+                ],
+                "contains_cs": null,
+                "failures": null,
+                "not_contains": null,
+                "not_contains_cs": null,
+                "regex_match": null,
+                "regex_not_match": null
+              },
+              "duration_ms": 0
+            },
+            "reference-eval-generation": {
+              "identifier": "reference-eval-generation",
+              "type": "text",
+              "score": 1,
+              "weight": 1,
+              "passed": true,
+              "feedback": "All text checks passed",
+              "details": {
+                "contains": [
+                  "eval-generation.md",
+                  "waza new eval",
+                  "waza suggest"
+                ],
+                "contains_cs": null,
+                "failures": null,
+                "not_contains": null,
+                "not_contains_cs": null,
+                "regex_match": null,
+                "regex_not_match": null
+              },
+              "duration_ms": 0
+            }
+          },
+          "session_digest": {
+            "tool_call_count": 0,
+            "tools_used": [],
+            "errors": [],
+            "session_id": "mock-session-1780845731419580000"
+          },
+          "final_output": "Mock response for: Evaluate my skill but it doesn't have any eval files yet\nTask: Phase 1: reference eval-generation.md when suite missing\nDescription: Agent must reference references/eval-generation.md and guide user through eval generation using 'waza new eval' or 'waza suggest'",
+          "workspace_dir": "C:\\Users\\alast\\AppData\\Local\\Temp\\waza-mock-214067597"
+        },
+        {
+          "run_number": 2,
+          "attempts": 1,
+          "status": "passed",
+          "duration_ms": 0,
+          "validations": {
+            "eval-generation-mention": {
+              "identifier": "eval-generation-mention",
+              "type": "text",
+              "score": 1,
+              "weight": 1,
+              "passed": true,
+              "feedback": "All text checks passed",
+              "details": {
+                "contains": [
+                  "eval-generation"
+                ],
+                "contains_cs": null,
+                "failures": null,
+                "not_contains": null,
+                "not_contains_cs": null,
+                "regex_match": null,
+                "regex_not_match": null
+              },
+              "duration_ms": 0
+            },
+            "reference-eval-generation": {
+              "identifier": "reference-eval-generation",
+              "type": "text",
+              "score": 1,
+              "weight": 1,
+              "passed": true,
+              "feedback": "All text checks passed",
+              "details": {
+                "contains": [
+                  "eval-generation.md",
+                  "waza new eval",
+                  "waza suggest"
+                ],
+                "contains_cs": null,
+                "failures": null,
+                "not_contains": null,
+                "not_contains_cs": null,
+                "regex_match": null,
+                "regex_not_match": null
+              },
+              "duration_ms": 0
+            }
+          },
+          "session_digest": {
+            "tool_call_count": 0,
+            "tools_used": [],
+            "errors": [],
+            "session_id": "mock-session-1780845731420110000"
+          },
+          "final_output": "Mock response for: Evaluate my skill but it doesn't have any eval files yet\nTask: Phase 1: reference eval-generation.md when suite missing\nDescription: Agent must reference references/eval-generation.md and guide user through eval generation using 'waza new eval' or 'waza suggest'",
+          "workspace_dir": "C:\\Users\\alast\\AppData\\Local\\Temp\\waza-mock-2658347209"
+        },
+        {
+          "run_number": 3,
+          "attempts": 1,
+          "status": "passed",
+          "duration_ms": 0,
+          "validations": {
+            "eval-generation-mention": {
+              "identifier": "eval-generation-mention",
+              "type": "text",
+              "score": 1,
+              "weight": 1,
+              "passed": true,
+              "feedback": "All text checks passed",
+              "details": {
+                "contains": [
+                  "eval-generation"
+                ],
+                "contains_cs": null,
+                "failures": null,
+                "not_contains": null,
+                "not_contains_cs": null,
+                "regex_match": null,
+                "regex_not_match": null
+              },
+              "duration_ms": 0
+            },
+            "reference-eval-generation": {
+              "identifier": "reference-eval-generation",
+              "type": "text",
+              "score": 1,
+              "weight": 1,
+              "passed": true,
+              "feedback": "All text checks passed",
+              "details": {
+                "contains": [
+                  "eval-generation.md",
+                  "waza new eval",
+                  "waza suggest"
+                ],
+                "contains_cs": null,
+                "failures": null,
+                "not_contains": null,
+                "not_contains_cs": null,
+                "regex_match": null,
+                "regex_not_match": null
+              },
+              "duration_ms": 0
+            }
+          },
+          "session_digest": {
+            "tool_call_count": 0,
+            "tools_used": [],
+            "errors": [],
+            "session_id": "mock-session-1780845731420658300"
+          },
+          "final_output": "Mock response for: Evaluate my skill but it doesn't have any eval files yet\nTask: Phase 1: reference eval-generation.md when suite missing\nDescription: Agent must reference references/eval-generation.md and guide user through eval generation using 'waza new eval' or 'waza suggest'",
+          "workspace_dir": "C:\\Users\\alast\\AppData\\Local\\Temp\\waza-mock-544672695"
+        }
+      ],
+      "stats": {
+        "pass_rate": 1,
+        "flakiness_percent": 0,
+        "passed_runs": 3,
+        "failed_runs": 0,
+        "error_runs": 0,
+        "total_runs": 3,
+        "avg_score": 1,
+        "avg_weighted_score": 1,
+        "min_score": 1,
+        "max_score": 1,
+        "std_dev_score": 0,
+        "score_variance": 0,
+        "ci95_lo": 1,
+        "ci95_hi": 1,
+        "flaky": false,
+        "avg_duration_ms": 0,
+        "bootstrap_ci": {
+          "lower": 1,
+          "upper": 1,
+          "mean": 1,
+          "confidence_level": 0.95,
+          "num_bootstraps": 10000
+        },
+        "is_significant": true
+      }
+    },
+    {
+      "test_id": "phase1-user-approval",
+      "display_name": "Phase 1: require user approval before proceeding",
+      "status": "failed",
+      "runs": [
+        {
+          "run_number": 1,
+          "attempts": 1,
+          "status": "failed",
+          "duration_ms": 0,
+          "validations": {
+            "user-approval-check": {
+              "identifier": "user-approval-check",
+              "type": "text",
+              "score": 0.3333333333333333,
+              "weight": 1,
+              "passed": false,
+              "feedback": "Missing expected substring: approve; Missing expected substring: confirm",
+              "details": {
+                "contains": [
+                  "approve",
+                  "confirm",
+                  "proceed"
+                ],
+                "contains_cs": null,
+                "failures": [
+                  "Missing expected substring: approve",
+                  "Missing expected substring: confirm"
+                ],
+                "not_contains": null,
+                "not_contains_cs": null,
+                "regex_match": null,
+                "regex_not_match": null
+              },
+              "duration_ms": 0
+            }
+          },
+          "session_digest": {
+            "tool_call_count": 0,
+            "tools_used": [],
+            "errors": [],
+            "session_id": "mock-session-1780845731422315700"
+          },
+          "final_output": "Mock response for: Evaluate my skill and just run everything automatically\nTask: Phase 1: require user approval before proceeding\nDescription: Agent must present the eval suite structure and task count to the user and request explicit approval before proceeding",
+          "workspace_dir": "C:\\Users\\alast\\AppData\\Local\\Temp\\waza-mock-3428006518"
+        },
+        {
+          "run_number": 2,
+          "attempts": 1,
+          "status": "failed",
+          "duration_ms": 0,
+          "validations": {
+            "user-approval-check": {
+              "identifier": "user-approval-check",
+              "type": "text",
+              "score": 0.3333333333333333,
+              "weight": 1,
+              "passed": false,
+              "feedback": "Missing expected substring: approve; Missing expected substring: confirm",
+              "details": {
+                "contains": [
+                  "approve",
+                  "confirm",
+                  "proceed"
+                ],
+                "contains_cs": null,
+                "failures": [
+                  "Missing expected substring: approve",
+                  "Missing expected substring: confirm"
+                ],
+                "not_contains": null,
+                "not_contains_cs": null,
+                "regex_match": null,
+                "regex_not_match": null
+              },
+              "duration_ms": 0
+            }
+          },
+          "session_digest": {
+            "tool_call_count": 0,
+            "tools_used": [],
+            "errors": [],
+            "session_id": "mock-session-1780845731423381600"
+          },
+          "final_output": "Mock response for: Evaluate my skill and just run everything automatically\nTask: Phase 1: require user approval before proceeding\nDescription: Agent must present the eval suite structure and task count to the user and request explicit approval before proceeding",
+          "workspace_dir": "C:\\Users\\alast\\AppData\\Local\\Temp\\waza-mock-3291880939"
+        },
+        {
+          "run_number": 3,
+          "attempts": 1,
+          "status": "failed",
+          "duration_ms": 0,
+          "validations": {
+            "user-approval-check": {
+              "identifier": "user-approval-check",
+              "type": "text",
+              "score": 0.3333333333333333,
+              "weight": 1,
+              "passed": false,
+              "feedback": "Missing expected substring: approve; Missing expected substring: confirm",
+              "details": {
+                "contains": [
+                  "approve",
+                  "confirm",
+                  "proceed"
+                ],
+                "contains_cs": null,
+                "failures": [
+                  "Missing expected substring: approve",
+                  "Missing expected substring: confirm"
+                ],
+                "not_contains": null,
+                "not_contains_cs": null,
+                "regex_match": null,
+                "regex_not_match": null
+              },
+              "duration_ms": 0
+            }
+          },
+          "session_digest": {
+            "tool_call_count": 0,
+            "tools_used": [],
+            "errors": [],
+            "session_id": "mock-session-1780845731423911900"
+          },
+          "final_output": "Mock response for: Evaluate my skill and just run everything automatically\nTask: Phase 1: require user approval before proceeding\nDescription: Agent must present the eval suite structure and task count to the user and request explicit approval before proceeding",
+          "workspace_dir": "C:\\Users\\alast\\AppData\\Local\\Temp\\waza-mock-1424783647"
+        }
+      ],
+      "stats": {
+        "pass_rate": 0,
+        "flakiness_percent": 0,
+        "passed_runs": 0,
+        "failed_runs": 3,
+        "error_runs": 0,
+        "total_runs": 3,
+        "avg_score": 0.3333333333333333,
+        "avg_weighted_score": 0.3333333333333333,
+        "min_score": 0.3333333333333333,
+        "max_score": 0.3333333333333333,
+        "std_dev_score": 0,
+        "score_variance": 0,
+        "ci95_lo": 0.3333333333333333,
+        "ci95_hi": 0.3333333333333333,
+        "flaky": false,
+        "avg_duration_ms": 0,
+        "bootstrap_ci": {
+          "lower": 0.3333333333333333,
+          "upper": 0.3333333333333333,
+          "mean": 0.3333333333333333,
+          "confidence_level": 0.95,
+          "num_bootstraps": 10000
+        },
+        "is_significant": true
+      }
+    },
+    {
+      "test_id": "phase4-diagnostic-report-structure",
+      "display_name": "Phase 4: generate diagnostic-report.md with correct structure",
+      "status": "failed",
+      "runs": [
+        {
+          "run_number": 1,
+          "attempts": 1,
+          "status": "failed",
+          "duration_ms": 0,
+          "validations": {
+            "diagnostic-report-mention": {
+              "identifier": "diagnostic-report-mention",
+              "type": "text",
+              "score": 1,
+              "weight": 1,
+              "passed": true,
+              "feedback": "All text checks passed",
+              "details": {
+                "contains": [
+                  "diagnostic-report.md"
+                ],
+                "contains_cs": null,
+                "failures": null,
+                "not_contains": null,
+                "not_contains_cs": null,
+                "regex_match": null,
+                "regex_not_match": null
+              },
+              "duration_ms": 0
+            },
+            "report-structure": {
+              "identifier": "report-structure",
+              "type": "text",
+              "score": 0.3333333333333333,
+              "weight": 1,
+              "passed": false,
+              "feedback": "Missing expected substring: Prescription A; Missing expected substring: Prescription B",
+              "details": {
+                "contains": [
+                  "Summary",
+                  "Prescription A",
+                  "Prescription B"
+                ],
+                "contains_cs": null,
+                "failures": [
+                  "Missing expected substring: Prescription A",
+                  "Missing expected substring: Prescription B"
+                ],
+                "not_contains": null,
+                "not_contains_cs": null,
+                "regex_match": null,
+                "regex_not_match": null
+              },
+              "duration_ms": 0
+            }
+          },
+          "session_digest": {
+            "tool_call_count": 0,
+            "tools_used": [],
+            "errors": [],
+            "session_id": "mock-session-1780845731425604600"
+          },
+          "final_output": "Mock response for: Analyze the Waza results in fixtures/mock-waza-results.json and generate a diagnostic report\nTask: Phase 4: generate diagnostic-report.md with correct structure\nDescription: Agent must generate a diagnostic-report.md file containing an executive summary, per-failure insights, and dual-option prescriptions",
+          "workspace_dir": "C:\\Users\\alast\\AppData\\Local\\Temp\\waza-mock-2773457473"
+        },
+        {
+          "run_number": 2,
+          "attempts": 1,
+          "status": "failed",
+          "duration_ms": 0,
+          "validations": {
+            "diagnostic-report-mention": {
+              "identifier": "diagnostic-report-mention",
+              "type": "text",
+              "score": 1,
+              "weight": 1,
+              "passed": true,
+              "feedback": "All text checks passed",
+              "details": {
+                "contains": [
+                  "diagnostic-report.md"
+                ],
+                "contains_cs": null,
+                "failures": null,
+                "not_contains": null,
+                "not_contains_cs": null,
+                "regex_match": null,
+                "regex_not_match": null
+              },
+              "duration_ms": 0
+            },
+            "report-structure": {
+              "identifier": "report-structure",
+              "type": "text",
+              "score": 0.3333333333333333,
+              "weight": 1,
+              "passed": false,
+              "feedback": "Missing expected substring: Prescription A; Missing expected substring: Prescription B",
+              "details": {
+                "contains": [
+                  "Summary",
+                  "Prescription A",
+                  "Prescription B"
+                ],
+                "contains_cs": null,
+                "failures": [
+                  "Missing expected substring: Prescription A",
+                  "Missing expected substring: Prescription B"
+                ],
+                "not_contains": null,
+                "not_contains_cs": null,
+                "regex_match": null,
+                "regex_not_match": null
+              },
+              "duration_ms": 0
+            }
+          },
+          "session_digest": {
+            "tool_call_count": 0,
+            "tools_used": [],
+            "errors": [],
+            "session_id": "mock-session-1780845731426142200"
+          },
+          "final_output": "Mock response for: Analyze the Waza results in fixtures/mock-waza-results.json and generate a diagnostic report\nTask: Phase 4: generate diagnostic-report.md with correct structure\nDescription: Agent must generate a diagnostic-report.md file containing an executive summary, per-failure insights, and dual-option prescriptions",
+          "workspace_dir": "C:\\Users\\alast\\AppData\\Local\\Temp\\waza-mock-2318257445"
+        },
+        {
+          "run_number": 3,
+          "attempts": 1,
+          "status": "failed",
+          "duration_ms": 0,
+          "validations": {
+            "diagnostic-report-mention": {
+              "identifier": "diagnostic-report-mention",
+              "type": "text",
+              "score": 1,
+              "weight": 1,
+              "passed": true,
+              "feedback": "All text checks passed",
+              "details": {
+                "contains": [
+                  "diagnostic-report.md"
+                ],
+                "contains_cs": null,
+                "failures": null,
+                "not_contains": null,
+                "not_contains_cs": null,
+                "regex_match": null,
+                "regex_not_match": null
+              },
+              "duration_ms": 0
+            },
+            "report-structure": {
+              "identifier": "report-structure",
+              "type": "text",
+              "score": 0.3333333333333333,
+              "weight": 1,
+              "passed": false,
+              "feedback": "Missing expected substring: Prescription A; Missing expected substring: Prescription B",
+              "details": {
+                "contains": [
+                  "Summary",
+                  "Prescription A",
+                  "Prescription B"
+                ],
+                "contains_cs": null,
+                "failures": [
+                  "Missing expected substring: Prescription A",
+                  "Missing expected substring: Prescription B"
+                ],
+                "not_contains": null,
+                "not_contains_cs": null,
+                "regex_match": null,
+                "regex_not_match": null
+              },
+              "duration_ms": 0
+            }
+          },
+          "session_digest": {
+            "tool_call_count": 0,
+            "tools_used": [],
+            "errors": [],
+            "session_id": "mock-session-1780845731427245700"
+          },
+          "final_output": "Mock response for: Analyze the Waza results in fixtures/mock-waza-results.json and generate a diagnostic report\nTask: Phase 4: generate diagnostic-report.md with correct structure\nDescription: Agent must generate a diagnostic-report.md file containing an executive summary, per-failure insights, and dual-option prescriptions",
+          "workspace_dir": "C:\\Users\\alast\\AppData\\Local\\Temp\\waza-mock-2757862538"
+        }
+      ],
+      "stats": {
+        "pass_rate": 0,
+        "flakiness_percent": 0,
+        "passed_runs": 0,
+        "failed_runs": 3,
+        "error_runs": 0,
+        "total_runs": 3,
+        "avg_score": 0.6666666666666666,
+        "avg_weighted_score": 0.6666666666666666,
+        "min_score": 0.6666666666666666,
+        "max_score": 0.6666666666666666,
+        "std_dev_score": 0,
+        "score_variance": 0,
+        "ci95_lo": 0.6666666666666666,
+        "ci95_hi": 0.6666666666666666,
+        "flaky": false,
+        "avg_duration_ms": 0,
+        "bootstrap_ci": {
+          "lower": 0.6666666666666666,
+          "upper": 0.6666666666666666,
+          "mean": 0.6666666666666666,
+          "confidence_level": 0.95,
+          "num_bootstraps": 10000
+        },
+        "is_significant": true
+      }
+    },
+    {
+      "test_id": "phase4-dual-prescriptions",
+      "display_name": "Phase 4: generate dual-option prescriptions A and B",
+      "status": "passed",
+      "runs": [
+        {
+          "run_number": 1,
+          "attempts": 1,
+          "status": "passed",
+          "duration_ms": 1,
+          "validations": {
+            "dual-prescriptions": {
+              "identifier": "dual-prescriptions",
+              "type": "text",
+              "score": 1,
+              "weight": 1,
+              "passed": true,
+              "feedback": "All text checks passed",
+              "details": {
+                "contains": [
+                  "Prescription A",
+                  "Prescription B",
+                  "conservative",
+                  "structural"
+                ],
+                "contains_cs": null,
+                "failures": null,
+                "not_contains": null,
+                "not_contains_cs": null,
+                "regex_match": null,
+                "regex_not_match": null
+              },
+              "duration_ms": 0
+            }
+          },
+          "session_digest": {
+            "tool_call_count": 0,
+            "tools_used": [],
+            "errors": [],
+            "session_id": "mock-session-1780845731429376700"
+          },
+          "final_output": "Mock response for: For each failing task, give me both a minimal fix and a structural fix\nTask: Phase 4: generate dual-option prescriptions A and B\nDescription: Agent must provide two prescription options per failure - Prescription A (conservative) and Prescription B (structural)",
+          "workspace_dir": "C:\\Users\\alast\\AppData\\Local\\Temp\\waza-mock-1790856152"
+        },
+        {
+          "run_number": 2,
+          "attempts": 1,
+          "status": "passed",
+          "duration_ms": 0,
+          "validations": {
+            "dual-prescriptions": {
+              "identifier": "dual-prescriptions",
+              "type": "text",
+              "score": 1,
+              "weight": 1,
+              "passed": true,
+              "feedback": "All text checks passed",
+              "details": {
+                "contains": [
+                  "Prescription A",
+                  "Prescription B",
+                  "conservative",
+                  "structural"
+                ],
+                "contains_cs": null,
+                "failures": null,
+                "not_contains": null,
+                "not_contains_cs": null,
+                "regex_match": null,
+                "regex_not_match": null
+              },
+              "duration_ms": 0
+            }
+          },
+          "session_digest": {
+            "tool_call_count": 0,
+            "tools_used": [],
+            "errors": [],
+            "session_id": "mock-session-1780845731429882300"
+          },
+          "final_output": "Mock response for: For each failing task, give me both a minimal fix and a structural fix\nTask: Phase 4: generate dual-option prescriptions A and B\nDescription: Agent must provide two prescription options per failure - Prescription A (conservative) and Prescription B (structural)",
+          "workspace_dir": "C:\\Users\\alast\\AppData\\Local\\Temp\\waza-mock-412024752"
+        },
+        {
+          "run_number": 3,
+          "attempts": 1,
+          "status": "passed",
+          "duration_ms": 1,
+          "validations": {
+            "dual-prescriptions": {
+              "identifier": "dual-prescriptions",
+              "type": "text",
+              "score": 1,
+              "weight": 1,
+              "passed": true,
+              "feedback": "All text checks passed",
+              "details": {
+                "contains": [
+                  "Prescription A",
+                  "Prescription B",
+                  "conservative",
+                  "structural"
+                ],
+                "contains_cs": null,
+                "failures": null,
+                "not_contains": null,
+                "not_contains_cs": null,
+                "regex_match": null,
+                "regex_not_match": null
+              },
+              "duration_ms": 0
+            }
+          },
+          "session_digest": {
+            "tool_call_count": 0,
+            "tools_used": [],
+            "errors": [],
+            "session_id": "mock-session-1780845731430893700"
+          },
+          "final_output": "Mock response for: For each failing task, give me both a minimal fix and a structural fix\nTask: Phase 4: generate dual-option prescriptions A and B\nDescription: Agent must provide two prescription options per failure - Prescription A (conservative) and Prescription B (structural)",
+          "workspace_dir": "C:\\Users\\alast\\AppData\\Local\\Temp\\waza-mock-3795251954"
+        }
+      ],
+      "stats": {
+        "pass_rate": 1,
+        "flakiness_percent": 0,
+        "passed_runs": 3,
+        "failed_runs": 0,
+        "error_runs": 0,
+        "total_runs": 3,
+        "avg_score": 1,
+        "avg_weighted_score": 1,
+        "min_score": 1,
+        "max_score": 1,
+        "std_dev_score": 0,
+        "score_variance": 0,
+        "ci95_lo": 1,
+        "ci95_hi": 1,
+        "flaky": false,
+        "avg_duration_ms": 0,
+        "bootstrap_ci": {
+          "lower": 1,
+          "upper": 1,
+          "mean": 1,
+          "confidence_level": 0.95,
+          "num_bootstraps": 10000
+        },
+        "is_significant": true
+      }
+    },
+    {
+      "test_id": "phase4-per-failure-insight",
+      "display_name": "Phase 4: provide per-failure insights with eval IDs",
+      "status": "passed",
+      "runs": [
+        {
+          "run_number": 1,
+          "attempts": 1,
+          "status": "passed",
+          "duration_ms": 0,
+          "validations": {
+            "insight-mention": {
+              "identifier": "insight-mention",
+              "type": "text",
+              "score": 1,
+              "weight": 1,
+              "passed": true,
+              "feedback": "All text checks passed",
+              "details": {
+                "contains": [
+                  "insight"
+                ],
+                "contains_cs": null,
+                "failures": null,
+                "not_contains": null,
+                "not_contains_cs": null,
+                "regex_match": null,
+                "regex_not_match": null
+              },
+              "duration_ms": 0
+            },
+            "per-failure-insight": {
+              "identifier": "per-failure-insight",
+              "type": "text",
+              "score": 1,
+              "weight": 1,
+              "passed": true,
+              "feedback": "All text checks passed",
+              "details": {
+                "contains": [
+                  "task",
+                  "root cause",
+                  "failure"
+                ],
+                "contains_cs": null,
+                "failures": null,
+                "not_contains": null,
+                "not_contains_cs": null,
+                "regex_match": null,
+                "regex_not_match": null
+              },
+              "duration_ms": 0
+            }
+          },
+          "session_digest": {
+            "tool_call_count": 0,
+            "tools_used": [],
+            "errors": [],
+            "session_id": "mock-session-1780845731432172300"
+          },
+          "final_output": "Mock response for: Here are failing Waza results — analyze each failure and explain why it happened\nTask: Phase 4: provide per-failure insights with eval IDs\nDescription: For each failed task, agent must provide the eval ID, context/insight explaining root cause, and reference specific evidence",
+          "workspace_dir": "C:\\Users\\alast\\AppData\\Local\\Temp\\waza-mock-2752703093"
+        },
+        {
+          "run_number": 2,
+          "attempts": 1,
+          "status": "passed",
+          "duration_ms": 0,
+          "validations": {
+            "insight-mention": {
+              "identifier": "insight-mention",
+              "type": "text",
+              "score": 1,
+              "weight": 1,
+              "passed": true,
+              "feedback": "All text checks passed",
+              "details": {
+                "contains": [
+                  "insight"
+                ],
+                "contains_cs": null,
+                "failures": null,
+                "not_contains": null,
+                "not_contains_cs": null,
+                "regex_match": null,
+                "regex_not_match": null
+              },
+              "duration_ms": 0
+            },
+            "per-failure-insight": {
+              "identifier": "per-failure-insight",
+              "type": "text",
+              "score": 1,
+              "weight": 1,
+              "passed": true,
+              "feedback": "All text checks passed",
+              "details": {
+                "contains": [
+                  "task",
+                  "root cause",
+                  "failure"
+                ],
+                "contains_cs": null,
+                "failures": null,
+                "not_contains": null,
+                "not_contains_cs": null,
+                "regex_match": null,
+                "regex_not_match": null
+              },
+              "duration_ms": 0
+            }
+          },
+          "session_digest": {
+            "tool_call_count": 0,
+            "tools_used": [],
+            "errors": [],
+            "session_id": "mock-session-1780845731432172300"
+          },
+          "final_output": "Mock response for: Here are failing Waza results — analyze each failure and explain why it happened\nTask: Phase 4: provide per-failure insights with eval IDs\nDescription: For each failed task, agent must provide the eval ID, context/insight explaining root cause, and reference specific evidence",
+          "workspace_dir": "C:\\Users\\alast\\AppData\\Local\\Temp\\waza-mock-370549946"
+        },
+        {
+          "run_number": 3,
+          "attempts": 1,
+          "status": "passed",
+          "duration_ms": 0,
+          "validations": {
+            "insight-mention": {
+              "identifier": "insight-mention",
+              "type": "text",
+              "score": 1,
+              "weight": 1,
+              "passed": true,
+              "feedback": "All text checks passed",
+              "details": {
+                "contains": [
+                  "insight"
+                ],
+                "contains_cs": null,
+                "failures": null,
+                "not_contains": null,
+                "not_contains_cs": null,
+                "regex_match": null,
+                "regex_not_match": null
+              },
+              "duration_ms": 0
+            },
+            "per-failure-insight": {
+              "identifier": "per-failure-insight",
+              "type": "text",
+              "score": 1,
+              "weight": 1,
+              "passed": true,
+              "feedback": "All text checks passed",
+              "details": {
+                "contains": [
+                  "task",
+                  "root cause",
+                  "failure"
+                ],
+                "contains_cs": null,
+                "failures": null,
+                "not_contains": null,
+                "not_contains_cs": null,
+                "regex_match": null,
+                "regex_not_match": null
+              },
+              "duration_ms": 0
+            }
+          },
+          "session_digest": {
+            "tool_call_count": 0,
+            "tools_used": [],
+            "errors": [],
+            "session_id": "mock-session-1780845731433684200"
+          },
+          "final_output": "Mock response for: Here are failing Waza results — analyze each failure and explain why it happened\nTask: Phase 4: provide per-failure insights with eval IDs\nDescription: For each failed task, agent must provide the eval ID, context/insight explaining root cause, and reference specific evidence",
+          "workspace_dir": "C:\\Users\\alast\\AppData\\Local\\Temp\\waza-mock-847920390"
+        }
+      ],
+      "stats": {
+        "pass_rate": 1,
+        "flakiness_percent": 0,
+        "passed_runs": 3,
+        "failed_runs": 0,
+        "error_runs": 0,
+        "total_runs": 3,
+        "avg_score": 1,
+        "avg_weighted_score": 1,
+        "min_score": 1,
+        "max_score": 1,
+        "std_dev_score": 0,
+        "score_variance": 0,
+        "ci95_lo": 1,
+        "ci95_hi": 1,
+        "flaky": false,
+        "avg_duration_ms": 0,
+        "bootstrap_ci": {
+          "lower": 1,
+          "upper": 1,
+          "mean": 1,
+          "confidence_level": 0.95,
+          "num_bootstraps": 10000
+        },
+        "is_significant": true
+      }
+    },
+    {
+      "test_id": "trigger-check-performance",
+      "display_name": "Trigger: check skill performance",
+      "status": "passed",
+      "runs": [
+        {
+          "run_number": 1,
+          "attempts": 1,
+          "status": "passed",
+          "duration_ms": 0,
+          "validations": {
+            "performance-keywords": {
+              "identifier": "performance-keywords",
+              "type": "text",
+              "score": 1,
+              "weight": 1,
+              "passed": true,
+              "feedback": "All text checks passed",
+              "details": {
+                "contains": [
+                  "waza",
+                  "diagnostic",
+                  "performance",
+                  "eval",
+                  "report"
+                ],
+                "contains_cs": null,
+                "failures": null,
+                "not_contains": null,
+                "not_contains_cs": null,
+                "regex_match": null,
+                "regex_not_match": null
+              },
+              "duration_ms": 0
+            }
+          },
+          "session_digest": {
+            "tool_call_count": 0,
+            "tools_used": [],
+            "errors": [],
+            "session_id": "mock-session-1780845731434696900"
+          },
+          "final_output": "Mock response for: Check the performance of my test-writing skill and generate a diagnostic report\nTask: Trigger: check skill performance\nDescription: Should activate the waza-skill-evaluator skill",
+          "workspace_dir": "C:\\Users\\alast\\AppData\\Local\\Temp\\waza-mock-2291361109"
+        },
+        {
+          "run_number": 2,
+          "attempts": 1,
+          "status": "passed",
+          "duration_ms": 1,
+          "validations": {
+            "performance-keywords": {
+              "identifier": "performance-keywords",
+              "type": "text",
+              "score": 1,
+              "weight": 1,
+              "passed": true,
+              "feedback": "All text checks passed",
+              "details": {
+                "contains": [
+                  "waza",
+                  "diagnostic",
+                  "performance",
+                  "eval",
+                  "report"
+                ],
+                "contains_cs": null,
+                "failures": null,
+                "not_contains": null,
+                "not_contains_cs": null,
+                "regex_match": null,
+                "regex_not_match": null
+              },
+              "duration_ms": 0
+            }
+          },
+          "session_digest": {
+            "tool_call_count": 0,
+            "tools_used": [],
+            "errors": [],
+            "session_id": "mock-session-1780845731436156500"
+          },
+          "final_output": "Mock response for: Check the performance of my test-writing skill and generate a diagnostic report\nTask: Trigger: check skill performance\nDescription: Should activate the waza-skill-evaluator skill",
+          "workspace_dir": "C:\\Users\\alast\\AppData\\Local\\Temp\\waza-mock-1720142944"
+        },
+        {
+          "run_number": 3,
+          "attempts": 1,
+          "status": "passed",
+          "duration_ms": 0,
+          "validations": {
+            "performance-keywords": {
+              "identifier": "performance-keywords",
+              "type": "text",
+              "score": 1,
+              "weight": 1,
+              "passed": true,
+              "feedback": "All text checks passed",
+              "details": {
+                "contains": [
+                  "waza",
+                  "diagnostic",
+                  "performance",
+                  "eval",
+                  "report"
+                ],
+                "contains_cs": null,
+                "failures": null,
+                "not_contains": null,
+                "not_contains_cs": null,
+                "regex_match": null,
+                "regex_not_match": null
+              },
+              "duration_ms": 0
+            }
+          },
+          "session_digest": {
+            "tool_call_count": 0,
+            "tools_used": [],
+            "errors": [],
+            "session_id": "mock-session-1780845731436156500"
+          },
+          "final_output": "Mock response for: Check the performance of my test-writing skill and generate a diagnostic report\nTask: Trigger: check skill performance\nDescription: Should activate the waza-skill-evaluator skill",
+          "workspace_dir": "C:\\Users\\alast\\AppData\\Local\\Temp\\waza-mock-28830875"
+        }
+      ],
+      "stats": {
+        "pass_rate": 1,
+        "flakiness_percent": 0,
+        "passed_runs": 3,
+        "failed_runs": 0,
+        "error_runs": 0,
+        "total_runs": 3,
+        "avg_score": 1,
+        "avg_weighted_score": 1,
+        "min_score": 1,
+        "max_score": 1,
+        "std_dev_score": 0,
+        "score_variance": 0,
+        "ci95_lo": 1,
+        "ci95_hi": 1,
+        "flaky": false,
+        "avg_duration_ms": 0,
+        "bootstrap_ci": {
+          "lower": 1,
+          "upper": 1,
+          "mean": 1,
+          "confidence_level": 0.95,
+          "num_bootstraps": 10000
+        },
+        "is_significant": true
+      }
+    },
+    {
+      "test_id": "trigger-compare-skills",
+      "display_name": "Trigger: compare two skill versions",
+      "status": "failed",
+      "runs": [
+        {
+          "run_number": 1,
+          "attempts": 1,
+          "status": "failed",
+          "duration_ms": 0,
+          "validations": {
+            "compare-keywords": {
+              "identifier": "compare-keywords",
+              "type": "text",
+              "score": 0.8,
+              "weight": 1,
+              "passed": false,
+              "feedback": "Missing expected substring: baseline",
+              "details": {
+                "contains": [
+                  "waza",
+                  "compare",
+                  "side by side",
+                  "baseline",
+                  "comparison"
+                ],
+                "contains_cs": null,
+                "failures": [
+                  "Missing expected substring: baseline"
+                ],
+                "not_contains": null,
+                "not_contains_cs": null,
+                "regex_match": null,
+                "regex_not_match": null
+              },
+              "duration_ms": 0
+            }
+          },
+          "session_digest": {
+            "tool_call_count": 0,
+            "tools_used": [],
+            "errors": [],
+            "session_id": "mock-session-1780845731437575800"
+          },
+          "final_output": "Mock response for: Compare my linter skill v1 and v2 side by side to see which is better\nTask: Trigger: compare two skill versions\nDescription: Should activate the waza-skill-evaluator skill for A/B comparison",
+          "workspace_dir": "C:\\Users\\alast\\AppData\\Local\\Temp\\waza-mock-2786974692"
+        },
+        {
+          "run_number": 2,
+          "attempts": 1,
+          "status": "failed",
+          "duration_ms": 1,
+          "validations": {
+            "compare-keywords": {
+              "identifier": "compare-keywords",
+              "type": "text",
+              "score": 0.8,
+              "weight": 1,
+              "passed": false,
+              "feedback": "Missing expected substring: baseline",
+              "details": {
+                "contains": [
+                  "waza",
+                  "compare",
+                  "side by side",
+                  "baseline",
+                  "comparison"
+                ],
+                "contains_cs": null,
+                "failures": [
+                  "Missing expected substring: baseline"
+                ],
+                "not_contains": null,
+                "not_contains_cs": null,
+                "regex_match": null,
+                "regex_not_match": null
+              },
+              "duration_ms": 0
+            }
+          },
+          "session_digest": {
+            "tool_call_count": 0,
+            "tools_used": [],
+            "errors": [],
+            "session_id": "mock-session-1780845731439132600"
+          },
+          "final_output": "Mock response for: Compare my linter skill v1 and v2 side by side to see which is better\nTask: Trigger: compare two skill versions\nDescription: Should activate the waza-skill-evaluator skill for A/B comparison",
+          "workspace_dir": "C:\\Users\\alast\\AppData\\Local\\Temp\\waza-mock-1572218188"
+        },
+        {
+          "run_number": 3,
+          "attempts": 1,
+          "status": "failed",
+          "duration_ms": 0,
+          "validations": {
+            "compare-keywords": {
+              "identifier": "compare-keywords",
+              "type": "text",
+              "score": 0.8,
+              "weight": 1,
+              "passed": false,
+              "feedback": "Missing expected substring: baseline",
+              "details": {
+                "contains": [
+                  "waza",
+                  "compare",
+                  "side by side",
+                  "baseline",
+                  "comparison"
+                ],
+                "contains_cs": null,
+                "failures": [
+                  "Missing expected substring: baseline"
+                ],
+                "not_contains": null,
+                "not_contains_cs": null,
+                "regex_match": null,
+                "regex_not_match": null
+              },
+              "duration_ms": 0
+            }
+          },
+          "session_digest": {
+            "tool_call_count": 0,
+            "tools_used": [],
+            "errors": [],
+            "session_id": "mock-session-1780845731439132600"
+          },
+          "final_output": "Mock response for: Compare my linter skill v1 and v2 side by side to see which is better\nTask: Trigger: compare two skill versions\nDescription: Should activate the waza-skill-evaluator skill for A/B comparison",
+          "workspace_dir": "C:\\Users\\alast\\AppData\\Local\\Temp\\waza-mock-649993485"
+        }
+      ],
+      "stats": {
+        "pass_rate": 0,
+        "flakiness_percent": 0,
+        "passed_runs": 0,
+        "failed_runs": 3,
+        "error_runs": 0,
+        "total_runs": 3,
+        "avg_score": 0.8000000000000002,
+        "avg_weighted_score": 0.8000000000000002,
+        "min_score": 0.8,
+        "max_score": 0.8,
+        "std_dev_score": 1.1102230246251565e-16,
+        "score_variance": 1.232595164407831e-32,
+        "ci95_lo": 0.8000000000000002,
+        "ci95_hi": 0.8000000000000002,
+        "flaky": false,
+        "avg_duration_ms": 0,
+        "bootstrap_ci": {
+          "lower": 0.8000000000000002,
+          "upper": 0.8000000000000002,
+          "mean": 0.8000000000000002,
+          "confidence_level": 0.95,
+          "num_bootstraps": 10000
+        },
+        "is_significant": true
+      }
+    },
+    {
+      "test_id": "trigger-discoverability-analysis",
+      "display_name": "Trigger: trigger accuracy analysis",
+      "status": "failed",
+      "runs": [
+        {
+          "run_number": 1,
+          "attempts": 1,
+          "status": "failed",
+          "duration_ms": 1,
+          "validations": {
+            "trigger-analysis-keywords": {
+              "identifier": "trigger-analysis-keywords",
+              "type": "text",
+              "score": 0.5,
+              "weight": 1,
+              "passed": false,
+              "feedback": "Missing expected substring: false positive; Missing expected substring: false negative",
+              "details": {
+                "contains": [
+                  "trigger",
+                  "discoverab",
+                  "false positive",
+                  "false negative"
+                ],
+                "contains_cs": null,
+                "failures": [
+                  "Missing expected substring: false positive",
+                  "Missing expected substring: false negative"
+                ],
+                "not_contains": null,
+                "not_contains_cs": null,
+                "regex_match": null,
+                "regex_not_match": null
+              },
+              "duration_ms": 0
+            }
+          },
+          "session_digest": {
+            "tool_call_count": 0,
+            "tools_used": [],
+            "errors": [],
+            "session_id": "mock-session-1780845731441147900"
+          },
+          "final_output": "Mock response for: Analyze whether my formatting skill triggers correctly — it seems to miss some prompts\nTask: Trigger: trigger accuracy analysis\nDescription: Should activate the waza-skill-evaluator skill for trigger/discoverability evaluation",
+          "workspace_dir": "C:\\Users\\alast\\AppData\\Local\\Temp\\waza-mock-1255409591"
+        },
+        {
+          "run_number": 2,
+          "attempts": 1,
+          "status": "failed",
+          "duration_ms": 0,
+          "validations": {
+            "trigger-analysis-keywords": {
+              "identifier": "trigger-analysis-keywords",
+              "type": "text",
+              "score": 0.5,
+              "weight": 1,
+              "passed": false,
+              "feedback": "Missing expected substring: false positive; Missing expected substring: false negative",
+              "details": {
+                "contains": [
+                  "trigger",
+                  "discoverab",
+                  "false positive",
+                  "false negative"
+                ],
+                "contains_cs": null,
+                "failures": [
+                  "Missing expected substring: false positive",
+                  "Missing expected substring: false negative"
+                ],
+                "not_contains": null,
+                "not_contains_cs": null,
+                "regex_match": null,
+                "regex_not_match": null
+              },
+              "duration_ms": 0
+            }
+          },
+          "session_digest": {
+            "tool_call_count": 0,
+            "tools_used": [],
+            "errors": [],
+            "session_id": "mock-session-1780845731441147900"
+          },
+          "final_output": "Mock response for: Analyze whether my formatting skill triggers correctly — it seems to miss some prompts\nTask: Trigger: trigger accuracy analysis\nDescription: Should activate the waza-skill-evaluator skill for trigger/discoverability evaluation",
+          "workspace_dir": "C:\\Users\\alast\\AppData\\Local\\Temp\\waza-mock-4098497812"
+        },
+        {
+          "run_number": 3,
+          "attempts": 1,
+          "status": "failed",
+          "duration_ms": 0,
+          "validations": {
+            "trigger-analysis-keywords": {
+              "identifier": "trigger-analysis-keywords",
+              "type": "text",
+              "score": 0.5,
+              "weight": 1,
+              "passed": false,
+              "feedback": "Missing expected substring: false positive; Missing expected substring: false negative",
+              "details": {
+                "contains": [
+                  "trigger",
+                  "discoverab",
+                  "false positive",
+                  "false negative"
+                ],
+                "contains_cs": null,
+                "failures": [
+                  "Missing expected substring: false positive",
+                  "Missing expected substring: false negative"
+                ],
+                "not_contains": null,
+                "not_contains_cs": null,
+                "regex_match": null,
+                "regex_not_match": null
+              },
+              "duration_ms": 0
+            }
+          },
+          "session_digest": {
+            "tool_call_count": 0,
+            "tools_used": [],
+            "errors": [],
+            "session_id": "mock-session-1780845731441147900"
+          },
+          "final_output": "Mock response for: Analyze whether my formatting skill triggers correctly — it seems to miss some prompts\nTask: Trigger: trigger accuracy analysis\nDescription: Should activate the waza-skill-evaluator skill for trigger/discoverability evaluation",
+          "workspace_dir": "C:\\Users\\alast\\AppData\\Local\\Temp\\waza-mock-1585468499"
+        }
+      ],
+      "stats": {
+        "pass_rate": 0,
+        "flakiness_percent": 0,
+        "passed_runs": 0,
+        "failed_runs": 3,
+        "error_runs": 0,
+        "total_runs": 3,
+        "avg_score": 0.5,
+        "avg_weighted_score": 0.5,
+        "min_score": 0.5,
+        "max_score": 0.5,
+        "std_dev_score": 0,
+        "score_variance": 0,
+        "ci95_lo": 0.5,
+        "ci95_hi": 0.5,
+        "flaky": false,
+        "avg_duration_ms": 0,
+        "bootstrap_ci": {
+          "lower": 0.5,
+          "upper": 0.5,
+          "mean": 0.5,
+          "confidence_level": 0.95,
+          "num_bootstraps": 10000
+        },
+        "is_significant": true
+      }
+    },
+    {
+      "test_id": "trigger-evaluate-skill",
+      "display_name": "Trigger: evaluate my skill",
+      "status": "failed",
+      "runs": [
+        {
+          "run_number": 1,
+          "attempts": 1,
+          "status": "failed",
+          "duration_ms": 0,
+          "validations": {
+            "evaluate-keywords": {
+              "identifier": "evaluate-keywords",
+              "type": "text",
+              "score": 0.6666666666666666,
+              "weight": 1,
+              "passed": false,
+              "feedback": "Missing expected substring: benchmark",
+              "details": {
+                "contains": [
+                  "waza",
+                  "evaluat",
+                  "benchmark"
+                ],
+                "contains_cs": null,
+                "failures": [
+                  "Missing expected substring: benchmark"
+                ],
+                "not_contains": null,
+                "not_contains_cs": null,
+                "regex_match": null,
+                "regex_not_match": null
+              },
+              "duration_ms": 0
+            }
+          },
+          "session_digest": {
+            "tool_call_count": 0,
+            "tools_used": [],
+            "errors": [],
+            "session_id": "mock-session-1780845731446142300"
+          },
+          "final_output": "Mock response for: Can you evaluate my code-review skill and tell me how well it performs?\nTask: Trigger: evaluate my skill\nDescription: Should activate the waza-skill-evaluator skill",
+          "workspace_dir": "C:\\Users\\alast\\AppData\\Local\\Temp\\waza-mock-2584735467"
+        },
+        {
+          "run_number": 2,
+          "attempts": 1,
+          "status": "failed",
+          "duration_ms": 0,
+          "validations": {
+            "evaluate-keywords": {
+              "identifier": "evaluate-keywords",
+              "type": "text",
+              "score": 0.6666666666666666,
+              "weight": 1,
+              "passed": false,
+              "feedback": "Missing expected substring: benchmark",
+              "details": {
+                "contains": [
+                  "waza",
+                  "evaluat",
+                  "benchmark"
+                ],
+                "contains_cs": null,
+                "failures": [
+                  "Missing expected substring: benchmark"
+                ],
+                "not_contains": null,
+                "not_contains_cs": null,
+                "regex_match": null,
+                "regex_not_match": null
+              },
+              "duration_ms": 0
+            }
+          },
+          "session_digest": {
+            "tool_call_count": 0,
+            "tools_used": [],
+            "errors": [],
+            "session_id": "mock-session-1780845731447148400"
+          },
+          "final_output": "Mock response for: Can you evaluate my code-review skill and tell me how well it performs?\nTask: Trigger: evaluate my skill\nDescription: Should activate the waza-skill-evaluator skill",
+          "workspace_dir": "C:\\Users\\alast\\AppData\\Local\\Temp\\waza-mock-1506847337"
+        },
+        {
+          "run_number": 3,
+          "attempts": 1,
+          "status": "failed",
+          "duration_ms": 0,
+          "validations": {
+            "evaluate-keywords": {
+              "identifier": "evaluate-keywords",
+              "type": "text",
+              "score": 0.6666666666666666,
+              "weight": 1,
+              "passed": false,
+              "feedback": "Missing expected substring: benchmark",
+              "details": {
+                "contains": [
+                  "waza",
+                  "evaluat",
+                  "benchmark"
+                ],
+                "contains_cs": null,
+                "failures": [
+                  "Missing expected substring: benchmark"
+                ],
+                "not_contains": null,
+                "not_contains_cs": null,
+                "regex_match": null,
+                "regex_not_match": null
+              },
+              "duration_ms": 0
+            }
+          },
+          "session_digest": {
+            "tool_call_count": 0,
+            "tools_used": [],
+            "errors": [],
+            "session_id": "mock-session-1780845731447148400"
+          },
+          "final_output": "Mock response for: Can you evaluate my code-review skill and tell me how well it performs?\nTask: Trigger: evaluate my skill\nDescription: Should activate the waza-skill-evaluator skill",
+          "workspace_dir": "C:\\Users\\alast\\AppData\\Local\\Temp\\waza-mock-745165191"
+        }
+      ],
+      "stats": {
+        "pass_rate": 0,
+        "flakiness_percent": 0,
+        "passed_runs": 0,
+        "failed_runs": 3,
+        "error_runs": 0,
+        "total_runs": 3,
+        "avg_score": 0.6666666666666666,
+        "avg_weighted_score": 0.6666666666666666,
+        "min_score": 0.6666666666666666,
+        "max_score": 0.6666666666666666,
+        "std_dev_score": 0,
+        "score_variance": 0,
+        "ci95_lo": 0.6666666666666666,
+        "ci95_hi": 0.6666666666666666,
+        "flaky": false,
+        "avg_duration_ms": 0,
+        "bootstrap_ci": {
+          "lower": 0.6666666666666666,
+          "upper": 0.6666666666666666,
+          "mean": 0.6666666666666666,
+          "confidence_level": 0.95,
+          "num_bootstraps": 10000
+        },
+        "is_significant": true
+      }
+    },
+    {
+      "test_id": "trigger-run-benchmarks",
+      "display_name": "Trigger: run skill benchmarks",
+      "status": "failed",
+      "runs": [
+        {
+          "run_number": 1,
+          "attempts": 1,
+          "status": "failed",
+          "duration_ms": 0,
+          "validations": {
+            "benchmark-keywords": {
+              "identifier": "benchmark-keywords",
+              "type": "text",
+              "score": 0.8,
+              "weight": 1,
+              "passed": false,
+              "feedback": "Missing expected substring: baseline",
+              "details": {
+                "contains": [
+                  "waza",
+                  "baseline",
+                  "bench",
+                  "lift",
+                  "measure"
+                ],
+                "contains_cs": null,
+                "failures": [
+                  "Missing expected substring: baseline"
+                ],
+                "not_contains": null,
+                "not_contains_cs": null,
+                "regex_match": null,
+                "regex_not_match": null
+              },
+              "duration_ms": 0
+            }
+          },
+          "session_digest": {
+            "tool_call_count": 0,
+            "tools_used": [],
+            "errors": [],
+            "session_id": "mock-session-1780845731448148500"
+          },
+          "final_output": "Mock response for: I need to run benchmarks on my deploy-helper skill to measure its lift\nTask: Trigger: run skill benchmarks\nDescription: Should activate the waza-skill-evaluator skill",
+          "workspace_dir": "C:\\Users\\alast\\AppData\\Local\\Temp\\waza-mock-4282902393"
+        },
+        {
+          "run_number": 2,
+          "attempts": 1,
+          "status": "failed",
+          "duration_ms": 0,
+          "validations": {
+            "benchmark-keywords": {
+              "identifier": "benchmark-keywords",
+              "type": "text",
+              "score": 0.8,
+              "weight": 1,
+              "passed": false,
+              "feedback": "Missing expected substring: baseline",
+              "details": {
+                "contains": [
+                  "waza",
+                  "baseline",
+                  "bench",
+                  "lift",
+                  "measure"
+                ],
+                "contains_cs": null,
+                "failures": [
+                  "Missing expected substring: baseline"
+                ],
+                "not_contains": null,
+                "not_contains_cs": null,
+                "regex_match": null,
+                "regex_not_match": null
+              },
+              "duration_ms": 0
+            }
+          },
+          "session_digest": {
+            "tool_call_count": 0,
+            "tools_used": [],
+            "errors": [],
+            "session_id": "mock-session-1780845731448148500"
+          },
+          "final_output": "Mock response for: I need to run benchmarks on my deploy-helper skill to measure its lift\nTask: Trigger: run skill benchmarks\nDescription: Should activate the waza-skill-evaluator skill",
+          "workspace_dir": "C:\\Users\\alast\\AppData\\Local\\Temp\\waza-mock-2916322282"
+        },
+        {
+          "run_number": 3,
+          "attempts": 1,
+          "status": "failed",
+          "duration_ms": 0,
+          "validations": {
+            "benchmark-keywords": {
+              "identifier": "benchmark-keywords",
+              "type": "text",
+              "score": 0.8,
+              "weight": 1,
+              "passed": false,
+              "feedback": "Missing expected substring: baseline",
+              "details": {
+                "contains": [
+                  "waza",
+                  "baseline",
+                  "bench",
+                  "lift",
+                  "measure"
+                ],
+                "contains_cs": null,
+                "failures": [
+                  "Missing expected substring: baseline"
+                ],
+                "not_contains": null,
+                "not_contains_cs": null,
+                "regex_match": null,
+                "regex_not_match": null
+              },
+              "duration_ms": 0
+            }
+          },
+          "session_digest": {
+            "tool_call_count": 0,
+            "tools_used": [],
+            "errors": [],
+            "session_id": "mock-session-1780845731450210800"
+          },
+          "final_output": "Mock response for: I need to run benchmarks on my deploy-helper skill to measure its lift\nTask: Trigger: run skill benchmarks\nDescription: Should activate the waza-skill-evaluator skill",
+          "workspace_dir": "C:\\Users\\alast\\AppData\\Local\\Temp\\waza-mock-3517720039"
+        }
+      ],
+      "stats": {
+        "pass_rate": 0,
+        "flakiness_percent": 0,
+        "passed_runs": 0,
+        "failed_runs": 3,
+        "error_runs": 0,
+        "total_runs": 3,
+        "avg_score": 0.8000000000000002,
+        "avg_weighted_score": 0.8000000000000002,
+        "min_score": 0.8,
+        "max_score": 0.8,
+        "std_dev_score": 1.1102230246251565e-16,
+        "score_variance": 1.232595164407831e-32,
+        "ci95_lo": 0.8000000000000002,
+        "ci95_hi": 0.8000000000000002,
+        "flaky": false,
+        "avg_duration_ms": 0,
+        "bootstrap_ci": {
+          "lower": 0.8000000000000002,
+          "upper": 0.8000000000000002,
+          "mean": 0.8000000000000002,
+          "confidence_level": 0.95,
+          "num_bootstraps": 10000
+        },
+        "is_significant": true
+      }
+    }
+  ]
+}
