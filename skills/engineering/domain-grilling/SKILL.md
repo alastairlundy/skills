@@ -36,7 +36,7 @@ Perform the final glossary update to `CONTEXT.md` using the batched terms.
 
 Finally, offer the user the following exit paths:
 1. **Create a plan/PRD**: Use the `to-prd` skill. If unavailable, manually generate a high-level Product Requirements Document reflecting the shared understanding.
-2. **Break into issues**: Use the `to-issues` skill. If unavailable, manually decompose the plan into a series of vertical tracer-bullet implementation tickets.
+2. **Break into tickets**: Use the `spec-to-tickets` skill when dependency ordering, HITL/AFK classification, or local markdown output is needed. Use the `to-issues` skill for simpler flat decomposition to an issue tracker. If neither is available, manually decompose the plan into implementation tickets.
 3. **Handoff**: Handoff the shared understanding to another agent.
 4. **Custom Save**: Save the shared understanding in another way.
 
