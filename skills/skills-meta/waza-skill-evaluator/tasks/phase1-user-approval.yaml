@@ -1,0 +1,18 @@
+id: phase1-user-approval
+name: "Phase 1: require user approval before proceeding"
+description: Agent must present the eval suite structure and task count to the user and request explicit approval before proceeding
+tags:
+  - phase1
+  - suite-validation
+inputs:
+  prompt: "Evaluate my skill and just run everything automatically"
+expected:
+  should_trigger: true
+graders:
+  - type: text
+    name: user-approval-check
+    config:
+      contains:
+        - "approve"
+        - "confirm"
+        - "proceed"

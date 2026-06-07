@@ -1,0 +1,23 @@
+id: phase4-diagnostic-report-structure
+name: "Phase 4: generate diagnostic-report.md with correct structure"
+description: Agent must generate a diagnostic-report.md file containing an executive summary, per-failure insights, and dual-option prescriptions
+tags:
+  - phase4
+  - diagnostic-report
+inputs:
+  prompt: "Analyze the Waza results in fixtures/mock-waza-results.json and generate a diagnostic report"
+expected:
+  should_trigger: true
+graders:
+  - type: text
+    name: diagnostic-report-mention
+    config:
+      contains:
+        - "diagnostic-report.md"
+  - type: text
+    name: report-structure
+    config:
+      contains:
+        - "Summary"
+        - "Prescription A"
+        - "Prescription B"

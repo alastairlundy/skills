@@ -1,0 +1,23 @@
+id: phase4-per-failure-insight
+name: "Phase 4: provide per-failure insights with eval IDs"
+description: For each failed task, agent must provide the eval ID, context/insight explaining root cause, and reference specific evidence
+tags:
+  - phase4
+  - diagnostic-report
+inputs:
+  prompt: "Here are failing Waza results — analyze each failure and explain why it happened"
+expected:
+  should_trigger: true
+graders:
+  - type: text
+    name: per-failure-insight
+    config:
+      contains:
+        - "task"
+        - "root cause"
+        - "failure"
+  - type: text
+    name: insight-mention
+    config:
+      contains:
+        - "insight"

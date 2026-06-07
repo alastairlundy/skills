@@ -1,0 +1,18 @@
+id: trigger-discoverability-analysis
+name: "Trigger: trigger accuracy analysis"
+description: Should activate the waza-skill-evaluator skill for trigger/discoverability evaluation
+tags:
+  - positive-trigger
+inputs:
+  prompt: "Analyze whether my formatting skill triggers correctly — it seems to miss some prompts"
+expected:
+  should_trigger: true
+graders:
+  - type: text
+    name: trigger-analysis-keywords
+    config:
+      contains:
+        - "trigger"
+        - "discoverab"
+        - "false positive"
+        - "false negative"

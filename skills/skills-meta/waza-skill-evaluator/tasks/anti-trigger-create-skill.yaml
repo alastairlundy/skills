@@ -1,0 +1,20 @@
+id: anti-trigger-create-skill
+name: "Anti-trigger: create a new skill"
+description: Should NOT activate waza-skill-evaluator — this is skill creation, not evaluation
+tags:
+  - negative-trigger
+inputs:
+  prompt: "Create a new skill that helps with writing commit messages"
+expected:
+  should_trigger: false
+graders:
+  - type: text
+    name: omits-skill-keywords
+    config:
+      not_contains:
+        - "waza"
+        - "benchmark"
+        - "diagnostic"
+        - "Prescription"
+        - "baseline lift"
+        - "eval suite"

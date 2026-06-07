@@ -1,0 +1,16 @@
+id: phase0-check-waza-version
+name: "Phase 0: verify waza CLI is installed"
+description: Agent must run 'waza version' before proceeding with any evaluation steps
+tags:
+  - phase0
+  - prerequisites
+inputs:
+  prompt: "Evaluate my skill at skills/engineering/my-skill/"
+expected:
+  should_trigger: true
+graders:
+  - type: text
+    name: check-waza-version
+    config:
+      contains:
+        - "waza version"

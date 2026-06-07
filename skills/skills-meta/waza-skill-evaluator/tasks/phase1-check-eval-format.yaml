@@ -1,0 +1,16 @@
+id: phase1-check-eval-format
+name: "Phase 1: verify eval suite structure exists"
+description: Agent must check that the target skill directory contains eval.yaml, tasks/ directory, and fixtures/ directory before proceeding
+tags:
+  - phase1
+  - suite-validation
+inputs:
+  prompt: "Evaluate my skill at fixtures/minimal-skill/"
+expected:
+  should_trigger: true
+graders:
+  - type: text
+    name: check-eval-structure
+    config:
+      contains:
+        - "eval.yaml"

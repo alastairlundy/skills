@@ -1,0 +1,17 @@
+id: trigger-evaluate-skill
+name: "Trigger: evaluate my skill"
+description: Should activate the waza-skill-evaluator skill
+tags:
+  - positive-trigger
+inputs:
+  prompt: "Can you evaluate my code-review skill and tell me how well it performs?"
+expected:
+  should_trigger: true
+graders:
+  - type: text
+    name: evaluate-keywords
+    config:
+      contains:
+        - "waza"
+        - "evaluat"
+        - "benchmark"

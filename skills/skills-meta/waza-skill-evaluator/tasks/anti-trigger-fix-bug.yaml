@@ -1,0 +1,20 @@
+id: anti-trigger-fix-bug
+name: "Anti-trigger: fix a bug"
+description: Should NOT activate waza-skill-evaluator — this is bug fixing
+tags:
+  - negative-trigger
+inputs:
+  prompt: "Fix this null pointer exception in my Java service class"
+expected:
+  should_trigger: false
+graders:
+  - type: text
+    name: omits-skill-keywords
+    config:
+      not_contains:
+        - "waza"
+        - "benchmark"
+        - "diagnostic"
+        - "Prescription"
+        - "baseline lift"
+        - "eval suite"

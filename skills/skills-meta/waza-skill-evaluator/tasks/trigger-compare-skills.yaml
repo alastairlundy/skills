@@ -1,0 +1,19 @@
+id: trigger-compare-skills
+name: "Trigger: compare two skill versions"
+description: Should activate the waza-skill-evaluator skill for A/B comparison
+tags:
+  - positive-trigger
+inputs:
+  prompt: "Compare my linter skill v1 and v2 side by side to see which is better"
+expected:
+  should_trigger: true
+graders:
+  - type: text
+    name: compare-keywords
+    config:
+      contains:
+        - "waza"
+        - "compare"
+        - "side by side"
+        - "baseline"
+        - "comparison"

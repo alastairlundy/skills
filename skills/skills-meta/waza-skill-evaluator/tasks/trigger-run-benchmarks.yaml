@@ -1,0 +1,19 @@
+id: trigger-run-benchmarks
+name: "Trigger: run skill benchmarks"
+description: Should activate the waza-skill-evaluator skill
+tags:
+  - positive-trigger
+inputs:
+  prompt: "I need to run benchmarks on my deploy-helper skill to measure its lift"
+expected:
+  should_trigger: true
+graders:
+  - type: text
+    name: benchmark-keywords
+    config:
+      contains:
+        - "waza"
+        - "baseline"
+        - "bench"
+        - "lift"
+        - "measure"

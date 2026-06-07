@@ -1,0 +1,19 @@
+id: trigger-check-performance
+name: "Trigger: check skill performance"
+description: Should activate the waza-skill-evaluator skill
+tags:
+  - positive-trigger
+inputs:
+  prompt: "Check the performance of my test-writing skill and generate a diagnostic report"
+expected:
+  should_trigger: true
+graders:
+  - type: text
+    name: performance-keywords
+    config:
+      contains:
+        - "waza"
+        - "diagnostic"
+        - "performance"
+        - "eval"
+        - "report"

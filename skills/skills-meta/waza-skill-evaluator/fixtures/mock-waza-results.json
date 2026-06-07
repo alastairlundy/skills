@@ -1,0 +1,153 @@
+{
+  "suite": "waza-skill-evaluator-eval",
+  "skill": "sample-target-skill",
+  "timestamp": "2026-06-07T14:00:00Z",
+  "model": "gpt-4o",
+  "config": {
+    "trials_per_task": 3,
+    "timeout_seconds": 300
+  },
+  "results": [
+    {
+      "task_id": "perf-generate-report",
+      "task_name": "Performance: generate diagnostic report",
+      "status": "pass",
+      "score": 0.92,
+      "duration_seconds": 45.2,
+      "token_usage": {
+        "input": 1250,
+        "output": 3400
+      },
+      "validators": [
+        {
+          "type": "text",
+          "pattern": "diagnostic-report.md",
+          "passed": true,
+          "matched_content": "Generated diagnostic-report.md in workspace directory"
+        },
+        {
+          "type": "regex",
+          "pattern": "## .*Summary|## .*Prescription",
+          "passed": true,
+          "matched_content": "## Executive Summary\n## Prescription A\n## Prescription B"
+        }
+      ],
+      "transcript_path": "outputs/perf-generate-report/transcript.md"
+    },
+    {
+      "task_id": "perf-trigger-analysis",
+      "task_name": "Performance: trigger rate analysis",
+      "status": "pass",
+      "score": 0.88,
+      "duration_seconds": 38.7,
+      "token_usage": {
+        "input": 980,
+        "output": 2100
+      },
+      "validators": [
+        {
+          "type": "regex",
+          "pattern": "true.positive|false.positive|trigger.*rate",
+          "passed": true,
+          "matched_content": "True positive rate: 85%, False positive rate: 10%"
+        }
+      ],
+      "transcript_path": "outputs/perf-trigger-analysis/transcript.md"
+    },
+    {
+      "task_id": "perf-baseline-comparison",
+      "task_name": "Performance: baseline lift measurement",
+      "status": "fail",
+      "score": 0.35,
+      "duration_seconds": 62.1,
+      "token_usage": {
+        "input": 1500,
+        "output": 890
+      },
+      "validators": [
+        {
+          "type": "regex",
+          "pattern": "lift|baseline.*comparison|improvement",
+          "passed": false,
+          "matched_content": null,
+          "error": "Output did not contain any lift or baseline comparison metrics"
+        },
+        {
+          "type": "text",
+          "pattern": "waza run --baseline",
+          "passed": false,
+          "matched_content": null,
+          "error": "Agent did not execute 'waza run --baseline' command"
+        }
+      ],
+      "transcript_path": "outputs/perf-baseline-comparison/transcript.md"
+    },
+    {
+      "task_id": "trigger-anti-pattern",
+      "task_name": "Trigger: should not activate for general coding",
+      "status": "fail",
+      "score": 0.0,
+      "duration_seconds": 12.3,
+      "token_usage": {
+        "input": 450,
+        "output": 1800
+      },
+      "validators": [
+        {
+          "type": "regex",
+          "pattern": "skill.*not.*trigger|should.*not.*activate",
+          "passed": false,
+          "matched_content": null,
+          "error": "Skill incorrectly triggered for a general coding prompt"
+        }
+      ],
+      "trigger_rate": {
+        "trials": 5,
+        "triggered_count": 4,
+        "trigger_rate": 0.80,
+        "expected": "should_not_trigger"
+      },
+      "transcript_path": "outputs/trigger-anti-pattern/transcript.md"
+    },
+    {
+      "task_id": "phase1-missing-suite",
+      "task_name": "Phase 1: detect missing eval suite",
+      "status": "fail",
+      "score": 0.20,
+      "duration_seconds": 28.5,
+      "token_usage": {
+        "input": 800,
+        "output": 650
+      },
+      "validators": [
+        {
+          "type": "regex",
+          "pattern": "eval\\.yaml|tasks/|fixtures/|missing",
+          "passed": false,
+          "matched_content": null,
+          "error": "Agent did not check for eval.yaml, tasks/, or fixtures/ directories"
+        },
+        {
+          "type": "text",
+          "pattern": "eval-generation",
+          "passed": false,
+          "matched_content": null,
+          "error": "Agent did not reference eval-generation.md for guidance"
+        }
+      ],
+      "transcript_path": "outputs/phase1-missing-suite/transcript.md"
+    }
+  ],
+  "summary": {
+    "total_tasks": 5,
+    "passed": 2,
+    "failed": 3,
+    "pass_rate": 0.40,
+    "average_score": 0.47,
+    "total_duration_seconds": 186.8,
+    "total_token_usage": {
+      "input": 4980,
+      "output": 8840
+    }
+  }
+}

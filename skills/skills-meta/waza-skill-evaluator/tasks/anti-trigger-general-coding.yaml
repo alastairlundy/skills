@@ -1,0 +1,20 @@
+id: anti-trigger-general-coding
+name: "Anti-trigger: general coding request"
+description: Should NOT activate waza-skill-evaluator — this is general coding
+tags:
+  - negative-trigger
+inputs:
+  prompt: "Write a TypeScript function that debounces another function"
+expected:
+  should_trigger: false
+graders:
+  - type: text
+    name: omits-skill-keywords
+    config:
+      not_contains:
+        - "waza"
+        - "benchmark"
+        - "diagnostic"
+        - "Prescription"
+        - "baseline lift"
+        - "eval suite"

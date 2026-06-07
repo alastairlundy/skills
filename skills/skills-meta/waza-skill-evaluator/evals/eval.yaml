@@ -1,0 +1,14 @@
+name: waza-skill-evaluator-eval
+description: Evaluate the waza-skill-evaluator skill's trigger accuracy, prerequisite workflow, suite validation workflow, and diagnostic report generation
+skill: waza-skill-evaluator
+version: "1.0"
+
+config:
+  trials_per_task: 3
+  timeout_seconds: 300
+  parallel: false
+  executor: mock
+  model: gpt-5-mini
+
+tasks:
+  - "tasks/*.yaml"

@@ -1,0 +1,23 @@
+id: phase1-reference-eval-generation
+name: "Phase 1: reference eval-generation.md when suite missing"
+description: Agent must reference references/eval-generation.md and guide user through eval generation using 'waza new eval' or 'waza suggest'
+tags:
+  - phase1
+  - suite-validation
+inputs:
+  prompt: "Evaluate my skill but it doesn't have any eval files yet"
+expected:
+  should_trigger: true
+graders:
+  - type: text
+    name: reference-eval-generation
+    config:
+      contains:
+        - "eval-generation.md"
+        - "waza new eval"
+        - "waza suggest"
+  - type: text
+    name: eval-generation-mention
+    config:
+      contains:
+        - "eval-generation"

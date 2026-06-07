@@ -1,0 +1,23 @@
+id: phase0-installation-guidance
+name: "Phase 0: provide installation guidance when waza missing"
+description: Agent must inform user that Waza CLI is required, present installation instructions, and ask for explicit permission before installing
+tags:
+  - phase0
+  - prerequisites
+inputs:
+  prompt: "Evaluate my skill but I don't have waza installed yet"
+expected:
+  should_trigger: true
+graders:
+  - type: text
+    name: installation-guidance
+    config:
+      contains:
+        - "install"
+        - "github.com/microsoft/waza"
+        - "permission"
+  - type: text
+    name: explicit-mention
+    config:
+      contains:
+        - "explicit"

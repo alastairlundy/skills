@@ -1,0 +1,20 @@
+id: anti-trigger-write-tests
+name: "Anti-trigger: write unit tests"
+description: Should NOT activate waza-skill-evaluator — this is general test writing
+tags:
+  - negative-trigger
+inputs:
+  prompt: "Write unit tests for my Python authentication module"
+expected:
+  should_trigger: false
+graders:
+  - type: text
+    name: omits-skill-keywords
+    config:
+      not_contains:
+        - "waza"
+        - "benchmark"
+        - "diagnostic"
+        - "Prescription"
+        - "baseline lift"
+        - "eval suite"
