@@ -1,6 +1,6 @@
 ---
 name: waza-interactive
-description: "Interactive workflow partner for creating, testing, and improving AI agent skills with waza. USE FOR: run my evals, check my skill, compare models, create eval suite, debug failing tests, is my skill ready, ship readiness, interpret results, improve score. DO NOT USE FOR: general coding, non-skill work, writing skill content (use skill-authoring), improving frontmatter only (use sensei)."
+description: "Interactive workflow partner for creating, testing, and improving AI agent skills with waza. USE FOR: run my evals, check my skill, compare models, create eval suite, debug failing tests, is my skill ready, ship readiness, interpret results, improve score. DO NOT USE FOR: general coding, non-skill work, writing skill content (use create-skill or skill-creator), improving frontmatter only (use waza dev)."
 ---
 
 # Waza Interactive

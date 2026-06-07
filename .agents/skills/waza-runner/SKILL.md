@@ -5,8 +5,8 @@ description: |
   USE FOR: "run skill evals", "evaluate my skill", "test skill quality", 
   "check skill triggers", "skill compliance check", "measure skill performance",
   "run evals on [skill-name]", "grade skill execution".
-  DO NOT USE FOR: writing skills (use skill-authoring), improving frontmatter 
-  (use sensei), or general testing unrelated to skills.
+  DO NOT USE FOR: writing skills (use create-skill or skill-creator), improving frontmatter 
+  (use waza dev), or general testing unrelated to skills.
 metadata:
   author: spboyer
   version: "1.0"
@@ -91,5 +91,3 @@ waza run ./my-skill/eval.yaml -o results.json
 ## References
 
 - [Eval Specification](references/EVAL-SPEC.md) - Full eval.yaml schema
-- [Writing Tasks](references/WRITING-TASKS.md) - Task definition guide
-- [Grader Reference](references/GRADERS.md) - Available graders
