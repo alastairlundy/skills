@@ -15,6 +15,9 @@ The input document (PRD, design doc, issue tracker reference, file path, or conv
 ## Dependency Graph
 The structure of blocked-by relationships between tickets. Determines execution order and enables parallelism. Independent tickets (leaves) can run concurrently.
 
+## Decomposition Pattern
+A strategy for organizing tickets from a spec. Three patterns are supported: Vertical Slices (each ticket delivers end-to-end functionality), Domain (tickets grouped by module or concept), and Features (tickets grouped by user-facing capability). The pattern choice depends on the spec's structure and influences ticket boundaries and dependencies.
+
 ## Vertical Slice (Tracer Bullet)
 A decomposition strategy where each ticket cuts end-to-end through all layers (schema, API, UI, tests). A completed slice is demoable or verifiable on its own.
 
