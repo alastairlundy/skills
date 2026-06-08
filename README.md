@@ -8,7 +8,7 @@ This repository contains no executable code — only structured skill definition
 Run the skills.sh installer:
 
 ```bash
-npx skills@latest add https://github.com/alastairlundy/skills
+npx skills@latest add alastairlundy/skills
 ```
 
 Pick the skills you want, and which coding agents you want to install them on. 
