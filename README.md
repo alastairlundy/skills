@@ -25,7 +25,6 @@ Tools for creating and evaluating other skills.
 | Skill | Description |
 |-------|-------------|
 | [skill-architect](skills/skills-meta/skill-architect/) | Guide the design of new agent skills by translating fuzzy intents into deterministic execution patterns. Used for AI-assisted skill design. |
-| [waza-skill-evaluator](skills/skills-meta/waza-skill-evaluator/) | Evaluate skill correctness, measure "lift" over baselines, analyze trigger accuracy, and generate diagnostic reports with improvement prescriptions using the [Waza CLI](https://github.com/microsoft/waza). |
 
 ## Repository Structure
 
