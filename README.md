@@ -4,6 +4,18 @@ My AI Agent Skills developed to solve problems when creating and maintaining sof
 
 This repository contains no executable code — only structured skill definitions that AI agents can load and follow. Each skill provides deterministic workflows for specific tasks.
 
+## Quickstart
+Run the skills.sh installer:
+
+```bash
+npx skills@latest add https://github.com/alastairlundy/skills
+```
+
+Pick the skills you want, and which coding agents you want to install them on. 
+
+### Matt Pocock Skills 
+The skills in this repo don't depend on or require [Matt Pocock's Skills](https://github.com/mattpocock/skills/) . That being said some of this repo's skills may benefit from those also being installed or used. ``domain-grilling`` supports using the CONTEXT.md glossary system from ``grill-with-docs`` and ``setup-matt-pockock-skills``, and enables interaction with ``to-issues`` and ``to-prd``.
+
 ## Skills
 
 Skills are organized into two categories:
