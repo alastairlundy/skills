@@ -17,10 +17,15 @@ description: A relentless interviewing skill focused on Domain-Driven Design (DD
 
 Interview me relentlessly about every aspect of this plan until we reach a shared understanding. Walk down each branch of the design tree, resolving dependencies between decisions one-by-one. 
 
+**Never collapse the decision space.** For every decision point, present the full range of natural options before recommending one. The user must see the landscape of choices — not just the agent's preferred path — to make an informed decision.
+
 For every question you ask, you must provide:
-1. **Your recommended answer**: The specific implementation or design choice you suggest.
-2. **Trade-off analysis**: An explanation of why alternative common patterns or answers are unsuitable or inappropriate in this specific context.
-3. **Strategic Risk/Pattern Alert**: If the decision involves a known architectural risk or a high-level pattern (e.g., Consistency risks, Boundary leakage, Distributed transactions), explain the long-term implication of this choice.
+1. **All natural options**: Enumerate the viable alternatives (typically 2-4). Each option must be a genuinely defensible choice, not a strawman. For each option, state:
+   - What it is (one sentence)
+   - Its trade-offs (what it gains and what it costs)
+   - Its risks (what could go wrong, long-term implications)
+2. **Your recommendation**: State which option you recommend and why. The recommendation must be one of the enumerated options — not a separate thing. Explain why this option's trade-offs and risks are acceptable in this specific context, and why the other options' trade-offs and risks are not.
+3. **Strategic Risk/Pattern Alert**: If the decision involves a known architectural risk or a high-level pattern (e.g., Consistency risks, Boundary leakage, Distributed transactions), explain the long-term implication of this choice regardless of which option is selected.
 
 Ask questions one at a time, waiting for feedback on each before continuing. If a question can be answered by exploring the codebase, do that first.
 
@@ -79,10 +84,10 @@ If a `CONTEXT-MAP.md` exists at the root, the repo uses multiple contexts. The m
 - Transition to the next branch only after the current one is fully resolved.
 
 ### Challenge against the glossary
-When the user uses a term that conflicts with `CONTEXT.md`, call it out immediately: "Your glossary defines 'cancellation' as X, but you seem to mean Y — which is it?"
+When the user uses a term that conflicts with `CONTEXT.md`, present the conflict as a choice between the glossary definition and the user's apparent meaning. "Your glossary defines 'cancellation' as X (voiding the order before payment), but you seem to mean Y (refunding after payment). These have different domain boundaries. Which is correct for your context — or do you need both terms?"
 
 ### Sharpen fuzzy language
-When the user uses vague or overloaded terms, propose a precise canonical term. "You're saying 'account' — do you mean the Customer or the User? Those are different things."
+When the user uses a vague or overloaded term, present the possible meanings as options with their implications. "You're saying 'account' — this could mean the Customer (the entity that owns the subscription) or the User (the person logging in). Those have different boundaries. Which fits your domain?"
 
 ### Discuss concrete scenarios
 Stress-test domain relationships with specific scenarios. Invent edge cases that force the user to be precise about boundaries between concepts.
