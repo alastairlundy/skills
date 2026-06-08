@@ -1,8 +1,8 @@
 # SKILLs
 
-A collection of agent skills for creating and maintaining software with AI.
+My AI Agent Skills developed to solve problems when creating and maintaining software with AI.
 
-This repository contains no executable code — only structured skill definitions that AI agents can load and follow. Each skill provides deterministic workflows for specific software development tasks.
+This repository contains no executable code — only structured skill definitions that AI agents can load and follow. Each skill provides deterministic workflows for specific tasks.
 
 ## Skills
 
@@ -14,17 +14,17 @@ Domain-specific tasks for software development workflows.
 
 | Skill | Description | Notes | 
 |-------|-------------|-------|
-| [spec-to-tickets](skills/engineering/spec-to-tickets/) | Decompose specs, PRDs, or conversation context into session-scoped implementation tickets with dependency graphs, HITL/AFK classification, and context pointers. Outputs to issue trackers or local markdown. | Inspired by Matt Pocock's ``to-issues`` skill. |
+| [spec-to-tickets](skills/engineering/spec-to-tickets/) | Decompose specs, PRDs, or conversation context into session-scoped implementation tickets with dependency graphs, Human In the Loop (HITL)/AFK classification, and context pointers. Outputs to issue trackers or local markdown. | Inspired by Matt Pocock's ``to-issues`` skill. |
 | [domain-grilling](skills/engineering/domain-grilling/) | Relentless DDD-aligned interviewing skill that resolves design decisions linearly, sharpens domain terminology against CONTEXT.md, and documents architectural decisions as ADRs. | Inspired by Matt Pocock's ``grill-with-docs`` skill. |
 | [write-changelog](skills/engineering/write-changelog/) | Generate user-facing markdown changelogs from git history by analyzing commits, transforming messages, and categorizing changes across sub-projects. | |
 
-### Meta Skills
+### "Meta" Skills
 
 Tools for creating and evaluating other skills.
 
 | Skill | Description |
 |-------|-------------|
-| [skill-architect](skills/skills-meta/skill-architect/) | Guide the design of new agent skills by translating fuzzy intents into deterministic execution patterns. Used for AI-assisted skill creation. |
+| [skill-architect](skills/skills-meta/skill-architect/) | Guide the design of new agent skills by translating fuzzy intents into deterministic execution patterns. Used for AI-assisted skill design. |
 | [waza-skill-evaluator](skills/skills-meta/waza-skill-evaluator/) | Evaluate skill correctness, measure "lift" over baselines, analyze trigger accuracy, and generate diagnostic reports with improvement prescriptions using the [Waza CLI](https://github.com/microsoft/waza). |
 
 ## Repository Structure
@@ -74,4 +74,4 @@ For skill structure and conventions, see [CREATING-SKILLS.md](CREATING-SKILLS.md
 
 ## License
 
-[Add license information]
+Human written content in this repo is licensed under the MIT license. Some content in this repo is AI generated.
