@@ -1,19 +1,20 @@
 ---
 name: spec-to-tickets
-description: Create session-scoped implementation tickets with dependency graphs, Human In The Loop/AFK classification, and context pointers from a spec, PRD, or conversation context. Output to issue tracker or local markdown. Use when - spec/PRD exists and is complete, need tickets sized for one agent session, want to enable parallel agent work with explicit dependency tracking, need Human In The Loop/AFK classification per ticket. Don't use when - spec is incomplete or vague (use domain-grilling or to-prd first), need different granularity like epics or tasks, want to implement directly without decomposition, user explicitly wants to send tickets to issue tracker AND doesn't need dependency graphs or classification (use to-issues instead).
+description: Create implementation tickets with dependency graphs, Independent/Collaborative classification, and context pointers from a spec, PRD, or conversation context. Output to issue tracker or local markdown. Use when - spec/PRD exists and is complete, need tickets sized for focused work sessions (3-4 hours each), want to enable parallel work with explicit dependency tracking, need Independent/Collaborative classification per ticket. Don't use when - spec is incomplete or vague (use domain-grilling or to-prd first), need different granularity like epics or tasks, want to implement directly without decomposition, user explicitly wants to send tickets to issue tracker AND doesn't need dependency graphs or classification (use to-issues instead).
+license: MIT
 ---
 
 # Spec to Tickets
 
-Break a spec, PRD, or conversation context into session-scoped tickets with dependency graphs, optimized for agent implementation.
+Break a spec, PRD, or conversation context into focused tickets with dependency graphs, optimized for implementation by agents or humans.
 
 ## When to Use
 
 - A spec, PRD, or design document exists and is complete enough to decompose
 - The conversation context contains a resolved plan with problem statement, solution approach, scope boundaries, and acceptance criteria
-- Tickets need to be sized for one agent session
+- Tickets need to be sized for focused work sessions (3-4 hours each)
 - Output should target an issue tracker or local markdown files
-- Parallel agent work is desired (dependency graph enables concurrent sessions on leaf tickets)
+- Parallel work is desired (dependency graph enables concurrent work on leaf tickets)
 
 ## When Not to Use
 
@@ -26,18 +27,18 @@ Break a spec, PRD, or conversation context into session-scoped tickets with depe
 
 Use a conversational tone. Provide a brief opening statement that frames the workflow (e.g., "Following the spec to tickets workflow to break down this spec, as requested"), then use transitional phrases between major sections. Avoid step-by-step narration or broadcasting internal step numbers.
 
-**Abbreviation rules** - In workflow output, avoid all abbreviations except AFK and terms previously defined in CONTEXT.md or the project glossary. When writing ticket content, prohibit abbreviations not previously agreed upon in CONTEXT.md/glossary unless they are explicitly used by the user or spec. In such cases, clarify unfamiliar abbreviations in brackets on first use (e.g., "SSO (Single Sign-On)").
+**Abbreviation rules** - In workflow output, avoid all abbreviations except terms previously defined in CONTEXT.md or the project glossary. When writing ticket content, prohibit abbreviations not previously agreed upon in CONTEXT.md/glossary unless they are explicitly used by the user or spec. In such cases, clarify unfamiliar abbreviations in brackets on first use (e.g., "SSO (Single Sign-On)").
 
 ### 1. Mode Detection
 
-Determine whether the skill is running in Human In The Loop or AFK (Away From Keyboard) mode.
+Determine whether the skill is running in Interactive or Autonomous mode.
 
-1. Parse the user's natural language input for explicit mode signals. Phrases like "AFK", "just do it", "no need to ask me", or other affirmative authorizations for autonomous action indicate AFK mode. **If an explicit AFK signal is present, use AFK mode regardless of conversation history.**
-2. **AFK negative signals** - phrases requesting to overwrite, replace, rewrite, or delete existing tickets are NOT AFK signals. These involve destructive operations on existing work and always require Human In The Loop mode. If the user uses these phrases alongside an AFK signal, treat the request as Human In The Loop.
-3. If no explicit signal is present and the user has previously replied to the agent in the current conversation, default to Human In The Loop.
-4. If no signal is present and no prior conversation exists, default to Human In The Loop.
+1. Parse the user's natural language input for explicit mode signals. Phrases like "autonomous", "just do it", "no need to ask me", or other affirmative authorizations for autonomous action indicate Autonomous mode. **If an explicit Autonomous signal is present, use Autonomous mode regardless of conversation history.**
+2. **Autonomous negative signals** - phrases requesting to overwrite, replace, rewrite, or delete existing tickets are NOT Autonomous signals. These involve destructive operations on existing work and always require Interactive mode. If the user uses these phrases alongside an Autonomous signal, treat the request as Interactive.
+3. If no explicit signal is present and the user has previously replied to the agent in the current conversation, default to Interactive.
+4. If no signal is present and no prior conversation exists, default to Interactive.
 
-Record the mode. All subsequent steps branch on this value. When presenting the detected mode to the user, use the full term (Human In The Loop or Away From Keyboard) rather than the abbreviation.
+Record the mode. All subsequent steps branch on this value.
 
 ### 2. Input Gathering
 
@@ -57,9 +58,9 @@ The input must contain all four of -
 3. Scope boundaries (what is in and out of scope)
 4. Acceptance criteria or verifiable outcomes (how to know when done)
 
-**In Human In The Loop mode** - present the heuristic results to the user. List which criteria are met and which are missing. Ask whether to proceed or provide a spec first.
+**In Interactive mode** - present the heuristic results to the user. List which criteria are met and which are missing. Ask whether to proceed or provide a spec first.
 
-**In AFK mode** - if all four criteria are met, proceed. If any are missing, abort and report which criteria are unsatisfied. Suggest using `domain-grilling` or `to-prd` to fill the gaps.
+**In Autonomous mode** - if all four criteria are met, proceed. If any are missing, abort and report which criteria are unsatisfied. Suggest using `domain-grilling` or `to-prd` to fill the gaps.
 
 ### 4. Codebase Exploration
 
@@ -77,12 +78,12 @@ Determine where to publish the tickets. This must be resolved before decompositi
 
 1. Parse the user's natural language input for output target signals. Phrases like "send to github issues", "target is gitlab", "save as markdown files", "local tickets" indicate the target.
 2. If no signal is present -
-   - **In Human In The Loop mode** - ask the user to choose - issue tracker or local markdown files.
-   - **In AFK mode** - default to local markdown files.
+   - **In Interactive mode** - ask the user to choose from the following options: local markdown files, GitHub Issues, GitLab Issues, Gitea Issues, Codeberg Issues, or a hosted Forgejo Instance's Issues. Use the `ask_question` tool to present these options if available.
+   - **In Autonomous mode** - default to local markdown files.
 
 ### 6. Ticket Decomposition Proposal
 
-Break the source material into session-scoped tickets in two phases - first choose the decomposition pattern, then propose the tickets. These phases are separate because the pattern choice determines the structure of the entire decomposition, and should be validated before generating tickets.
+Break the source material into focused tickets in two phases - first choose the decomposition pattern, then propose the tickets. These phases are separate because the pattern choice determines the structure of the entire decomposition, and should be validated before generating tickets.
 
 #### 6.1 Pattern Choice
 
@@ -93,7 +94,7 @@ Break the source material into session-scoped tickets in two phases - first choo
 
 When the spec explicitly enumerates components or modules, note this constraint during pattern selection - the chosen pattern must accommodate the enumerated structure. Full guidance on handling enumerated components is in section 6.2.
 
-**In Human In The Loop mode:**
+**In Interactive mode:**
 
 1. Present the pattern recommendation with embedded context and alternatives:
    - State the recommended pattern with a brief parenthetical definition
@@ -110,13 +111,13 @@ When the spec explicitly enumerates components or modules, note this constraint 
 
 4. Handle custom patterns:
    - If the user proposes a pattern not in the three listed, validate it:
-   - "I can use [custom pattern] if it produces session-scoped, demoable tickets with clear dependencies and Human In The Loop vs Away From Keyboard classification. Here's a scenario to validate: [specific edge case from spec]. How does the pattern handle this?"
+   - "I can use [custom pattern] if it produces focused, demoable tickets with clear dependencies and Independent vs Collaborative classification. Here's a scenario to validate: [specific edge case from spec]. How does the pattern handle this?"
    - Proceed only after the user confirms the pattern satisfies the constraints
 
 5. Transition to ticket proposal:
    "Proceeding with ticket decomposition using [pattern] pattern. Generating tickets now - let me know if you'd like to pause or adjust the approach."
 
-**In AFK mode:**
+**In Autonomous mode:**
 
 1. Select the decomposition pattern most appropriate for the spec
 2. State the pattern with brief rationale (no rejected alternatives): "Using [pattern] because [reason]"
@@ -124,22 +125,22 @@ When the spec explicitly enumerates components or modules, note this constraint 
 
 #### 6.2 Ticket Proposal
 
-**Classification rules** - mark each ticket as Human In The Loop or AFK -
-- **Human In The Loop** - the ticket requires a human decision that cannot be resolved from the spec alone (e.g., architectural choice between valid alternatives, design review, stakeholder approval).
-- **AFK** - the ticket can be implemented and merged without human interaction, given the context pointers and acceptance criteria.
+**Classification rules** - mark each ticket as Independent or Collaborative -
+- **Independent** - the ticket has sufficient context, acceptance criteria, and clear boundaries to be picked up and completed without further discussion. Can be implemented by a human or agent.
+- **Collaborative** - the ticket requires discussion, decision-making, or review that cannot be resolved from the spec alone (e.g., architectural choice between valid alternatives, design review, stakeholder approval). Needs human involvement before or during implementation.
 
-Prefer AFK over Human In The Loop. A ticket should only be Human In The Loop if there is a genuine decision that the spec does not resolve.
+Prefer Independent over Collaborative. A ticket should only be Collaborative if there is a genuine decision or discussion that the spec does not resolve.
 
-**Sizing heuristic** - applies to all modes. Aim for 2-8 tickets for a single-PRD decomposition. Fewer than 2 suggests tickets are too coarse (each should fit one session), unless the scope of the work is already narrowly scoped. More than 8 suggests tickets are too fine (merge related work). Prefer many thin slices over few thick ones.
+**Sizing heuristic** - applies to all modes. Each ticket should represent at most 3-4 hours of focused work. There is no upper limit on the number of tickets produced from a single PRD. However, if decomposition produces more than 15 tickets, review the decomposition pattern - it may be too fine-grained or unsuitable for the spec's structure. Fewer than 2 tickets suggests tickets are too coarse (each should be a focused unit of work), unless the scope of the work is already narrowly scoped. Prefer many thin slices over few thick ones.
 
 When the spec explicitly enumerates components or modules, use them as the basis for decomposition rather than deriving slices independently. Each component becomes a ticket, with a scaffolding/integration ticket if needed.
 
-**In Human In The Loop mode:**
+**In Interactive mode:**
 
 1. Propose the full decomposition as a table or structured list. For each ticket, show:
    - Title
    - Goal
-   - Classification (Human In The Loop or Away From Keyboard)
+   - Classification (Independent or Collaborative)
    - Which User Stories or spec sections it covers (do not abbreviate "User Stories")
    - Which other tickets it depends on (with reasons)
    - Do not abbreviate column headers - use full, clear terms
@@ -152,7 +153,7 @@ When the spec explicitly enumerates components or modules, use them as the basis
    "Take a look at the ticket breakdown. A few things to check:
    - Are any tickets too large or too small?
    - Is anything missing or unnecessary?
-   - Do the dependencies and Human In The Loop vs Away From Keyboard classifications feel right?"
+   - Do the dependencies and Independent vs Collaborative classifications feel right?"
 
 4. Handle user feedback:
    - Infer from feedback content whether it's a ticket-level adjustment or pattern-level concern
@@ -160,12 +161,12 @@ When the spec explicitly enumerates components or modules, use them as the basis
    - For pattern-level feedback (e.g., "this doesn't feel like vertical slices", "the structure is wrong"): signal the shift: "Your feedback about [specific concern] suggests the [pattern] pattern isn't the right fit. Let me propose a different approach." Return to section 6.1.
    - Repeat until the user approves the decomposition, dependencies, and classifications
 
-**In AFK mode:**
+**In Autonomous mode:**
 
 1. Decompose into tickets using the selected pattern. Each ticket must be demoable or verifiable on its own.
 2. Infer dependencies from domain logic and layer ordering. When uncertain whether two tickets are dependent, assume they are (prefer over-constraining over creating a broken graph).
 3. Apply classification rules to each ticket.
-4. Include brief rationale for non-obvious decomposition decisions (e.g., "Tickets 2 and 3 were split because they have different Human In The Loop vs Away From Keyboard classifications")
+4. Include brief rationale for non-obvious decomposition decisions (e.g., "Tickets 2 and 3 were split because they have different Independent vs Collaborative classifications")
 5. Proceed without user confirmation.
 
 ### 7. Existing Ticket Detection
@@ -178,14 +179,14 @@ Before publishing, detect whether tickets already exist for this source material
    - Conversation context - match on the date prefix (e.g., `Conversation context (2026-06-07)`) rather than the full summary text.
 2. **Issue tracker** - search for open issues whose body contains a matching parent reference, using the same matching rules above.
 
-**If existing tickets are found and the user explicitly asked to overwrite/replace them** (this is always Human In The Loop mode per Mode Detection):
+**If existing tickets are found and the user explicitly asked to overwrite/replace them** (this is always Interactive mode per Mode Detection):
 - **If the spec/PRD is available** - proceed with the normal workflow as if the tickets don't exist. The new tickets will overwrite the existing ones.
 - **If the spec/PRD is NOT available** - read the existing tickets and update them to conform to the skill's template and guidance (goal, what to build, acceptance criteria, context pointers, etc.). Preserve the existing ticket content and structure where it meets the guidance.
   - **If the existing tickets lack sufficient information to enable meaningful improvements** - gracefully fail. Explain to the user why the update is not possible (insufficient context in existing tickets) and suggest creating or providing the spec/PRD to enable proper decomposition.
 
 **If existing tickets are found but the user did not explicitly ask to overwrite/replace them:**
-- **In Human In The Loop mode** - present the finding. Offer three options - overwrite (delete existing, create new), update (modify existing in place to match skill guidance), or cancel (abort). Wait for user choice. If the user chooses overwrite or update, apply the logic above.
-- **In AFK mode** - abort. Report that existing tickets were found and recommend running in Human In The Loop mode to resolve.
+- **In Interactive mode** - present the finding. Offer three options - overwrite (delete existing, create new), update (modify existing in place to match skill guidance), or cancel (abort). Use the `ask_question` tool to present these options if available. Wait for user choice. If the user chooses overwrite or update, apply the logic above.
+- **In Autonomous mode** - abort. Report that existing tickets were found and recommend running in Interactive mode to resolve.
 
 ### 8. Ticket Generation
 
@@ -198,7 +199,7 @@ Apply the ticket template below to each approved ticket.
 ```yaml
 ---
 title: <short descriptive name>
-classification: <Human In The Loop|AFK>
+classification: <Independent|Collaborative>
 blocked_by: [<ticket references or empty>]
 parent: <spec reference>
 ---
@@ -210,11 +211,11 @@ parent: <spec reference>
 
 ## Goal
 
-Brief statement of what this ticket accomplishes and why it matters. One to three sentences - enough to orient an implementing agent without requiring them to read the full ticket.
+Brief statement of what this ticket accomplishes and why it matters. One to three sentences - enough to orient a reader without requiring them to read the full ticket.
 
 ## What to build
 
-Description of the end-to-end behavior with sufficient context for an implementing agent to understand what to do and why. Describe what the system should do and the outcomes it must achieve. Avoid specific file paths or code snippets - they go stale. Exceptions - if a prototype produced a snippet that encodes a decision more precisely than prose can (state machine, reducer, schema, type shape), inline it and note that it came from a prototype. For greenfield or structural work where the file/directory layout is itself a deliverable, specify paths.
+Description of the end-to-end behavior with sufficient context for an implementer to understand what to do and why. Describe what the system should do and the outcomes it must achieve. Include file paths when they help the implementer orient themselves, but avoid prescribing exact file paths or code snippets as implementation requirements unless the file structure is itself a deliverable. Exceptions - if a prototype produced a snippet that encodes a decision more precisely than prose can (state machine, reducer, schema, type shape), inline it and note that it came from a prototype.
 
 ## Implementation details (conditional)
 
@@ -259,11 +260,12 @@ Publish the generated tickets to the chosen target.
 1. Detect the project's git host -
    a. Parse `git remote -v` to extract the hostname.
    b. If the hostname is ambiguous (e.g., self-hosted with custom domain), check for host-specific config files (`.github/`, `.gitlab-ci.yml`, `.gitea/`).
-   c. If detection fails, ask the user which host the project uses.
+   c. If detection fails, ask the user which host the project uses. The options to present are: GitHub Issues, GitLab Issues, Gitea, Codeberg Issues, or a hosted Forgejo Instance. Use the `ask_question` tool to present these options if available.
 2. Look up the expected CLI for the detected host -
    - `github.com` → `gh`
    - `gitlab.com` or self-hosted GitLab → `glab`
-   - `gitea.com` or Forgejo → `tea`
+   - `gitea.com` or Gitea instances → `tea`
+   - `codeberg.org` or Forgejo instances → `fj`
    - Other hosts → search PATH for known CLIs, or ask the user.
 3. Verify the CLI is installed by checking if it is available in PATH. If not found, inform the user and provide installation guidance.
 4. Publish tickets in dependency order - blockers first, then dependents. This ensures blocking ticket issue numbers exist before they are referenced in "Blocked by" fields.
@@ -276,8 +278,8 @@ Publish the generated tickets to the chosen target.
 2. Determine directory structure based on ticket count -
    - **Fewer than 8 tickets** - flat structure. All files in `tickets/`.
    - **8 or more tickets** - structured subdirectories -
-      - **In Human In The Loop mode** - ask the user to choose a grouping strategy - dependency graph position (topological layers), domain concept, or feature area.
-     - **In AFK mode** - group by domain concept.
+      - **In Interactive mode** - ask the user to choose a grouping strategy - dependency graph position (topological layers), domain concept, or feature area.
+      - **In Autonomous mode** - group by domain concept.
 3. Name files with zero-padded sequential numbers - `001-authentication.md`, `002-user-profiles.md`.
 4. If using structured directories, place files in the group subdirectory - `tickets/authentication/001-login-endpoint.md`.
 5. Write each ticket as a markdown file with YAML frontmatter matching the ticket template.
@@ -286,10 +288,14 @@ Publish the generated tickets to the chosen target.
 
 After publishing, present a summary to the user containing -
 
-1. **Stats** - total ticket count, Human In The Loop count, AFK count, leaf ticket count (tickets with no blockers).
-2. **Dependency graph** - which tickets can start immediately, which are blocked and by what.
-3. **Next steps** - suggested execution order and parallelism opportunities.
-4. **Output location** - issue numbers or file paths where tickets were saved.
+1. **Stats** - total ticket count, Independent count, Collaborative count, leaf ticket count (tickets with no blockers).
+2. **Ticket overview** - a table with each ticket's title, classification, estimated effort, domain area, and review complexity:
+   - **Estimated effort** - approximate hours or S/M/L estimate for each ticket
+   - **Domain area** - the subsystem or domain concept the ticket touches (helps identify which tickets match a team member's expertise)
+   - **Review complexity** - Low/Medium/High assessment of how much code review the ticket is likely to require
+3. **Dependency graph** - which tickets can start immediately, which are blocked and by what.
+4. **Next steps** - suggested execution order and parallelism opportunities. Note which tickets can be worked in parallel by different team members.
+5. **Output location** - issue numbers or file paths where tickets were saved.
 
 The summary should be scannable - use clear structure (headings, tables, lists) so key information is quickly findable. Include enough detail to be useful without requiring the user to read the tickets, but avoid reproducing ticket content verbatim.
 
@@ -302,13 +308,15 @@ The summary should be scannable - use clear structure (headings, tables, lists) 
 - [ ] The glossary is not reproduced in any ticket's context pointers.
 - [ ] Parent field contains a 1-3 sentence summary when the source is conversation context.
 - [ ] Tickets were published in dependency order (blockers first) when targeting an issue tracker.
-- [ ] The summary report includes stats, dependency graph, and next steps.
+- [ ] The summary report includes stats, ticket overview table, dependency graph, and next steps.
 - [ ] The "Blocks" field is not used anywhere - dependencies are tracked via "Blocked by" only.
 - [ ] The description contains no YAML-breaking characters (colons, unquoted special chars).
 - [ ] Ticket count is at least 2, unless the spec scope is already narrowly scoped.
-- [ ] No abbreviations are used in ticket content or workflow output unless defined in CONTEXT.md/glossary, explicitly used by the user/spec, or AFK. Unfamiliar abbreviations are clarified in brackets on first use. "User Stories" is never abbreviated to "US".
-- [ ] Pattern choice includes recommendation with parenthetical definition and alternatives with rejection reasons (Human In The Loop mode).
-- [ ] Pattern choice includes brief rationale for selected pattern (AFK mode).
+- [ ] Each ticket represents at most 3-4 hours of focused work.
+- [ ] If ticket count exceeds 15, the decomposition pattern was reviewed for suitability.
+- [ ] No abbreviations are used in ticket content or workflow output unless defined in CONTEXT.md/glossary or explicitly used by the user/spec. Unfamiliar abbreviations are clarified in brackets on first use. "User Stories" is never abbreviated to "US".
+- [ ] Pattern choice includes recommendation with parenthetical definition and alternatives with rejection reasons (Interactive mode).
+- [ ] Pattern choice includes brief rationale for selected pattern (Autonomous mode).
 - [ ] Ticket proposal includes decomposition rationale for non-obvious decisions.
 - [ ] Closing questions use explicit multi-part format (not binary approval).
 - [ ] Custom patterns are validated against skill constraints before proceeding.

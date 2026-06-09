@@ -26,7 +26,7 @@ Domain-specific tasks for software development workflows.
 
 | Skill | Description | Notes | 
 |-------|-------------|-------|
-| [spec-to-tickets](skills/engineering/spec-to-tickets/) | Decompose specs, PRDs, or conversation context into session-scoped implementation tickets with dependency graphs, Human In the Loop (HITL)/AFK classification, and context pointers. Outputs to issue trackers or local markdown. | Inspired by Matt Pocock's ``to-issues`` skill. |
+| [spec-to-tickets](skills/engineering/spec-to-tickets/) | Decompose specs, PRDs, or conversation context into focused implementation tickets (at most 3-4 hours each) with dependency graphs, Independent/Collaborative classification, and context pointers. Outputs to issue trackers or local markdown. | Inspired by Matt Pocock's ``to-issues`` skill. |
 | [domain-grilling](skills/engineering/domain-grilling/) | Relentless DDD-aligned interviewing skill that resolves design decisions linearly, sharpens domain terminology against CONTEXT.md, and documents architectural decisions as ADRs. | Inspired by Matt Pocock's ``grill-with-docs`` skill. |
 | [write-changelog](skills/engineering/write-changelog/) | Generate user-facing markdown changelogs from git history by analyzing commits, transforming messages, and categorizing changes across sub-projects. | |
 
@@ -64,11 +64,13 @@ This repository uses specific terminology for skill workflows:
 
 - **Spec** — Input document (PRD, design doc, issue, or conversation) that gets decomposed into tickets
 - **Ticket** — Session-scoped work artifact with goal, acceptance criteria, context pointers, and dependencies
-- **Session** — Unit of work scope; a ticket should be completable within one session
+- **Session** — Focused work session; a ticket should be completable within at most 3-4 hours
 - **Dependency Graph** — Structure of blocked-by relationships between tickets
 - **Vertical Slice** — Decomposition strategy where each ticket cuts end-to-end through all layers
-- **HITL (Human In The Loop)** — Operating mode requiring user interaction for decisions
-- **AFK (Away From Keyboard)** — Autonomous operating mode requiring explicit authorization
+- **Interactive mode** — Workflow mode where the skill interacts with the user for confirmation, decisions, and validation
+- **Autonomous mode** — Workflow mode where the skill operates without user interaction, requires explicit authorization
+- **Independent (ticket classification)** — Ticket has sufficient context to proceed without further discussion, can be implemented by a human or agent
+- **Collaborative (ticket classification)** — Ticket requires discussion, decision-making, or review before or during implementation
 - **Context Pointers** — References to files, ADRs, and domain terms included in tickets
 
 See [CONTEXT.md](CONTEXT.md) for the complete glossary.
