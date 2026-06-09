@@ -11,4 +11,4 @@ config:
   model: gpt-5-mini
 
 tasks:
-  - "tasks/*.yaml"
+  - "../tasks/*.yaml"
