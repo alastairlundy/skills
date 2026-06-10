@@ -1,6 +1,7 @@
 ---
 name: write-changelog
 description: Generates a repo-agnostic, user-facing markdown changelog by analyzing git history, transforming commit messages, and categorizing changes into logical sub-projects.
+license: MIT
 ---
 
 ## When to Use
@@ -44,10 +45,21 @@ description: Generates a repo-agnostic, user-facing markdown changelog by analyz
     - Summarize long, rambling messages into concise, impact-focused sentences.
     - Validate the transformation against the diff to ensure no meaning is lost.
 
-### Step 4: Markdown Construction
+### Step 4: Global Section Title Selection
+- Analyze the repo structure to recommend a title for the first changelog section:
+    - **Global** — recommended when the repo root contains mixed content (docs, CI, scripts, config).
+    - **All Packages** — recommended for monorepos with multiple sub-projects/packages.
+    - **All Projects** — recommended for solution-based repos (e.g., .NET `.sln` with multiple `.csproj`).
+- Use the `question` tool (if available) to ask the user to choose: "Global", "All Packages", "All Projects", or "Other (specify)".
+- If the tool is unavailable or the user declines, default to "Global".
+
+### Step 5: Markdown Construction
 - Start the document with: `## Changes since [Prior Git Tag]`
 - Organize the layout as follows:
-    1. **Global/Infrastructure Section**: Changes at the root or in global folders.
+    1. **Global Section** (title from Step 4): Changes at the root or in global folders. If dependency updates exist, split them into the following sub-sections (only include sub-sections that have entries):
+        - **Runtime Dependencies**: Package/dependency updates for library or runtime projects.
+        - **CI Dependencies**: GitHub Actions, analyzers, build tooling, and CI configuration changes.
+        - **Testing Dependencies**: Test framework packages and test infrastructure updates.
     2. **Sub-project Sections**: Grouped by the packages identified in Step 1.
 - Within each section, group changes by category in the following order:
     - 🆕 Additions
@@ -58,7 +70,7 @@ description: Generates a repo-agnostic, user-facing markdown changelog by analyz
     - ⚠️ Deprecations
 - Use markdown bullet points for each entry.
 
-### Step 5: Output Phase
+### Step 6: Output Phase
 - If a destination file is provided, check if it exists. If so, ask the user for permission to overwrite before writing.
 - Otherwise, output the final markdown string to the conversation.
 
@@ -68,6 +80,7 @@ description: Generates a repo-agnostic, user-facing markdown changelog by analyz
 - [ ] Changes are grouped by sub-projects and categorized by impact.
 - [ ] Commit messages are transformed from developer-style to user-facing style.
 - [ ] "Non Source Code" changes are appropriately split between Global and Package sections.
+- [ ] Global dependency sub-sections (Runtime, CI, Testing) are only present when they contain entries.
 
 ## Common Pitfalls
 
