@@ -50,3 +50,6 @@ A concrete, measurable objective that grounds a response. Used to evaluate wheth
 
 ## Pass/Fail Gate
 A verification step that produces a binary pass/fail signal based on mechanical criteria. Used to remove the need for self-assessment — the gate's result is the source of truth, not the agent's claim of compliance. Distinguished from a self-administered checklist by the absence of judgment: the agent cannot tick the box without the gate having fired.
+
+## Code implementation plan
+The output artifact of `code-implementation-grilling`: a resolved set of *technical* decisions (language, framework, dependencies, project structure, sub-projects, project type, optional interfaces) derived from an existing spec or PRD. Distinct from a **general plan** (any non-code strategy, ops plan, business plan), a **domain model** (the conceptual map produced by `domain-grilling`), and a **spec/PRD** (the input document).

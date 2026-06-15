@@ -1,20 +1,18 @@
 ---
 name: code-implementation-grilling
-description: Relentlessly grills the user to resolve concrete technical implementation details from a plan, spec, or PRD before tickets are created. Use for establishing the technical foundation (language, framework, structure) of a code/programming project and resolving "how" decisions to minimize ambiguity for the implementer. Do not use for establishing domain specific terminology, creating a PRD/specification, non-programming/code implementations, or creating a plan without a specification to base it from.
+description: Produces a code implementation plan by grilling the user on technical choices (language, framework, dependencies, project structure, sub-projects, project type) before tickets are created. Use only when a spec or PRD is already present — referenced as a file path, attached as a document, or substantively laid out in the conversation — for a code/programming project. Defer to `domain-grilling` for vague ideas, domain modeling, or terminology alignment. Do not use for general planning, non-code/non-programming projects, or creating a spec/PRD itself.
 license: MIT
 ---
 
 # Skill: code-implementation-grilling
 
 ## When to Use
-- When a PRD or Spec exists but the specific technical choices (language, framework, libraries) are not yet defined.
-- When you need to ensure a shared technical understanding before decomposing a spec into tickets.
-- When you want to minimize the number of "Collaborative" tickets by resolving implementation details upfront.
+- When a spec or PRD is referenced as a file path, attached as a document, or substantively laid out in the conversation, and the goal is to produce a code implementation plan for a code/programming project.
 
 ## When Not to Use
-- For trivial tasks where the technical path is obvious or already documented.
-- When the user explicitly wants the implementer to make all technical architectural decisions.
-- During the implementation phase itself.
+- For general planning or non-code/non-programming projects (e.g., a business plan, an ops runbook, a research project).
+- For vague ideas, domain modeling, or terminology alignment (defer to `domain-grilling`).
+- For creating a spec or PRD itself (defer to `to-prd` or `domain-grilling`).
 
 ## Workflow
 
