@@ -1,0 +1,48 @@
+{
+  "performance": [
+    {
+      "id": "perf-foundation-checklist-resolved-atomically",
+      "description": "Foundation checklist is resolved completely in a single code implementation plan, not partially or with items skipped.",
+      "input": "Spec: a CLI todo app that stores tasks in a local JSON file. Features: add, list, complete, remove. Persistence: file-based, no network. Resolve the full technical foundation.",
+      "assertion": "Output contains a code implementation plan that resolves all 7 foundation items (Programming Language, Framework/Runtime, Key Dependencies, Project Structure, Sub-projects, Project Type, Foundational Preferences) with a specific choice and rationale for each."
+    }
+  ],
+  "trigger": [
+    {
+      "id": "trigger-spec-file-path",
+      "description": "Triggers when a spec/PRD is referenced by file path for a code/programming project.",
+      "input": "I have a spec at docs/specs/todo.md for a todo app. Help me resolve the technical foundation.",
+      "expected": "trigger"
+    },
+    {
+      "id": "trigger-spec-in-conversation",
+      "description": "Triggers when the spec/PRD is substantively laid out in the conversation itself.",
+      "input": "Here's the spec: build a CLI tool that watches a directory for new markdown files and indexes them into a SQLite database with full-text search. Users type queries from the terminal and get matching results. Help me work through the technical foundation.",
+      "expected": "trigger"
+    },
+    {
+      "id": "trigger-explicit-invocation",
+      "description": "Triggers when the user explicitly invokes the skill by name.",
+      "input": "Run code-implementation-grilling on docs/specs/payment-service.md to resolve the foundation.",
+      "expected": "trigger"
+    },
+    {
+      "id": "no-trigger-vague-plan",
+      "description": "Does NOT trigger on a bare 'plan' mention with no spec/PRD present.",
+      "input": "I have a plan for a todo app.",
+      "expected": "no-trigger"
+    },
+    {
+      "id": "no-trigger-non-code-idea",
+      "description": "Does NOT trigger for a non-code/non-programming project.",
+      "input": "I have a plan to launch a B2B marketing campaign in Q3. Help me think it through.",
+      "expected": "no-trigger"
+    },
+    {
+      "id": "no-trigger-domain-modeling",
+      "description": "Does NOT trigger for a domain modeling or terminology alignment question.",
+      "input": "What's the bounded context for orders vs invoices in a multi-tenant SaaS?",
+      "expected": "no-trigger"
+    }
+  ]
+}
