@@ -28,6 +28,7 @@ Domain-specific tasks for software development workflows.
 |-------|-------------|-------|
 | [spec-to-tickets](skills/engineering/spec-to-tickets/) | Decompose specs, PRDs, or conversation context into focused implementation tickets (at most 3-4 hours each) with dependency graphs, Independent/Collaborative classification, and context pointers. Outputs to issue trackers or local markdown. | Inspired by Matt Pocock's ``to-issues`` skill. |
 | [domain-grilling](skills/engineering/domain-grilling/) | Relentless DDD-aligned interviewing skill that resolves design decisions linearly, sharpens domain terminology against CONTEXT.md, and documents architectural decisions as ADRs. | Inspired by Matt Pocock's ``grill-with-docs`` skill. |
+| [code-implementation-grilling](skills/engineering/code-implementation-grilling/) | Relentlessly resolves concrete technical implementation details (language, framework, structure) from a plan or spec before ticket creation to minimize ambiguity for the implementer. | |
 | [write-changelog](skills/engineering/write-changelog/) | Generate user-facing markdown changelogs from git history by analyzing commits, transforming messages, and categorizing changes across sub-projects. | |
 
 ### "Meta" Skills
