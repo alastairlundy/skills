@@ -18,6 +18,9 @@ license: MIT
 
 **Core Constraint**: To avoid overwhelming the user, you must ask exactly one question at a time. Wait for the user's response and resolve the current point before proceeding to the next question.
 
+### Workflow Conventions
+- Do not name skills in Steps 1-5. All skill references live in the Terminal Output section. Mid-workflow prose refers to consumers generically ('ticket consumer', 'issue tracker').
+
 ### Step 1: Foundation Establishment (Mandatory Checklist)
 Iteratively resolve the following technical foundation points one-by-one. For each, present 2-4 natural options with trade-offs and a recommendation.
 1. **Programming Language**: Which language will be used?
@@ -43,17 +46,28 @@ Ask the user: *"Would you like to be grilled on the specific Interface, Contract
 - **If No**: Provide the following warning: *"Skipping detailed interface resolution means these details must be determined during implementation. This will likely result in more 'Collaborative' tickets that require human-in-the-loop intervention."*
 
 ### Step 4: Output Selection
-Present the user with the following choice for capturing the resolutions:
+Present the user with the following two-part choice, one part at a time:
+
+**Part A: Output format**
 
 **Option A: Implementation Blueprint (Recommended)**
-- **What**: A standalone `IMPLEMENTATION.md` file.
+- **What**: A standalone `IMPLEMENTATION.md` file, with a `Scope Binding` section that links the blueprint to the source spec.
 - **Trade-offs**: High clarity; serves as a clean "Context Pointer" for tickets; keeps the PRD focused on "What".
 - **Risks**: Temporary file overhead.
+- **Scope Binding contents**: The blueprint must include `Linked Spec: <path_to_spec>` and a notice that the blueprint is a context pointer valid ONLY for the linked spec and must not be applied to other specifications without explicit authorization.
 
 **Option B: PRD Augmentation**
 - **What**: Appending a "Technical Implementation" section to the existing spec/PRD.
 - **Trade-offs**: Single source of truth; no fragmented files.
 - **Risks**: Can clutter high-level requirements with low-level technical noise.
+
+**Part B: Downstream consumer**
+
+- **Ticket consumer**: hand off to a workflow that auto-decomposes the spec and blueprint into a dependency graph of implementation tickets.
+- **Issue tracker**: hand off to a workflow that files the spec and blueprint as issues in the issue tracker.
+- **Manual handoff**: no automated decomposition; the user takes the artifacts from here.
+
+Capture both choices. The downstream-consumer choice drives the template emitted in the Terminal Output section.
 
 ### Step 5: Final Alignment Check & Convergence
 Before declaring convergence:
@@ -62,13 +76,23 @@ Before declaring convergence:
 3. **Resolution**: Resolve any contradictions with the user.
 4. **Declaration**: Once aligned, explicitly declare: *"We have reached a shared implementation understanding."*
 
-### Step 6: Handoff & Scope Binding
-Depending on the output choice:
-- **If Blueprint**: 
-    1. Create the file with a **Scope Binding** section: `Linked Spec: <path_to_spec>`.
-    2. Explicitly state in the file: *"This blueprint is a context pointer valid ONLY for the linked spec. Do not apply these technical decisions to other specifications without explicit authorization."*
-- **Final Prompt**: Provide the user with the exact prompt to use for ticket creation:
-    - *"To generate implementation tickets, I recommend running `spec-to-tickets` with the following instruction: 'Using the requirements in [Spec Path] and the technical decisions in [Blueprint Path/Section], decompose this into tickets.'"*
+## Terminal Output (Required)
+
+This block is mandatory. A workflow run that ends without emitting it is incomplete.
+
+At the end of the workflow, the agent emits exactly one of the following pre-written handoff templates, selected by the user's downstream-consumer choice in Step 4. The agent substitutes `<spec-path>` and `<blueprint-path>` only. Do not add any other prose around the template.
+
+**Template: ticket consumer (`spec-to-tickets`)**
+
+> Run the `spec-to-tickets` skill with the spec at `<spec-path>` and the blueprint at `<blueprint-path>` as context.
+
+**Template: issue tracker (`to-issues`)**
+
+> Run the `to-issues` skill with the spec at `<spec-path>` and the blueprint at `<blueprint-path>` as context.
+
+**Template: manual handoff**
+
+> Manual handoff. The spec is at `<spec-path>` and the technical blueprint is at `<blueprint-path>`. Use these to drive ticket creation or implementation planning in your own workflow.
 
 ## Validation
 - [ ] **Atomic Questioning**: Did the agent ask exactly one question at a time, waiting for a response before proceeding?
@@ -80,4 +104,4 @@ Depending on the output choice:
 - [ ] **Output Choice**: Did the user choose between a Blueprint and PRD augmentation after seeing trade-offs?
 - [ ] **Alignment Check**: Was a final pass performed to ensure the technical "how" supports the functional "what"?
 - [ ] **Scope Binding**: Does the blueprint explicitly link to the specific PRD and warn against cross-spec application?
-- [ ] **Handoff Prompt**: Was the user provided with a specific prompt for `spec-to-tickets` referencing both the spec and the technical resolutions?
+- [ ] **Pass/Fail Gate**: Has the Terminal Output block been emitted? If no, the workflow is incomplete.
