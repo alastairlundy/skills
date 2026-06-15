@@ -31,6 +31,13 @@ Domain-specific tasks for software development workflows.
 | [code-implementation-grilling](skills/engineering/code-implementation-grilling/) | Relentlessly resolves concrete technical implementation details (language, framework, structure) from a plan or spec before ticket creation to minimize ambiguity for the implementer. | |
 | [write-changelog](skills/engineering/write-changelog/) | Generate user-facing markdown changelogs from git history by analyzing commits, transforming messages, and categorizing changes across sub-projects. | |
 
+### Alignment Skills
+
+Skills for ensuring LLMs stay aligned on expectations and behaviour whilst performing tasks.
+
+| Skill | Description | Notes | 
+|-------|-------------|-------|
+
 ### "Meta" Skills
 
 Tools for creating and evaluating other skills.
