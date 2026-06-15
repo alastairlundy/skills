@@ -1,6 +1,6 @@
 ---
 name: anti-slop
-description: Sanitizes LLM output by removing generic "AI slop," redundant phrasing, and sycophancy to maximize information density and maintain a transparent, professional AI identity.
+description: Sanitizes LLM output by removing AI slop, redundant phrasing, and sycophancy to maximize information density and maintain a transparent, professional AI identity. Always use this skill.
 license: MIT
 ---
 

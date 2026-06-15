@@ -37,6 +37,7 @@ Skills for ensuring LLMs stay aligned on expectations and behaviour whilst perfo
 
 | Skill | Description | Notes | 
 |-------|-------------|-------|
+| [anti-slop](skills/alignment/anti-slop/) | Sanitizes LLM output by removing "AI slop", redundant phrasing, and sycophancy to maximize information density and maintain a professional AI identity. | |
 
 ### "Meta" Skills
 
