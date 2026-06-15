@@ -41,3 +41,12 @@ A ticket that requires discussion, decision-making, or review that cannot be res
 
 ## Output Target
 Where tickets are published - GitHub Issues, GitLab Issues, Gitea Issues, Codeberg Issues, a hosted Forgejo Instance's Issues, or local markdown files. Configurable via natural language argument.
+
+## Slop
+AI-generated text that exhibits vague modifiers, non-committal framing, or vocabulary patterns that signal automated origin rather than substantive content. Distinguished from "bad writing" by its surface-level polish and structural emptiness — text that follows a professional template while lacking measurable claims, goal alignment, or decisive positioning. Vocabulary-clean slop (e.g., text that avoids all banned words but is still substantively empty) is the hardest variant to detect.
+
+## Goal Constraint
+A concrete, measurable objective that grounds a response. Used to evaluate whether content advances a stated goal rather than drifting into tangential or hedged territory. Distinguished from a "goal" (which may be vague, e.g., "improve the code") by requiring specificity (e.g., "reduce cyclomatic complexity to < 10"). Vague goals must be decomposed into specific constraints before the constraint can ground the response.
+
+## Pass/Fail Gate
+A verification step that produces a binary pass/fail signal based on mechanical criteria. Used to remove the need for self-assessment — the gate's result is the source of truth, not the agent's claim of compliance. Distinguished from a self-administered checklist by the absence of judgment: the agent cannot tick the box without the gate having fired.
