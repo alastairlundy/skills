@@ -4,7 +4,7 @@ This repo holds agent skills (prompt templates), not executable code. There is n
 
 ```
 skills/<category>/<skill-name>/SKILL.md   ← one skill per directory
-skills/<category>/<skill-name>/evals.json ← optional evaluation spec
+skills/<category>/<skill-name>/evals/     ← Waza Eval Suite (eval.yaml + tasks/ + fixtures/)
 docs/agents/                              ← agent-consumable docs for THIS repo
 ```
 
@@ -17,7 +17,15 @@ Every `SKILL.md` must have:
 - Sections: **When to Use**, **When Not to Use**, **Workflow**, **Validation**
 - Workflow steps must be deterministic — no vague language ("be smart", "as appropriate")
 
-`evals.json` (optional) has two top-level keys: `performance` (id, description, input, assertion) and `trigger` (id, description, input, expected: "trigger"|"no-trigger").
+### Evaluation format
+
+Every skill must include a Waza Eval Suite in `evals/<skill-name>/`:
+- `eval.yaml` — evaluation configuration
+- `tasks/` — individual task definitions
+- `fixtures/` — test inputs and expected outputs
+
+Run evaluations with `waza run` and serve the eval UI with `waza serve`.
+
 
 ## Agent skills
 

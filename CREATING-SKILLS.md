@@ -79,12 +79,14 @@ Define evaluation test cases for the skill:
 }
 ```
 
-### Waza Eval Suite
+### evals/
 
-For skills using the Waza CLI evaluator, create:
+Every skill must include a Waza Eval Suite in `evals/<skill-name>/`:
 - `eval.yaml` — evaluation configuration
 - `tasks/` — individual task definitions
 - `fixtures/` — test inputs and expected outputs
+
+Run evaluations with `waza run` and serve the eval UI with `waza serve`.
 
 See the [Waza documentation](https://github.com/microsoft/waza) for format details.
 
