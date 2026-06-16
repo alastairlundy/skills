@@ -151,6 +151,6 @@ Only offer to create an ADR when all three are true:
 2. **Surprising without context** — a future reader will wonder "why did they do it this way?"
 3. **The result of a real trade-off** — there were genuine alternatives and one was picked for specific reasons.
 
-When suggesting an ADR, explicitly state which of these three criteria triggered the suggestion. Use the format in [ADR-FORMAT.md](./ADR-FORMAT.md).
+When suggesting an ADR, explicitly state which of these three criteria triggered the suggestion. Use the format in [ADR-FORMAT.md](./references/ADR-FORMAT.md).
 
 </supporting-info>
