@@ -1,14 +1,18 @@
 ---
 name: write-changelog
-description: Generates a repo-agnostic, user-facing markdown changelog by analyzing git history, transforming commit messages, and categorizing changes into logical sub-projects.
+description: >-
+  Generates a repo-agnostic, user-facing markdown changelog by analyzing git history, transforming commit messages, and categorizing changes into logical sub-projects.
 license: MIT
 ---
+
+# Write Changelog
 
 ## When to Use
 
 - Creating release notes for a new version.
 - Summarizing changes between two git tags or a tag and the current HEAD.
 - Generating structured changelogs for monorepos with multiple sub-projects.
+- When user input would clarify the request, invoke ask-questions
 
 ## When Not to Use
 

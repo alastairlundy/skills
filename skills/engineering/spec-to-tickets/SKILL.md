@@ -1,6 +1,7 @@
 ---
 name: spec-to-tickets
-description: Create implementation tickets with dependency graphs, Independent/Collaborative classification, and context pointers from a spec, PRD, or conversation context. Output to issue tracker or local markdown. Use when - spec/PRD exists and is complete, need tickets sized for focused work sessions (3-4 hours each), want to enable parallel work with explicit dependency tracking, need Independent/Collaborative classification per ticket. Don't use when - spec is incomplete or vague (use domain-grilling or to-prd first), need different granularity like epics or tasks, want to implement directly without decomposition, user explicitly wants to send tickets to issue tracker AND doesn't need dependency graphs or classification (use to-issues instead).
+description: >-
+  Create implementation tickets with dependency graphs, Independent/Collaborative classification, and context pointers from a spec, PRD, or conversation context. Output to issue tracker or local markdown. Use when - spec/PRD exists and is complete, need tickets sized for focused work sessions (3-4 hours each), want to enable parallel work with explicit dependency tracking, need Independent/Collaborative classification per ticket. Don't use when - spec is incomplete or vague (use domain-grilling or to-prd first), need different granularity like epics or tasks, want to implement directly without decomposition, user explicitly wants to send tickets to issue tracker AND doesn't need dependency graphs or classification (use to-issues instead).
 license: MIT
 ---
 
@@ -15,6 +16,7 @@ Break a spec, PRD, or conversation context into focused tickets with dependency 
 - Tickets need to be sized for focused work sessions (3-4 hours each)
 - Output should target an issue tracker or local markdown files
 - Parallel work is desired (dependency graph enables concurrent work on leaf tickets)
+- When user input would clarify the request, invoke ask-questions
 
 ## When Not to Use
 

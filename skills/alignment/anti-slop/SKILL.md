@@ -1,6 +1,7 @@
 ---
 name: anti-slop
-description: Always use this skill. Removes AI slop, vague phrasing, and sycophancy from LLM output. Only defer when the user explicitly requests creative or roleplay content.
+description: >-
+  Always use this skill. Removes AI slop, vague phrasing, and sycophancy from LLM output. Only defer when the user explicitly requests creative or roleplay content.
 license: MIT
 ---
 
@@ -10,7 +11,7 @@ This skill enforces high-density, objective communication. It eliminates artific
 
 ## When to Use
 
-Applies by default to all professional, technical, and analytical responses.
+- Applies by default to all professional, technical, and analytical responses.
 
 ## When Not to Use
 

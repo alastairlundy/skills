@@ -1,13 +1,15 @@
 ---
 name: code-implementation-grilling
-description: Produces a code implementation plan by grilling the user on technical choices (language, framework, dependencies, project structure, sub-projects, project type) before tickets are created. Use only when a spec or PRD is already present — referenced as a file path, attached as a document, or substantively laid out in the conversation — for a code/programming project. Defer to `domain-grilling` for vague ideas, domain modeling, or terminology alignment. Do not use for general planning, non-code/non-programming projects, or creating a spec/PRD itself.
+description: >-
+  Produces a code implementation plan by grilling the user on technical choices (language, framework, dependencies, project structure, sub-projects, project type) before tickets are created. Use only when a spec or PRD is already present — referenced as a file path, attached as a document, or substantively laid out in the conversation — for a code/programming project. Defer to `domain-grilling` for vague ideas, domain modeling, or terminology alignment. Do not use for general planning, non-code/non-programming projects, or creating a spec/PRD itself.
 license: MIT
 ---
 
-# Skill: code-implementation-grilling
+# Code Implementation Grilling
 
 ## When to Use
 - When a spec or PRD is referenced as a file path, attached as a document, or substantively laid out in the conversation, and the goal is to produce a code implementation plan for a code/programming project.
+- When user input would clarify the request, invoke ask-questions
 
 ## When Not to Use
 - For general planning or non-code/non-programming projects (e.g., a business plan, an ops runbook, a research project).

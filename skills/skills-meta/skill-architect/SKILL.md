@@ -1,6 +1,8 @@
 ---
 name: skill-architect
-description: Guides users through the design, refinement, and deterministic translation of a new agent skill, ensuring compatibility with project standards without performing file system writes.
+description: >-
+  Guides users through the design, refinement, and deterministic translation of a new agent skill, ensuring compatibility with project standards without performing file system writes.
+license: MIT
 ---
 
 # Skill Architect
@@ -12,6 +14,7 @@ The Skill Architect is an intellectual design phase for creating agent skills. I
 - When you need to refine ambiguous agent behaviors into deterministic steps.
 - When you want to ensure a new skill adheres to the project's mandatory structure and standards.
 - When converting vague goals into a technical design before shifting to implementation.
+- When user input would clarify the request, invoke ask-questions
 
 ## When Not to Use
 - For trivial changes to existing skills.
