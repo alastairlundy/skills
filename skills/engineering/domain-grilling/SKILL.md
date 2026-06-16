@@ -23,14 +23,41 @@ Interview me relentlessly about every aspect of this plan until we reach a share
 **Never collapse the decision space.** For every decision point, present the full range of natural options before recommending one. The user must see the landscape of choices — not just the agent's preferred path — to make an informed decision.
 
 For every question you ask, you must provide:
-1. **All natural options**: Enumerate the viable alternatives (typically 2-4). Each option must be a genuinely defensible choice, not a strawman. For each option, state:
-   - What it is (one sentence)
-   - Its trade-offs (what it gains and what it costs)
-   - Its risks (what could go wrong, long-term implications)
-2. **Your recommendation**: State which option you recommend and why. The recommendation must be one of the enumerated options — not a separate thing. Explain why this option's trade-offs and risks are acceptable in this specific context, and why the other options' trade-offs and risks are not.
-3. **Strategic Risk/Pattern Alert**: If the decision involves a known architectural risk or a high-level pattern (e.g., Consistency risks, Boundary leakage, Distributed transactions), explain the long-term implication of this choice regardless of which option is selected.
+
+1. **All natural options**: Enumerate the viable alternatives (typically 2-4). Each option must be a genuinely defensible choice, not a strawman. Each option is a structured block with these four fields, **one sentence per field**:
+   - **What it is** — one sentence describing the option.
+   - **Benefit** — one sentence describing the gain if this option is chosen.
+   - **Trade-off** — one sentence describing the cost or sacrifice. The trade-off carries the *cost* side only; do not re-list the benefit here. "Trade-off" names a sacrifice, not a label for "any positive attribute".
+   - **Risk** — one sentence describing what could go wrong or the long-term implications.
+   - *Worked example (per-option block)*:
+     - **Option 1 — Format-locked recommendation.** What it is: the recommendation line follows a strict template with the option name copied verbatim. Benefit: deterministic; easy to lint. Trade-off: slightly rigid; cannot express "almost-Option-1-but-…" nuance. Risk: a future LLM may try to "improve readability" by paraphrasing the option name.
+
+2. **Your recommendation**: the recommendation is a **two-field breakdown** with explicit labels:
+   - `Recommendation: Option N — <name>.` — `<name>` is copied **verbatim** from the option's heading above. Do not paraphrase, abbreviate, or re-order the name. Do not modify, augment, combine, or qualify the option. If a clause is essential, promote it to a *separate* option first, then recommend that option.
+   - `Reasoning: <one-to-two sentences>.` — why this option's trade-offs and risks are acceptable in this specific context. Justify the recommended option only; do not re-justify the rejected options.
+   - *Worked example* — violation: `Recommendation: Option 1 with a "spirit-of-the-rule" extension clause.` Correction: either drop the clause and recommend `Option 1 — Explicit phrasing lists.` cleanly, or promote the clause to a new `Option 5` and recommend that.
+
+3. **Strategic Risk/Pattern Alert**: if the decision involves a known architectural risk or a high-level pattern (e.g., Consistency risks, Boundary leakage, Distributed transactions), explain the long-term implication of this choice regardless of which option is selected.
 
 Ask questions one at a time, waiting for feedback on each before continuing. If a question can be answered by exploring the codebase, do that first.
+
+**Locked question format.** When asking the user to choose between options, use the exact template:
+
+> For [branch label] — [branch name], which option do you choose, or describe your own answer.
+
+- `[branch label]` is the short stable identifier the LLM introduced when opening the branch (e.g., `Branch B`).
+- `[branch name]` is the human-readable name the LLM gave the branch (e.g., `where the gate lives`).
+- Use the same label and name verbatim in every question for that branch. Do not rephrase, abbreviate, or rename mid-session.
+- The `, or describe your own answer` suffix is fixed; do not vary it. The user is always permitted to push back, modify, or replace the options.
+
+### Tone and Output Discipline
+
+Maintain a neutral, non-evaluative tone throughout the session. Treat the user's previous answer as **data**, not as something to react to emotionally.
+
+- **No evaluative openers.** Do not begin a sentence (especially a branch transition) with subjective judgement. Examples of evaluative openers to avoid: `Good`, `Great`, `Nice`, `Excellent`, `Perfect`, `Solid`, `Cool`, `Fair enough`, `Lovely`, `Brilliant`. The list is **illustrative, not exhaustive** — the rule binds on the *category* (evaluative opener), not on the enumerated words.
+- **Acknowledgement openers are permitted.** `Right`, `OK`, `Got it`, `Understood` are neutral confirmations of what the user said, not evaluative reactions. They are allowed.
+- **Branch transitions begin structurally.** A new branch must begin with one of: `Resolved: …`, `Next: …`, `Moving to branch <label> (<name>): …`, or directly with the question itself. Do not pad the transition with evaluative reactions to the previous answer.
+- *Worked example* — violation: `Good — Option 2 sets the precondition. Now: where does the gate get encoded?` Correction: `Resolved: Option 2 sets the precondition. Next: where does the gate get encoded?`
 
 ### Term Resolution
 During the session, if you identify a term that belongs in the domain glossary:
@@ -42,11 +69,14 @@ Once convergence is detected (all branches resolved and no new dependencies surf
 
 Perform the final glossary update to `CONTEXT.md` using the batched terms.
 
+Before listing exits, ask the user a single explicit confirmation question to determine whether the problem is code/technical: "Is this a code/technical problem — a problem whose resolution requires a programming/code related or technical solution?" with options `Yes` / `No` / `I'm not sure`. Use the answer to tailor which exit is recommended most prominently. Skip the question if the problem type is unambiguous from context.
+
 Finally, offer the user the following exit paths:
 1. **Create a plan/PRD**: Use the `to-prd` skill. If unavailable, manually generate a high-level Product Requirements Document reflecting the shared understanding.
-2. **Break into tickets**: Use the `spec-to-tickets` skill when dependency ordering, HITL/AFK classification, or local markdown output is needed. Use the `to-issues` skill for simpler flat decomposition to an issue tracker. If neither is available, manually decompose the plan into implementation tickets.
-3. **Handoff**: Handoff the shared understanding to another agent.
-4. **Custom Save**: Save the shared understanding in another way.
+2. **Hand off to `code-implementation-grilling`** *(only if the problem is a code/technical problem — a problem whose resolution requires a programming/code related or technical solution)*: Use the `code-implementation-grilling` skill to turn the shared understanding into a technical implementation plan. If the problem is not a code/technical problem, skip this exit.
+3. **Break into tickets**: Use the `spec-to-tickets` skill when dependency ordering, HITL/AFK classification, or local markdown output is needed. Use the `to-issues` skill for simpler flat decomposition to an issue tracker. If neither is available, manually decompose the plan into implementation tickets.
+4. **Handoff**: Handoff the shared understanding to another agent.
+5. **Custom Save**: Save the shared understanding in another way.
 
 </what-to-do>
 

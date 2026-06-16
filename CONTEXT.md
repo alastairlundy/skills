@@ -50,9 +50,13 @@ A concrete, measurable objective that grounds a response. Used to evaluate wheth
 
 ## Pass/Fail Gate
 A verification step that produces a binary pass/fail signal based on mechanical criteria. Used to remove the need for self-assessment — the gate's result is the source of truth, not the agent's claim of compliance. Distinguished from a self-administered checklist by the absence of judgment: the agent cannot tick the box without the gate having fired.
-
 ## Code implementation plan
+
 The output artifact of `code-implementation-grilling`: a resolved set of *technical* decisions (language, framework, dependencies, project structure, sub-projects, project type, optional interfaces) derived from an existing spec or PRD. Distinct from a **general plan** (any non-code strategy, ops plan, business plan), a **domain model** (the conceptual map produced by `domain-grilling`), and a **spec/PRD** (the input document).
+
+## code/technical problem
+
+A problem whose resolution requires a programming/code related or technical solution. Used by `domain-grilling` to decide whether the `code-implementation-grilling` exit applies at convergence.
 
 ## ask_question
 A discrete-choice clarification tool. Refers to a tool that lets an LLM pose multi-option questions to the user, with optional free-text override. The name is used in two ways: (1) the abstract affordance name in the `ask-questions` SKILL, and (2) the literal tool name in some agents (e.g., Claude Code's `ask_question` tool). In opencode, the tool that implements this affordance is named `question`; both names refer to the same affordance class.
@@ -83,3 +87,15 @@ A hard verification step in a workflow procedure whose failure prevents the next
 
 ## prose fallback
 A question the LLM asks in its message text *without* invoking `ask_question`. Used as a last resort when the option set genuinely exceeds 2-4 honest options and no tool-compatible adaptation (raise abstraction, sequence, subsume, consolidate) preserves the question's meaning. Subject to the same prose discipline as context prose.
+
+## evaluative opener
+
+A subjective-judgement word used to begin a sentence (e.g., `Good`, `Great`, `Nice`, `Excellent`, `Perfect`, `Solid`, `Cool`, `Fair enough`, `Lovely`, `Brilliant`). Forbidden by the `domain-grilling` SKILL because an LLM has no emotions or subjective opinions to express. Distinguished from an **acknowledgement opener** — a neutral confirmation that is permitted.
+
+## acknowledgement opener
+
+A neutral-confirmation word used to begin a sentence (e.g., `Right`, `OK`, `Got it`, `Understood`). Permitted by the `domain-grilling` SKILL. Distinguished from an **evaluative opener** — a subjective judgement that is forbidden.
+
+## in-session signal
+
+A behaviour in which a skill detects a property of the problem during a session and surfaces that detection at a convergence point to tailor recommendations. Used by `domain-grilling` to decide whether to ask the explicit confirmation question "Is this a code/technical problem?" at convergence, before listing exits.
