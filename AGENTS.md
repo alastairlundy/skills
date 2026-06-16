@@ -8,7 +8,7 @@ skills/<category>/<skill-name>/evals.json ← optional evaluation spec
 docs/agents/                              ← agent-consumable docs for THIS repo
 ```
 
-Categories: `engineering/` (domain tasks), `skills-meta/` (creating/evaluating skills).
+Categories: `engineering/` (domain tasks), `alignment/` (LLM behaviour and expectations), `skills-meta/` (creating/evaluating skills).
 
 ## Skill file conventions
 

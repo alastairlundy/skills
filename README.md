@@ -38,6 +38,7 @@ Skills for ensuring LLMs stay aligned on expectations and behaviour whilst perfo
 | Skill | Description | Notes | 
 |-------|-------------|-------|
 | [anti-slop](skills/alignment/anti-slop/) | Sanitizes LLM output by removing "AI slop", redundant phrasing, and sycophancy to maximize information density and maintain a professional AI identity. | |
+| [ask-questions](skills/alignment/ask-questions/) | Guides LLMs in deciding when and how to ask the user questions via discrete-choice tools (e.g. `ask_question`), or in prose when no tool is available. Teaches a four-gate procedure (trigger, fit, construct, validate) that avoids overwhelming the user. | |
 
 ### "Meta" Skills
 
