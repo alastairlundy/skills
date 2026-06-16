@@ -1,0 +1,7 @@
+id: perf-interfaces-one-type-per-turn
+type: performance
+description: Interface & Model Branch (Step 3) introduces types one at a time with a visible running checklist, and does not present a single 'approve the interface spec as written' gate covering all types.
+input: |
+  Spec at docs/prds/order-service.md: order service with Order, OrderLine, Customer, Address, Payment, Shipment. Run code-implementation-grilling through to interfaces.
+assertion: |
+  Step 3 output introduces types one at a time. The output contains a visible running checklist of types introduced and remaining (e.g., 'Introduced: A, B, C — remaining: D, E, F'). The output does not contain a single bulk-approval gate covering all types (e.g., 'Do you approve the interface spec as written?').

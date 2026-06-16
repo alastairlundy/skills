@@ -1,0 +1,6 @@
+id: no-trigger-open-ended
+type: trigger
+description: Does NOT trigger when the LLM is about to call ask_question for an open-ended exploratory question.
+input: |
+  Tell me about the different approaches to handling state in distributed systems.
+expected: no-trigger

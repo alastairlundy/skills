@@ -1,0 +1,6 @@
+id: trigger-design-new-skill
+type: trigger
+description: Triggers when user wants to design a new agent skill from a high-level goal.
+input: |
+  I want to create a skill that helps developers write better commit messages. Can you help me design it?
+expected: trigger

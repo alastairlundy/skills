@@ -1,0 +1,7 @@
+id: perf-handoff-text-is-fixed-template
+type: performance
+description: Terminal Output uses one of the pre-written handoff templates verbatim, with only <spec-path> and <blueprint-path> substituted. No fabricated section numbers, step counts, or 'section N of' framing.
+input: |
+  Spec at docs/prds/feature-x.md: build a CLI tool that watches a directory for new markdown files and indexes them into SQLite. Run code-implementation-grilling.
+assertion: |
+  The Terminal Output block matches one of the three pre-written handoff templates (ticket consumer / issue tracker / manual handoff) verbatim except for substitution of <spec-path> and <blueprint-path>. Output does not contain fabricated section numbers, invented step counts, or 'section N of M' style framing (e.g., 'section 3 of 5', 'step 5 of 6').

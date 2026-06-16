@@ -1,0 +1,6 @@
+id: trigger-real-decision
+type: trigger
+description: Triggers when the LLM is about to call ask_question tool with a real decision question.
+input: |
+  I need to pick a database for our new service. Should I use PostgreSQL or MySQL?
+expected: trigger

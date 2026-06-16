@@ -1,0 +1,6 @@
+id: trigger-vague-idea-domain-modeling
+type: trigger
+description: Triggers when user has a vague idea with no spec and needs domain modeling.
+input: |
+  I have an idea for a platform that connects freelancers with clients, but I'm not sure how to model the domain. Help me think through the concepts.
+expected: trigger

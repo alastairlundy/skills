@@ -1,0 +1,6 @@
+id: no-trigger-trivial-change
+type: trigger
+description: Does NOT trigger when user wants to make a trivial change to an existing skill.
+input: |
+  Can you fix a typo in the ask-questions SKILL.md file?
+expected: no-trigger

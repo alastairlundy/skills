@@ -1,0 +1,6 @@
+id: trigger-changelog-between-tags
+type: trigger
+description: Triggers when user asks to generate a changelog between two tags.
+input: |
+  Generate a changelog between v1.2.0 and v1.3.0 for this repo.
+expected: trigger

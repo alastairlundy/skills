@@ -1,0 +1,6 @@
+id: no-trigger-single-commit-summary
+type: trigger
+description: Does NOT trigger when user asks for a summary of a single commit.
+input: |
+  Summarize what changed in commit abc1234.
+expected: no-trigger

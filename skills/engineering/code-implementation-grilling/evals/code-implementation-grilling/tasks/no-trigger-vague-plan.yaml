@@ -1,0 +1,6 @@
+id: no-trigger-vague-plan
+type: trigger
+description: Does NOT trigger on a bare 'plan' mention with no spec/PRD present.
+input: |
+  I have a plan for a todo app.
+expected: no-trigger
