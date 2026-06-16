@@ -1,6 +1,7 @@
 ---
 name: ask-questions
-description: Use when about to call the `ask_question` (or equivalent) tool, or when considering whether to ask the user a question. Teaches a four-gate decision procedure: trigger, fit, construct, validate. Addresses under-trigger (LLM doesn't ask unless prompted), mis-appropriation (LLM uses the tool for open-ended questions), and prose fallback as a last resort. Load before any tool-mediated user clarification.
+description: >-
+  Use when about to call the `ask_question` (or equivalent) tool, or when considering whether to ask the user a question. Teaches a four-gate decision procedure: trigger, fit, construct, validate. Addresses under-trigger (LLM doesn't ask unless prompted), mis-appropriation (LLM uses the tool for open-ended questions), and prose fallback as a last resort. Load before any tool-mediated user clarification.
 license: MIT
 ---
 
