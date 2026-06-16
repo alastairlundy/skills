@@ -39,11 +39,32 @@ Analyze the spec for remaining "how" gaps.
 
 ### Step 3: Interface & Model Branch (Optional)
 Ask the user: *"Would you like to be grilled on the specific Interface, Contract, DTO, and Model definitions now?"*
-- **If Yes**:
-    1. **Architectural Separation**: Resolve the separation of concerns and how the code is structured (e.g., will UI-agnostic code be housed in a UI-agnostic business logic layer; what does that layer look like, such as a class library or API).
-    2. **Source of Truth**: If there appear to be conflicting sources of truth for certain functionality or logic, resolve what the ultimate/definitive source of truth is.
-    3. **Detailed Definition**: Resolve the signatures, data types, and relationships for the primary entities.
 - **If No**: Provide the following warning: *"Skipping detailed interface resolution means these details must be determined during implementation. This will likely result in more 'Collaborative' tickets that require human-in-the-loop intervention."*
+- **If Yes**: Walk through three sequenced phases. The phases are sequential, not nested — once a phase transitions, do not interleave its decisions back into a later phase. Each phase uses 1-decision-per-turn discipline.
+
+  #### Phase 1: Architectural Separation
+  Resolve 1-3 architectural decisions one at a time, each with its own gate. Typical decisions:
+  - **Layer boundaries**: Where does one layer end and the next begin?
+  - **Dependency direction**: Which layer depends on which?
+  - **Separation mechanism**: How are layers physically separated (e.g., separate project, class library, microservice)?
+
+  Present each decision with 2-4 options, trade-offs, and a recommendation. Wait for the user's response before presenting the next decision.
+
+  When all architectural decisions are resolved, ask: *"Ready to move to Source of Truth?"* The user confirms or revises before the phase transitions. Do not advance without confirmation.
+
+  #### Phase 2: Source of Truth
+  Identify any conflicts where two plausible sources claim authority for the same functionality or data. If 0 conflicts exist, skip directly to the transition prompt. If 1-3 conflicts exist (typical: 0-2), resolve each one at a time, each with its own gate. For each conflict, present the two plausible sources and ask the user which is canonical. Wait for the user's response before presenting the next conflict.
+
+  When all conflicts are resolved (or none were found), ask: *"Ready to move to the type loop?"* The user confirms or revises before the phase transitions. Do not advance without confirmation.
+
+  #### Phase 3: Detailed Definition (Type Loop)
+  Introduce exactly one named type per turn. For each type:
+  1. Present the type's full signature, fields or properties, and a 1-2 sentence rationale for why it exists.
+  2. **Family carve-out**: a discriminated union (one abstract type plus its concrete variants) is introduced as a family in the abstract type's turn. List the variant names and offer to expand any or all variants on user request. Do not pre-emptively enumerate every variant's fields and properties.
+  3. **Visible running checklist**: after introducing the type, show a single-line running checklist of types already introduced and types still to come (for example: *"Introduced: A, B, C — remaining: D, E, F"*). The checklist is mandatory, not optional.
+  4. **Termination**: ask *"Any more, or ready to move on?"* The user decides whether to introduce the next type, expand a previously introduced family, or close the loop. The agent does not decide when the type list is complete.
+
+  The type loop is 1-decision-per-turn regardless of language (works for C#, TypeScript, Rust, Go, and similar). Do not batch multiple types into a single turn.
 
 ### Step 4: Output Selection
 Present the user with the following two-part choice, one part at a time:
@@ -51,10 +72,12 @@ Present the user with the following two-part choice, one part at a time:
 **Part A: Output format**
 
 **Option A: Implementation Blueprint (Recommended)**
-- **What**: A standalone `IMPLEMENTATION.md` file, with a `Scope Binding` section that links the blueprint to the source spec.
+- **What**: A standalone blueprint file at the repo root, with a `Scope Binding` section that links the blueprint to the source spec.
+- **Filename derivation**: Derive the blueprint filename from the spec's identifying token by input type — file path → basename without extension (e.g., `docs/prds/feature-x.md` → `IMPLEMENTATION-feature-x.md`); issue tracker reference → issue number (e.g., `#123` → `IMPLEMENTATION-123.md`); conversation context → date prefix in `YYYY-MM-DD` form (e.g., `Conversation context (2026-06-15)` → `IMPLEMENTATION-2026-06-15.md`). If the spec is referenced by both a file path and an issue tracker reference, prefer the file path (more descriptive). The default location is the repo root.
 - **Trade-offs**: High clarity; serves as a clean "Context Pointer" for tickets; keeps the PRD focused on "What".
 - **Risks**: Temporary file overhead.
 - **Scope Binding contents**: The blueprint must include `Linked Spec: <path_to_spec>` and a notice that the blueprint is a context pointer valid ONLY for the linked spec and must not be applied to other specifications without explicit authorization.
+- **Filename confirmation**: Before writing the file, surface the resolved filename in a confirmation prompt (e.g., *"I'm going to write the blueprint to `IMPLEMENTATION-feature-x.md` at the repo root — OK?"*). If the user wants a different name, adjust the filename before writing.
 
 **Option B: PRD Augmentation**
 - **What**: Appending a "Technical Implementation" section to the existing spec/PRD.

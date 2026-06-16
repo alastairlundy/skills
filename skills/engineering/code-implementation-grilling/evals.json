@@ -5,6 +5,36 @@
       "description": "Foundation checklist is resolved completely in a single code implementation plan, not partially or with items skipped.",
       "input": "Spec: a CLI todo app that stores tasks in a local JSON file. Features: add, list, complete, remove. Persistence: file-based, no network. Resolve the full technical foundation.",
       "assertion": "Output contains a code implementation plan that resolves all 7 foundation items (Programming Language, Framework/Runtime, Key Dependencies, Project Structure, Sub-projects, Project Type, Foundational Preferences) with a specific choice and rationale for each."
+    },
+    {
+      "id": "perf-handoff-text-is-fixed-template",
+      "description": "Terminal Output uses one of the pre-written handoff templates verbatim, with only <spec-path> and <blueprint-path> substituted. No fabricated section numbers, step counts, or 'section N of' framing.",
+      "input": "Spec at docs/prds/feature-x.md: build a CLI tool that watches a directory for new markdown files and indexes them into SQLite. Run code-implementation-grilling.",
+      "assertion": "The Terminal Output block matches one of the three pre-written handoff templates (ticket consumer / issue tracker / manual handoff) verbatim except for substitution of <spec-path> and <blueprint-path>. Output does not contain fabricated section numbers, invented step counts, or 'section N of M' style framing (e.g., 'section 3 of 5', 'step 5 of 6')."
+    },
+    {
+      "id": "perf-interfaces-one-type-per-turn",
+      "description": "Interface & Model Branch (Step 3) introduces types one at a time with a visible running checklist, and does not present a single 'approve the interface spec as written' gate covering all types.",
+      "input": "Spec at docs/prds/order-service.md: order service with Order, OrderLine, Customer, Address, Payment, Shipment. Run code-implementation-grilling through to interfaces.",
+      "assertion": "Step 3 output introduces types one at a time. The output contains a visible running checklist of types introduced and remaining (e.g., 'Introduced: A, B, C — remaining: D, E, F'). The output does not contain a single bulk-approval gate covering all types (e.g., 'Do you approve the interface spec as written?')."
+    },
+    {
+      "id": "perf-blueprint-filename-derived-from-spec",
+      "description": "Step 4 confirmation prompt shows the blueprint filename derived from the spec's identifying token, not the hard-coded IMPLEMENTATION.md.",
+      "input": "Spec at docs/prds/feature-x.md: build a CLI todo app. Run code-implementation-grilling.",
+      "assertion": "Step 4 confirmation prompt shows a blueprint filename of the form IMPLEMENTATION-feature-x.md (derived from the spec's identifying token), not a hard-coded IMPLEMENTATION.md. The output contains a confirmation prompt of the shape 'I'm going to write the blueprint to IMPLEMENTATION-feature-x.md ...' (or equivalent derived filename). The output does not propose writing to a bare IMPLEMENTATION.md."
+    },
+    {
+      "id": "perf-terminal-output-emitted-on-every-run",
+      "description": "The Terminal Output (Required) block is emitted on every workflow run, not sometimes omitted.",
+      "input": "Spec at docs/prds/payment-service.md: payment service with idempotent charges. Run code-implementation-grilling.",
+      "assertion": "Output contains the 'Terminal Output (Required)' block on every run, with one of the three pre-written handoff templates filled in (ticket consumer / issue tracker / manual handoff) and <spec-path>/<blueprint-path> substituted. The output is not missing the Terminal Output block."
+    },
+    {
+      "id": "perf-no-skill-names-mid-workflow",
+      "description": "Workflow body (Steps 1-5) does not name a specific downstream skill; skill names appear only in the Terminal Output section's pre-written handoff templates.",
+      "input": "Spec at docs/prds/feature-x.md: build a CLI todo app. Run code-implementation-grilling.",
+      "assertion": "The workflow body for Steps 1-5 contains no reference to a specific downstream skill by name (e.g., 'spec-to-tickets', 'to-issues'). Step 4's downstream-consumer choice may use generic labels ('ticket consumer', 'issue tracker', 'manual handoff') but must not name a specific skill. Skill names appear only inside the Terminal Output section's pre-written handoff templates."
     }
   ],
   "trigger": [
