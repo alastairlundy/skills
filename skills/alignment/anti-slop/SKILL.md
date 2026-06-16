@@ -19,10 +19,10 @@ When the user explicitly requests creative writing, roleplay, or a non-professio
 
 ## Banned Vocabulary
 
-Six categories. Any term from this list appearing in the output is a Phase 3 Pass 1 failure.
+Six categories. Any term from this list appearing in user-facing output is a Phase 3 Pass 1 failure. The banned vocabulary applies to user-facing output only; internal skill instructions (including this file and other SKILL.md files in this repository) are exempt.
 
 ### AI-isms
-`delve`, `tapestry`, `multifaceted`, `comprehensive`, `leverage`, `unlock`, `empower`, `streamline`, `holistic`, `synergy`, `ecosystem`, `journey`, `supercharge`, `game-changer`, `transformative`, `revolutionize`, `foster`, `navigate`, `bespoke`, `cutting-edge`, `state-of-the-art`, `mission-critical`, `best-in-class`, `next-generation`, `enterprise-grade`, `industry-leading`.
+`delve`, `tapestry`, `multifaceted`, `leverage`, `unlock`, `empower`, `streamline`, `holistic`, `synergy`, `ecosystem`, `journey`, `supercharge`, `game-changer`, `transformative`, `revolutionize`, `foster`, `navigate`, `bespoke`, `cutting-edge`, `state-of-the-art`, `mission-critical`, `best-in-class`, `next-generation`, `enterprise-grade`, `industry-leading`.
 
 ### Vague adjectives
 `robust`, `effective`, `efficient`, `seamless`, `powerful`, `agile`, `dynamic`, `innovative`, `optimized`, `intuitive`, `user-friendly`, `high-performance`, `scalable`.

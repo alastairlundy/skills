@@ -13,6 +13,7 @@ license: MIT
 - When starting a new feature or architectural change that requires deep conceptual alignment.
 - When the domain language is evolving or "fuzzy" and needs a canonical glossary.
 - When you want to stress-test a design against existing codebase realities and architectural trade-offs.
+- When user input would clarify the request, invoke ask-questions
 
 ## When Not to Use
 - When a spec or PRD is already present and the goal is technical decisions (language, framework, dependencies, project structure, sub-projects, project type) — defer to `code-implementation-grilling`.
@@ -28,31 +29,43 @@ Interview me relentlessly about every aspect of this plan until we reach a share
 
 For every question you ask, you must provide:
 
-1. **All natural options**: Enumerate the viable alternatives (typically 2-4). Each option must be a genuinely defensible choice, not a strawman. Each option is a structured block with these four fields, **one sentence per field**:
+1. **All natural options**: Enumerate the viable alternatives (typically 2-4). Each option must be a genuinely defensible choice, not a strawman. Each option is a structured block with these four fields, **one sentence per field**. Write in Professional Minimalist style: punchy, direct, clear. No filler:
    - **What it is** — one sentence describing the option.
-   - **Benefit** — one sentence describing the gain if this option is chosen.
-   - **Trade-off** — one sentence describing the cost or sacrifice. The trade-off carries the *cost* side only; do not re-list the benefit here. "Trade-off" names a sacrifice, not a label for "any positive attribute".
-   - **Risk** — one sentence describing what could go wrong or the long-term implications.
+   - **Benefit** — one sentence describing the gain if this option is chosen. Answers: "What do I get?"
+   - **Cost** — one sentence describing the realistic/actual sacrifice. Answers: "What do I definitely give up?"
+   - **Risk** — one sentence describing what might go wrong later. Answers: "What could happen in the future?"
    - *Worked example (per-option block)*:
-     - **Option 1 — Format-locked recommendation.** What it is: the recommendation line follows a strict template with the option name copied verbatim. Benefit: deterministic; easy to lint. Trade-off: slightly rigid; cannot express "almost-Option-1-but-…" nuance. Risk: a future LLM may try to "improve readability" by paraphrasing the option name.
+     - **Option 1 — Format-locked recommendation.** What it is: the recommendation line follows a strict template. Benefit: deterministic and easy to lint automatically. Cost: slightly rigid phrasing for edge cases. Risk: a future LLM may paraphrase the option name.
 
 2. **Your recommendation**: the recommendation is a **two-field breakdown** with explicit labels:
    - `Recommendation: Option N — <name>.` — `<name>` is copied **verbatim** from the option's heading above. Do not paraphrase, abbreviate, or re-order the name. Do not modify, augment, combine, or qualify the option. If a clause is essential, promote it to a *separate* option first, then recommend that option.
    - `Reasoning: <one-to-two sentences>.` — why this option's trade-offs and risks are acceptable in this specific context. Justify the recommended option only; do not re-justify the rejected options.
    - *Worked example* — violation: `Recommendation: Option 1 with a "spirit-of-the-rule" extension clause.` Correction: either drop the clause and recommend `Option 1 — Explicit phrasing lists.` cleanly, or promote the clause to a new `Option 5` and recommend that.
 
-3. **Strategic Risk/Pattern Alert**: if the decision involves a known architectural risk or a high-level pattern (e.g., Consistency risks, Boundary leakage, Distributed transactions), explain the long-term implication of this choice regardless of which option is selected.
+3. **Strategic Risk/Pattern Alert**: if the decision involves a known architectural risk or a high-level pattern (e.g., Consistency risks, Boundary leakage, Distributed transactions), explain the long-term implication regardless of which option is selected. Keep it brief and direct.
 
 Ask questions one at a time, waiting for feedback on each before continuing. If a question can be answered by exploring the codebase, do that first.
 
-**Locked question format.** When asking the user to choose between options, use the exact template:
+**Locked question format.** When asking the user to choose between options, use the exact template on its own line, separated by blank lines from surrounding text:
 
-> For [branch label] — [branch name], which option do you choose, or describe your own answer.
+**For [branch label] – [branch name]: pick an option, or provide your answer.**
 
 - `[branch label]` is the short stable identifier the LLM introduced when opening the branch (e.g., `Branch B`).
 - `[branch name]` is the human-readable name the LLM gave the branch (e.g., `where the gate lives`).
 - Use the same label and name verbatim in every question for that branch. Do not rephrase, abbreviate, or rename mid-session.
-- The `, or describe your own answer` suffix is fixed; do not vary it. The user is always permitted to push back, modify, or replace the options.
+- The `: pick an option, or provide your answer.` suffix is fixed; do not vary it. The user is always permitted to push back, modify, or replace the options.
+
+### Conciseness and Clarity
+
+Write tight. Every sentence must earn its place. Cut filler words, hedge words, and redundant qualifiers.
+
+**Professional Minimalist style:** punchy, direct sentences. Prioritize clarity and brevity. If a sentence can be shorter without losing meaning, shorten it. No rigid word counts or punctuation bans — let natural professional phrasing carry the content.
+
+For optional style guidance, patterns, and before/after examples, see [CONCISE-WRITING.md](./references/CONCISE-WRITING.md).
+
+### Forbidden Filler Words
+
+Never use these words or phrases: `basically`, `essentially`, `actually`, `just`, `simply`, `in order to`, `it is important to note`, `it's worth noting`, `keep in mind`, `note that`, `needless to say`, `at the end of the day`, `when all is said and done`.
 
 ### Tone and Output Discipline
 
@@ -60,18 +73,17 @@ Maintain a neutral, non-evaluative tone throughout the session. Treat the user's
 
 - **No evaluative openers.** Do not begin a sentence (especially a branch transition) with subjective judgement. Examples of evaluative openers to avoid: `Good`, `Great`, `Nice`, `Excellent`, `Perfect`, `Solid`, `Cool`, `Fair enough`, `Lovely`, `Brilliant`. The list is **illustrative, not exhaustive** — the rule binds on the *category* (evaluative opener), not on the enumerated words.
 - **Acknowledgement openers are permitted.** `Right`, `OK`, `Got it`, `Understood` are neutral confirmations of what the user said, not evaluative reactions. They are allowed.
+- **Neutral Mirroring.** After acknowledging, summarize the user's point in their own terminology before moving on. This confirms understanding and keeps the domain language grounded in the user's mental model. Template: `Understood. You're saying [summarized point using user's terms].` Then transition to the next branch or question.
 - **Branch transitions begin structurally.** A new branch must begin with one of: `Resolved: …`, `Next: …`, `Moving to branch <label> (<name>): …`, or directly with the question itself. Do not pad the transition with evaluative reactions to the previous answer.
-- *Worked example* — violation: `Good — Option 2 sets the precondition. Now: where does the gate get encoded?` Correction: `Resolved: Option 2 sets the precondition. Next: where does the gate get encoded?`
+- *Worked example* — violation: `Good — Option 2 sets the precondition. Now: where does the gate get encoded?` Correction: `Understood. You're saying Option 2 sets the precondition. Next: where does the gate get encoded?`
 
 ### Term Resolution
 During the session, if you identify a term that belongs in the domain glossary:
 1. Propose the term and your understood meaning to the user.
-2. If accepted, queue this term for the glossary.
-3. Do NOT write to `CONTEXT.md` during the questioning phase; batch all resolved terms for a single update once convergence is reached.
+2. If accepted, write the term to `CONTEXT.md` immediately. Do not batch — immediate writes prevent drift and give both you and the user a persistent, up-to-date record to reference in later branches.
+3. If the user revises the definition during a later branch, update the `CONTEXT.md` entry at that point.
 
-Once convergence is detected (all branches resolved and no new dependencies surfaced), explicitly declare: "We have reached a shared understanding." 
-
-Perform the final glossary update to `CONTEXT.md` using the batched terms.
+Once the convergence check passes (all branches resolved, mutually consistent, and no new dependencies surfaced), explicitly declare: "We have reached a shared understanding." 
 
 Before listing exits, ask the user a single explicit confirmation question to determine whether the problem is code/technical: "Is this a code/technical problem — a problem whose resolution requires a programming/code related or technical solution?" with options `Yes` / `No` / `I'm not sure`. Use the answer to tailor which exit is recommended most prominently. Skip the question if the problem type is unambiguous from context.
 
@@ -115,10 +127,11 @@ If a `CONTEXT-MAP.md` exists at the root, the repo uses multiple contexts. The m
 
 ## Session Guidelines
 
-### Linear Dependency Resolution
+### Iterative Dependency Resolution
 - Identify all "branches" (conceptual areas/decisions) of the design tree.
-- Resolve these branches sequentially.
-- Transition to the next branch only after the current one is fully resolved.
+- Resolve these branches sequentially, but **re-open any resolved branch** if a later discovery reveals a conceptual contradiction or dependency that invalidates an earlier decision.
+- When re-opening a branch, state which new information triggered it and what specifically needs revisiting.
+- **Convergence Check**: before declaring convergence, verify that all resolved branches remain mutually consistent. If any branch contradicts another, re-open the conflicting branches and resolve the contradiction before proceeding.
 
 ### Challenge against the glossary
 When the user uses a term that conflicts with `CONTEXT.md`, present the conflict as a choice between the glossary definition and the user's apparent meaning. "Your glossary defines 'cancellation' as X (voiding the order before payment), but you seem to mean Y (refunding after payment). These have different domain boundaries. Which is correct for your context — or do you need both terms?"
