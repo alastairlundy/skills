@@ -1,7 +1,7 @@
 ---
 name: anti-slop
 description: >-
-  Always use this skill. Removes AI slop, vague phrasing, and sycophancy from LLM output. Only defer when the user explicitly requests creative or roleplay content.
+  Constrains vocabulary and enforces structural rules on generated prose. Use when the deliverable is user-facing text (documentation, PR descriptions, commit messages, prose reviews) and the task is to produce tight, high-density writing. Do not use when the deliverable is code, tool execution, or content explicitly requested as creative/roleplay.
 license: MIT
 ---
 
@@ -11,7 +11,10 @@ This skill enforces high-density, objective communication. It eliminates artific
 
 ## When to Use
 
-- Applies by default to all professional, technical, and analytical responses.
+- Generating user-facing prose (documentation, READMEs, commit messages, PR descriptions)
+- Polishing or rewriting existing prose for density and precision
+- Reviewing output before delivery to catch sycophantic or vague phrasing
+- Responding to tasks where the deliverable is a written artifact, not code or tool execution
 
 ## When Not to Use
 
