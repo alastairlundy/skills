@@ -36,6 +36,16 @@ Run evaluations with `waza run` and serve the eval UI with `waza serve`.
 
 Derived content from upstream MIT sources must include attribution in the skill's documentation or comments.
 
+## Skill conventions
+
+### Templates
+
+Short templates (<20 lines) live inline in `SKILL.md`. Longer templates (≥20 lines) live in `references/` and are referenced from `SKILL.md` with a load-trigger sentence ("Load `references/X.md` before Y"). Templates in `SKILL.md` consume context on every activation; templates in `references/` load only when needed. See `skills/engineering/spec-to-tickets/references/ticket-template.md` for an example.
+
+### Trigger shape
+
+Skills activate conditionally, not by default. The "When to Use" section must list specific scenarios the skill applies to. Unconditional triggers ("applies by default", "always use this") are not permitted — they cause skills to compete with task-specific skills for context on every step. See `skills/alignment/anti-slop/SKILL.md` for an example.
+
 ## Agent skills
 
 ### Issue tracker
