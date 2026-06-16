@@ -4,7 +4,10 @@
 A specialized tool that operates on an existing skill directory to verify its correctness and performance. It is decoupled from the initial skill creation process.
 
 ## Ticket
-A handoff artifact scoping one session of work. Stands alone or hangs off a spec as one of its children. Contains goal, acceptance criteria, context pointers, and dependency relationships. Sized for at most 3-4 hours of focused work. Can be implemented by a human or agent.
+A handoff artifact scoping one session of work. Stands alone or hangs off a spec as one of its children. Contains goal, recommended workflow, acceptance criteria, context pointers, and dependency relationships. Sized for at most 3-4 hours of focused work. Can be implemented by a human or agent.
+
+## Recommended Workflow
+A section within a ticket that breaks implementation into ordered steps. Always present (minimum 1 step). Each step has four elements: a verb-phrase title, Where (file paths), bulleted actions, and Verify (a micro-verification). Distinct from Acceptance criteria, which are macro-verifications for the ticket as a whole. Steps can be reordered by the implementer but must respect inter-step dependencies.
 
 ## Session
 A focused work session. A ticket should be completable within at most 3-4 hours. If sessions routinely degrade before completion, tickets are too large; if sessions spend most context on setup, tickets are too small.
