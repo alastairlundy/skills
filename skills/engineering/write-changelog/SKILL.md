@@ -1,7 +1,7 @@
 ---
 name: write-changelog
 description: >-
-  Generates a repo-agnostic, user-facing markdown changelog by analyzing git history, transforming commit messages, and categorizing changes into logical sub-projects.
+  Generates an ecosystem-aware, user-facing markdown changelog by analyzing git history, transforming commit messages, and categorizing changes into logical sub-projects.
 license: MIT
 ---
 
@@ -9,9 +9,9 @@ license: MIT
 
 ## When to Use
 
-- Creating release notes for a new version.
-- Summarizing changes between two git tags or a tag and the current HEAD.
-- Generating structured changelogs for monorepos with multiple sub-projects.
+- Create release notes for a new version.
+- Summarize changes between two git tags or a tag and the current HEAD.
+- Generate structured changelogs for monorepos with multiple sub-projects.
 - When user input would clarify the request, invoke ask-questions
 
 ## When Not to Use
@@ -26,14 +26,17 @@ license: MIT
 | Prior Git Tag/Commit | Yes | The starting point of the changelog range. |
 | Target Branch/Commit | No | The end point of the range. Defaults to current HEAD. |
 | Destination file | No | Path to save the output. If omitted, outputs to the conversation. |
+| Use Emojis | No | Prefix category headings with emoji (🆕 🗑️ ⚙️ 🐛 📄 ⚠️). Set to "No" for plain text. Defaults to "Yes". |
 
 ## Workflow
 
 ### Step 1: Project Discovery
-- Identify sub-projects/packages in a repo-agnostic manner:
+- Identify sub-projects/packages in an ecosystem-aware manner:
     1. Scan for project files (`.csproj`, `package.json`, `go.mod`, `pom.xml`, etc.) using `glob`.
     2. If no project files are found, group by top-level directories (excluding `docs/`, `.github/`, `tests/`).
-    3. If the structure is ambiguous, list detected directories and ask the user to define the packages.
+    3. If the structure is ambiguous:
+        - **Interactive run**: list detected directories and ask the user to define the packages (via the ask-questions skill).
+        - **Non-interactive run**: default to grouping by top-level directories, excluding `docs/`, `.github/`, and `tests/` (same rule as the no-project-files branch above).
 
 ### Step 2: Commit Retrieval & Analysis
 - Retrieve git history for the specified range.
@@ -54,7 +57,7 @@ license: MIT
     - **Global** — recommended when the repo root contains mixed content (docs, CI, scripts, config).
     - **All Packages** — recommended for monorepos with multiple sub-projects/packages.
     - **All Projects** — recommended for solution-based repos (e.g., .NET `.sln` with multiple `.csproj`).
-- Use the `question` tool (if available) to ask the user to choose: "Global", "All Packages", "All Projects", or "Other (specify)".
+- Use the ask-questions skill to apply the four-gate procedure, and ask the user to choose: "Global", "All Packages", "All Projects", or "Other (specify)".
 - If the tool is unavailable or the user declines, default to "Global".
 
 ### Step 5: Markdown Construction
@@ -65,18 +68,13 @@ license: MIT
         - **CI Dependencies**: GitHub Actions, analyzers, build tooling, and CI configuration changes.
         - **Testing Dependencies**: Test framework packages and test infrastructure updates.
     2. **Sub-project Sections**: Grouped by the packages identified in Step 1.
-- Within each section, group changes by category in the following order:
-    - 🆕 Additions
-    - 🗑️ Removals
-    - ⚙️ Modifications
-    - 🐛 Bug Fixes
-    - 📄 Non Source Code
-    - ⚠️ Deprecations
+        - **Dependency updates within a sub-project**: appear as inline `⚙️ Modifications` entries within that sub-project's section, with no Runtime/CI/Testing sub-categories.
+- Within each section, group changes by category. Categories follow Keep-a-Changelog order; the Security category is omitted (security-related fixes land in 🐛 Bug Fixes). Categories appear in the following order: 🆕 Additions, ⚙️ Modifications, ⚠️ Deprecations, 🗑️ Removals, 🐛 Bug Fixes, 📄 Non Source Code. When `Use Emojis: Yes` (the default), each category heading is prefixed with the emoji shown; when `Use Emojis: No`, each category is rendered as a plain bold heading with no prefix.
 - Use markdown bullet points for each entry.
 
 ### Step 6: Output Phase
 - If a destination file is provided, check if it exists. If so, ask the user for permission to overwrite before writing.
-- Otherwise, output the final markdown string to the conversation.
+- Otherwise, output the final markdown string to the conversation. When run non-interactively, the skill applies the Step 1 and Step 4 fallbacks above and does not prompt the user.
 
 ## Validation
 
@@ -85,6 +83,7 @@ license: MIT
 - [ ] Commit messages are transformed from developer-style to user-facing style.
 - [ ] "Non Source Code" changes are appropriately split between Global and Package sections.
 - [ ] Global dependency sub-sections (Runtime, CI, Testing) are only present when they contain entries.
+- [ ] Toggling the `Use Emojis` input flips the presence of emoji prefixes on category headings (default = emojis present).
 
 ## Common Pitfalls
 
