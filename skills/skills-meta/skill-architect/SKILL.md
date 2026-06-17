@@ -23,7 +23,7 @@ The Skill Architect is an intellectual design phase for creating agent skills. I
 
 ## Workflow
 
-**Default Output Mode**: By default, this skill operates entirely within the conversation. You must draft the skill's design and present it as markdown text. You MUST NOT use any file system modification tools (e.g., `write`, `edit`, `bash` for file creation) unless the user explicitly requests that the skill be written directly to the file system. If this request is made, complete the architectural design first, then transition to the implementation phase using the `create-skill` skill or appropriate scaffolding tools.
+**Default Output Mode**: By default, this skill operates entirely within the conversation. You must draft the skill's design and present it as markdown text. You MUST NOT use any file system modification tools (e.g., `write`, `edit`, `bash` for file creation) unless the user explicitly requests that the skill be written directly to the file system. If this request is made, complete the architectural design first, then transition to the implementation phase using the `create-skill` skill. If `create-skill` is not available, use the `write` tool to create the skill file at `skills/<category>/<skill-name>/SKILL.md`.
 
 ### Step 1: Intent Intake
 Collect the high-level goal, target audience, and any initial sketches or "fuzzy" requirements. Identify the core value proposition of the skill.
