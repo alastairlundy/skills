@@ -1,0 +1,6 @@
+id: no-trigger-mode-opt-out
+type: trigger
+description: Does NOT trigger trivial questions in opt-out mode (user said "just do it").
+input: |
+  Just do it. Use your judgment on the file naming convention for the new module.
+expected: no-trigger

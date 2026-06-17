@@ -1,7 +1,7 @@
 ---
 name: ask-questions
 description: >-
-  Use when about to call the `ask_question` (or equivalent) tool, or when considering whether to ask the user a question. Teaches a four-gate decision procedure: trigger, fit, construct, validate. Addresses under-trigger (LLM doesn't ask unless prompted), mis-appropriation (LLM uses the tool for open-ended questions), and prose fallback as a last resort. Load before any tool-mediated user clarification.
+  Addresses under-trigger (LLM doesn't ask unless prompted) and mis-appropriation (LLM uses the tool for open-ended questions). Use when about to call the `ask_question` (or equivalent) tool, or when considering whether to ask. Teaches a four-gate decision procedure: trigger, fit, construct, validate, with prose fallback as a last resort. Load before any tool-mediated user clarification.
 license: MIT
 ---
 
@@ -22,7 +22,7 @@ Both failures stem from a single broken decision procedure. This skill replaces 
 
 ## When Not to Use
 
-- For rhetorical questions (the LLM is making a point, not soliciting input).
+- For questions where the LLM is making a point rather than soliciting input (e.g., a sentence ending in "isn't it?" that the LLM does not expect the user to answer).
 - When the user has explicitly opted out of being asked.
 - When the LLM can resolve the question from context, code, or safe inference.
 - For trivial confirmations better handled by proceeding and showing the work.
@@ -35,7 +35,6 @@ Both failures stem from a single broken decision procedure. This skill replaces 
 | `label` | The option's short scannable title. |
 | `description` | The option's short discriminative explanation, shown beneath the label. |
 | `context prose` | The LLM's message text *before* the tool call, carrying the longer setup. |
-| `decision surface` | The tool call itself, the discrete-choice UI. |
 | `call` | A single invocation of the `ask_question` tool. |
 | `trigger` | The Gate 1 test: is this a real question worth asking? |
 | `fit test` | The Gate 2 test: does this question fit the tool? |
@@ -65,30 +64,17 @@ The user has explicitly declined being asked. Fall back from the inverted trigge
 ### Neutral mode (default)
 Neither invited nor opted-out. Apply the inverted trigger without the batching escape.
 
-### Extension clause
-If a phrase carries the spirit of an invitation or opt-out (e.g., "what would you ask me?" implies invitation), apply the corresponding mode even if not on the list. Extension is by analogy, not by free interpretation. The signal must be about *this conversation*: "I have questions about X" is not an invitation — the user is planning to ask *you*.
-
 ## Workflow
 
-```mermaid
-flowchart TD
-    Start[About to ask?] --> G1{Gate 1: Trigger}
-    G1 -->|opt-out active| OC{can proceed without asking?}
-    OC -->|no| Ask1[ask with strict criterion]
-    OC -->|yes| Stop1[don't ask]
-    G1 -->|inverted test fails| Stop1
-    G1 -->|inverted test passes| G2{Gate 2: Fit}
-    G2 -->|not a decision question| Reframe[reframe or don't ask]
-    G2 -->|decision, 2-4 honest options| PathA[Gate 3 Path A: Tool call]
-    G2 -->|decision, but too many options| Adapt{try adaptations}
-    Adapt -->|preserves meaning| PathA
-    Adapt -->|no adaptation works| PathB[Gate 3 Path B: Prose fallback]
-    PathA --> G4{Gate 4: Validate}
-    PathB --> G4
-    G4 -->|all gates pass| Submit[Submit]
-    G4 -->|any gate fails| Fix[Fix and re-validate]
-    Fix --> G4
-```
+The four gates run in order. At every gate, failure stops the workflow.
+
+| Step | Test | Pass | Fail |
+|---|---|---|---|
+| **Gate 1: Trigger** | Detect mode (per the mode detection table above). Apply the inverted trigger: is there a real question whose answer would change the LLM's next action AND that the LLM cannot resolve from context, code, or safe inference? In opt-out mode, the bar is stricter: ask only if the LLM cannot proceed without the answer. | Proceed to Gate 2. | Do not ask. |
+| **Gate 2: Fit** | Sub-check A — Is this a decision question (discrete choice between realistic alternatives) or an honestly bracketed continuum? Sub-check B — Can the question be honestly consolidated into 2-4 options after trying adaptations (raise abstraction, sequence, subsume, consolidate)? | Sub-checks A and B both pass → proceed to Gate 3 Path A. | Sub-check A fails → reframe or do not ask. Sub-check B fails after all adaptations → proceed to Gate 3 Path B. |
+| **Gate 3 Path A: Tool call** | Construct the call per Path A rules (context prose, 1 question by default, 2-4 options, alphabetical, recommendation marker if applicable, ≤6-word labels, ≤80-char descriptions, ≤30-char headers). | Proceed to Gate 4. | Fix and re-validate. |
+| **Gate 3 Path B: Prose fallback** | Construct the prose question (1 question at a time, options as a numbered or bulleted list, prose necessary to make the choice, recommendation indicated in prose only). | Proceed to Gate 4. | Fix and re-validate. |
+| **Gate 4: Validate** | Run the mechanical checks listed in the [Validation](#validation) section: Trigger, Fit, Count, Independence, Order, Prose Discipline, Term Purity. | Submit. | Fix and re-validate; do not submit a failing draft. |
 
 Each gate is a hard checkpoint: if it fails, the LLM does not proceed to the next gate.
 
@@ -97,8 +83,7 @@ Each gate is a hard checkpoint: if it fails, the LLM does not proceed to the nex
 Apply the **inverted trigger**: ask when there is a real question whose answer would change the LLM's next action AND that the LLM cannot resolve from context, code, or safe inference.
 
 - If the LLM finds itself writing "I can probably infer X," that is not resolution — ask.
-- If **opt-out mode** is active, fall back to: ask only when the LLM cannot proceed at all without the answer.
-- If **neutral mode** and the inverted test fails, do not ask.
+- Apply the active mode's trigger rule (per the mode detection table above): opt-out mode raises the bar to "cannot proceed without the answer"; neutral mode applies the inverted trigger as written; invited mode does not change the trigger, only the batching rule (see Gate 3 Path A).
 - If the trigger passes, proceed to Gate 2.
 
 ### Gate 2: Fit
@@ -131,7 +116,7 @@ Two paths from Gate 2.
 
 1. **Write context prose first.** The prose sets up the decision. It exists to make the choice legible, not to teach the topic. *Test:* if the user can pick correctly without reading the prose, the prose is too long.
 2. **Construct the tool call:**
-   - **1 question per call by default.** Batch 2-3 questions only if both (a) demonstrably independent and (b) the user is in invited mode.
+   - **1 question per call by default.** Batch 2-3 questions only if both (a) demonstrably independent and (b) the user is in invited mode (per the mode detection table above).
    - **2-4 options per question.** Each option must be a real stance, not a forced binning.
    - **Alphabetical order.** The marker is the signal; position is for predictability.
    - **Mark the recommended option** (if the LLM has one) with `(Recommended)`. The recommendation is what the LLM would commit to on the user's behalf given the user's stated context — not the LLM's preferred architecture, not the most common choice.
@@ -175,6 +160,38 @@ Which fits?
 ```
 
 **Tool call:** 1 question, 3 options, alphabetical, no recommendation (depends on context not in scope).
+
+```json
+{
+  "questions": [
+    {
+      "header": "DI container",
+      "question": "Which DI container should we wire up?",
+      "options": [
+        {
+          "label": "Autofac",
+          "description": "Featureful, supports assembly scanning"
+        },
+        {
+          "label": "Manual constructor injection",
+          "description": "No library, just `new()` everywhere"
+        },
+        {
+          "label": "Microsoft.Extensions.DependencyInjection",
+          "description": "Built into ASP.NET Core, no extra dep"
+        }
+      ]
+    }
+  ]
+}
+```
+
+**Field-check annotations** (verifying the Count Gate):
+
+- `header: "DI container"` — 12 chars, under the 30-char cap.
+- All 3 `label` values — noun phrases, parallel form, ≤6 words.
+- All 3 `description` values — 38, 35, 37 chars respectively; all under the 80-char cap; each discriminates (explains why pick this over the others).
+- 1 question, 3 options — within the 1-3 / 2-4 limits.
 
 ### Example B: Should-not-ask
 
