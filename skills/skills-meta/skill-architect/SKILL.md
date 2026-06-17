@@ -42,6 +42,8 @@ For each branch identified in Step 2, translate the intent into a deterministic 
 4. **Iterative Resolution**: Resolve one intent/branch per turn to maintain precision and avoid batching errors.
 
 ### Step 4: Compliance Mapping
+Before performing compliance checks, load `references/skill-standards.md` to obtain the authoritative standards target.
+
 Organize the resolved deterministic logic into the mandatory skill schema:
 - **Frontmatter**: Generate a concise `name` and `description`.
 - **When to Use**: Define the precise triggers for the skill.
