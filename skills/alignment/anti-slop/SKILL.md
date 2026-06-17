@@ -122,8 +122,8 @@ A summary is permitted only if it restates the Goal Constraint and names the nex
 
 ## Validation
 
-The final output must pass three mechanical gates. Each gate is independently verifiable.
+The final output must pass three mechanical gates. Each gate is a self-administered check: the LLM scans its own output before responding. Each gate is independently verifiable.
 
-- [ ] **Vocabulary Gate** — No word from the Banned Vocabulary list appears in the output. (Pass / Fail)
-- [ ] **Structural Gate** — Every sentence satisfies the three structural rules (with escape hatches applied). (Pass / Fail)
-- [ ] **Summary Gate** — Either no summary is present, or the summary restates the Goal Constraint and names the next concrete action. (Pass / Fail)
+- [ ] **Vocabulary Gate** — No word from the Banned Vocabulary list appears in the output. (Self-check: Pass / Fail)
+- [ ] **Structural Gate** — Every sentence satisfies the three structural rules (with escape hatches applied). (Self-check: Pass / Fail)
+- [ ] **Summary Gate** — Either no summary is present, or the summary restates the Goal Constraint and names the next concrete action. (Self-check: Pass / Fail)
