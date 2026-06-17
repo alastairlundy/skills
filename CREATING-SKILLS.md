@@ -10,16 +10,18 @@ Every skill must be placed in `skills/<category>/<skill-name>/SKILL.md` where:
 
 If your skill doesn't fit into an existing category, open an issue to discuss creating a new category before submitting.
 
-## Required SKILL.md Sections
+## Required SKILL.md Structure
 
-Every `SKILL.md` must contain:
+Every `SKILL.md` must start with an H1 title (`# <Skill Name>`) and contain:
 
 ### 1. YAML Frontmatter
 
 ```yaml
 ---
 name: skill-name
-description: Concise description of what the skill does and when to use it
+description: >-
+  Concise description of what the skill does and when to use it
+license: MIT
 ---
 ```
 
@@ -27,7 +29,9 @@ The `description` field is critical for skill discovery — it determines when t
 
 ### 2. When to Use
 
-Define precise triggers for the skill. List specific scenarios where the skill should be activated.
+Define precise triggers for the skill using a bulleted list format. List specific scenarios where the skill should be activated.
+
+If the skill's workflow may need user clarification, include a bullet that invokes the `ask-questions` skill.
 
 ### 3. When Not to Use
 
@@ -46,45 +50,16 @@ Each step should be:
 
 Provide a checklist that allows agents to verify they have correctly followed the skill's workflow. Each item should be verifiable against the skill's output or process.
 
-## Optional Files
+## Required Files
 
-### evals.json
+### evals/
 
-Define evaluation test cases for the skill:
-
-```json
-{
-  "performance": [
-    {
-      "id": "test-1",
-      "description": "What this test validates",
-      "input": "The input to provide to the skill",
-      "assertion": "regex or description of expected output"
-    }
-  ],
-  "trigger": [
-    {
-      "id": "trigger-1",
-      "description": "Should trigger on this input",
-      "input": "Test input",
-      "expected": "trigger"
-    },
-    {
-      "id": "trigger-2",
-      "description": "Should NOT trigger on this input",
-      "input": "Test input",
-      "expected": "no-trigger"
-    }
-  ]
-}
-```
-
-### Waza Eval Suite
-
-For skills using the Waza CLI evaluator, create:
+Every skill must include a Waza Eval Suite in `evals/<skill-name>/`:
 - `eval.yaml` — evaluation configuration
 - `tasks/` — individual task definitions
 - `fixtures/` — test inputs and expected outputs
+
+Run evaluations with `waza run` and serve the eval UI with `waza serve`.
 
 See the [Waza documentation](https://github.com/microsoft/waza) for format details.
 
@@ -109,13 +84,17 @@ Skills should reference the repository's domain documentation:
 
 Each skill should solve one specific problem. If a skill is trying to do too much, split it into multiple skills with clear boundaries.
 
+### Attribution
+
+Derived content from upstream MIT sources must include attribution in the skill's documentation or comments.
+
 ## Testing Your Skill
 
 Before submitting a skill:
 
 1. **Manual testing** — Load the skill and run it through representative scenarios
 2. **Trigger testing** — Verify the skill triggers when it should and doesn't trigger when it shouldn't
-3. **Eval suite** — Create `evals.json` or Waza eval suite covering key scenarios
+3. **Eval suite** — Create a Waza Eval Suite in `evals/<skill-name>/` covering key scenarios
 4. **Peer review** — Have another developer review the skill for clarity and completeness
 
 ## Example Skill Structure
@@ -125,7 +104,10 @@ skills/
 └── engineering/
     └── example-skill/
         ├── SKILL.md
-        ├── evals.json
+        ├── evals/
+        │   ├── eval.yaml
+        │   ├── tasks/
+        │   └── fixtures/
         └── README.md (optional, for complex skills)
 ```
 

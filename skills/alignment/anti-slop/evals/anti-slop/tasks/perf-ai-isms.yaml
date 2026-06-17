@@ -1,0 +1,7 @@
+id: perf-ai-isms
+type: performance
+description: Sanitizes AI-isms in a draft sentence.
+input: |
+  Let's delve into the multifaceted tapestry of this API.
+assertion: |
+  Output contains no term from the AI-isms category (delve, tapestry, multifaceted) and expresses the same technical content.

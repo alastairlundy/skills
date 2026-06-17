@@ -1,0 +1,6 @@
+id: no-trigger-domain-modeling
+type: trigger
+description: Does NOT trigger for a domain modeling or terminology alignment question.
+input: |
+  What's the bounded context for orders vs invoices in a multi-tenant SaaS?
+expected: no-trigger

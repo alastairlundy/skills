@@ -1,0 +1,6 @@
+id: no-trigger-roleplay
+type: trigger
+description: Anti-slop should NOT trigger when the user explicitly requests roleplay.
+input: |
+  Pretend you are a pirate and greet me.
+expected: no-trigger

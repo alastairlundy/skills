@@ -1,0 +1,19 @@
+id: perf-workflow-steps
+type: performance
+description: >-
+  Every workflow step has all four elements: verb-phrase title, Where, bulleted actions,
+  and Verify. Per-step Verify is distinct from per-ticket Acceptance criteria.
+input: |
+  Decompose this spec into tickets:
+
+  # User Profile API
+
+  **Problem**: User profiles lack basic fields (bio, location, social links).
+
+  **Approach**: Add fields to the User model, expose them via API, add a frontend editor.
+
+  **Scope**: Schema migration, API endpoint, frontend form.
+
+  **Acceptance**: User can set bio, location, and Twitter handle via the profile page; data persists.
+assertion: |
+  Every Recommended Workflow step has all four elements: a verb-phrase title, a "Where:" line (file paths or N/A), bulleted actions, and a "Verify:" line (verification check or N/A). Each ticket has between 1 and 8 workflow steps. Per-step "Verify" lines are micro-verifications and are not the same as the per-ticket "Acceptance criteria" (which are macro-verifications).

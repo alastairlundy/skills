@@ -1,6 +1,8 @@
 ---
 name: skill-architect
-description: Guides users through the design, refinement, and deterministic translation of a new agent skill, ensuring compatibility with project standards without performing file system writes.
+description: >-
+  Guides users through the design, refinement, and deterministic translation of a new agent skill, ensuring compatibility with project standards without performing file system writes.
+license: MIT
 ---
 
 # Skill Architect
@@ -12,6 +14,7 @@ The Skill Architect is an intellectual design phase for creating agent skills. I
 - When you need to refine ambiguous agent behaviors into deterministic steps.
 - When you want to ensure a new skill adheres to the project's mandatory structure and standards.
 - When converting vague goals into a technical design before shifting to implementation.
+- When user input would clarify the request, invoke ask-questions
 
 ## When Not to Use
 - For trivial changes to existing skills.
@@ -20,7 +23,7 @@ The Skill Architect is an intellectual design phase for creating agent skills. I
 
 ## Workflow
 
-**Default Output Mode**: By default, this skill operates entirely within the conversation. You must draft the skill's design and present it as markdown text. You MUST NOT use any file system modification tools (e.g., `write`, `edit`, `bash` for file creation) unless the user explicitly requests that the skill be written directly to the file system. If this request is made, complete the architectural design first, then transition to the implementation phase using the `create-skill` skill or appropriate scaffolding tools.
+**Default Output Mode**: By default, this skill operates entirely within the conversation. You must draft the skill's design and present it as markdown text. You MUST NOT use any file system modification tools (e.g., `write`, `edit`, `bash` for file creation) unless the user explicitly requests that the skill be written directly to the file system. If this request is made, complete the architectural design first, then transition to the implementation phase using the `create-skill` skill. If `create-skill` is not available, use the `write` tool to create the skill file at `skills/<category>/<skill-name>/SKILL.md`.
 
 ### Step 1: Intent Intake
 Collect the high-level goal, target audience, and any initial sketches or "fuzzy" requirements. Identify the core value proposition of the skill.
@@ -39,6 +42,8 @@ For each branch identified in Step 2, translate the intent into a deterministic 
 4. **Iterative Resolution**: Resolve one intent/branch per turn to maintain precision and avoid batching errors.
 
 ### Step 4: Compliance Mapping
+Before performing compliance checks, load `references/skill-standards.md` to obtain the authoritative standards target.
+
 Organize the resolved deterministic logic into the mandatory skill schema:
 - **Frontmatter**: Generate a concise `name` and `description`.
 - **When to Use**: Define the precise triggers for the skill.
@@ -57,6 +62,6 @@ To ensure the quality and determinism of the resulting skill, the agent must ver
 
 - [ ] **Structural Integrity**: Does the skill contain all mandatory sections (Frontmatter, When to Use, When Not to Use, Workflow, Validation)?
 - [ ] **Determinism Audit**: Scan the "Workflow" section for "fuzzy" language (e.g., "appropriately", "optimally", "where possible", "smartly"). Every step must be an actionable, deterministic instruction.
-- [ ] **Collaborative Alignment**: Was every translation of "fuzzy" intent explicitly presented to the user and flagged as "Acceptable" before being committed to the design?
+- [ ] **Collaborative Alignment**: Was every translation of "fuzzy" intent explicitly presented to the user, confirmed via the yes/no review question, and resolved through the Acceptable/Unacceptable branching path before being committed to the design?
 - [ ] **Constraint Adherence**: Did the agent refrain from using any file-writing tools unless specifically requested by the user to write to the file system?
 - [ ] **Validation Utility**: Does the generated "Validation" section provide a concrete way for future agents to prove they have followed the skill's workflow correctly?

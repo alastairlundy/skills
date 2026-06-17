@@ -16,6 +16,11 @@ Drive-by PRs (unsolicited pull requests without prior discussion) are discourage
 
 See [CREATING-SKILLS.md](CREATING-SKILLS.md) for the complete guide on skill structure and conventions.
 
+**Skill categories:**
+- `engineering/` — domain-specific tasks for software development workflows
+- `alignment/` — skills for ensuring LLMs stay aligned on expectations and behaviour whilst performing tasks
+- `skills-meta/` — tools for creating and evaluating other skills
+
 **After discussion, quick start:**
 1. Create `skills/<category>/<skill-name>/SKILL.md`
 2. Include all required sections: frontmatter, When to Use, When Not to Use, Workflow, Validation

@@ -1,0 +1,6 @@
+id: no-trigger-resolvable
+type: trigger
+description: Does NOT trigger when the LLM can resolve the answer from context, code, or safe inference.
+input: |
+  I'm using C# 12 with .NET 8. What's the right way to declare a primary constructor for a record?
+expected: no-trigger

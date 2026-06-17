@@ -1,0 +1,6 @@
+id: trigger-explicit-invocation
+type: trigger
+description: Triggers when the user explicitly invokes the skill by name.
+input: |
+  Run code-implementation-grilling on docs/specs/payment-service.md to resolve the foundation.
+expected: trigger

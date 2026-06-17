@@ -1,0 +1,6 @@
+id: no-trigger-non-code-idea
+type: trigger
+description: Does NOT trigger for a non-code/non-programming project.
+input: |
+  I have a plan to launch a B2B marketing campaign in Q3. Help me think it through.
+expected: no-trigger

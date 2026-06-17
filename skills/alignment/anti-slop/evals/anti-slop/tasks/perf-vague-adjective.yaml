@@ -1,0 +1,7 @@
+id: perf-vague-adjective
+type: performance
+description: Replaces a vague adjective with a measurable specification.
+input: |
+  Implement a robust organizational strategy for the data.
+assertion: |
+  Output contains no vague adjective from the Banned Vocabulary list and names a specific metric, quantitative outcome, or concrete alternative.

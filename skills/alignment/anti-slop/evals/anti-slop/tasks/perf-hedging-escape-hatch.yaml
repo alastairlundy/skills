@@ -1,0 +1,7 @@
+id: perf-hedging-escape-hatch
+type: performance
+description: Replaces hedging with explicit conditional alternative.
+input: |
+  Depending on your needs, you could use Kafka or RabbitMQ.
+assertion: |
+  Output uses an explicit conditional (e.g., 'If X, use Kafka; if Y, use RabbitMQ') and does not use bare 'depending on' or 'could'.

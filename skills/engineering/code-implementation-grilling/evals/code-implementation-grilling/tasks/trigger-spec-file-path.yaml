@@ -1,0 +1,6 @@
+id: trigger-spec-file-path
+type: trigger
+description: Triggers when a spec/PRD is referenced by file path for a code/programming project.
+input: |
+  I have a spec at docs/specs/todo.md for a todo app. Help me resolve the technical foundation.
+expected: trigger

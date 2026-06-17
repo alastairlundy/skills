@@ -1,0 +1,6 @@
+id: trigger-complete-spec-decompose
+type: trigger
+description: Triggers when user provides a complete spec and asks to decompose into tickets.
+input: |
+  Here is the full spec for the user authentication module. Break it down into implementation tickets with dependency graphs.
+expected: trigger

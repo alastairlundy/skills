@@ -1,0 +1,7 @@
+id: perf-no-skill-names-mid-workflow
+type: performance
+description: Workflow body (Steps 1-5) does not name a specific downstream skill; skill names appear only in the Terminal Output section's pre-written handoff templates.
+input: |
+  Spec at docs/prds/feature-x.md: build a CLI todo app. Run code-implementation-grilling.
+assertion: |
+  The workflow body for Steps 1-5 contains no reference to a specific downstream skill by name (e.g., 'spec-to-tickets', 'to-issues'). Step 4's downstream-consumer choice may use generic labels ('ticket consumer', 'issue tracker', 'manual handoff') but must not name a specific skill. Skill names appear only inside the Terminal Output section's pre-written handoff templates.

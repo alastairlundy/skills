@@ -1,0 +1,6 @@
+id: trigger-technical-default
+type: trigger
+description: Anti-slop should trigger by default for technical/analytical requests.
+input: |
+  Design a caching strategy for our API.
+expected: trigger

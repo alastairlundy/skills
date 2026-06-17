@@ -1,0 +1,6 @@
+id: trigger-batching-invited-mode
+type: trigger
+description: Triggers in invited mode where batching (2-3 questions per call) is permitted.
+input: |
+  Grill me on the architecture for a new payment service. Ask me everything you need to know.
+expected: trigger

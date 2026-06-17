@@ -1,0 +1,6 @@
+id: no-trigger-vague-idea
+type: trigger
+description: Does NOT trigger when user provides a vague idea with no spec.
+input: |
+  I'm thinking about adding some kind of notification system. Can you help me plan it out?
+expected: no-trigger

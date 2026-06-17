@@ -1,0 +1,7 @@
+id: perf-count-gate-characters
+type: performance
+description: Constructs a tool call that satisfies the Count Gate (1-3 questions, 2-4 options, ≤80-char descriptions, ≤30-char headers).
+input: |
+  I need to pick a database for our new web service. Should I use Postgres, MySQL, or MongoDB?
+assertion: |
+  Output is a tool call with 1 question, 3 options, every description ≤80 characters, every header ≤30 characters, and every label ≤6 words.
