@@ -7,8 +7,9 @@ checks below to have been completed.
 ## Initialization and Setup
 
 Upon activation:
-1. **Domain State Summary**: Scan the repository for `CONTEXT.md` and `docs/adr/`. Summarize the current known domain state to the user *before* asking the first question. This establishes the baseline and prevents redundant questioning.
-2. **Infrastructure Check**: If `CONTEXT.md` is missing, inform the user and suggest the `setup-matt-pocock-skills` skill to establish the glossary and ADR infrastructure.
+1. **Domain State Summary**: Scan the repository for `CONTEXT.md`, `docs/adr/`, and any existing Decision Ledger files at `docs/decisions/DECISIONS-*.md`. Summarize the current known domain state to the user *before* asking the first question. This establishes the baseline and prevents redundant questioning.
+2. **Infrastructure Check**: If `CONTEXT.md` is missing, inform the user and suggest the `setup-matt-pocock-skills` skill to establish the glossary and ADR infrastructure. If `docs/decisions/` is missing, note that the Decision Ledger directory will be created lazily on the first resolved branch (per the Decision Ledger section in `SKILL.md`).
+3. **Ledger Path Confirmation**: When opening Branch A, derive the Decision Ledger path (`docs/decisions/DECISIONS-<repo>-<feature>.md`) and confirm it with the user before the first append. A later branch must never silently redirect to a different ledger file.
 
 ## Domain Awareness
 
@@ -68,5 +69,6 @@ Convergence is the point at which the grilling session may declare a shared unde
 - **All branches resolved.** Every branch opened during the session has a recorded decision, or has been explicitly closed by the user.
 - **No contradictions.** Re-open any branch whose recorded decision contradicts another branch's recorded decision, and resolve the contradiction first.
 - **No new question in the last three turns.** The most recent three exchanges have not introduced a new branch, surfaced a contradiction, or required a glossary revision. If a new question or contradiction appeared in the last three turns, the session is not yet convergent — continue grilling.
+- **Decision Ledger complete.** Read the Decision Ledger file and verify that every branch resolved during this session has a corresponding `Dxxx` record, and that every re-opened branch has a fresh `Supersedes: Dxxx` record. A branch that is resolved in conversation but missing from the ledger is a silent loss; re-open it, write the record, and re-verify before declaring convergence. Do not allow convergence on the strength of conversational memory alone.
 
-When all three checks pass, declare: "We have reached a shared understanding." Do not declare convergence based on intent or partial progress; the test is observable in the recent exchange history.
+When all four checks pass, declare: "We have reached a shared understanding." Do not declare convergence based on intent or partial progress; the test is observable in the recent exchange history and in the ledger file.
