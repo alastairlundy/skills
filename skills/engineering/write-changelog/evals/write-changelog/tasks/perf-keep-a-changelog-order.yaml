@@ -1,0 +1,7 @@
+id: perf-keep-a-changelog-order
+type: performance
+description: Category headings appear in Keep-a-Changelog order, with Security omitted.
+input: |
+  Generate a changelog for the repo between v1.0.0 and HEAD. The repo has commits spanning all categories (additions, modifications, deprecations, removals, bug fixes, non-source-code).
+assertion: |
+  Output contains category headings in this order: Additions, Modifications, Deprecations, Removals, Bug Fixes, Non Source Code. No "Security" heading is present.

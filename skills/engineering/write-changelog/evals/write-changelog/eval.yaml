@@ -1,2 +1,3 @@
 name: write-changelog
-description: Evaluates write-changelog skill trigger discipline for changelog generation
+description: >-
+  Evaluates write-changelog skill trigger discipline, output formatting (Keep-a-Changelog order, emoji toggle, sub-project dep placement), and non-interactive fallbacks.

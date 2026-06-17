@@ -1,0 +1,7 @@
+id: perf-emoji-toggle-default
+type: performance
+description: With no `Use Emojis` input, the default (Yes) applies and emoji prefixes are present.
+input: |
+  Generate a changelog for the repo between v1.0.0 and HEAD.
+assertion: |
+  Output's category headings are prefixed with the matching emoji: 🆕 for Additions, ⚙️ for Modifications, ⚠️ for Deprecations, 🗑️ for Removals, 🐛 for Bug Fixes, 📄 for Non Source Code.

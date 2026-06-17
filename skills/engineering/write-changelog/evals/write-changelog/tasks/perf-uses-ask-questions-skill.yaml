@@ -1,0 +1,7 @@
+id: perf-uses-ask-questions-skill
+type: performance
+description: Step 4's clarification goes through the ask-questions four-gate procedure rather than a bare 4-option question.
+input: |
+  Generate a changelog for the repo between v1.0.0 and HEAD. (The repo structure is ambiguous between single-project and monorepo; treat this as an interactive run.)
+assertion: |
+  Output's trace shows the ask-questions skill's four-gate procedure (trigger, fit, construct, validate) being applied before the "Global / All Packages / All Projects / Other (specify)" question is presented. The question is not a bare one-shot — the trace evidences gate-by-gate handling (e.g., a fit check confirming the question is necessary, a construct step selecting recommended options, and a validate step confirming the question is answerable from the offered choices).
