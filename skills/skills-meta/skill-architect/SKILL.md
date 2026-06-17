@@ -60,6 +60,6 @@ To ensure the quality and determinism of the resulting skill, the agent must ver
 
 - [ ] **Structural Integrity**: Does the skill contain all mandatory sections (Frontmatter, When to Use, When Not to Use, Workflow, Validation)?
 - [ ] **Determinism Audit**: Scan the "Workflow" section for "fuzzy" language (e.g., "appropriately", "optimally", "where possible", "smartly"). Every step must be an actionable, deterministic instruction.
-- [ ] **Collaborative Alignment**: Was every translation of "fuzzy" intent explicitly presented to the user and flagged as "Acceptable" before being committed to the design?
+- [ ] **Collaborative Alignment**: Was every translation of "fuzzy" intent explicitly presented to the user, confirmed via the yes/no review question, and resolved through the Acceptable/Unacceptable branching path before being committed to the design?
 - [ ] **Constraint Adherence**: Did the agent refrain from using any file-writing tools unless specifically requested by the user to write to the file system?
 - [ ] **Validation Utility**: Does the generated "Validation" section provide a concrete way for future agents to prove they have followed the skill's workflow correctly?
