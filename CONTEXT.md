@@ -76,9 +76,6 @@ The short, discriminative explanation shown beneath a `label` in the `ask_questi
 ## context prose
 The LLM's message text *before* an `ask_question` tool call. Carries the longer setup, framing, and reasoning that the tool's options alone cannot hold. Subject to prose discipline: focused, scannable, not bloated.
 
-## decision surface
-The `ask_question` tool call itself — the discrete-choice UI presented to the user. Distinguished from the context prose that surrounds it.
-
 ## question tool call
 A single invocation of the `ask_question` tool. The natural unit of "asking" for shaping purposes; questions batched within one call share a single user-response round.
 
@@ -90,6 +87,9 @@ A hard verification step in a workflow procedure whose failure prevents the next
 
 ## prose fallback
 A question the LLM asks in its message text *without* invoking `ask_question`. Used as a last resort when the option set genuinely exceeds 2-4 honest options and no tool-compatible adaptation (raise abstraction, sequence, subsume, consolidate) preserves the question's meaning. Subject to the same prose discipline as context prose.
+
+## load trigger
+A sentence or "When to Use" bullet in a SKILL.md that tells the LLM when to load a `references/` file. Mitigates the self-referential under-trigger risk that arises when a long template is moved out of the inline skill to reduce context cost: the LLM only loads the reference if it recognizes the situation the trigger describes. Mirrors the convention for skills that need user clarification to invoke the `ask-questions` skill.
 
 ## evaluative opener
 
