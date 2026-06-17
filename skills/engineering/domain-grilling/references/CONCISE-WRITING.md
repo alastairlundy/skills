@@ -12,22 +12,7 @@ This document provides optional style guidance for the domain-grilling skill. It
 
 ## Common Patterns to Avoid
 
-| Instead of | Write |
-|---|---|
-| "It is important to note that X" | "X" |
-| "It's worth noting that X" | "X" |
-| "Keep in mind that X" | "X" |
-| "Note that X" | "X" |
-| "X, which means that Y" | "X. Y." |
-| "In order to X, you should Y" | "To X, Y." |
-| "At the end of the day, X" | "X" |
-| "When all is said and done, X" | "X" |
-| "Needless to say, X" | "X" |
-| "Basically, X" | "X" |
-| "Essentially, X" | "X" |
-| "Actually, X" | "X" |
-| "Just X" | "X" |
-| "Simply X" | "X" |
+The single source of truth for banned phrases is the **Forbidden Filler Words** list in `SKILL.md`. This reference does not duplicate it — consult `SKILL.md` for the canonical list, and apply it via the principles below.
 
 ## Before and After
 

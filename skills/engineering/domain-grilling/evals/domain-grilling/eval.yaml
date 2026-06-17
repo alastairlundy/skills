@@ -1,2 +1,12 @@
 name: domain-grilling
 description: Evaluates domain-grilling skill trigger discipline for domain modeling and terminology alignment
+skill: domain-grilling
+version: "1.0"
+
+config:
+  trials_per_task: 1
+  timeout_seconds: 120
+  executor: mock
+
+tasks:
+  - "tasks/*.yaml"

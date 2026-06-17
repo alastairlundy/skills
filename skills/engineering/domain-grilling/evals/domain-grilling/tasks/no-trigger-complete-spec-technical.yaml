@@ -1,6 +1,15 @@
 id: no-trigger-complete-spec-technical
-type: trigger
+name: No trigger on complete spec needing technical decisions
 description: Does NOT trigger when user has a complete spec and needs technical implementation decisions.
-input: |
-  Here is the spec for our order service. We need to decide between using .NET 8 or .NET 9, and whether to use Entity Framework or Dapper. Help me resolve the technical foundation.
-expected: no-trigger
+inputs:
+  prompt: |
+    Here is the spec for our order service. We need to decide between using .NET 8 or .NET 9, and whether to use Entity Framework or Dapper. Help me resolve the technical foundation.
+expected:
+  should_trigger: false
+graders:
+  - type: trigger
+    name: should-not-trigger-domain-grilling
+    config:
+      skill_path: skills/engineering/domain-grilling
+      mode: negative
+      threshold: 0.5

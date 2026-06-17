@@ -1,0 +1,15 @@
+id: trigger-complete-spec-terminology-alignment
+name: Trigger on complete spec with terminology alignment goal
+description: Triggers when user has a complete spec but asks for terminology or glossary alignment, which is a domain modeling task.
+inputs:
+  prompt: |
+    Our spec for the order service is done. Before I send this off for technical review, I want to make sure our glossary is sharp — right now "order", "purchase", and "transaction" are being used interchangeably across docs and I want them nailed down. Help me align the terms.
+expected:
+  should_trigger: true
+graders:
+  - type: trigger
+    name: should-trigger-domain-grilling
+    config:
+      skill_path: skills/engineering/domain-grilling
+      mode: positive
+      threshold: 0.5

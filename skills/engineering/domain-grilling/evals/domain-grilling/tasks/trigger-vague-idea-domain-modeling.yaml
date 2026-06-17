@@ -1,6 +1,15 @@
 id: trigger-vague-idea-domain-modeling
-type: trigger
+name: Trigger on vague idea needing domain modeling
 description: Triggers when user has a vague idea with no spec and needs domain modeling.
-input: |
-  I have an idea for a platform that connects freelancers with clients, but I'm not sure how to model the domain. Help me think through the concepts.
-expected: trigger
+inputs:
+  prompt: |
+    I have an idea for a platform that connects freelancers with clients, but I'm not sure how to model the domain. Help me think through the concepts.
+expected:
+  should_trigger: true
+graders:
+  - type: trigger
+    name: should-trigger-domain-grilling
+    config:
+      skill_path: skills/engineering/domain-grilling
+      mode: positive
+      threshold: 0.4
