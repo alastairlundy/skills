@@ -47,10 +47,10 @@ Six categories. Any term from this list appearing in user-facing output is a Pha
 Reference examples for each category. These double as test inputs.
 
 - **AI-isms**: `Let's delve into the multifaceted tapestry of this API.` → `Let's examine the API's architecture.`
-- **Vague adjectives**: `Implement a robust organizational strategy for the data.` → `Implement a sharded indexing strategy to handle 10k requests/sec.`
+- **Vague adjectives**: `Kafka is more robust than RabbitMQ.` → `Kafka replicates each partition across 3 brokers and retains messages for 7 days by default.`
 - **Sycophantic phrases**: `Great question! Let me help.` → `Let me help.`
 - **Meta-talk**: `It's important to note that the system has three components.` → `The system has three components.`
-- **Hedging words**: `Depending on your needs, you could use Kafka.` → `If throughput > 10k/s, use Kafka; if < 1k/s, use RabbitMQ.`
+- **Hedging words**: `RabbitMQ might be better for low-latency workloads.` → `RabbitMQ delivers sub-millisecond p99 latency for messages under 1KB.`
 - **Redundant intensifiers**: `This is a really robust system.` → `This system handles 10k requests/sec with p99 < 200ms.`
 
 ## Structural Rules
