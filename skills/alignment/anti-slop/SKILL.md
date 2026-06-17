@@ -80,9 +80,9 @@ Three rules, in strict precedence order. Earlier rules override later rules when
 
 ## Workflow
 
-The agent must execute the following three-phase process.
+The agent must execute the following three-step process.
 
-### Phase 1: Goal Constraint Validation
+### Step 1: Goal Constraint Validation
 
 Identify the user's primary objective. To prevent "goal-slop," the objective must be a **concrete technical or business constraint**, not a vague desire.
 
@@ -91,15 +91,15 @@ Identify the user's primary objective. To prevent "goal-slop," the objective mus
   - *Vague (Wrong)*: `Goal: Improve the code quality.`
   - *Constraint (Right)*: `Goal: Reduce cyclomatic complexity in the payment module to < 10.`
 
-### Phase 2: Draft (vocabulary pre-commitment)
+### Step 2: Draft (vocabulary priming)
 
-Generate the initial response under a vocabulary constraint.
+Generate the initial response under a vocabulary priming instruction.
 
-- **Pre-commitment**: Do not use any word from the Banned Vocabulary list during generation.
+- **Priming instruction**: Before generating, commit to avoiding all words from the Banned Vocabulary list.
 - **Focus**: Completeness and technical correctness under the vocabulary constraint.
-- **Output**: The draft enters Phase 3 unsanitized, with vocabulary violations intact for mechanical detection.
+- **Output**: The draft enters Step 3 unsanitized, with vocabulary violations intact for mechanical detection.
 
-### Phase 3: Sanitization (two-pass, mechanical)
+### Step 3: Sanitization (two-pass, mechanical)
 
 Replace the self-administered critic with two deterministic passes. Each pass produces a pass/fail signal.
 
