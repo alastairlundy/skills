@@ -1,2 +1,6 @@
 name: spec-to-tickets
-description: Evaluates spec-to-tickets skill trigger discipline for ticket decomposition
+description: >-
+  Evaluates spec-to-tickets skill trigger discipline (when to use, when to defer) and performance
+  on the 24+ validation checks defined in SKILL.md. Performance tasks are grouped: ticket shape,
+  dependency graph, workflow steps, trigger discipline, context pointers, abbreviations, pattern
+  choice, and sizing rules.

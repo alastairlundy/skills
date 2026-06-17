@@ -1,7 +1,7 @@
 ---
 name: spec-to-tickets
 description: >-
-  Create implementation tickets with dependency graphs, Independent/Collaborative classification, and context pointers from a spec, PRD, or conversation context. Output to issue tracker or local markdown. Use when - spec/PRD exists and is complete, need tickets sized for focused work sessions (3-4 hours each), want to enable parallel work with explicit dependency tracking, need Independent/Collaborative classification per ticket. Don't use when - spec is incomplete or vague (use domain-grilling or to-prd first), need different granularity like epics or tasks, want to implement directly without decomposition, user explicitly wants to send tickets to issue tracker AND doesn't need dependency graphs or classification (use to-issues instead).
+  Create implementation tickets with dependency graphs and Independent/Collaborative classification. Use when - spec or PRD is complete, tickets need 3-4 hour focus, parallel work with explicit dependencies, or per-ticket classification. Don't use when - spec is incomplete or vague (use domain-grilling or to-prd first), a different granularity is needed (epics, tasks), direct implementation is the goal, or the user explicitly wants to send tickets to an issue tracker without dependency graphs or classification (use to-issues instead).
 license: MIT
 ---
 
@@ -31,18 +31,18 @@ Use a conversational tone. Provide a brief opening statement that frames the wor
 
 **Abbreviation rules** - In workflow output, avoid all abbreviations except terms previously defined in CONTEXT.md or the project glossary. When writing ticket content, prohibit abbreviations not previously agreed upon in CONTEXT.md/glossary unless they are explicitly used by the user or spec. In such cases, clarify unfamiliar abbreviations in brackets on first use (e.g., "SSO (Single Sign-On)").
 
-### 1. Mode Detection
+### Step 1 - Mode Detection
 
 Determine whether the skill is running in Interactive or Autonomous mode.
 
 1. Parse the user's natural language input for explicit mode signals. Phrases like "autonomous", "just do it", "no need to ask me", or other affirmative authorizations for autonomous action indicate Autonomous mode. **If an explicit Autonomous signal is present, use Autonomous mode regardless of conversation history.**
-2. **Autonomous negative signals** - phrases requesting to overwrite, replace, rewrite, or delete existing tickets are NOT Autonomous signals. These involve destructive operations on existing work and always require Interactive mode. If the user uses these phrases alongside an Autonomous signal, treat the request as Interactive.
+2. **Autonomous negative signals** - phrases requesting to overwrite, replace, rewrite, or delete existing tickets are NOT Autonomous signals. These involve destructive operations on existing work and always require Interactive mode. If the user uses these phrases in the same request, treat the request as Interactive.
 3. If no explicit signal is present and the user has previously replied to the agent in the current conversation, default to Interactive.
 4. If no signal is present and no prior conversation exists, default to Interactive.
 
 Record the mode. All subsequent steps branch on this value.
 
-### 2. Input Gathering
+### Step 2 - Input Gathering
 
 Determine the source material to decompose. Accept one of three input types.
 
@@ -50,7 +50,7 @@ Determine the source material to decompose. Accept one of three input types.
 2. **File path** - If the user provides a path to a local file (e.g., `docs/prds/feature-x.md`), read it.
 3. **Conversation context** - If neither of the above is provided, assess whether the current conversation contains sufficient context. Proceed to Input Sufficiency Check.
 
-### 3. Input Sufficiency Check
+### Step 3 - Input Sufficiency Check
 
 Verify the input contains enough detail to produce actionable tickets. This check applies to all input types - a 2-line PRD file is as insufficient as a vague conversation.
 
@@ -64,7 +64,7 @@ The input must contain all four of -
 
 **In Autonomous mode** - if all four criteria are met, proceed. If any are missing, abort and report which criteria are unsatisfied. Suggest using `domain-grilling` or `to-prd` to fill the gaps.
 
-### 4. Codebase Exploration
+### Step 4 - Codebase Exploration
 
 If not already explored in the current conversation -
 
@@ -74,7 +74,7 @@ If not already explored in the current conversation -
 
 Use the domain glossary vocabulary throughout all ticket content. Respect ADRs in the area being decomposed.
 
-### 5. Output Target Resolution
+### Step 5 - Output Target Resolution
 
 Determine where to publish the tickets. This must be resolved before decomposition because the output target affects ticket content (e.g., `blocked_by` uses issue numbers vs file basenames).
 
@@ -83,7 +83,7 @@ Determine where to publish the tickets. This must be resolved before decompositi
    - **In Interactive mode** - ask the user to choose from the following options: local markdown files, GitHub Issues, GitLab Issues, Gitea Issues, Codeberg Issues, or a hosted Forgejo Instance's Issues. Use the `ask_question` tool to present these options if available.
    - **In Autonomous mode** - default to local markdown files.
 
-### 6. Ticket Decomposition Proposal
+### Step 6 - Ticket Decomposition Proposal
 
 Break the source material into focused tickets in two phases - first choose the decomposition pattern, then propose the tickets. These phases are separate because the pattern choice determines the structure of the entire decomposition, and should be validated before generating tickets.
 
@@ -171,7 +171,7 @@ When the spec explicitly enumerates components or modules, use them as the basis
 4. Include brief rationale for non-obvious decomposition decisions (e.g., "Tickets 2 and 3 were split because they have different Independent vs Collaborative classifications")
 5. Proceed without user confirmation.
 
-### 7. Existing Ticket Detection
+### Step 7 - Existing Ticket Detection
 
 Before publishing, detect whether tickets already exist for this source material.
 
@@ -190,7 +190,7 @@ Before publishing, detect whether tickets already exist for this source material
 - **In Interactive mode** - present the finding. Offer three options - overwrite (delete existing, create new), update (modify existing in place to match skill guidance), or cancel (abort). Use the `ask_question` tool to present these options if available. Wait for user choice. If the user chooses overwrite or update, apply the logic above.
 - **In Autonomous mode** - abort. Report that existing tickets were found and recommend running in Interactive mode to resolve.
 
-### 8. Ticket Generation
+### Step 8 - Ticket Generation
 
 Apply the ticket template below to each approved ticket.
 
@@ -215,7 +215,7 @@ For the ticket body schema, see [ticket-template.md](./references/ticket-templat
 - Include only ADRs that constrain this ticket's implementation.
 - Include only domain terms that define boundaries or clarify ambiguity for this ticket. Do not reproduce the glossary.
 
-### 9. Ticket Publishing
+### Step 9 - Ticket Publishing
 
 Publish the generated tickets to the chosen target.
 
@@ -238,17 +238,18 @@ Publish the generated tickets to the chosen target.
 
 #### Local markdown target
 
-1. Create a `tickets/` directory at the repo root if it does not exist.
-2. Determine directory structure based on ticket count -
-   - **Fewer than 8 tickets** - flat structure. All files in `tickets/`.
+1. **Resolve the tickets directory** - scan the repo for an existing convention in this priority order: `tickets/`, then `docs/tickets/`, then `.tickets/`. Use the first match found. If none match, default to `tickets/` at the repo root. Record the resolved path as `<tickets-dir>` for the remaining sub-steps.
+2. Create the `<tickets-dir>` directory at its resolved location if it does not exist.
+3. Determine directory structure based on ticket count -
+   - **Fewer than 8 tickets** - flat structure. All files in `<tickets-dir>`.
    - **8 or more tickets** - structured subdirectories -
       - **In Interactive mode** - ask the user to choose a grouping strategy - dependency graph position (topological layers), domain concept, or feature area.
       - **In Autonomous mode** - group by domain concept.
-3. Name files with zero-padded sequential numbers - `001-authentication.md`, `002-user-profiles.md`.
-4. If using structured directories, place files in the group subdirectory - `tickets/authentication/001-login-endpoint.md`.
-5. Write each ticket as a markdown file with YAML frontmatter matching the ticket template.
+4. Name files with zero-padded sequential numbers - `001-authentication.md`, `002-user-profiles.md`.
+5. If using structured directories, place files in the group subdirectory - e.g., `<tickets-dir>/authentication/001-login-endpoint.md`.
+6. Write each ticket as a markdown file with YAML frontmatter matching the ticket template.
 
-### 10. Summary Report
+### Step 10 - Summary Report
 
 After publishing, present a summary to the user containing -
 
