@@ -37,7 +37,7 @@ Six categories. Any term from this list appearing in user-facing output is a Pha
 `It's important to note...`, `I'd like to highlight...`, `In summary, the key takeaway is...`, `Let me walk you through`, `Let's break this down`, `Here's what I recommend`, `As an AI language model`, `Based on my analysis`, `Let me clarify`, `I'd recommend...` (in non-ownership contexts).
 
 ### Hedging words
-`may`, `might`, `could`, `potentially`, `depending on`, `perhaps`, `arguably`, `it depends` (when not followed by explicit conditionals).
+`may`, `might`, `potentially`, `perhaps`, `arguably`, `it depends` (when not followed by explicit conditionals).
 
 ### Redundant intensifiers
 `really`, `very`, `truly`, `incredibly`, `extremely`, `absolutely` (when modifying an already-vague adjective).
