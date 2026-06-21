@@ -1,7 +1,34 @@
 id: perf-vague-adjective
-type: performance
-description: Replaces a vague adjective with a measurable specification.
-input: |
-  Implement a robust organizational strategy for the data.
-assertion: |
-  Output contains no vague adjective from the Banned Vocabulary list and names a specific metric, quantitative outcome, or concrete alternative.
+name: Perf Vague Adjective
+description: >-
+  Replaces a vague adjective with a measurable specification.
+tags:
+  - performance
+inputs:
+  prompt: |
+    Implement a robust organizational strategy for the data.
+expected:
+  output_not_contains:
+    - "delve"
+    - "tapestry"
+    - "multifaceted"
+    - "comprehensive"
+    - "seamless"
+    - "cutting-edge"
+    - "leverage"
+    - "utilize"
+graders:
+  - type: text
+    name: assertion-checks
+    config:
+      not_contains:
+        - "delve"
+        - "tapestry"
+        - "multifaceted"
+        - "comprehensive"
+        - "seamless"
+        - "cutting-edge"
+        - "leverage"
+        - "utilize"
+      contains:
+        - "perf-vague-adjective"

@@ -1,7 +1,18 @@
 id: perf-terminal-output-emitted-on-every-run
-type: performance
-description: The Terminal Output (Required) block is emitted on every workflow run, not sometimes omitted.
-input: |
-  Spec at docs/prds/payment-service.md: payment service with idempotent charges. Run code-implementation-grilling.
-assertion: |
-  Output contains the 'Terminal Output (Required)' block on every run, with one of the three pre-written handoff templates filled in (ticket consumer / issue tracker / manual handoff) and <spec-path>/<blueprint-path> substituted. The output is not missing the Terminal Output block.
+name: Perf Terminal Output Emitted On Every Run
+description: >-
+  The Terminal Output (Required) block is emitted on every workflow run, not sometimes omitted.
+tags:
+  - performance
+inputs:
+  prompt: |
+    Spec at docs/prds/payment-service.md: payment service with idempotent charges. Run code-implementation-grilling.
+expected:
+  output_contains:
+    - "Terminal Output (Required)"
+graders:
+  - type: text
+    name: assertion-checks
+    config:
+      contains:
+        - "Terminal Output (Required)"

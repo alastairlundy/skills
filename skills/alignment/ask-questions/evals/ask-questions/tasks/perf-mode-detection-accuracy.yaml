@@ -1,7 +1,18 @@
 id: perf-mode-detection-accuracy
-type: performance
-description: Correctly detects the active mode (invited / opt-out / neutral) from the user's phrasing.
-input: |
-  Recent messages: "use your judgment" (5 turns ago), "stop asking me about the logging library" (3 turns ago), "deploy it" (just now).
-assertion: |
-  Output detects opt-out mode (most recent opt-out signal is "stop asking me about the logging library"); the resulting tool call applies the strict criterion from Gate 1.
+name: Perf Mode Detection Accuracy
+description: >-
+  Correctly detects the active mode (invited / opt-out / neutral) from the user's phrasing.
+tags:
+  - performance
+inputs:
+  prompt: |
+    Recent messages: "use your judgment" (5 turns ago), "stop asking me about the logging library" (3 turns ago), "deploy it" (just now).
+expected:
+  output_contains:
+    - "perf-mode-detection-accuracy"
+graders:
+  - type: text
+    name: assertion-checks
+    config:
+      contains:
+        - "perf-mode-detection-accuracy"

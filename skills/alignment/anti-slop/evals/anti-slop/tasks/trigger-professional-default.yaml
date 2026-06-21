@@ -1,6 +1,19 @@
 id: trigger-professional-default
-type: trigger
-description: Anti-slop should trigger for professional documentation requests.
-input: |
-  Write a technical specification for the new payment module.
-expected: trigger
+name: Trigger Professional Default
+description: >-
+  Anti-slop should trigger for professional documentation requests.
+tags:
+  - trigger
+  - positive-trigger
+inputs:
+  prompt: |
+    Write a technical specification for the new payment module.
+expected:
+  should_trigger: true
+graders:
+  - type: trigger
+    name: trigger-grader
+    config:
+      skill_path: skills/alignment/anti-slop
+      mode: positive
+      threshold: 0.5

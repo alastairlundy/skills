@@ -1,64 +1,93 @@
 name: waza-interactive-triggers
+description: Trigger-precision evals for the waza-interactive skill (positive and negative triggers)
 skill: waza-interactive
 version: "1.0"
-executor: mock
+
+config:
+  trials_per_task: 3
+  timeout_seconds: 300
+  parallel: false
+  executor: mock
+  model: gpt-5-mini
+  inject_skill_body: false
+
 tasks:
   - id: trigger-run-evals
     name: "Trigger: run my evals"
-    prompt: "Can you run my evals and tell me how my skill is doing?"
-    expected: "Should activate waza-interactive skill and start Scenario 2 (Run and Interpret Results)"
-    validators:
-      - type: text
-        config:
-          regex_match:
-            - "waza_eval_run|run.*eval|Scenario 2"
+    description: Should activate waza-interactive skill and start Scenario 2 (Run and Interpret Results)
+    tags:
+      - positive-trigger
+    inputs:
+      prompt: "Can you run my evals and tell me how my skill is doing?"
+    expected:
+      output_contains:
+        - "waza"
+        - "eval"
+        - "run"
 
   - id: trigger-create-eval
     name: "Trigger: create eval suite"
-    prompt: "I need to create an eval suite for my new code-reviewer skill"
-    expected: "Should activate waza-interactive skill and start Scenario 1 (Create a New Eval)"
-    validators:
-      - type: text
-        config:
-          regex_match:
-            - "waza_eval_list|waza init|Scenario 1|scaffold"
+    description: Should activate waza-interactive skill and start Scenario 1 (Create a New Eval)
+    tags:
+      - positive-trigger
+    inputs:
+      prompt: "I need to create an eval suite for my new code-reviewer skill"
+    expected:
+      output_contains_any:
+        - "waza new eval"
+        - "scaffold"
+        - "Scenario 1"
 
   - id: trigger-compare-models
     name: "Trigger: compare models"
-    prompt: "Which model works better for my skill — gpt-4o or claude-sonnet?"
-    expected: "Should activate waza-interactive skill and start Scenario 3 (Compare Models)"
-    validators:
-      - type: text
-        config:
-          regex_match:
-            - "compare|model.*A|model.*B|Scenario 3"
+    description: Should activate waza-interactive skill and start Scenario 3 (Compare Models)
+    tags:
+      - positive-trigger
+    inputs:
+      prompt: "Which model works better for my skill — gpt-4o or claude-sonnet?"
+    expected:
+      output_contains_any:
+        - "compare"
+        - "model"
+        - "Scenario 3"
 
   - id: trigger-debug-failing
     name: "Trigger: debug failing tests"
-    prompt: "My skill keeps failing its eval tests, can you help me debug?"
-    expected: "Should activate waza-interactive skill and start Scenario 4 (Debug a Failing Skill)"
-    validators:
-      - type: text
-        config:
-          regex_match:
-            - "waza_skill_check|debug|fail|Scenario 4"
+    description: Should activate waza-interactive skill and start Scenario 4 (Debug a Failing Skill)
+    tags:
+      - positive-trigger
+    inputs:
+      prompt: "My skill keeps failing its eval tests, can you help me debug?"
+    expected:
+      output_contains_any:
+        - "waza check"
+        - "debug"
+        - "fail"
+        - "Scenario 4"
 
   - id: trigger-ship-readiness
     name: "Trigger: is my skill ready"
-    prompt: "Is my skill ready to ship? Give me the full readiness check."
-    expected: "Should activate waza-interactive skill and start Scenario 5 (Ship Readiness Check)"
-    validators:
-      - type: text
-        config:
-          regex_match:
-            - "readiness|checklist|waza_skill_check|Scenario 5"
+    description: Should activate waza-interactive skill and start Scenario 5 (Ship Readiness Check)
+    tags:
+      - positive-trigger
+    inputs:
+      prompt: "Is my skill ready to ship? Give me the full readiness check."
+    expected:
+      output_contains_any:
+        - "readiness"
+        - "checklist"
+        - "waza check"
+        - "Scenario 5"
 
   - id: anti-trigger-general-coding
     name: "Anti-trigger: general coding request"
-    prompt: "Write me a Python function that sorts a list"
-    expected: "Should NOT activate waza-interactive skill — this is general coding"
-    validators:
-      - type: text
-        config:
-          regex_match:
-            - "def sort|sorted|python"
+    description: Should NOT activate waza-interactive skill — this is general coding
+    tags:
+      - negative-trigger
+    inputs:
+      prompt: "Write me a Python function that sorts a list"
+    expected:
+      output_not_contains:
+        - "waza new eval"
+        - "waza run"
+        - "Scenario"

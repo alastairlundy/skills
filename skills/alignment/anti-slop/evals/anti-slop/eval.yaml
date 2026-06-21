@@ -1,2 +1,14 @@
 name: anti-slop
 description: Evaluates anti-slop skill performance and trigger discipline
+skill: anti-slop
+version: "1.0"
+
+config:
+  trials_per_task: 3
+  timeout_seconds: 300
+  parallel: false
+  executor: mock
+  model: gpt-5-mini
+
+tasks:
+  - "tasks/*.yaml"

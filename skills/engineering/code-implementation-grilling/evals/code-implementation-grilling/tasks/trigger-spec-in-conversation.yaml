@@ -1,6 +1,19 @@
 id: trigger-spec-in-conversation
-type: trigger
-description: Triggers when the spec/PRD is substantively laid out in the conversation itself.
-input: |
-  Here's the spec: build a CLI tool that watches a directory for new markdown files and indexes them into a SQLite database with full-text search. Users type queries from the terminal and get matching results. Help me work through the technical foundation.
-expected: trigger
+name: Trigger Spec In Conversation
+description: >-
+  Triggers when the spec/PRD is substantively laid out in the conversation itself.
+tags:
+  - trigger
+  - positive-trigger
+inputs:
+  prompt: |
+    Here's the spec: build a CLI tool that watches a directory for new markdown files and indexes them into a SQLite database with full-text search. Users type queries from the terminal and get matching results. Help me work through the technical foundation.
+expected:
+  should_trigger: true
+graders:
+  - type: trigger
+    name: trigger-grader
+    config:
+      skill_path: skills/engineering/code-implementation-grilling
+      mode: positive
+      threshold: 0.5

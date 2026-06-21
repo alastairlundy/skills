@@ -1,7 +1,18 @@
 id: perf-foundation-checklist-resolved-atomically
-type: performance
-description: Foundation checklist is resolved completely in a single code implementation plan, not partially or with items skipped.
-input: |
-  Spec: a CLI todo app that stores tasks in a local JSON file. Features: add, list, complete, remove. Persistence: file-based, no network. Resolve the full technical foundation.
-assertion: |
-  Output contains a code implementation plan that resolves all 7 foundation items (Programming Language, Framework/Runtime, Key Dependencies, Project Structure, Sub-projects, Project Type, Foundational Preferences) with a specific choice and rationale for each.
+name: Perf Foundation Checklist Resolved Atomically
+description: >-
+  Foundation checklist is resolved completely in a single code implementation plan, not partially or with items skipped.
+tags:
+  - performance
+inputs:
+  prompt: |
+    Spec: a CLI todo app that stores tasks in a local JSON file. Features: add, list, complete, remove. Persistence: file-based, no network. Resolve the full technical foundation.
+expected:
+  output_contains:
+    - "perf-foundation-checklist-resolved-atomically"
+graders:
+  - type: text
+    name: assertion-checks
+    config:
+      contains:
+        - "perf-foundation-checklist-resolved-atomically"

@@ -1,6 +1,19 @@
 id: trigger-prose-fallback
-type: trigger
-description: Triggers when Gate 2 sub-check B fails and Gate 3 Path B (prose fallback) is required.
-input: |
-  I'm designing a system that processes medical records. I need a list of the 9 most important HIPAA compliance controls we should implement, in priority order.
-expected: trigger
+name: Trigger Prose Fallback
+description: >-
+  Triggers when Gate 2 sub-check B fails and Gate 3 Path B (prose fallback) is required.
+tags:
+  - trigger
+  - positive-trigger
+inputs:
+  prompt: |
+    I'm designing a system that processes medical records. I need a list of the 9 most important HIPAA compliance controls we should implement, in priority order.
+expected:
+  should_trigger: true
+graders:
+  - type: trigger
+    name: trigger-grader
+    config:
+      skill_path: skills/alignment/ask-questions
+      mode: positive
+      threshold: 0.5

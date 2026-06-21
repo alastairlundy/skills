@@ -1,6 +1,19 @@
 id: trigger-explicit-invocation
-type: trigger
-description: Triggers when the user explicitly invokes the skill by name.
-input: |
-  Run code-implementation-grilling on docs/specs/payment-service.md to resolve the foundation.
-expected: trigger
+name: Trigger Explicit Invocation
+description: >-
+  Triggers when the user explicitly invokes the skill by name.
+tags:
+  - trigger
+  - positive-trigger
+inputs:
+  prompt: |
+    Run code-implementation-grilling on docs/specs/payment-service.md to resolve the foundation.
+expected:
+  should_trigger: true
+graders:
+  - type: trigger
+    name: trigger-grader
+    config:
+      skill_path: skills/engineering/code-implementation-grilling
+      mode: positive
+      threshold: 0.5

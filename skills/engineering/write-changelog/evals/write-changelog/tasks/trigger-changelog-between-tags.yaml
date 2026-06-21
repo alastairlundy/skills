@@ -1,6 +1,19 @@
 id: trigger-changelog-between-tags
-type: trigger
-description: Triggers when user asks to generate a changelog between two tags.
-input: |
-  Generate a changelog between v1.2.0 and v1.3.0 for this repo.
-expected: trigger
+name: Trigger Changelog Between Tags
+description: >-
+  Triggers when user asks to generate a changelog between two tags.
+tags:
+  - trigger
+  - positive-trigger
+inputs:
+  prompt: |
+    Generate a changelog between v1.2.0 and v1.3.0 for this repo.
+expected:
+  should_trigger: true
+graders:
+  - type: trigger
+    name: trigger-grader
+    config:
+      skill_path: skills/engineering/write-changelog
+      mode: positive
+      threshold: 0.5

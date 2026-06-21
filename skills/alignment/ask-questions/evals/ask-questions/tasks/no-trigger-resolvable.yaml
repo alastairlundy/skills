@@ -1,6 +1,19 @@
 id: no-trigger-resolvable
-type: trigger
-description: Does NOT trigger when the LLM can resolve the answer from context, code, or safe inference.
-input: |
-  I'm using C# 12 with .NET 8. What's the right way to declare a primary constructor for a record?
-expected: no-trigger
+name: No Trigger Resolvable
+description: >-
+  Does NOT trigger when the LLM can resolve the answer from context, code, or safe inference.
+tags:
+  - trigger
+  - negative-trigger
+inputs:
+  prompt: |
+    I'm using C# 12 with .NET 8. What's the right way to declare a primary constructor for a record?
+expected:
+  should_trigger: false
+graders:
+  - type: trigger
+    name: trigger-grader
+    config:
+      skill_path: skills/alignment/ask-questions
+      mode: negative
+      threshold: 0.5

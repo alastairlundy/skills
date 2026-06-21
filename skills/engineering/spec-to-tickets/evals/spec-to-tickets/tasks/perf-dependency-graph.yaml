@@ -1,19 +1,24 @@
 id: perf-dependency-graph
-type: performance
+name: Perf Dependency Graph
 description: >-
-  Dependency graph is acyclic and uses "Blocked by" only - never "Blocks". Tickets can be
-  published in dependency order (blockers first).
-input: |
-  Decompose this spec into tickets:
-
-  # E-commerce Checkout Refactor
-
-  **Problem**: Checkout takes 4+ steps and 30+ seconds.
-
-  **Approach**: Combine cart and checkout into a single page with inline validation. Add a payment provider abstraction.
-
-  **Scope**: Frontend checkout page, payment provider interface, two provider implementations (Stripe, PayPal), order creation flow.
-
-  **Acceptance**: User completes checkout in one page; payment provider can be swapped without UI changes.
-assertion: |
-  Output contains a dependency graph with no cycles (no ticket transitively blocks itself or creates a loop). Dependencies are expressed via a "Blocked by" or "Dependencies - Blocked by" field, never a "Blocks" field. The dependency graph supports parallel work (some tickets have no blockers and can start immediately).
+  >-
+tags:
+  - performance
+inputs:
+  prompt: |
+    Decompose this spec into tickets:
+expected:
+  output_contains:
+    - "Blocked by"
+    - "Dependencies - Blocked by"
+  output_not_contains:
+    - "Blocks"
+graders:
+  - type: text
+    name: assertion-checks
+    config:
+      not_contains:
+        - "Blocks"
+      contains:
+        - "Blocked by"
+        - "Dependencies - Blocked by"

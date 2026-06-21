@@ -1,20 +1,18 @@
 id: perf-sizing
-type: performance
+name: Perf Sizing
 description: >-
-  Ticket count is at least 2 (unless the spec is narrowly scoped). Each ticket fits in
-  3-4 hours. If the count exceeds 15, the decomposition pattern is reviewed for
-  suitability.
-input: |
-  Decompose this spec into tickets:
-
-  # Image Upload Pipeline
-
-  **Problem**: Image uploads are slow and lack validation.
-
-  **Approach**: Add client-side compression, server-side virus scan, S3 storage, thumbnail generation.
-
-  **Scope**: Frontend compression, upload endpoint, scan integration, S3 client, thumbnail service.
-
-  **Acceptance**: User uploads a 5MB image; it appears as thumbnails within 5 seconds.
-assertion: |
-  Output contains at least 2 tickets, unless the spec is already narrowly scoped (one well-defined unit of work). Each ticket is sized for at most 3-4 hours of focused work. If the decomposition produces more than 15 tickets, the output includes a note that the decomposition pattern was reviewed for suitability.
+  >-
+tags:
+  - performance
+inputs:
+  prompt: |
+    Decompose this spec into tickets:
+expected:
+  output_contains:
+    - "perf-sizing"
+graders:
+  - type: text
+    name: assertion-checks
+    config:
+      contains:
+        - "perf-sizing"

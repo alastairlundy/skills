@@ -1,2 +1,14 @@
 name: ask-questions
 description: Evaluates ask-questions skill trigger discipline and gate/performance coverage for user clarification
+skill: ask-questions
+version: "1.0"
+
+config:
+  trials_per_task: 3
+  timeout_seconds: 300
+  parallel: false
+  executor: mock
+  model: gpt-5-mini
+
+tasks:
+  - "tasks/*.yaml"

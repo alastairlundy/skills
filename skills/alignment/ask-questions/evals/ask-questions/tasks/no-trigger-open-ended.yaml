@@ -1,6 +1,19 @@
 id: no-trigger-open-ended
-type: trigger
-description: Does NOT trigger when the LLM is about to call ask_question for an open-ended exploratory question.
-input: |
-  Tell me about the different approaches to handling state in distributed systems.
-expected: no-trigger
+name: No Trigger Open Ended
+description: >-
+  Does NOT trigger when the LLM is about to call ask_question for an open-ended exploratory question.
+tags:
+  - trigger
+  - negative-trigger
+inputs:
+  prompt: |
+    Tell me about the different approaches to handling state in distributed systems.
+expected:
+  should_trigger: false
+graders:
+  - type: trigger
+    name: trigger-grader
+    config:
+      skill_path: skills/alignment/ask-questions
+      mode: negative
+      threshold: 0.5

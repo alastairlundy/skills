@@ -1,19 +1,18 @@
 id: perf-context-pointers
-type: performance
+name: Perf Context Pointers
 description: >-
-  Context pointers reference only files, ADRs, and domain terms directly relevant to
-  the ticket. The full project glossary is not reproduced in any ticket.
-input: |
-  Decompose this spec into tickets:
-
-  # Two-Factor Authentication
-
-  **Problem**: Accounts are protected only by passwords.
-
-  **Approach**: Add TOTP-based 2FA with backup codes.
-
-  **Scope**: User model, API endpoints, frontend enrollment flow, recovery codes.
-
-  **Acceptance**: Users can enroll in 2FA, log in with TOTP, and use backup codes to recover.
-assertion: |
-  Every ticket's Context pointers section contains only files, ADRs, and domain terms directly relevant to that ticket. No ticket reproduces the full project glossary in its context pointers - it can include a few relevant terms, but not the entire glossary. Each context pointer has a brief reason why it is relevant to the ticket.
+  >-
+tags:
+  - performance
+inputs:
+  prompt: |
+    Decompose this spec into tickets:
+expected:
+  output_contains:
+    - "perf-context-pointers"
+graders:
+  - type: text
+    name: assertion-checks
+    config:
+      contains:
+        - "perf-context-pointers"

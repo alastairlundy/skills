@@ -1,6 +1,19 @@
 id: no-trigger-roleplay
-type: trigger
-description: Anti-slop should NOT trigger when the user explicitly requests roleplay.
-input: |
-  Pretend you are a pirate and greet me.
-expected: no-trigger
+name: No Trigger Roleplay
+description: >-
+  Anti-slop should NOT trigger when the user explicitly requests roleplay.
+tags:
+  - trigger
+  - negative-trigger
+inputs:
+  prompt: |
+    Pretend you are a pirate and greet me.
+expected:
+  should_trigger: false
+graders:
+  - type: trigger
+    name: trigger-grader
+    config:
+      skill_path: skills/alignment/anti-slop
+      mode: negative
+      threshold: 0.5

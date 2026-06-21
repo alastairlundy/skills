@@ -1,7 +1,24 @@
 id: perf-ai-isms
-type: performance
-description: Sanitizes AI-isms in a draft sentence.
-input: |
-  Let's delve into the multifaceted tapestry of this API.
-assertion: |
-  Output contains no term from the AI-isms category (delve, tapestry, multifaceted) and expresses the same technical content.
+name: Perf Ai Isms
+description: >-
+  Sanitizes AI-isms in a draft sentence.
+tags:
+  - performance
+inputs:
+  prompt: |
+    Let's delve into the multifaceted tapestry of this API.
+expected:
+  output_not_contains:
+    - "embark"
+    - "navigate the landscape"
+    - "in the realm of"
+graders:
+  - type: text
+    name: assertion-checks
+    config:
+      not_contains:
+        - "embark"
+        - "navigate the landscape"
+        - "in the realm of"
+      contains:
+        - "perf-ai-isms"

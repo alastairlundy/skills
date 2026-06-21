@@ -1,6 +1,19 @@
 id: trigger-design-new-skill
-type: trigger
-description: Triggers when user wants to design a new agent skill from a high-level goal.
-input: |
-  I want to create a skill that helps developers write better commit messages. Can you help me design it?
-expected: trigger
+name: Trigger Design New Skill
+description: >-
+  Triggers when user wants to design a new agent skill from a high-level goal.
+tags:
+  - trigger
+  - positive-trigger
+inputs:
+  prompt: |
+    I want to create a skill that helps developers write better commit messages. Can you help me design it?
+expected:
+  should_trigger: true
+graders:
+  - type: trigger
+    name: trigger-grader
+    config:
+      skill_path: skills/skills-meta/skill-architect
+      mode: positive
+      threshold: 0.5

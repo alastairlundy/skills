@@ -1,19 +1,18 @@
 id: perf-ticket-shape
-type: performance
+name: Perf Ticket Shape
 description: >-
-  Every ticket has the required shape: goal, recommended workflow, acceptance criteria,
-  context pointers, blocked_by / dependencies, parent, and classification.
-input: |
-  Decompose this spec into tickets:
-
-  # User Notifications Module
-
-  **Problem**: Users miss important updates because notifications are buried in the activity feed.
-
-  **Approach**: Add a notifications center with read/unread state, an optional email digest, and a per-channel preference.
-
-  **Scope**: Backend API for notifications, frontend notification bell, email template, opt-out preferences. Out of scope: push notifications, SMS, in-app banners.
-
-  **Acceptance**: Users can view unread notifications, mark them read, configure email digest frequency, and opt out per channel.
-assertion: |
-  Output contains at least 2 tickets. Every ticket has all of: a Goal section, a Recommended Workflow section, an Acceptance criteria section, a Context pointers section, a Dependencies (Blocked by) section, a parent field referencing the spec, and a classification of either Independent or Collaborative. Each Recommended Workflow contains at least 1 step with a verb-phrase title, a Where line, bulleted actions, and a Verify line.
+  >-
+tags:
+  - performance
+inputs:
+  prompt: |
+    Decompose this spec into tickets:
+expected:
+  output_contains:
+    - "perf-ticket-shape"
+graders:
+  - type: text
+    name: assertion-checks
+    config:
+      contains:
+        - "perf-ticket-shape"

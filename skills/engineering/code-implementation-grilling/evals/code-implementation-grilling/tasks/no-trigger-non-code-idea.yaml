@@ -1,6 +1,19 @@
 id: no-trigger-non-code-idea
-type: trigger
-description: Does NOT trigger for a non-code/non-programming project.
-input: |
-  I have a plan to launch a B2B marketing campaign in Q3. Help me think it through.
-expected: no-trigger
+name: No Trigger Non Code Idea
+description: >-
+  Does NOT trigger for a non-code/non-programming project.
+tags:
+  - trigger
+  - negative-trigger
+inputs:
+  prompt: |
+    I have a plan to launch a B2B marketing campaign in Q3. Help me think it through.
+expected:
+  should_trigger: false
+graders:
+  - type: trigger
+    name: trigger-grader
+    config:
+      skill_path: skills/engineering/code-implementation-grilling
+      mode: negative
+      threshold: 0.5

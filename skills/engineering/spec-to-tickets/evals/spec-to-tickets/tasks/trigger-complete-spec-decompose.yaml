@@ -1,6 +1,19 @@
 id: trigger-complete-spec-decompose
-type: trigger
-description: Triggers when user provides a complete spec and asks to decompose into tickets.
-input: |
-  Here is the full spec for the user authentication module. Break it down into implementation tickets with dependency graphs.
-expected: trigger
+name: Trigger Complete Spec Decompose
+description: >-
+  Triggers when user provides a complete spec and asks to decompose into tickets.
+tags:
+  - trigger
+  - positive-trigger
+inputs:
+  prompt: |
+    Here is the full spec for the user authentication module. Break it down into implementation tickets with dependency graphs.
+expected:
+  should_trigger: true
+graders:
+  - type: trigger
+    name: trigger-grader
+    config:
+      skill_path: skills/engineering/spec-to-tickets
+      mode: positive
+      threshold: 0.5

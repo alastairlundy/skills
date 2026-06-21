@@ -1,6 +1,19 @@
 id: no-trigger-mode-opt-out
-type: trigger
-description: Does NOT trigger trivial questions in opt-out mode (user said "just do it").
-input: |
-  Just do it. Use your judgment on the file naming convention for the new module.
-expected: no-trigger
+name: No Trigger Mode Opt Out
+description: >-
+  Does NOT trigger trivial questions in opt-out mode (user said "just do it").
+tags:
+  - trigger
+  - negative-trigger
+inputs:
+  prompt: |
+    Just do it. Use your judgment on the file naming convention for the new module.
+expected:
+  should_trigger: false
+graders:
+  - type: trigger
+    name: trigger-grader
+    config:
+      skill_path: skills/alignment/ask-questions
+      mode: negative
+      threshold: 0.5

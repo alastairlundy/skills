@@ -1,7 +1,22 @@
 id: perf-hedging-escape-hatch
-type: performance
-description: Replaces hedging with explicit conditional alternative.
-input: |
-  Depending on your needs, you could use Kafka or RabbitMQ.
-assertion: |
-  Output uses an explicit conditional (e.g., 'If X, use Kafka; if Y, use RabbitMQ') and does not use bare 'depending on' or 'could'.
+name: Perf Hedging Escape Hatch
+description: >-
+  Replaces hedging with explicit conditional alternative.
+tags:
+  - performance
+inputs:
+  prompt: |
+    Depending on your needs, you could use Kafka or RabbitMQ.
+expected:
+  output_contains:
+    - "If X, use Kafka; if Y, use RabbitMQ"
+  output_not_contains:
+    - "depending on"
+graders:
+  - type: text
+    name: assertion-checks
+    config:
+      not_contains:
+        - "depending on"
+      contains:
+        - "If X, use Kafka; if Y, use RabbitMQ"

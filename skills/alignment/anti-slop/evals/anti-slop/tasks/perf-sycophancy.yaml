@@ -1,7 +1,26 @@
 id: perf-sycophancy
-type: performance
-description: Removes sycophantic opener and any replacement is not sycophantic.
-input: |
-  Great question! Let me explain how Kafka works.
-assertion: |
-  Output does not start with 'Great question!' or any sycophantic phrase, and the explanation is preserved.
+name: Perf Sycophancy
+description: >-
+  Removes sycophantic opener and any replacement is not sycophantic.
+tags:
+  - performance
+inputs:
+  prompt: |
+    Great question! Let me explain how Kafka works.
+expected:
+  output_not_contains:
+    - "Awesome question"
+    - "What a great"
+    - "Certainly!"
+    - "Of course!"
+graders:
+  - type: text
+    name: assertion-checks
+    config:
+      not_contains:
+        - "Awesome question"
+        - "What a great"
+        - "Certainly!"
+        - "Of course!"
+      contains:
+        - "perf-sycophancy"

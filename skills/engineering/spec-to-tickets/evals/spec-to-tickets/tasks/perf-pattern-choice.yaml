@@ -1,20 +1,18 @@
 id: perf-pattern-choice
-type: performance
+name: Perf Pattern Choice
 description: >-
-  Pattern choice includes a recommendation with rationale. In Interactive mode, the
-  rationale includes a parenthetical definition of the recommended pattern and explains
-  why alternatives were rejected. Custom patterns are validated before use.
-input: |
-  Decompose this spec into tickets:
-
-  # Reporting Dashboard
-
-  **Problem**: Reports require SQL queries; non-engineers cannot self-serve.
-
-  **Approach**: Build a dashboard with predefined widgets, export to CSV/PDF.
-
-  **Scope**: Data aggregation layer, 5 widget types, CSV/PDF export, shareable links.
-
-  **Acceptance**: Non-engineer can build a dashboard in less than 30 minutes; exports match displayed data.
-assertion: |
-  Output states the chosen decomposition pattern (Vertical Slices, Domain, or Features) with a brief rationale. In Interactive mode, the rationale includes a parenthetical definition of the recommended pattern and explains why alternative patterns were rejected. If a custom pattern is proposed, the output validates it against the skill's constraints (focused, demoable tickets with clear dependencies and Independent vs Collaborative classification) before proceeding.
+  >-
+tags:
+  - performance
+inputs:
+  prompt: |
+    Decompose this spec into tickets:
+expected:
+  output_contains:
+    - "perf-pattern-choice"
+graders:
+  - type: text
+    name: assertion-checks
+    config:
+      contains:
+        - "perf-pattern-choice"

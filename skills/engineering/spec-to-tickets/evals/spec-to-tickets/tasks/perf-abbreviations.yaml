@@ -1,19 +1,20 @@
 id: perf-abbreviations
-type: performance
+name: Perf Abbreviations
 description: >-
-  No abbreviations in tickets unless defined in CONTEXT.md, the project glossary, or
-  explicitly used by the user or spec. "User Stories" is never abbreviated to "US".
-input: |
-  Decompose this spec into tickets:
-
-  # OAuth2 Login
-
-  **Problem**: Users want single sign-on.
-
-  **Approach**: Add OAuth2 with PKCE, support Google and GitHub.
-
-  **Scope**: Token storage, callback handling, account linking.
-
-  **Acceptance**: User can log in with Google or GitHub; existing accounts can be linked.
-assertion: |
-  Output contains no abbreviation in ticket content or workflow output unless it is (a) defined in CONTEXT.md or the project glossary, (b) explicitly used by the user or spec, or (c) clarified in brackets on first use (e.g., "SSO (Single Sign-On)"). The phrase "User Stories" is never abbreviated to "US" anywhere in the output.
+  >-
+tags:
+  - performance
+inputs:
+  prompt: |
+    Decompose this spec into tickets:
+expected:
+  output_contains:
+    - "SSO (Single Sign-On)"
+    - "User Stories"
+graders:
+  - type: text
+    name: assertion-checks
+    config:
+      contains:
+        - "SSO (Single Sign-On)"
+        - "User Stories"

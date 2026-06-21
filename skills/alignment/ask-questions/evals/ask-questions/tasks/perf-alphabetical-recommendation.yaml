@@ -1,7 +1,20 @@
 id: perf-alphabetical-recommendation
-type: performance
-description: Orders options alphabetically and marks the recommendation with (Recommended) in the label.
-input: |
-  For a new internal CLI tool, pick a database. Postgres is the safe default for most cases.
-assertion: |
-  Output options are in alphabetical order; the recommended option's label contains '(Recommended)'; the recommendation is justified by the user's stated context (new internal CLI tool).
+name: Perf Alphabetical Recommendation
+description: >-
+  Orders options alphabetically and marks the recommendation with (Recommended) in the label.
+tags:
+  - performance
+inputs:
+  prompt: |
+    For a new internal CLI tool, pick a database. Postgres is the safe default for most cases.
+expected:
+  output_contains:
+    - "s label contains "
+    - "; the recommendation is justified by the user"
+graders:
+  - type: text
+    name: assertion-checks
+    config:
+      contains:
+        - "s label contains "
+        - "; the recommendation is justified by the user"

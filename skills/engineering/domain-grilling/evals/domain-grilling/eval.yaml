@@ -4,9 +4,11 @@ skill: domain-grilling
 version: "1.0"
 
 config:
-  trials_per_task: 1
-  timeout_seconds: 120
+  trials_per_task: 3
+  timeout_seconds: 300
+  parallel: false
   executor: mock
+  model: gpt-5-mini
 
 tasks:
   - "tasks/*.yaml"

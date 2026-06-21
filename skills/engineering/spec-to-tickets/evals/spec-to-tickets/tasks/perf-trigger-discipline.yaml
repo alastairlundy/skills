@@ -1,19 +1,20 @@
 id: perf-trigger-discipline
-type: performance
+name: Perf Trigger Discipline
 description: >-
-  Uses a conversational tone and does not broadcast internal step numbers. Closing
-  questions use a multi-part format, not binary approval.
-input: |
-  Decompose this spec into tickets:
-
-  # Onboarding Email Sequence
-
-  **Problem**: New users churn in week 1.
-
-  **Approach**: Send 3 onboarding emails over 7 days with feature tips.
-
-  **Scope**: Email template, scheduling, analytics events.
-
-  **Acceptance**: 80% of new users receive all 3 emails; click-through is tracked.
-assertion: |
-  Output opens with a brief framing statement (not a literal "Step 1: ..." broadcast). Major section transitions use natural language rather than raw step numbers. Closing questions use a multi-part format (e.g., "Are any tickets too large or too small? Is anything missing or unnecessary? Do the dependencies and classifications feel right?") rather than binary approval ("Does this look good?").
+  >-
+tags:
+  - performance
+inputs:
+  prompt: |
+    Decompose this spec into tickets:
+expected:
+  output_contains:
+    - "Step 1: ..."
+    - "Does this look good?"
+graders:
+  - type: text
+    name: assertion-checks
+    config:
+      contains:
+        - "Step 1: ..."
+        - "Does this look good?"

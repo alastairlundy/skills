@@ -1,2 +1,14 @@
 name: code-implementation-grilling
 description: Evaluates code-implementation-grilling skill performance and trigger discipline
+skill: code-implementation-grilling
+version: "1.0"
+
+config:
+  trials_per_task: 3
+  timeout_seconds: 300
+  parallel: false
+  executor: mock
+  model: gpt-5-mini
+
+tasks:
+  - "tasks/*.yaml"

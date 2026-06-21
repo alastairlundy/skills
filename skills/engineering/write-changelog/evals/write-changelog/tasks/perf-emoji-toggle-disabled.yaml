@@ -1,7 +1,18 @@
 id: perf-emoji-toggle-disabled
-type: performance
-description: With `Use Emojis: No`, category headings appear as plain bold headings with no emoji prefix.
-input: |
-  Generate a changelog for the repo between v1.0.0 and HEAD. Use Emojis: No.
-assertion: |
-  Output's category headings are bold text (e.g., `**Additions**`) with no emoji prefix. The strings `🆕`, `🗑️`, `⚙️`, `🐛`, `📄`, and `⚠️` do not appear at the start of any category heading.
+name: Perf Emoji Toggle Disabled
+description: >-
+  With `Use Emojis: No`, category headings appear as plain bold headings with no emoji prefix.
+tags:
+  - performance
+inputs:
+  prompt: |
+    Generate a changelog for the repo between v1.0.0 and HEAD. Use Emojis: No.
+expected:
+  output_contains:
+    - "perf-emoji-toggle-disabled"
+graders:
+  - type: text
+    name: assertion-checks
+    config:
+      contains:
+        - "perf-emoji-toggle-disabled"

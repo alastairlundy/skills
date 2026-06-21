@@ -1,6 +1,19 @@
 id: trigger-spec-file-path
-type: trigger
-description: Triggers when a spec/PRD is referenced by file path for a code/programming project.
-input: |
-  I have a spec at docs/specs/todo.md for a todo app. Help me resolve the technical foundation.
-expected: trigger
+name: Trigger Spec File Path
+description: >-
+  Triggers when a spec/PRD is referenced by file path for a code/programming project.
+tags:
+  - trigger
+  - positive-trigger
+inputs:
+  prompt: |
+    I have a spec at docs/specs/todo.md for a todo app. Help me resolve the technical foundation.
+expected:
+  should_trigger: true
+graders:
+  - type: trigger
+    name: trigger-grader
+    config:
+      skill_path: skills/engineering/code-implementation-grilling
+      mode: positive
+      threshold: 0.5

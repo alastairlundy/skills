@@ -1,7 +1,22 @@
 id: perf-summary-rule
-type: performance
-description: Prunes a summary that does not restate the Goal Constraint or name a next action.
-input: |
-  Goal: Reduce API latency by 200ms. Draft ends with: 'In summary, this is a comprehensive approach.'
-assertion: |
-  Output does not end with a vague restating summary; if any summary remains, it names the Goal Constraint and the next concrete action.
+name: Perf Summary Rule
+description: >-
+  Prunes a summary that does not restate the Goal Constraint or name a next action.
+tags:
+  - performance
+inputs:
+  prompt: |
+    Goal: Reduce API latency by 200ms. Draft ends with: 'In summary, this is a comprehensive approach.'
+expected:
+  output_not_contains:
+    - "In conclusion,"
+    - "To summarize,"
+graders:
+  - type: text
+    name: assertion-checks
+    config:
+      not_contains:
+        - "In conclusion,"
+        - "To summarize,"
+      contains:
+        - "perf-summary-rule"
