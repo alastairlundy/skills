@@ -1,7 +1,7 @@
 ---
 name: skill-architect
 description: >-
-  Guides users through the design, refinement, and deterministic translation of a new agent skill, ensuring compatibility with project standards without performing file system writes.
+  Guides users through the design, refinement, and deterministic translation of a new agent skill, ensuring compatibility with project standards without performing file system writes. Use for creating or designing a new skill. Do not use for making minor tweaks to existing skills.
 license: MIT
 ---
 

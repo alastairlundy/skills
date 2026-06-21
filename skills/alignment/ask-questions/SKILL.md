@@ -1,7 +1,7 @@
 ---
 name: ask-questions
 description: >-
-  Addresses under-trigger (LLM doesn't ask unless prompted) and mis-appropriation (LLM uses the tool for open-ended questions). Use when about to call the `ask_question` (or equivalent) tool, or when considering whether to ask. Teaches a four-gate decision procedure: trigger, fit, construct, validate, with prose fallback as a last resort. Load before any tool-mediated user clarification.
+   Assists agents with when to ask questions via tools vs prose. Use when a request is ambiguous, has multiple valid interpretations, or needs a discrete choice before proceeding. Do not use if user input is not required, or a request has clear discrete options with concise descriptions.
 license: MIT
 ---
 
