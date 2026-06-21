@@ -1,7 +1,7 @@
 ---
 name: write-changelog
 description: >-
-  Generates an ecosystem-aware, user-facing markdown changelog by analyzing git history, transforming commit messages, and categorizing changes into logical sub-projects.
+  Generates an ecosystem-aware, user-facing markdown changelog by analyzing git history, transforming commit messages, and categorizing changes into logical sub-projects. Use when the user wants to write a changelog/release notes, or wants to know what happened betweeen two speified versions. Do not use for summarizing git commit changes.
 license: MIT
 ---
 

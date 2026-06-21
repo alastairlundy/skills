@@ -1,7 +1,7 @@
 ---
 name: domain-grilling
 description: >-
-  A relentless interviewing skill focused on Domain-Driven Design (DDD) alignment. Use for vague ideas with no spec or PRD, domain modeling, terminology alignment, or conceptual design before any spec exists. Walks through the design tree iteratively, resolves terms against a glossary (CONTEXT.md), and documents critical architectural decisions (ADRs).   Defer to `code-implementation-grilling` once a spec or PRD is present and technical decisions (language, framework, dependencies, project structure) are the goal.
+  A relentless interviewing skill focused on Domain-Driven Design (DDD) alignment. Use for expanding upon vague ideas without a spec, helping the user think through ideas, terminology, or concepts. Do not use for implementation decisions, trivial code changes or bug fixes.
 license: MIT
 ---
 

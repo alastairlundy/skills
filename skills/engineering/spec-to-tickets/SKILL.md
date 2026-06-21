@@ -1,7 +1,7 @@
 ---
 name: spec-to-tickets
 description: >-
-  Create implementation tickets with dependency graphs and Independent/Collaborative classification. Use when - spec or PRD is complete, tickets need 3-4 hour focus, parallel work with explicit dependencies, or per-ticket classification. Don't use when - spec is incomplete or vague (use domain-grilling or to-prd first), a different granularity is needed (epics, tasks), direct implementation is the goal, or the user explicitly wants to send tickets to an issue tracker without dependency graphs or classification (use to-issues instead).
+  Create implementation tickets with dependency graphs and Independent/Collaborative classification. Use when a user wants to break down a spec or tasks into tickets, or wants to create implementation tickets. Don't use when - spec is incomplete or vague (use domain-grilling first), a different granularity is needed (epics, tasks), direct implementation is the goal, or the user explicitly wants to send tickets to an issue tracker without dependency graphs or classification.
 license: MIT
 ---
 
