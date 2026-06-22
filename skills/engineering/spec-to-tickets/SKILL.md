@@ -1,7 +1,7 @@
 ---
 name: spec-to-tickets
 description: >-
-  Create implementation tickets with dependency graphs and Independent/Collaborative classification. Use when a user wants to break down a spec or tasks into tickets, or wants to create implementation tickets. Don't use when - spec is incomplete or vague (use domain-grilling first), a different granularity is needed (epics, tasks), direct implementation is the goal, or the user explicitly wants to send tickets to an issue tracker without dependency graphs or classification.
+  Create implementation tickets with dependency graphs and Independent/Collaborative classification. Use when a user wants to break down a spec or tasks into tickets, or wants to create implementation tickets. Don't use when - spec is incomplete or vague (use grilling first, or domain-grilling if the resolution needs DDD alignment), a different granularity is needed (epics, tasks), direct implementation is the goal, or the user explicitly wants to send tickets to an issue tracker without dependency graphs or classification.
 license: MIT
 ---
 
@@ -20,7 +20,7 @@ Break a spec, PRD, or conversation context into focused tickets with dependency 
 
 ## When Not to Use
 
-- The spec is incomplete, vague, or unresolved (use `domain-grilling` to resolve, or `to-prd` to capture)
+- The spec is incomplete, vague, or unresolved (use `grilling` to resolve, or `domain-grilling` if DDD alignment is needed, or `to-prd` to capture)
 - A different granularity is needed (epics, milestones, tasks)
 - The goal is direct implementation rather than decomposition
 - The source material is a single trivial change that does not benefit from decomposition
@@ -64,7 +64,7 @@ The input must contain all four of -
 
 **In Interactive mode** - present the heuristic results to the user. List which criteria are met and which are missing, and state which `Dxxx`/`Txxx` records the proposed tickets would cover. Ask whether to proceed or provide a spec first.
 
-**In Autonomous mode** - if all four criteria are met, proceed. If any are missing, abort and report which criteria are unsatisfied. Suggest using `domain-grilling` or `to-prd` to fill the gaps.
+**In Autonomous mode** - if all four criteria are met, proceed. If any are missing, abort and report which criteria are unsatisfied. Suggest using `grilling` (or `domain-grilling` if DDD alignment is needed) or `to-prd` to fill the gaps.
 
 ### Step 4 - Codebase Exploration
 
@@ -302,3 +302,4 @@ The summary should be scannable - use clear structure (headings, tables, lists) 
 - [ ] Workflow derivation follows the mixed rule: spec structure, then codebase context, then standard patterns.
 - [ ] Workflow steps respect dependencies between steps (a step producing an artifact consumed by another comes first). Reordering by the implementer is permitted.
 - [ ] Per-step Verify lines are micro-verifications distinct from per-ticket Acceptance criteria (macro-verifications).
+
