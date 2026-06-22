@@ -67,7 +67,7 @@ Verify: <verification check or N/A>
 **Files** - <key files to examine or modify, with brief notes on why they're relevant>
 **ADRs** - <relevant architectural decisions by reference>
 **Domain terms** - <terms from CONTEXT.md that help understand this ticket's scope and boundaries - include enough to prevent confusion, but do not reproduce the glossary>
-**Ledger records** - <`Dxxx`/`Txxx` records this ticket's acceptance criteria and constraints must honour, by ID — do not reproduce the ledger record body, only the ID and a brief note on why it is relevant>
+**Ledger records** - <`Dxxx`/`Txxx` records this ticket's acceptance criteria and constraints must honour, cited as `filename#<Dxxx|Txxx>` — do not reproduce the ledger record body, only the ID and a brief note on why it is relevant>
 
 ## Acceptance criteria
 

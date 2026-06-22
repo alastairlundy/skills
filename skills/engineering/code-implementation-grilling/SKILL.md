@@ -275,13 +275,14 @@ time.
   authorization.
 - **Ledger Binding**: Every technical statement in the blueprint
   body that satisfies a functional requirement must reference the
-  `Dxxx` (or earlier `Txxx`) record it satisfies in square
-  brackets, inline (e.g., *"The store [D012] will use Redis with
-  per-tab key namespaces, so a failed write to one tab does not
-  corrupt siblings [D014]."*). The blueprint must also include a
-  `## Ledger Reference` section listing every `Dxxx` and `Txxx`
-  record the blueprint cites, so a reader can audit the binding
-  in one pass.
+  `Dxxx` (or earlier `Txxx`) record it satisfies using the
+  `filename#<Dxxx|Txxx>` format in square brackets, inline
+  (e.g., *"The store [`DECISIONS-repo-feature.md#D012`] will use
+  Redis with per-tab key namespaces, so a failed write to one tab
+  does not corrupt siblings [`DECISIONS-repo-feature.md#D014`]."*).
+  The blueprint must also include a `## Ledger Reference` section
+  listing every `Dxxx` and `Txxx` record the blueprint cites, so a
+  reader can audit the binding in one pass.
 
 **Option B: PRD Augmentation**
 
@@ -292,7 +293,7 @@ time.
   technical noise.
 - **Ledger Binding (Option B)**: The appended Technical
   Implementation section must inline-cite the `Dxxx`/`Txxx`
-  records that justify each technical choice, and must open with a
+  records using `filename#<Dxxx|Txxx>` format, and must open with a
   `Decision Ledger: <ledger-path>` pointer so readers can audit
   the binding.
 
@@ -332,12 +333,13 @@ Before declaring convergence:
    verify (a) every Technical Decision Point resolved in Steps 3-5
    has a corresponding `Txxx` record, (b) every blueprint body
    statement that satisfies a functional requirement cites the
-   `Dxxx`/`Txxx` record it satisfies, and (c) the blueprint's `##
-   Ledger Reference` section (or the augmented PRD's `Decision
-   Ledger:` pointer) lists every cited record. A blueprint that
-   omits citations, or a session that ends with unreferenced
-   decisions, is not convergent — re-open the affected decision
-   or the blueprint and complete the binding before declaring.
+   `Dxxx`/`Txxx` record it satisfies using `filename#<Dxxx|Txxx>`
+   format, and (c) the blueprint's `## Ledger Reference` section
+   (or the augmented PRD's `Decision Ledger:` pointer) lists every
+   cited record. A blueprint that omits citations, or a session
+   that ends with unreferenced decisions, is not convergent —
+   re-open the affected decision or the blueprint and complete the
+   binding before declaring.
 5. **Declaration**: Once aligned and bound, explicitly declare:
    *"We have reached a shared implementation understanding."*
 
@@ -362,16 +364,16 @@ not add any other prose around the template.
 > Run the `spec-to-tickets` skill with the spec at `<spec-path>`,
 > the blueprint at `<blueprint-path>`, and the Decision Ledger at
 > `<ledger-path>` as context. Every ticket's acceptance criteria
-> and constraints must cite a `Dxxx` or `Txxx` record from the
-> ledger.
+> and constraints must cite a `Dxxx` or `Txxx` record using
+> `filename#<Dxxx|Txxx>` format.
 
 **Template: issue tracker (`to-issues`)**
 
 > Run the `to-issues` skill with the spec at `<spec-path>`, the
 > blueprint at `<blueprint-path>`, and the Decision Ledger at
 > `<ledger-path>` as context. Every issue's acceptance criteria
-> and constraints must cite a `Dxxx` or `Txxx` record from the
-> ledger.
+> and constraints must cite a `Dxxx` or `Txxx` record using
+> `filename#<Dxxx|Txxx>` format.
 
 **Template: manual handoff**
 
@@ -380,7 +382,7 @@ not add any other prose around the template.
 > at `<ledger-path>`. Use these to drive ticket creation or
 > implementation planning in your own workflow. Every ticket's
 > acceptance criteria and constraints must cite a `Dxxx` or `Txxx`
-> record.
+> record using `filename#<Dxxx|Txxx>` format.
 
 ### Option B: PRD Augmentation
 
@@ -390,7 +392,7 @@ not add any other prose around the template.
 > (which now includes the Technical Implementation section) and
 > the Decision Ledger at `<ledger-path>` as context. Every
 > ticket's acceptance criteria and constraints must cite a
-> `Dxxx` or `Txxx` record from the ledger.
+> `Dxxx` or `Txxx` record using `filename#<Dxxx|Txxx>` format.
 
 **Template: issue tracker (`to-issues`)**
 
@@ -398,7 +400,7 @@ not add any other prose around the template.
 > now includes the Technical Implementation section) and the
 > Decision Ledger at `<ledger-path>` as context. Every issue's
 > acceptance criteria and constraints must cite a `Dxxx` or
-> `Txxx` record from the ledger.
+> `Txxx` record using `filename#<Dxxx|Txxx>` format.
 
 **Template: manual handoff**
 
@@ -407,7 +409,7 @@ not add any other prose around the template.
 > Decision Ledger at `<ledger-path>`. Use these to drive ticket
 > creation or implementation planning in your own workflow.
 > Every ticket's acceptance criteria and constraints must cite a
-> `Dxxx` or `Txxx` record.
+> `Dxxx` or `Txxx` record using `filename#<Dxxx|Txxx>` format.
 
 ## Validation
 
@@ -450,9 +452,9 @@ transcript:
       the technical "how" supports the functional "what"?
 - [ ] **Ledger Coverage**: Does every blueprint body statement
       that satisfies a functional requirement inline-cite a
-      `Dxxx`/`Txxx` record, and does the blueprint (or augmented
-      PRD) list every cited record in a `## Ledger Reference` /
-      `Decision Ledger:` section?
+      `Dxxx`/`Txxx` record using `filename#<Dxxx|Txxx>` format,
+      and does the blueprint (or augmented PRD) list every cited
+      record in a `## Ledger Reference` / `Decision Ledger:` section?
 - [ ] **Scope Binding**: If the user chose Option A
       (Implementation Blueprint), does the blueprint explicitly
       link to the specific PRD, the Decision Ledger, and warn

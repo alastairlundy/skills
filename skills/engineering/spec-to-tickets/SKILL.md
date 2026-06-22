@@ -60,7 +60,7 @@ The input must contain all four of -
 3. Scope boundaries (what is in and out of scope)
 4. Acceptance criteria or verifiable outcomes (how to know when done)
 
-**Decision Ledger pairing.** If a Decision Ledger exists at `docs/decisions/DECISIONS-<repo>-<feature>.md` (produced by `domain-grilling` and/or `code-implementation-grilling`), read it alongside the spec. The ledger is the authoritative source for resolved functional (`Dxxx`) and technical (`Txxx`) decisions. Every ticket's acceptance criteria and constraints must cite a `Dxxx` or `Txxx` record — paraphrase the ledger record, never the spec's summary of it. A spec that ships without a ledger, or a ledger whose `Dxxx`/`Txxx` records are not all covered by at least one ticket, is a coverage gap to surface (not to silently fix).
+**Decision Ledger pairing.** If a Decision Ledger exists at `docs/decisions/DECISIONS-<repo>-<feature>.md` (produced by `domain-grilling` and/or `code-implementation-grilling`), read it alongside the spec. The ledger is the authoritative source for resolved functional (`Dxxx`) and technical (`Txxx`) decisions. Every ticket's acceptance criteria and constraints must cite a `Dxxx` or `Txxx` record using `filename#<Dxxx|Txxx>` format — paraphrase the ledger record, never the spec's summary of it. A spec that ships without a ledger, or a ledger whose `Dxxx`/`Txxx` records are not all covered by at least one ticket, is a coverage gap to surface (not to silently fix).
 
 **In Interactive mode** - present the heuristic results to the user. List which criteria are met and which are missing, and state which `Dxxx`/`Txxx` records the proposed tickets would cover. Ask whether to proceed or provide a spec first.
 
@@ -75,7 +75,7 @@ If not already explored in the current conversation -
 3. Scan `docs/decisions/DECISIONS-*.md` for any Decision Ledger covering this feature. If a ledger is found, read it end-to-end and treat its `Dxxx`/`Txxx` records as the source of truth for resolved decisions — every ticket's acceptance criteria and constraints will cite one or more of these IDs. If a `code-implementation-grilling` blueprint exists for the feature, the blueprint's `## Ledger Reference` section is a pre-built index; use it to confirm coverage before publishing.
 4. Identify key files and modules that the tickets will likely reference.
 
-Use the domain glossary vocabulary throughout all ticket content. Respect ADRs in the area being decomposed. Cite Decision Ledger records by ID (`[D012]`, `[T003]`) — never paraphrase a ledger record into a ticket's acceptance criteria without preserving the ID.
+Use the domain glossary vocabulary throughout all ticket content. Respect ADRs in the area being decomposed. Cite Decision Ledger records using `filename#<Dxxx|Txxx>` format (e.g., `DECISIONS-repo-feature.md#D012`) — never paraphrase a ledger record into a ticket's acceptance criteria without preserving the ID.
 
 ### Step 5 - Output Target Resolution
 
@@ -138,7 +138,7 @@ Prefer Independent over Collaborative. A ticket should only be Collaborative if 
 
 **Sizing heuristic** - applies to all modes. Each ticket should represent at most 3-4 hours of focused work. There is no upper limit on the number of tickets produced from a single PRD. However, if decomposition produces more than 15 tickets, review the decomposition pattern - it may be too fine-grained or unsuitable for the spec's structure. Fewer than 2 tickets suggests tickets are too coarse (each should be a focused unit of work), unless the scope of the work is already narrowly scoped. Prefer many thin slices over few thick ones.
 
-**Decision Ledger coverage** - if a Decision Ledger is present, every `Dxxx` and `Txxx` record must be cited by at least one ticket's acceptance criteria or context pointers, and every ticket must cite at least one ledger record (or, if the ticket covers work explicitly out of ledger scope, cite the absence explicitly with `No ledger record — out of scope: <reason>`). Build a coverage matrix during proposal: rows are ledger records, columns are tickets, cells mark which ticket satisfies which record. A record with no citing ticket is a coverage gap to surface before publishing. A ticket with no cited record is a scope gap to surface before publishing.
+**Decision Ledger coverage** - if a Decision Ledger is present, every `Dxxx` and `Txxx` record must be cited by at least one ticket's acceptance criteria or context pointers using `filename#<Dxxx|Txxx>` format, and every ticket must cite at least one ledger record (or, if the ticket covers work explicitly out of ledger scope, cite the absence explicitly with `No ledger record — out of scope: <reason>`). Build a coverage matrix during proposal: rows are ledger records, columns are tickets, cells mark which ticket satisfies which record. A record with no citing ticket is a coverage gap to surface before publishing. A ticket with no cited record is a scope gap to surface before publishing.
 
 When the spec explicitly enumerates components or modules, use them as the basis for decomposition rather than deriving slices independently. Each component becomes a ticket, with a scaffolding/integration ticket if needed.
 
@@ -219,7 +219,7 @@ For the ticket body schema, see [ticket-template.md](./references/ticket-templat
 - Include only files directly relevant to this ticket's scope.
 - Include only ADRs that constrain this ticket's implementation.
 - Include only domain terms that define boundaries or clarify ambiguity for this ticket. Do not reproduce the glossary.
-- Include only Decision Ledger records (`Dxxx`/`Txxx`) whose `Constraints` or `Normalized Requirement` this ticket must honour. Do not reproduce the ledger.
+- Include only Decision Ledger records (`Dxxx`/`Txxx`) whose `Constraints` or `Normalized Requirement` this ticket must honour, cited as `filename#<Dxxx|Txxx>`. Do not reproduce the ledger.
 
 ### Step 9 - Ticket Publishing
 
@@ -279,7 +279,7 @@ The summary should be scannable - use clear structure (headings, tables, lists) 
 - [ ] Context pointers reference only files, ADRs, domain terms, and Decision Ledger records directly relevant to the ticket.
 - [ ] The glossary is not reproduced in any ticket's context pointers.
 - [ ] Decision Ledger records are not reproduced in any ticket's context pointers.
-- [ ] Every ticket that covers in-scope work cites at least one `Dxxx` or `Txxx` record in its acceptance criteria or context pointers, using the ID format (`[D012]`, `[T003]`).
+- [ ] Every ticket that covers in-scope work cites at least one `Dxxx` or `Txxx` record in its acceptance criteria or context pointers, using `filename#<Dxxx|Txxx>` format (e.g., `DECISIONS-repo-feature.md#D012`).
 - [ ] If a Decision Ledger is present, a coverage matrix was built during proposal and every record has at least one citing ticket. Uncovered records were surfaced as gaps and resolved before publishing.
 - [ ] If no Decision Ledger is present, the summary report notes its absence.
 - [ ] Parent field contains a 1-3 sentence summary when the source is conversation context.

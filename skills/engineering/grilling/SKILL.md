@@ -120,11 +120,11 @@ reached a shared understanding."
 Once convergence is declared, offer the user the exit paths appropriate
 to the type of decision reached. Every exit that drives downstream
 action must include the Decision Ledger path so downstream skills can
-cite records by ID.
+cite records as `filename#Dxxx`.
 
 - **Document the decision** — write a decision memo or notes file that
-  cites the ledger records. Suitable when the outcome is a decision the
-  user will act on later, not a body of work to be implemented.
+  cites the ledger records as `filename#Dxxx`. Suitable when the outcome is
+  a decision the user will act on later, not a body of work to be implemented.
 - **Hand off to `domain-grilling`** — if the discussion surfaced DDD
   concerns (bounded contexts, ubiquitous language, glossary) that need
   a deeper domain pass. The new skill inherits the existing ledger and
@@ -139,7 +139,7 @@ cite records by ID.
 - **Handoff to another agent** — pass the Decision Ledger path as the
   source of truth.
 - **Custom save** — save the shared understanding in another way,
-  citing the Decision Ledger path so records stay linked to the artifact.
+  citing records as `filename#Dxxx` so citations survive file relocation.
 
 ## Validation
 
@@ -185,4 +185,7 @@ transcript:
       contradictory answer without a `Supersedes: Dxxx` record).
 - [ ] The chosen exit was handed off with the Decision Ledger path so
       downstream skills (memos, tickets, specialized grilling) can
-      cite records by ID.
+      cite records as `filename#Dxxx`.
+- [ ] Every citation of a Decision Ledger record from outside the ledger
+      file used the `filename#Dxxx` format (e.g.,
+      `DECISIONS-repo-feature.md#D001`), not a bare `Dxxx` ID.

@@ -4,7 +4,9 @@ The Decision Ledger is the durable record of every branch resolved during a
 grilling session. It is a single markdown file that lives at
 `docs/decisions/DECISIONS-<repo>-<feature>.md` and uses stable `Dxxx` IDs as
 the cross-reference key for every downstream consumer (memos, tickets,
-blueprints, specialized grilling sessions).
+blueprints, specialized grilling sessions). When citing a record from outside
+the ledger file, use the `filename#Dxxx` format
+(e.g., `DECISIONS-repo-feature.md#D001`).
 
 ## Path derivation
 

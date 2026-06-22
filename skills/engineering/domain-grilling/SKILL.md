@@ -126,7 +126,8 @@ the question if the problem type is unambiguous from context.
   ask a follow-up.
 
 Every exit that drives downstream implementation work must include
-the Decision Ledger path so downstream skills can cite records by ID:
+the Decision Ledger path so downstream skills can cite records as
+`filename#Dxxx`:
 
 | Path | Drives downstream work? | Ledger action |
 |------|------------------------|---------------|
@@ -187,4 +188,7 @@ transcript:
       rules.
 - [ ] The chosen exit was handed off with the Decision Ledger path
       so downstream skills (PRD, tickets, blueprint) can cite
-      records by ID.
+      records as `filename#Dxxx`.
+- [ ] Every citation of a Decision Ledger record from outside the ledger
+      file used the `filename#Dxxx` format (e.g.,
+      `DECISIONS-repo-feature.md#D001`), not a bare `Dxxx` ID.
