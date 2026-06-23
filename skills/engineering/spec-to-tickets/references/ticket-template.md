@@ -77,4 +77,6 @@ Verify: <verification check or N/A>
 
 ## Dependencies
 
+All dependencies are tracked via the `Blocked by` field; the `Blocks` field is reserved for forward-looking dependency statements only and shall not be used in tickets produced by this skill.
+
 **Blocked by** - <ticket references that must complete first, or "None - can start immediately">

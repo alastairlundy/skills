@@ -9,6 +9,8 @@ license: MIT
 
 Break a spec, PRD, or conversation context into focused tickets with dependency graphs, optimized for implementation by agents or humans.
 
+The ticket body schema is loaded on demand from `references/ticket-template.md`; the template is readable standalone and is not required for every activation. The host-CLI detection table used by Step 9 lives at `references/host-cli-detection.md` and is loaded only when the issue-tracker branch fires.
+
 ## When to Use
 
 - A spec, PRD, or design document exists and is complete enough to decompose
@@ -33,12 +35,17 @@ Use a conversational tone. Provide a brief opening statement that frames the wor
 
 ### Step 1 - Mode Detection
 
-Determine whether the skill is running in Interactive or Autonomous mode.
+Determine whether the skill is running in Collaborative or Self-Contained mode. The terms describe workflow shape, not implementer identity — neither mode biases toward human implementation or AI delegation:
 
-1. Parse the user's natural language input for explicit mode signals. Phrases like "autonomous", "just do it", "no need to ask me", or other affirmative authorizations for autonomous action indicate Autonomous mode. **If an explicit Autonomous signal is present, use Autonomous mode regardless of conversation history.**
-2. **Autonomous negative signals** - phrases requesting to overwrite, replace, rewrite, or delete existing tickets are NOT Autonomous signals. These involve destructive operations on existing work and always require Interactive mode. If the user uses these phrases in the same request, treat the request as Interactive.
-3. If no explicit signal is present and the user has previously replied to the agent in the current conversation, default to Interactive.
-4. If no signal is present and no prior conversation exists, default to Interactive.
+- **Collaborative** - the user is in the loop at decision points; the skill pauses for input.
+- **Self-Contained** - the workflow can proceed without user input; the skill proceeds to completion.
+
+Note: a `Collaborative` ticket (in the ticket classification defined in Step 6.2) and `Collaborative` mode are distinct concepts. A Collaborative ticket requires discussion during implementation; a Collaborative mode means the user is in the loop during this workflow.
+
+1. Parse the user's natural language input for explicit mode signals. Phrases like "self-contained", "just do it", "no need to ask me", or other affirmative authorizations for non-interactive action indicate Self-Contained mode. **If an explicit Self-Contained signal is present, use Self-Contained mode regardless of conversation history.**
+2. **Recognition signal, not a skill-level gate** - phrases requesting to overwrite, replace, rewrite, or delete existing tickets are NOT Self-Contained signals. These involve destructive operations on existing work and are a recognition signal that the user wants to modify prior work, not a license to skip confirmation. The skill-level safety for these operations is documented in Step 7 (Destructive-Operation Safety). If the user uses these phrases in the same request, treat the request as Collaborative.
+3. If no explicit signal is present and the user has previously replied to the agent in the current conversation, default to Collaborative.
+4. If no signal is present and no prior conversation exists, default to Collaborative.
 
 Record the mode. All subsequent steps branch on this value.
 
@@ -62,11 +69,13 @@ The input must contain all four of -
 
 **Decision Ledger pairing.** If a Decision Ledger exists at `docs/decisions/DECISIONS-<repo>-<feature>.md` (produced by `domain-grilling` and/or `code-implementation-grilling`), read it alongside the spec. The ledger is the authoritative source for resolved functional (`Dxxx`) and technical (`Txxx`) decisions. Every ticket's acceptance criteria and constraints must cite a `Dxxx` or `Txxx` record using `filename#<Dxxx|Txxx>` format — paraphrase the ledger record, never the spec's summary of it. A spec that ships without a ledger, or a ledger whose `Dxxx`/`Txxx` records are not all covered by at least one ticket, is a coverage gap to surface (not to silently fix).
 
-**In Interactive mode** - present the heuristic results to the user. List which criteria are met and which are missing, and state which `Dxxx`/`Txxx` records the proposed tickets would cover. Ask whether to proceed or provide a spec first.
+**In Collaborative mode** - print the criteria status (one line per criterion: met / missing) as part of the Step 3 output and list which `Dxxx`/`Txxx` records the proposed tickets would cover. Proceed to Step 4 if all four are met; the user can interject at any point in the conversation. If any are missing, abort and report which criteria are unsatisfied. Suggest using `grilling` (or `domain-grilling` if DDD alignment is needed) or `to-prd` to fill the gaps.
 
-**In Autonomous mode** - if all four criteria are met, proceed. If any are missing, abort and report which criteria are unsatisfied. Suggest using `grilling` (or `domain-grilling` if DDD alignment is needed) or `to-prd` to fill the gaps.
+**In Self-Contained mode** - print the criteria status (one line per criterion: met / missing) as part of the Step 3 output and list which `Dxxx`/`Txxx` records the proposed tickets would cover. Proceed to Step 4 if all four are met. If any are missing, abort and report which criteria are unsatisfied. Suggest using `grilling` (or `domain-grilling` if DDD alignment is needed) or `to-prd` to fill the gaps.
 
 ### Step 4 - Codebase Exploration
+
+On the first run, the absence of `CONTEXT.md`, `docs/adr/`, and `docs/decisions/` is informational — the skill proceeds without them; do not create them as a side effect.
 
 If not already explored in the current conversation -
 
@@ -79,18 +88,20 @@ Use the domain glossary vocabulary throughout all ticket content. Respect ADRs i
 
 ### Step 5 - Output Target Resolution
 
+> Mode banner: this step retains its Collaborative / Self-Contained divergence. In Collaborative mode the agent asks the user to choose a target; in Self-Contained mode the agent defaults to local markdown. The natural-language signal parser runs in both modes before the mode-specific rule applies.
+
 Determine where to publish the tickets. This must be resolved before decomposition because the output target affects ticket content (e.g., `blocked_by` uses issue numbers vs file basenames).
 
 1. Parse the user's natural language input for output target signals. Phrases like "send to github issues", "target is gitlab", "save as markdown files", "local tickets" indicate the target.
 2. If no signal is present -
-   - **In Interactive mode** - ask the user to choose from the following options: local markdown files, GitHub Issues, GitLab Issues, Gitea Issues, Codeberg Issues, or a hosted Forgejo Instance's Issues. Use the `ask_question` tool to present these options if available.
-   - **In Autonomous mode** - default to local markdown files.
+   - **In Collaborative mode** - ask the user to choose from the following options: local markdown files, GitHub Issues, GitLab Issues, Gitea Issues, Codeberg Issues, or a hosted Forgejo Instance's Issues. Use the `ask_question` tool to present these options if available.
+   - **In Self-Contained mode** - default to local markdown files.
 
 ### Step 6 - Ticket Decomposition Proposal
 
 Break the source material into focused tickets in two phases - first choose the decomposition pattern, then propose the tickets. These phases are separate because the pattern choice determines the structure of the entire decomposition, and should be validated before generating tickets.
 
-#### 6.1 Pattern Choice
+#### 6.1 Decomposition Pattern Choice
 
 **Decomposition patterns** - choose one based on the spec's structure -
 - **Vertical slices** - each ticket cuts end-to-end through all layers (schema, API, UI, tests). For non-code projects, "layers" means the distinct deliverable components - e.g., for a documentation skill - instructions, reference documents, agent definitions, test suite. Each slice delivers a narrow but complete path and is demoable or verifiable on its own. Best for feature work with clear functional boundaries.
@@ -99,36 +110,14 @@ Break the source material into focused tickets in two phases - first choose the 
 
 When the spec explicitly enumerates components or modules, note this constraint during pattern selection - the chosen pattern must accommodate the enumerated structure. Full guidance on handling enumerated components is in section 6.2.
 
-**In Interactive mode:**
-
-1. Present the pattern recommendation with embedded context and alternatives:
-   - State the recommended pattern with a brief parenthetical definition
-   - Explain why this pattern fits the spec's structure
-   - For each alternative pattern, state whether it was competitive or not suitable, with reasons
-   - Example: "I recommend Vertical Slices (each ticket delivers a complete end-to-end feature) because the spec has clear functional boundaries. Domain (grouping by module) wasn't suitable because the work spans multiple modules per feature. Features (grouping by user capability) was competitive but the spec is more architecture-driven than user-story-driven."
-
-2. Ask the explicit comparison question:
-   "I recommend [pattern] because [rationale]. [Other patterns] weren't suitable/competitive because [reasons]. Does this pattern fit the work, or do you see a better structure?"
-
-3. Handle pattern rejection:
-   - If the user rejects the pattern, propose an alternative with the same level of detail
-   - If the user rejects the second pattern, escalate: "I've proposed two patterns and neither fits. Can you describe what structure you're envisioning, or should we revisit the spec?"
-
-4. Handle custom patterns:
-   - If the user proposes a pattern not in the three listed, validate it:
-   - "I can use [custom pattern] if it produces focused, demoable tickets with clear dependencies and Independent vs Collaborative classification. Here's a scenario to validate: [specific edge case from spec]. How does the pattern handle this?"
-   - Proceed only after the user confirms the pattern satisfies the constraints
-
-5. Transition to ticket proposal:
-   "Proceeding with ticket decomposition using [pattern] pattern. Generating tickets now - let me know if you'd like to pause or adjust the approach."
-
-**In Autonomous mode:**
-
-1. Select the decomposition pattern most appropriate for the spec
-2. State the pattern with brief rationale (no rejected alternatives): "Using [pattern] because [reason]"
-3. Proceed to ticket proposal
+1. Select a decomposition pattern from the three above.
+2. State the recommendation with a parenthetical definition, explain why the pattern fits the spec's structure, and list the rejected alternatives with one-line reasons each. Example: "I recommend Vertical Slices (each ticket delivers a complete end-to-end feature) because the spec has clear functional boundaries. Domain (grouping by module) wasn't suitable because the work spans multiple modules per feature. Features (grouping by user capability) was competitive but the spec is more architecture-driven than user-story-driven."
+3. Proceed to Step 6.2. The user can interject at any time to change the pattern.
+4. If the user proposes a custom decomposition pattern not in the three listed, validate it against the constraint "produces focused, demoable tickets with clear dependencies and Independent vs Collaborative classification" and surface any concern before proceeding. The validation is auto-applied; the agent does not pause for confirmation.
 
 #### 6.2 Ticket Proposal
+
+> Mode banner: this step's table-building runs the same in both modes. The only retained branch is the post-table validation loop — Collaborative mode asks the multi-part validation question and runs the feedback loop; Self-Contained mode proceeds to Step 7 without confirmation. The escalation rule (pattern-level feedback returns to Step 6.1) applies in both modes.
 
 **Classification rules** - mark each ticket as Independent or Collaborative -
 - **Independent** - the ticket has sufficient context, acceptance criteria, and clear boundaries to be picked up and completed without further discussion. Can be implemented by a human or agent.
@@ -136,19 +125,23 @@ When the spec explicitly enumerates components or modules, note this constraint 
 
 Prefer Independent over Collaborative. A ticket should only be Collaborative if there is a genuine decision or discussion that the spec does not resolve.
 
-**Sizing heuristic** - applies to all modes. Each ticket should represent at most 3-4 hours of focused work. There is no upper limit on the number of tickets produced from a single PRD. However, if decomposition produces more than 15 tickets, review the decomposition pattern - it may be too fine-grained or unsuitable for the spec's structure. Fewer than 2 tickets suggests tickets are too coarse (each should be a focused unit of work), unless the scope of the work is already narrowly scoped. Prefer many thin slices over few thick ones.
+**Ticket size rule** - applies to both modes. The three limits, calibrated to "one average software developer fully implementing the ticket" (matching the gauge used by the Effort label system in Step 10):
 
-**Decision Ledger coverage** - if a Decision Ledger is present, every `Dxxx` and `Txxx` record must be cited by at least one ticket's acceptance criteria or context pointers using `filename#<Dxxx|Txxx>` format, and every ticket must cite at least one ledger record (or, if the ticket covers work explicitly out of ledger scope, cite the absence explicitly with `No ledger record — out of scope: <reason>`). Build a coverage matrix during proposal: rows are ledger records, columns are tickets, cells mark which ticket satisfies which record. A record with no citing ticket is a coverage gap to surface before publishing. A ticket with no cited record is a scope gap to surface before publishing.
+1. **Soft minimum** - under 1 hour is allowed but indicates the ticket is too thin.
+2. **Target band** - 2 to 3-4 hours, calibrated to one average software developer fully implementing the ticket.
+3. **Maximum** - 3-4 hours is a hard cap; tickets should not exceed this.
+
+A **15-ticket soft cap** also applies: going over is allowed but indicates scope creep or a large spec that should be split. This is a guideline with one hard cap (the 3-4 hour maximum).
+
+**Decision Ledger coverage matrix** - if a Decision Ledger is present, every `Dxxx` and `Txxx` record must be cited by at least one ticket's acceptance criteria or context pointers using `filename#<Dxxx|Txxx>` format, and every ticket must cite at least one ledger record (or, if the ticket covers work explicitly out of ledger scope, cite the absence explicitly with `No ledger record — out of scope: <reason>`). The coverage matrix is a grid where rows are ledger records, columns are tickets, and cells mark which ticket satisfies which record; build it during proposal. A record with no citing ticket is a coverage gap to surface before publishing. A ticket with no cited record is a scope gap to surface before publishing.
 
 When the spec explicitly enumerates components or modules, use them as the basis for decomposition rather than deriving slices independently. Each component becomes a ticket, with a scaffolding/integration ticket if needed.
-
-**In Interactive mode:**
 
 1. Propose the full decomposition as a table or structured list. For each ticket, show:
    - Title
    - Goal
    - Classification (Independent or Collaborative)
-   - Which User Stories or spec sections it covers (do not abbreviate "User Stories")
+   - Which User Stories or spec sections it covers (do not abbreviate "User Stories" — `US` is overloaded with "United States" in some domains, and is a common abbreviation-collision target across other domains as well)
    - Which other tickets it depends on (with reasons)
    - Do not abbreviate column headers - use full, clear terms
 
@@ -156,25 +149,14 @@ When the spec explicitly enumerates components or modules, use them as the basis
    - Explain why tickets were grouped or split when the reasoning isn't obvious from the spec
    - Skip rationale for straightforward decisions (e.g., "this is one ticket because it's a single endpoint")
 
-3. Ask the multi-part validation question:
-   "Take a look at the ticket breakdown. A few things to check:
-   - Are any tickets too large or too small?
-   - Is anything missing or unnecessary?
-   - Do the dependencies and Independent vs Collaborative classifications feel right?"
+3. Infer dependencies from domain logic and layer ordering. When uncertain whether two tickets are dependent, assume they are (prefer over-constraining over creating a broken graph).
 
-4. Handle user feedback:
+4. **In Collaborative mode** - ask the multi-part validation question (closing-question format, see Validation list), then handle user feedback:
    - Infer from feedback content whether it's a ticket-level adjustment or pattern-level concern
    - For ticket-level feedback (granularity, composition, dependencies): adjust tickets within current pattern
    - For pattern-level feedback (e.g., "this doesn't feel like vertical slices", "the structure is wrong"): signal the shift: "Your feedback about [specific concern] suggests the [pattern] pattern isn't the right fit. Let me propose a different approach." Return to section 6.1.
    - Repeat until the user approves the decomposition, dependencies, and classifications
-
-**In Autonomous mode:**
-
-1. Decompose into tickets using the selected pattern. Each ticket must be demoable or verifiable on its own.
-2. Infer dependencies from domain logic and layer ordering. When uncertain whether two tickets are dependent, assume they are (prefer over-constraining over creating a broken graph).
-3. Apply classification rules to each ticket.
-4. Include brief rationale for non-obvious decomposition decisions (e.g., "Tickets 2 and 3 were split because they have different Independent vs Collaborative classifications")
-5. Proceed without user confirmation.
+5. **In Self-Contained mode** - proceed to Step 7 without confirmation.
 
 ### Step 7 - Existing Ticket Detection
 
@@ -186,25 +168,29 @@ Before publishing, detect whether tickets already exist for this source material
    - Conversation context - match on the date prefix (e.g., `Conversation context (2026-06-07)`) rather than the full summary text.
 2. **Issue tracker** - search for open issues whose body contains a matching parent reference, using the same matching rules above.
 
-**If existing tickets are found and the user explicitly asked to overwrite/replace them** (this is always Interactive mode per Mode Detection):
-- **If the spec/PRD is available** - proceed with the normal workflow as if the tickets don't exist. The new tickets will overwrite the existing ones.
+**Destructive-Operation Safety** - the agent tool/harness permission layer is the safety boundary for destructive ticket operations (overwriting, modifying, or deleting existing tickets). The skill permits overwriting existing tickets when the existing tickets "directly address the concerns" of the tickets being created — a semantic match where the new ticket's goal/scope subsumes the existing ticket's scope. The LLM is told that an unwanted edit may be rejected by tool permission, and that a rejection is the expected response — on a permission rejection the LLM shall create new tickets rather than retry the edit. The user retains final control by rejecting tool permissions for writes that they do not want.
+
+**If existing tickets are found:**
+- **If the spec/PRD is available** - proceed with the normal workflow as if the tickets don't exist. The new tickets will overwrite the existing ones when the semantic-match rule above is satisfied.
 - **If the spec/PRD is NOT available** - read the existing tickets and update them to conform to the skill's template and guidance (goal, what to build, acceptance criteria, context pointers, etc.). Preserve the existing ticket content and structure where it meets the guidance.
   - **If the existing tickets lack sufficient information to enable meaningful improvements** - gracefully fail. Explain to the user why the update is not possible (insufficient context in existing tickets) and suggest creating or providing the spec/PRD to enable proper decomposition.
 
-**If existing tickets are found but the user did not explicitly ask to overwrite/replace them:**
-- **In Interactive mode** - present the finding. Offer three options - overwrite (delete existing, create new), update (modify existing in place to match skill guidance), or cancel (abort). Use the `ask_question` tool to present these options if available. Wait for user choice. If the user chooses overwrite or update, apply the logic above.
-- **In Autonomous mode** - abort. Report that existing tickets were found and recommend running in Interactive mode to resolve.
+**Permission-rejection expectation** - if the tool/harness rejects a write to an existing ticket, the LLM shall treat the rejection as the expected response and create new tickets instead. The LLM shall not interpret a rejection as an error.
 
 ### Step 8 - Ticket Generation
 
 Apply the ticket template below to each approved ticket.
 
-**Abbreviation rule** - Do not use abbreviations in ticket content unless they are defined in CONTEXT.md, the project glossary, or explicitly used by the user/spec. When using an abbreviation that may be unfamiliar, clarify it in brackets on first use (e.g., "SSO (Single Sign-On)"). Never abbreviate "User Stories" to "US".
+**Abbreviation rule** - Do not use abbreviations in ticket content unless they are defined in CONTEXT.md, the project glossary, or explicitly used by the user/spec. When using an abbreviation that may be unfamiliar, clarify it in brackets on first use (e.g., "SSO (Single Sign-On)"). Never abbreviate "User Stories" to `US` — `US` is overloaded with "United States" in some domains, and is a common abbreviation-collision target across other domains as well.
 
 **Recommended Workflow generation** - As part of ticket creation, generate a Recommended Workflow for each ticket. The workflow is a step-by-step breakdown of how to implement the ticket. Apply these rules:
 - Always present. Minimum 1 step, even for trivial tickets. Recommended range is 2-8 steps; decide granularity based on ticket scope.
-- Derive the workflow from three inputs in priority order: (1) spec structure (what the spec prescribes or implies about sequencing), (2) codebase context (file layout, module boundaries, conventions from exploration), (3) standard patterns (common implementation sequences for this type of work).
-- Each step must have all four elements: verb-phrase title, Where (file paths), bulleted actions, Verify (verification check). Use `N/A` as a filler when an element does not apply.
+- Derive the workflow from three inputs in priority order: (1) spec structure (what the spec prescribes or implies about sequencing), (2) codebase context (file layout, module boundaries, conventions from exploration), (3) standard patterns (common implementation sequences for this type of work). This priority order is the tie-breaker when the three inputs conflict — surface the conflict in plain English ("inputs X and Y conflicted; chose Y because [reason]") and the agent may override with a one-line inline note ("override: <reason>") in the workflow.
+- Each step has four elements:
+   1. **Verb-phrase title** (e.g., "Add login endpoint")
+   2. **Where** - file paths or `N/A`
+   3. **Bulleted actions** - the concrete actions for the step
+   4. **Verify** - the verification check or `N/A`
 - Per-step `Verify:` lines are micro-verifications. Per-ticket `Acceptance criteria` are macro-verifications. These are distinct levels.
 - Steps can be reordered by the implementer. Respect dependencies between steps.
 
@@ -223,6 +209,8 @@ For the ticket body schema, see [ticket-template.md](./references/ticket-templat
 
 ### Step 9 - Ticket Publishing
 
+> Mode banner: the issue-tracker branch is the only retained divergence in this step. The local-markdown branch is unified across both modes (D013).
+
 Publish the generated tickets to the chosen target.
 
 #### Issue tracker target
@@ -231,16 +219,12 @@ Publish the generated tickets to the chosen target.
    a. Parse `git remote -v` to extract the hostname.
    b. If the hostname is ambiguous (e.g., self-hosted with custom domain), check for host-specific config files (`.github/`, `.gitlab-ci.yml`, `.gitea/`).
    c. If detection fails, ask the user which host the project uses. The options to present are: GitHub Issues, GitLab Issues, Gitea, Codeberg Issues, or a hosted Forgejo Instance. Use the `ask_question` tool to present these options if available.
-2. Look up the expected CLI for the detected host -
-   - `github.com` → `gh`
-   - `gitlab.com` or self-hosted GitLab → `glab`
-   - `gitea.com` or Gitea instances → `tea`
-    - `codeberg.org` or Forgejo instances → `fj` (community-maintained, not official - codeberg.org/forgejo-contrib/forgejo-cli)
-   - Other hosts → search PATH for known CLIs, or ask the user.
-3. Verify the CLI is installed by checking if it is available in PATH. If not found, inform the user and provide installation guidance.
-4. Publish tickets in dependency order - blockers first, then dependents. This ensures blocking ticket issue numbers exist before they are referenced in "Blocked by" fields.
-5. For each ticket, create an issue using the host CLI. Fill in the "Blocked by" field with real issue numbers of previously published blocking tickets.
-6. Do NOT close or modify any parent issue.
+2. Load `references/host-cli-detection.md` for the CLI support-model tags and the Installation flow.
+3. Look up the expected CLI for the detected host using the loaded reference.
+4. Verify the CLI is installed by checking if it is available in PATH. If not found, follow the Installation flow in the reference (present the README-derived install command, then ask "shall I run this?" — the LLM shall not run the install without an explicit `yes`).
+5. Publish tickets in dependency order - blockers first, then dependents. This ensures blocking ticket issue numbers exist before they are referenced in "Blocked by" fields.
+6. For each ticket, create an issue using the host CLI. Fill in the "Blocked by" field with real issue numbers of previously published blocking tickets.
+7. Do NOT close or modify any parent issue.
 
 #### Local markdown target
 
@@ -248,12 +232,10 @@ Publish the generated tickets to the chosen target.
 2. Create the `<tickets-dir>` directory at its resolved location if it does not exist.
 3. Determine directory structure based on ticket count -
    - **Fewer than 8 tickets** - flat structure. All files in `<tickets-dir>`.
-   - **8 or more tickets** - structured subdirectories -
-      - **In Interactive mode** - ask the user to choose a grouping strategy - dependency graph position (topological layers), domain concept, or feature area.
-      - **In Autonomous mode** - group by domain concept.
+   - **8 or more tickets** - structured subdirectories. Defaulting to domain concept — say a strategy to override. If the user has signalled a different strategy ("group by feature area," "topological layers," etc.) in the conversation, the spec, or in plain English at this step, use that.
 4. Name files with zero-padded sequential numbers - `001-authentication.md`, `002-user-profiles.md`.
 5. If using structured directories, place files in the group subdirectory - e.g., `<tickets-dir>/authentication/001-login-endpoint.md`.
-6. Write each ticket as a markdown file with YAML frontmatter matching the ticket template.
+6. Write each ticket as a markdown file with YAML frontmatter matching the ticket template. The summary's `Output location` line shall include the resolved grouping strategy so the user can verify.
 
 ### Step 10 - Summary Report
 
@@ -261,12 +243,19 @@ After publishing, present a summary to the user containing -
 
 1. **Stats** - total ticket count, Independent count, Collaborative count, leaf ticket count (tickets with no blockers).
 2. **Ticket overview** - a table with each ticket's title, classification, estimated effort, domain area, and review complexity:
-   - **Estimated effort** - approximate hours or S/M/L estimate for each ticket
+   - **Estimated effort** - a fixed categorical label from a closed vocabulary, calibrated to how long one average software engineer would take to fully implement the ticket:
+     - `XS` — under 1 hour
+     - `S` — 1 hour
+     - `M` — 2-3 hours
+     - `L` — 3-4 hours
+     - `XL` — 1 working day
+     - `XXL` — 2-3 working days
+     A label of `XL` or larger surfaces a ticket-bloat warning in the summary. A label of `XXL` or larger is a hard cap and shall not appear in a published ticket — Step 6 must split the work first. The labels are the only permitted values; the agent shall not invent new tiers. This is a deterministic rule, never a free post-hoc judgement.
    - **Domain area** - the subsystem or domain concept the ticket touches (helps identify which tickets match a team member's expertise)
-   - **Review complexity** - Low/Medium/High assessment of how much code review the ticket is likely to require
+   - **Review complexity** - a deterministic label derived at summary time: `High` if any `blocked-by` chain crosses a domain boundary, else `Low`. A one-line override is permitted ("override: <reason>").
 3. **Dependency graph** - which tickets can start immediately, which are blocked and by what.
 4. **Next steps** - suggested execution order and parallelism opportunities. Note which tickets can be worked in parallel by different team members.
-5. **Output location** - issue numbers or file paths where tickets were saved.
+5. **Output location** - issue numbers or file paths where tickets were saved; for the local-markdown branch, include the resolved grouping strategy so the user can verify.
 6. **Decision Ledger coverage matrix** - a summary of how the proposed tickets cover every `Dxxx`/`Txxx` record in the ledger. A single-line "All ledger records cited" is sufficient if coverage is full; otherwise list gaps and unresolved records.
 
 The summary should be scannable - use clear structure (headings, tables, lists) so key information is quickly findable. Include enough detail to be useful without requiring the user to read the tickets, but avoid reproducing ticket content verbatim.
@@ -280,26 +269,26 @@ The summary should be scannable - use clear structure (headings, tables, lists) 
 - [ ] The glossary is not reproduced in any ticket's context pointers.
 - [ ] Decision Ledger records are not reproduced in any ticket's context pointers.
 - [ ] Every ticket that covers in-scope work cites at least one `Dxxx` or `Txxx` record in its acceptance criteria or context pointers, using `filename#<Dxxx|Txxx>` format (e.g., `DECISIONS-repo-feature.md#D012`).
-- [ ] If a Decision Ledger is present, a coverage matrix was built during proposal and every record has at least one citing ticket. Uncovered records were surfaced as gaps and resolved before publishing.
+- [ ] Coverage matrix is built during proposal and every record has at least one citing ticket. Uncovered records were surfaced as gaps and resolved before publishing.
 - [ ] If no Decision Ledger is present, the summary report notes its absence.
 - [ ] Parent field contains a 1-3 sentence summary when the source is conversation context.
 - [ ] Tickets were published in dependency order (blockers first) when targeting an issue tracker.
 - [ ] The summary report includes stats, ticket overview table, dependency graph, and next steps.
-- [ ] The "Blocks" field is not used anywhere - dependencies are tracked via "Blocked by" only.
-- [ ] The description contains no YAML-breaking characters (colons, unquoted special chars).
-- [ ] Ticket count is at least 2, unless the spec scope is already narrowly scoped.
+- [ ] Every ticket's `Blocked by` field uses issue numbers for issue-tracker targets and basenames for local markdown.
+- [ ] The ticket's `description:` frontmatter field contains no YAML-breaking characters (colons, unquoted special chars).
+- [ ] Ticket count is at least 2, unless the entire spec is one user story with one acceptance criterion, in which case one ticket is acceptable.
 - [ ] Each ticket represents at most 3-4 hours of focused work.
 - [ ] If ticket count exceeds 15, the decomposition pattern was reviewed for suitability.
-- [ ] No abbreviations are used in ticket content or workflow output unless defined in CONTEXT.md/glossary or explicitly used by the user/spec. Unfamiliar abbreviations are clarified in brackets on first use. "User Stories" is never abbreviated to "US".
-- [ ] Pattern choice includes recommendation with parenthetical definition and alternatives with rejection reasons (Interactive mode).
-- [ ] Pattern choice includes brief rationale for selected pattern (Autonomous mode).
+- [ ] No abbreviations are used in ticket content or workflow output unless defined in CONTEXT.md/glossary or explicitly used by the user/spec. Unfamiliar abbreviations are clarified in brackets on first use. "User Stories" is never abbreviated to `US` — `US` is overloaded with "United States" in some domains, and is a common abbreviation-collision target across other domains as well.
+- [ ] Decomposition pattern choice includes a recommendation with parenthetical definition, the rejected alternatives with one-line reasons, and a custom-pattern validation gate when the user proposes a non-standard pattern.
 - [ ] Ticket proposal includes decomposition rationale for non-obvious decisions.
-- [ ] Closing questions use explicit multi-part format (not binary approval).
+- [ ] Closing questions use explicit multi-part format (not binary approval). Format: a preamble paragraph, a blank line, the line `A few things to check:`, and three questions on separate lines (no numbering, no inline list markers). The three questions are: (1) "Which tickets, if any, would you combine, split, or rescope?" (2) "Are there any spec requirements not yet covered by a ticket, or any ticket that doesn't trace back to a requirement?" (3) "Are there any tickets where the `Blocked by` chain or Independent/Collaborative classification feels off?" The agent shall wait for an explicit response or a clear pass before proceeding; partial answers are accepted.
 - [ ] Custom patterns are validated against skill constraints before proceeding.
 - [ ] Every ticket has a Recommended Workflow section with at least 1 step.
-- [ ] Each workflow step has all four elements: verb-phrase title, Where (file paths or N/A), bulleted actions, Verify (verification check or N/A).
+- [ ] Each workflow step has all four elements: (1) verb-phrase title, (2) Where (file paths or N/A), (3) bulleted actions, (4) Verify (verification check or N/A).
 - [ ] Workflow steps respect the 3-4 hour sizing rule for the overall ticket.
-- [ ] Workflow derivation follows the mixed rule: spec structure, then codebase context, then standard patterns.
+- [ ] Workflow derivation follows the priority order spec structure → codebase context → standard patterns; the priority order is the tie-breaker when the three inputs conflict, and the agent surfaces the conflict in plain English ("inputs X and Y conflicted; chose Y because [reason]") with a one-line inline override note permitted.
 - [ ] Workflow steps respect dependencies between steps (a step producing an artifact consumed by another comes first). Reordering by the implementer is permitted.
 - [ ] Per-step Verify lines are micro-verifications distinct from per-ticket Acceptance criteria (macro-verifications).
+- [ ] If the skill aborted in Step 3, the abort reason and the suggested next skill (`grilling` / `domain-grilling` / `to-prd`) are surfaced in the output.
 
