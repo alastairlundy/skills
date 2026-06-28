@@ -93,64 +93,30 @@ directory name of the working repository and `<feature>` is a short
 kebab-case slug of the topic) and confirm the path with the user before
 the first append.
 
-### Step 3: Open the branch with an open-ended question
+### Step 3: Open the branch
 
-Open the first decision branch using the canonical open-ended
-branch-starting prompt from `references/branch-starting-prompt.md`. The
-prompt is a two-part structure: (a) the LLM's paraphrase of the user's
-aim, in the LLM's own voice; (b) a dimension-led open question that
-names the branch and the dimension of the user's thinking the LLM is
-asking about, with a **comma** (not an em-dash) connecting it to a
-follow-on "what would 'good' look like for you there?".
-
-The LLM does **not** lead with options at branch start. The LLM waits
-for the user to respond with their thinking on the dimension before
-attempting any translation into options.
+Open the branch with the open-ended branch-starting prompt from
+`references/branch-starting-prompt.md`. The LLM does not lead with
+options.
 
 ### Step 4: Translate the user's answer into options
 
-After the user responds, translate the answer into 2–4 concrete natural
-options per `references/options-format.md`. The translation is the
-LLM's primary work, not a generated list: the LLM paraphrases the
-user's words rather than inventing, and each option must satisfy all
-eight concrete-natural-option criteria in the reference.
-
-Apply the following checks in order, looping back to the user as
-needed. Do not surface options while any check fails.
-
-1. **Fuzzy intent (D004).** If the user's answer is fuzzy — unstated
-   specifics or under-constrained — ask a single targeted clarifying
-   question, wait for the response, and re-evaluate. Continue until the
-   answer is concrete enough to translate or the user explicitly closes
-   the branch. See `references/options-format.md` § Fuzzy Intent.
-2. **Scope too broad (D007).** If the answer translates to more than
-   four natural options, the scope is too broad. Ask the scope
-   meta-question — see `references/options-format.md` § Scope Too
-   Broad — and re-enter Step 4 with the chosen scope.
-3. **Over-constrained (D008).** If the answer translates to a single
-   defensible option, the answer is over-constrained. Ask the
-   trade-off question — see `references/options-format.md` §
-   Over-Constrained — and branch: if the user accepts one or more
-   trade-offs, surface the single option and 1–3 new options built
-   around the accepted trade-offs; if not, surface the single option
-   and ask the user to confirm it or expand the scope.
-
-When the translation yields 2–4 defensible concrete natural options,
-proceed to Step 5.
+Translate the user's response into 2–4 concrete natural options per
+`references/options-format.md`. The reference file is the single
+source of truth for the translation: it covers the eight
+concrete-natural-option criteria (D002), the fuzzy-intent
+clarifying loop (D004), the scope-too-broad meta-question (D007),
+and the over-constrained trade-off branch (D008). Do not surface
+options while any pre-option check fails.
 
 ### Step 5: Present the options
 
-Present the options to the user using the locked question format from
-`references/locked-question-format.md`. The question template is
-`For [Dxxx] – [branch name]: pick an option, or provide your answer.`
-with the `Dxxx` and name verbatim.
-
-**Do not produce a recommendation in the default flow.** Per
-`docs/adr/0003-recommendations-on-demand-only.md` (D005), the LLM
-surfaces a recommendation only if the user explicitly asks for one
-("what's your take?", "what do you think?", "what would you do?"). The
-LLM shall not pre-suggest ("would you like my take?") at the end of a
-branch.
+Present the options using the locked question format from
+`references/locked-question-format.md`. The reference file is the
+single source of truth for the locked question template and the
+no-recommendation-in-default-flow rule (D005, ADR 0003). The LLM
+does not produce a recommendation in the default flow and does not
+pre-suggest one.
 
 ### Step 6: Record and continue
 

@@ -76,37 +76,20 @@ Follow `references/ddd-initialization.md` to:
    the file.
 3. Confirm the Decision Ledger path before the first write.
 
-### Step 3: Open branches with open-ended questions and translate
+### Step 3: Open branches, ask questions, record decisions
 
-For each branch in the design tree:
+Apply the per-decision flow defined in `../grilling/SKILL.md`
+Steps 3–5 (open-ended prompt, translation, options, no
+recommendation in the default flow). The reference files in
+`../grilling/references/` are the single source of truth for the
+D010 prompt, the eight concrete-natural-option criteria (D002),
+the pre-option checks (D004/D007/D008), the locked question
+format, and the on-demand recommendation rule (D005).
 
-1. **Open with the open-ended branch-starting prompt** from
-   `../grilling/references/branch-starting-prompt.md`. The LLM
-   paraphrases the user's aim, then asks the canonical
-   `What's your thinking on <dimension>, and what would "good" look
-   like for you there?` prompt. The LLM does **not** lead with
-   options.
-2. **Translate the user's response** into 2–4 concrete natural options
-   per `../grilling/references/options-format.md`. The LLM paraphrases
-   the user's words rather than inventing, and each option must
-   satisfy all eight concrete-natural-option criteria.
-3. **Run the pre-option checks** in order, looping back to the user
-   as needed:
-   - **Fuzzy intent (D004)** — if the user's answer is fuzzy, ask a
-     single targeted clarifying question and re-evaluate.
-   - **Scope too broad (D007)** — if the answer translates to more
-     than four natural options, ask the scope meta-question and
-     re-enter with the chosen scope.
-   - **Over-constrained (D008)** — if the answer translates to a
-     single defensible option, ask the trade-off question and branch
-     on the user's response.
-4. **Present the options** using the locked question format from
-   `../grilling/references/locked-question-format.md`. The LLM does
-   **not** produce a recommendation in the default flow per
-   `docs/adr/0003-recommendations-on-demand-only.md` (D005).
-5. **Record the decision** immediately after the user resolves the
-   branch, appending a `Dxxx` record to the Decision Ledger in real
-   time. Do not batch the writes.
+After the user resolves each branch, append a `Dxxx` record to
+the Decision Ledger in real time per
+`../grilling/references/decision-ledger.md`. Do not batch the
+writes.
 
 Use the DDD-specific techniques in
 `references/ddd-initialization.md` § "Session Guidelines" to:
