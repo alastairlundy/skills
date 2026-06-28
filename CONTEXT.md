@@ -102,3 +102,7 @@ A neutral-confirmation word used to begin a sentence (e.g., `Right`, `OK`, `Got 
 ## in-session signal
 
 A behaviour in which a skill detects a property of the problem during a session and surfaces that detection at a convergence point to tailor recommendations. Used by `domain-grilling` to decide whether to ask the explicit confirmation question "Is this a code/technical problem?" at convergence, before listing exits.
+
+## concrete natural option
+
+An option surfaced by the LLM that satisfies all of: actionable (single-step, committable now); phrased in the user's words (paraphrase, not invention); substantively or semantically different from the other options in the set such that each could be justified as the answer on its own; not contrived (arises from the user's stated context); contextually sensible; performable (basis in reality); individually defensible; aim-advancing (advances the user's stated aim). The LLM presents at most 4 per branch. If the branch's scope is too broad to resolve into 2–4 options, the LLM asks the user to name the scope or direction before presenting options. A hybrid of multiple options is rarely the answer.
