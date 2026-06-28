@@ -1,7 +1,7 @@
 ---
 name: write-changelog
 description: >-
-  Generates an ecosystem-aware, user-facing markdown changelog by analyzing git history, transforming commit messages, and categorizing changes into logical sub-projects. Use when the user wants to write a changelog/release notes, or wants to know what happened betweeen two speified versions. Do not use for summarizing git commit changes.
+  Generates an ecosystem-aware, user-facing markdown changelog by analyzing git history, transforming commit messages, and categorizing changes into logical sub-projects. Use when the user wants to write a changelog/release notes, or wants to know what happened between two specified versions. Do not use for summarizing git commit changes.
 license: MIT
 ---
 
@@ -17,7 +17,9 @@ license: MIT
 ## When Not to Use
 
 - For extremely large commit ranges where high-level manual curation is required.
-- In repositories without any git tags or clear history.
+- In repositories with fewer than 5 commits between the prior and target points, or with no tags in the range.
+
+The 5-commit threshold is a default, not a hard rule; a user may override by ignoring this guidance. The empty-range abort in Step 2 is the mechanical guard that catches the genuine edge case.
 
 ## Inputs
 
