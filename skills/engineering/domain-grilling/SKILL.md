@@ -18,7 +18,7 @@ bounded contexts, ubiquitous language, and the boundary between
 concepts.
 
 The core grilling machinery (Decision Ledger, options/recommendation
-formats, locked question format, tone discipline, convergence test) is
+formats, branch-starting prompt, tone discipline, convergence test) is
 owned by the `grilling` skill. This skill adds DDD-specific
 initialization (glossary/ADR scan) and Term Resolution (writing terms
 to `CONTEXT.md`).
@@ -53,6 +53,7 @@ Before the first user question, load and read in full:
 - `../grilling/references/options-format.md`
 - `../grilling/references/recommendation-format.md`
 - `../grilling/references/locked-question-format.md`
+- `../grilling/references/branch-starting-prompt.md`
 - `../grilling/references/tone-and-output.md`
 - `../grilling/references/convergence-test.md`
 - `references/ddd-initialization.md`
@@ -75,12 +76,37 @@ Follow `references/ddd-initialization.md` to:
    the file.
 3. Confirm the Decision Ledger path before the first write.
 
-### Step 3: Open branches, ask questions, record decisions
+### Step 3: Open branches with open-ended questions and translate
 
-Walk the design tree branch-by-branch using the locked question format
-and the options/recommendation format from
-`../grilling/references/*`. After each resolution, append a `Dxxx`
-record to the Decision Ledger in real time.
+For each branch in the design tree:
+
+1. **Open with the open-ended branch-starting prompt** from
+   `../grilling/references/branch-starting-prompt.md`. The LLM
+   paraphrases the user's aim, then asks the canonical
+   `What's your thinking on <dimension>, and what would "good" look
+   like for you there?` prompt. The LLM does **not** lead with
+   options.
+2. **Translate the user's response** into 2–4 concrete natural options
+   per `../grilling/references/options-format.md`. The LLM paraphrases
+   the user's words rather than inventing, and each option must
+   satisfy all eight concrete-natural-option criteria.
+3. **Run the pre-option checks** in order, looping back to the user
+   as needed:
+   - **Fuzzy intent (D004)** — if the user's answer is fuzzy, ask a
+     single targeted clarifying question and re-evaluate.
+   - **Scope too broad (D007)** — if the answer translates to more
+     than four natural options, ask the scope meta-question and
+     re-enter with the chosen scope.
+   - **Over-constrained (D008)** — if the answer translates to a
+     single defensible option, ask the trade-off question and branch
+     on the user's response.
+4. **Present the options** using the locked question format from
+   `../grilling/references/locked-question-format.md`. The LLM does
+   **not** produce a recommendation in the default flow per
+   `docs/adr/0003-recommendations-on-demand-only.md` (D005).
+5. **Record the decision** immediately after the user resolves the
+   branch, appending a `Dxxx` record to the Decision Ledger in real
+   time. Do not batch the writes.
 
 Use the DDD-specific techniques in
 `references/ddd-initialization.md` § "Session Guidelines" to:
@@ -142,7 +168,7 @@ the Decision Ledger path so downstream skills can cite records as
 After completing the workflow, verify each item against the session
 transcript:
 
-- [ ] All nine reference files were loaded and read in full before
+- [ ] All ten reference files were loaded and read in full before
       the first user question.
 - [ ] If any reference file was missing or unreadable, the session
       aborted and the missing file was reported to the user.
@@ -150,6 +176,30 @@ transcript:
       first question (per `references/ddd-initialization.md`).
 - [ ] Decision Ledger path was derived (or located) and confirmed
       with the user before the first write.
+- [ ] Every branch was opened with the canonical open-ended
+      branch-starting prompt from
+      `../grilling/references/branch-starting-prompt.md`, and the
+      LLM did not surface options before the user responded.
+- [ ] Every set of options contained 2–4 concrete natural options
+      satisfying the eight criteria in
+      `../grilling/references/options-format.md` § Concrete Natural
+      Option.
+- [ ] The fuzzy-intent clarifying loop was applied when the user's
+      answer was fuzzy; no options were surfaced while a fuzzy intent
+      was unresolved.
+- [ ] The scope-too-broad meta-question was applied when the answer
+      translated to more than four natural options; the chosen scope
+      preceded option generation.
+- [ ] The over-constrained trade-off branch was applied when the
+      answer translated to a single defensible option.
+- [ ] No recommendation was produced in the default flow of any
+      branch. A recommendation appeared only if the user explicitly
+      asked for one; the LLM did not pre-suggest ("would you like my
+      take?").
+- [ ] When a recommendation was produced on request, it used the
+      three-field breakdown (`Recommendation: Option N — <name>.`,
+      `Reasoning: ...`, `Forward risk: ...`) with the option name
+      copied verbatim.
 - [ ] One Decision Ledger record was appended immediately after
       every resolved branch (no batching at session end).
 - [ ] Every record used the inline template (`Resolved Answer`,
@@ -157,11 +207,6 @@ transcript:
       incremented from the highest existing one.
 - [ ] Re-opened branches produced a new record with a `Supersedes:
       Dxxx` line in `Constraints`.
-- [ ] Every question offered all natural options (typically 2–4)
-      that passed the four-field defensibility test.
-- [ ] Every recommendation used the three-field breakdown
-      (`Recommendation: Option N — <name>.`, `Reasoning: ...`,
-      `Forward risk: ...`) with the option name copied verbatim.
 - [ ] Every question used the locked format
       `For [Dxxx] – [branch name]: pick an option, or provide your answer.`
       with the `Dxxx` and name verbatim.
