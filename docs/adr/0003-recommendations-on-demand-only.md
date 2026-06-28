@@ -51,10 +51,52 @@ LLM Recommendations are on-demand only.
 
 ## Alternatives considered
 
-- **Remove entirely.** The LLM never produces a recommendation. Rejected because it loses the second-opinion affordance for users who want it. A user who explicitly asks "what do you think?" would have to be redirected to invent a new format; the on-demand pattern keeps the affordance reachable.
+- **Remove entirely.**
+  What it is: the LLM never produces a recommendation; every
+  branch ends at the concrete natural options. Benefit: the
+  default channel is fully recommendation-free at the structural
+  level. Cost: loses the second-opinion affordance for users who
+  rely on it for subtle trade-offs. Risk: a user who explicitly
+  asks "what do you think?" would have to be redirected to invent
+  a new format. Rejected because the on-demand pattern keeps the
+  affordance reachable without re-introducing the default-channel
+  failure mode.
 
-- **Retain, but only after the user picks (post-pick perspective).** The LLM surfaces the options first; after the user picks, the LLM optionally surfaces a one-line alternative perspective. Rejected because the post-hoc commentary reads as the LLM second-guessing the user, which can prompt unnecessary re-opens. The on-demand pattern moves the affordance to a user-initiated moment, where the user is already asking for the second opinion.
+- **Retain, but only after the user picks (post-pick perspective).**
+  What it is: the LLM surfaces the options first; after the
+  user picks, the LLM optionally surfaces a one-line alternative
+  perspective. Benefit: the second opinion arrives at a
+  user-initiated moment and is framed around the user's actual
+  choice. Cost: the post-hoc commentary is structurally tied to
+  the pick, so it always carries the shape of "now that you've
+  decided". Risk: the commentary reads as the LLM second-guessing
+  the user, which can prompt unnecessary re-opens. Rejected
+  because the on-demand pattern moves the affordance to a moment
+  the user has already chosen to see, without the
+  second-guessing shape.
 
-- **Defer the recommendation question to a follow-up branch.** Keep the default-channel recommendation pending a separate decision. Rejected because the user reported the failure mode as a current problem, not a hypothetical one. Deferral leaves the failure mode in place.
+- **Defer the recommendation question to a follow-up branch.**
+  What it is: keep the default-channel recommendation pending a
+  separate decision, decided in a later branch or session.
+  Benefit: the current branch flow is unchanged; the design
+  question is isolated. Cost: the rubber-stamp failure mode
+  remains live until the follow-up is resolved. Risk: the
+  follow-up may not happen, or may be re-litigated under a
+  different framing. Rejected because the user reported the
+  failure mode as a current problem, not a hypothetical one —
+  deferral leaves the failure mode in place.
 
-- **Default-channel recommendation with a forced-justification mechanism.** The LLM still produces a recommendation by default, but the user must give a one-line reason for adopting it. Rejected because the mechanism is reactive — it catches the failure mode after the user has rubber-stamped, not at the point of decision. The on-demand pattern is proactive: the recommendation does not appear in the default flow at all.
+- **Default-channel recommendation with a forced-justification
+  mechanism.**
+  What it is: the LLM still produces a recommendation by
+  default, but the user must give a one-line reason for adopting
+  it. Benefit: the recommendation is preserved as a structural
+  affordance. Cost: the recommendation still appears in the
+  default flow, and the failure mode can still occur; the
+  justification is a reactive check, not a structural guard.
+  Risk: the mechanism catches the failure mode after the user
+  has rubber-stamped, not at the point of decision — and a user
+  who has already decided can produce a perfunctory one-line
+  reason that satisfies the gate without changing the outcome.
+  Rejected because the on-demand pattern is proactive: the
+  recommendation does not appear in the default flow at all.
