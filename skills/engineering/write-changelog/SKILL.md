@@ -118,8 +118,13 @@ Conventional Commit prefix mapping (co-located with the tier list so the two do 
 - Use markdown bullet points for each entry.
 
 ### Step 6: Output Phase
-- If a destination file is provided, check if it exists. If so, ask the user for permission to overwrite before writing.
-- Otherwise, output the final markdown string to the conversation. When run non-interactively, the skill applies the Step 1 and Step 4 fallbacks above and does not prompt the user.
+- If a destination file is provided and does not exist, write the final markdown to that path.
+- If the destination file already exists, present a three-way choice (interactive run):
+    1. **Overwrite** — replace the existing file.
+    2. **Append** — append a new `## Changes since <prior>` section to the existing file.
+    3. **Refuse** — do not write to disk. Output the final markdown to the conversation and surface a one-line offer: "Say `write to <path>` to save to a new location."
+- **Autonomous mode**: the three-way choice collapses to a deterministic default (overwrite is the safest for an unattended CI run; the follow-up branch tracked under D003's open follow-up may revise this). When the user explicitly refuses overwrite in interactive mode, no file is written.
+- When no destination is provided, output the final markdown string to the conversation. In non-interactive runs, the skill applies the Step 1, Step 2, and Step 4 fallbacks above and does not prompt the user.
 
 ## Validation
 
