@@ -28,7 +28,7 @@ The 5-commit threshold is a default, not a hard rule; a user may override by ign
 | Prior Git Tag/Commit | Yes | The starting point of the changelog range. |
 | Target Branch/Commit | No | The end point of the range. Defaults to current HEAD. |
 | Destination file | No | Path to save the output. If omitted, outputs to the conversation. |
-| Use Emojis | No | Prefix category headings with emoji (🆕 🗑️ ⚙️ 🐛 📄 ⚠️). Set to "No" for plain text. Defaults to "Yes". |
+| Use Emojis | No | Prefix category headings with emoji (🆕 ⚙️ ⚠️ 🗑️ 🐛 📄). Set to "No" for plain text. Defaults to "Yes". |
 
 ## Workflow
 
@@ -93,6 +93,8 @@ Conventional Commit prefix mapping (co-located with the tier list so the two do 
     | 🗑️ | Removals |
     | 🐛 | Bug Fixes |
     | 📄 | Non Source Code |
+
+    *📄 Non Source Code = documentation, configuration, assets, and any other change that is not source code. The Keep-a-Changelog "Documentation" category is a strict subset of this. (The scope note and the category name must be updated together to prevent drift — see the table above and the prose below.)*
 
 - Organize the layout as follows:
     1. **Global Section** (title from Step 4): Changes at the root or in global folders. If dependency updates exist, split them into the following sub-sections (only include sub-sections that have entries):
