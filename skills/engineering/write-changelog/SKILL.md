@@ -83,14 +83,38 @@ Conventional Commit prefix mapping (co-located with the tier list so the two do 
 
 ### Step 5: Markdown Construction
 - Start the document with: `## Changes since [Prior Git Tag]`
+- **Emoji-to-category mapping** (table is the source of truth; the prose below uses the same mapping in the same order — update the table and the prose together to prevent drift):
+
+    | Emoji | Category |
+    |-------|----------|
+    | 🆕 | Additions |
+    | ⚙️ | Modifications |
+    | ⚠️ | Deprecations |
+    | 🗑️ | Removals |
+    | 🐛 | Bug Fixes |
+    | 📄 | Non Source Code |
+
 - Organize the layout as follows:
     1. **Global Section** (title from Step 4): Changes at the root or in global folders. If dependency updates exist, split them into the following sub-sections (only include sub-sections that have entries):
         - **Runtime Dependencies**: Package/dependency updates for library or runtime projects.
         - **CI Dependencies**: GitHub Actions, analyzers, build tooling, and CI configuration changes.
         - **Testing Dependencies**: Test framework packages and test infrastructure updates.
-    2. **Sub-project Sections**: Grouped by the packages identified in Step 1.
+    2. **Sub-project Sections**: Grouped by the sub-projects identified in Step 1.
         - **Dependency updates within a sub-project**: appear as inline `⚙️ Modifications` entries within that sub-project's section, with no Runtime/CI/Testing sub-categories.
-- Within each section, group changes by category. Categories follow Keep-a-Changelog order; the Security category is omitted (security-related fixes land in 🐛 Bug Fixes). Categories appear in the following order: 🆕 Additions, ⚙️ Modifications, ⚠️ Deprecations, 🗑️ Removals, 🐛 Bug Fixes, 📄 Non Source Code. When `Use Emojis: Yes` (the default), each category heading is prefixed with the emoji shown; when `Use Emojis: No`, each category is rendered as a plain bold heading with no prefix.
+- **Dependency classification** (source of truth: `references/dependency-classification.md`): classify each dependency update as Runtime, CI, or Testing using the rule in the reference file. Load `references/dependency-classification.md` before classifying any commit that touches a dependency file — the inline summary below mirrors the reference and the two must be updated together.
+
+    Inline summary:
+
+    | Example | Category |
+    |---------|----------|
+    | `package.json` `dependencies` change | Runtime |
+    | `package.json` `devDependencies` test framework (jest, vitest, mocha, ...) | Testing |
+    | `.github/workflows/*` change | CI |
+
+    Tie-breaker for ambiguous cases: classify by file path, not by dependency name. Files in `.github/workflows/`, build scripts, or named `*rc*` / `*.config.*` are CI; files matching `*Tests*` / `*Spec*` / `*Test*` are Testing; everything else is Runtime.
+
+- Within each section, group changes by category. Categories follow Keep-a-Changelog order; the Security category is omitted (security-related fixes land in 🐛 Bug Fixes). Categories appear in the following order: 🆕 Additions, ⚙️ Modifications, ⚠️ Deprecations, 🗑️ Removals, 🐛 Bug Fixes, 📄 Non Source Code. When `Use Emojis: Yes` (the default), each category heading is prefixed with the emoji shown in the table above; when `Use Emojis: No`, each category is rendered as a plain bold heading with no prefix. The table and the prose below share the same mapping and must be updated together if the mapping ever changes.
+- **Non Source Code** = documentation, configuration, assets, and any other change that is not source code. The Keep-a-Changelog "Documentation" category is a strict subset of this. (The scope note and the category name must be updated together to prevent drift — see the table above and this prose.)
 - Use markdown bullet points for each entry.
 
 ### Step 6: Output Phase
