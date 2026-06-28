@@ -46,10 +46,25 @@ The 5-commit threshold is a default, not a hard rule; a user may override by ign
 
 ### Step 2: Commit Retrieval & Analysis
 - Retrieve git history for the specified range.
+- **Empty-range guard**: if the retrieved commit list is empty, emit a one-line human-readable explanation ("The commit range is empty — no changelog to generate.") followed by the parseable error marker from `references/ci-integration.md` (`[CHANGELOG-MARKER] empty-range` with `prior:` and `target:` lines). Do not write a changelog. The CI wrapper translates the marker into a non-zero exit code.
 - For each commit, determine the category using a tiered analysis:
-    1. **Conventional Commit Check**: Check for `feat:`, `fix:`, `chore:`, `refactor:`, `perf:`, `docs:`.
-    2. **Diff Analysis**: If ambiguous, analyze the `git diff` for additions, removals, or modifications.
-    3. **User Guidance**: If still unclear, present the commit message and diff to the user and ask for the correct category and description.
+    1. **Conventional Commit Check**: if the commit message has a Conventional Commit prefix, map it to the corresponding category using the table below.
+    2. **Diff Analysis**: if the prefix is absent or the mapping is ambiguous, analyze the `git diff` for additions, removals, or modifications.
+    3. **User Guidance**: if still unclear, present the commit message and diff to the user and ask for the correct category and description.
+
+Conventional Commit prefix mapping (co-located with the tier list so the two do not drift):
+
+| Prefix | Category |
+|--------|----------|
+| `feat:` | Additions |
+| `fix:` | Bug Fixes |
+| `refactor:` | Modifications |
+| `perf:` | Modifications |
+| `docs:` | Non Source Code |
+| `chore:` | Modifications |
+| (no prefix) | Modifications (default) |
+
+**Autonomous-mode rule** (when the ask-questions skill is unavailable or the user declines): the Conventional Commit prefix mapping above is the primary signal; tier 2 (diff analysis) may be applied, but tier 3 (user prompt) is skipped and the default "Modifications" is used. The dependency-classification rule (Step 5) is the secondary signal that overrides the prefix for `chore:`-prefixed commits that touch dependency files.
 
 ### Step 3: Message Transformation
 - Rewrite commit messages to be "changelog style":
