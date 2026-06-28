@@ -129,16 +129,28 @@ Conventional Commit prefix mapping (co-located with the tier list so the two do 
 ## Validation
 
 - [ ] The header accurately reflects the starting Git tag.
-- [ ] Changes are grouped by sub-projects and categorized by impact.
+- [ ] Step 1's first-run probe ran and any pre-existing changelog (`CHANGELOG.md`, `HISTORY.md`, `RELEASES.md`, `docs/changelog.md`) was surfaced before the destination was named.
+- [ ] Step 1's directory exclusion used `.gitignore` plus the `docs/` / `.github/` / `tests/` carve-outs (or the inline-list fallback when `.gitignore` is absent or unparseable).
+- [ ] Sub-project sections appear only when 2 or more project files were detected at the top level.
+- [ ] Step 2's empty-range guard emitted the `[CHANGELOG-MARKER] empty-range` marker when the commit list was empty; no changelog was written.
+- [ ] Each commit's category was determined via the tiered analysis (Conventional Commit prefix → diff analysis → user prompt) using the mapping table in Step 2.
+- [ ] Step 4 presented exactly three named choices ("Global", "All Packages", "All Projects"); no "Other (specify)" option was offered. When the fallback ran, the section header carries the `(defaulted)` marker.
+- [ ] Step 5's emoji table and the prose category order share the same mapping and were updated together.
+- [ ] Step 5's dependency classification used `references/dependency-classification.md` (loaded before any dependency commit was classified) and the inline summary mirrors the reference.
 - [ ] Commit messages are transformed from developer-style to user-facing style.
-- [ ] "Non Source Code" changes are appropriately split between Global and Package sections.
+- [ ] "Non Source Code" changes are appropriately split between Global and Sub-project sections.
 - [ ] Global dependency sub-sections (Runtime, CI, Testing) are only present when they contain entries.
 - [ ] Toggling the `Use Emojis` input flips the presence of emoji prefixes on category headings (default = emojis present).
+- [ ] Step 6's three-way choice (overwrite / append / refuse) was offered when the destination already existed; on refusal, the final markdown was output to the conversation with the one-line "write to `<path>`" offer.
 
 ## Common Pitfalls
 
 | Pitfall | Solution |
 |---------|----------|
-| Incorrect project mapping | Ensure the discovery process prioritizes project files over simple directory names. |
+| Incorrect project mapping | Ensure the discovery process prioritises project files over simple directory names, and only introduces sub-project sections at the 2+ project file threshold. |
 | Over-simplifying messages | Always validate the rewritten message against the `git diff` to ensure technical accuracy. |
 | Missing category | Fall back to "Modifications" if a change is source-code related but doesn't fit elsewhere. |
+| Treating "Sub-projects" and "Packages" as synonyms | Use "Sub-projects" as the standard term; "Package" is a Sub-project that is BOTH a library AND distributable via a package manager (see glossary in Step 1). |
+| Empty-range commit list | Emit the `[CHANGELOG-MARKER] empty-range` marker from Step 2; do not write a changelog. |
+| Drift between the inline emoji table and the prose category order | Update the table and the prose in the same edit (Step 5). |
+| Drift between the inline dependency-classification summary and the reference file | Update `SKILL.md` and `references/dependency-classification.md` in the same edit (Step 5). |
