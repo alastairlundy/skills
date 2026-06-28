@@ -282,7 +282,7 @@ per D005/ADR 0003.
 
 **Part A: Output format**
 
-**Option A: Implementation Blueprint (Recommended)**
+**Option A: Implementation Blueprint**
 
 - **What**: A standalone blueprint file at the repo root, with a
   `Scope Binding` section that links the blueprint to the source
@@ -514,5 +514,6 @@ transcript:
       emitted with the Decision Ledger path substituted into
       `<ledger-path>`? If no, the workflow is incomplete.
 - [ ] Every citation of a Decision Ledger record from outside the
-      ledger file used the `filename#Dxxx` format (e.g.,
-      `DECISIONS-repo-feature.md#D001`), not a bare `Dxxx` ID.
+      ledger file used the `filename#<Dxxx|Txxx>` format (e.g.,
+      `DECISIONS-repo-feature.md#T003`), not a bare `Dxxx` or
+      `Txxx` ID.
