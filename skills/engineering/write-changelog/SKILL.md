@@ -33,12 +33,16 @@ The 5-commit threshold is a default, not a hard rule; a user may override by ign
 ## Workflow
 
 ### Step 1: Project Discovery
-- Identify sub-projects/packages in an ecosystem-aware manner:
-    1. Scan for project files (`.csproj`, `package.json`, `go.mod`, `pom.xml`, etc.) using `glob`.
-    2. If no project files are found, group by top-level directories (excluding `docs/`, `.github/`, `tests/`).
-    3. If the structure is ambiguous:
-        - **Interactive run**: list detected directories and ask the user to define the packages (via the ask-questions skill).
-        - **Non-interactive run**: default to grouping by top-level directories, excluding `docs/`, `.github/`, and `tests/` (same rule as the no-project-files branch above).
+- **Glossary**: a *Package* is a Sub-project that is BOTH a library AND distributable via a package manager (Cargo, NPM, NuGet, etc.). "Sub-projects" and "Packages" are related but not synonymous; this skill uses "Sub-projects" as the standard term.
+- **First-run probe** (always run, before naming a destination): scan for any of `CHANGELOG.md`, `HISTORY.md`, `RELEASES.md`, `docs/changelog.md`. If found, surface the path to the user and default the destination to that path; the user may override.
+- Identify sub-projects in an ecosystem-aware manner:
+    1. Scan for project files (`.csproj`, `package.json`, `go.mod`, `pom.xml`, etc.) at the top level using `glob`.
+    2. **Sub-projects threshold**: sub-project sections are introduced only when 2 or more project files are detected at the top level. A 1-project-file repo falls back to Global grouping; the 2+ threshold is the trigger.
+    3. If no project files are found, group by top-level directories. Exclude any directory that appears in the repo's `.gitignore`, plus the three explicit carve-outs (`docs/`, `.github/`, `tests/`). Gitignore parsing must handle wildcards, negation (`!`), and anchored patterns; behaviour on an unparseable pattern is to fail open (include) rather than fail closed, so a changelog is never silently dropped.
+    4. If `.gitignore` is absent or unparseable, fall back to the inline list: exclude `docs/`, `.github/`, `tests/`.
+    5. If the structure is still ambiguous:
+        - **Interactive run**: list detected directories and ask the user to define the sub-projects (via the ask-questions skill).
+        - **Non-interactive run**: default to grouping by top-level directories using the same exclusion rule as step 3 (or the inline-list fallback in step 4).
 
 ### Step 2: Commit Retrieval & Analysis
 - Retrieve git history for the specified range.
