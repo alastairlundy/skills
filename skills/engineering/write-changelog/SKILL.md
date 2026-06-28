@@ -76,10 +76,10 @@ Conventional Commit prefix mapping (co-located with the tier list so the two do 
 ### Step 4: Global Section Title Selection
 - Analyze the repo structure to recommend a title for the first changelog section:
     - **Global** — recommended when the repo root contains mixed content (docs, CI, scripts, config).
-    - **All Packages** — recommended for monorepos with multiple sub-projects/packages.
+    - **All Packages** — recommended for monorepos with multiple sub-projects (see glossary in Step 1).
     - **All Projects** — recommended for solution-based repos (e.g., .NET `.sln` with multiple `.csproj`).
-- Use the ask-questions skill to apply the four-gate procedure, and ask the user to choose: "Global", "All Packages", "All Projects", or "Other (specify)".
-- If the tool is unavailable or the user declines, default to "Global".
+- **Step 4.1 — User choice**: present exactly three choices — "Global", "All Packages", "All Projects" — and ask the user to pick one via the ask-questions skill. Do not offer a free-form "Other (specify)" option; the three named options are the only choices.
+- **Step 4.2 — Fallback**: if the ask-questions skill is unavailable or the user declines, default to "Global" and surface the default in the output by appending `(defaulted)` to the section header (e.g., `## Global (defaulted)`). The marker is local to the section header and must not break downstream CHANGELOG consumers (linters, release pipelines) — see `references/ci-integration.md` for the marker contract.
 
 ### Step 5: Markdown Construction
 - Start the document with: `## Changes since [Prior Git Tag]`
