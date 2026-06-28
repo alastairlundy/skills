@@ -1,0 +1,14 @@
+name: grilling
+description: Evaluates the generic grilling skill's trigger discipline for non-code, non-DDD vague decisions
+skill: grilling
+version: "1.0"
+
+config:
+  trials_per_task: 3
+  timeout_seconds: 300
+  parallel: false
+  executor: mock
+  model: auto
+
+tasks:
+  - "tasks/*.yaml"
