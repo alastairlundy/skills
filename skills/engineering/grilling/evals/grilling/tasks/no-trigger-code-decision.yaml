@@ -1,0 +1,17 @@
+id: no-trigger-code-decision
+name: No trigger on code/tech implementation decision
+description: Does NOT trigger when the user has a code/technical implementation choice (defer to code-implementation-grilling).
+inputs:
+  prompt: |
+    For the new order service, we need to decide between Postgres and
+    DynamoDB, and whether to use Entity Framework Core or Dapper. Help me
+    resolve the technical foundation.
+expected:
+  should_trigger: false
+graders:
+  - type: trigger
+    name: should-not-trigger-grilling
+    config:
+      skill_path: skills/engineering/grilling
+      mode: negative
+      threshold: 0.4

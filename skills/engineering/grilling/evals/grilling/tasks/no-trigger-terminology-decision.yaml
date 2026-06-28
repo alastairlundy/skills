@@ -1,0 +1,17 @@
+id: no-trigger-terminology-decision
+name: No trigger on domain modeling or terminology alignment
+description: Does NOT trigger when the user is aligning terminology or doing domain modeling (defer to domain-grilling).
+inputs:
+  prompt: |
+    Our spec is done, but our glossary is messy. "Order", "purchase", and
+    "transaction" are used interchangeably across docs. Help me align the
+    terms and define the boundary of each.
+expected:
+  should_trigger: false
+graders:
+  - type: trigger
+    name: should-not-trigger-grilling
+    config:
+      skill_path: skills/engineering/grilling
+      mode: negative
+      threshold: 0.4
