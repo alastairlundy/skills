@@ -16,9 +16,9 @@ This skill specializes `grilling` for the case where the user has a
 spec and is now answering "how do we build it?"
 
 The core grilling machinery (Decision Ledger, options/recommendation
-formats, locked question format, tone discipline, convergence test)
-is owned by the `grilling` skill. This skill adds spec/PRD reading,
-the Foundation checklist, Technical Decision Point extraction, the
+formats, branch-starting prompt, tone discipline, convergence test) is
+owned by the `grilling` skill. This skill adds spec/PRD reading, the
+Foundation checklist, Technical Decision Point extraction, the
 optional Interface/Model branch, and the code-specific Terminal
 Output handoff templates.
 
@@ -55,6 +55,7 @@ Before the first user question, load and read in full:
 - `../grilling/references/options-format.md`
 - `../grilling/references/recommendation-format.md`
 - `../grilling/references/locked-question-format.md`
+- `../grilling/references/branch-starting-prompt.md`
 - `../grilling/references/tone-and-output.md`
 - `../grilling/references/convergence-test.md`
 
@@ -121,11 +122,46 @@ record to the ledger using this template:
   turn the user resolves the decision, before asking the next
   question.
 
+### Per-decision flow (Steps 3, 4, 5)
+
+For every decision the LLM grills the user on, follow the flow below.
+The Core Constraint (one question at a time) still binds; the
+five-step sequence below is the per-decision shape, not a
+five-questions-per-turn batch.
+
+1. **Open with the open-ended branch-starting prompt** from
+   `../grilling/references/branch-starting-prompt.md`. The LLM
+   paraphrases the user's aim, then asks the canonical
+   `What's your thinking on <dimension>, and what would "good" look
+   like for you there?` prompt. The LLM does **not** lead with
+   options.
+2. **Translate the user's response** into 2–4 concrete natural
+   options per `../grilling/references/options-format.md`. The LLM
+   paraphrases the user's words rather than inventing, and each
+   option must satisfy all eight concrete-natural-option criteria.
+3. **Run the pre-option checks** in order, looping back to the
+   user as needed:
+   - **Fuzzy intent (D004)** — if the user's answer is fuzzy, ask
+     a single targeted clarifying question and re-evaluate.
+   - **Scope too broad (D007)** — if the answer translates to
+     more than four natural options, ask the scope meta-question
+     and re-enter with the chosen scope.
+   - **Over-constrained (D008)** — if the answer translates to a
+     single defensible option, ask the trade-off question and
+     branch on the user's response.
+4. **Present the options** using the locked question format from
+   `../grilling/references/locked-question-format.md`. The LLM does
+   **not** produce a recommendation in the default flow per
+   `docs/adr/0003-recommendations-on-demand-only.md` (D005).
+5. **Record the decision** in the same turn the user resolves, per
+   the `Txxx` template above.
+
 ### Step 3: Foundation Establishment (Mandatory Checklist)
 
 Iteratively resolve the following technical foundation points
-one-by-one. For each, present 2-4 natural options with trade-offs
-and a recommendation.
+one-by-one. For each, follow the per-decision flow above
+(open-ended prompt → translate → pre-option checks → options →
+record).
 
 1. **Programming Language**: Which language will be used?
 2. **Framework/Runtime**: Which primary framework or runtime is
@@ -156,10 +192,9 @@ Analyze the spec for remaining "how" gaps.
    explicitly marked as "deferred" or "out of scope" in the spec
    to avoid decision fatigue.
 3. **Resolve Technical Decision Points**: Grill the user on each
-   identified point using the "Options → Recommendation → Risk"
-   pattern from `../grilling/references/*`. **Crucial**: Never use
-   the abbreviation "TDP" when communicating with the user; always
-   use the full term "Technical Decision Point".
+   identified point using the per-decision flow above. **Crucial**:
+   Never use the abbreviation "TDP" when communicating with the
+   user; always use the full term "Technical Decision Point".
 
 ### Step 5: Interface & Model Branch (Optional)
 
@@ -174,7 +209,9 @@ Interface, Contract, DTO, and Model definitions now?"*
 - **If Yes**: Walk through three sequenced phases. The phases are
   sequential, not nested — once a phase transitions, do not
   interleave its decisions back into a later phase. Each phase uses
-  1-decision-per-turn discipline.
+  1-decision-per-turn discipline and follows the per-decision flow
+  above (open-ended prompt → translate → pre-option checks →
+  options → record).
 
   #### Phase 1: Architectural Separation
 
@@ -189,10 +226,6 @@ Interface, Contract, DTO, and Model definitions now?"*
   - **Dependency direction**: Which layer depends on which?
   - **Separation mechanism**: How are layers physically separated
     (e.g., separate project, class library, microservice)?
-
-  Present each decision with 2-4 options, trade-offs, and a
-  recommendation. Wait for the user's response before presenting the
-  next decision.
 
   When all architectural decisions are resolved, ask: *"Ready to
   move to Source of Truth?"* The user confirms or revises before
@@ -243,7 +276,9 @@ Interface, Contract, DTO, and Model definitions now?"*
 ### Step 6: Output Selection
 
 Present the user with the following two-part choice, one part at a
-time.
+time. The option blocks in this step are presented using the locked
+question format; no recommendation is produced in the default flow
+per D005/ADR 0003.
 
 **Part A: Output format**
 
@@ -392,7 +427,8 @@ not add any other prose around the template.
 > (which now includes the Technical Implementation section) and
 > the Decision Ledger at `<ledger-path>` as context. Every
 > ticket's acceptance criteria and constraints must cite a
-> `Dxxx` or `Txxx` record using `filename#<Dxxx|Txxx>` format.
+> `Dxxx` or `Txxx` record using
+> `filename#<Dxxx|Txxx>` format.
 
 **Template: issue tracker (`to-issues`)**
 
@@ -406,20 +442,22 @@ not add any other prose around the template.
 
 > Manual handoff. The spec is at `<spec-path>` (which now
 > includes the Technical Implementation section) and the
-> Decision Ledger at `<ledger-path>`. Use these to drive ticket
-> creation or implementation planning in your own workflow.
-> Every ticket's acceptance criteria and constraints must cite a
-> `Dxxx` or `Txxx` record using `filename#<Dxxx|Txxx>` format.
+> Decision Ledger is at `<ledger-path>`. Use these to drive
+> ticket creation or implementation planning in your own
+> workflow. Every ticket's acceptance criteria and constraints
+> must cite a `Dxxx` or `Txxx` record using
+> `filename#<Dxxx|Txxx>` format.
 
 ## Validation
 
 After completing the workflow, verify each item against the session
 transcript:
 
-- [ ] **References Loaded**: All six `grilling` reference files were
-      loaded and read in full before the first user question. If
-      any reference file was missing or unreadable, the session
-      aborted and the missing file was reported to the user.
+- [ ] **References Loaded**: All seven `grilling` reference files
+      (including `branch-starting-prompt.md`) were loaded and read
+      in full before the first user question. If any reference
+      file was missing or unreadable, the session aborted and the
+      missing file was reported to the user.
 - [ ] **Atomic Questioning**: Did the agent ask exactly one
       question at a time, waiting for a response before
       proceeding?
@@ -433,6 +471,16 @@ transcript:
       the spec identified and resolved?
 - [ ] **No Abbreviations**: Did the agent avoid using the
       abbreviation "TDP" in all user-facing communication?
+- [ ] **Per-decision flow followed**: For every decision in Steps
+      3–5, did the LLM open with the D010 branch-starting prompt,
+      translate the user's response via the D002 concrete-natural-
+      option criteria, apply the D004/D007/D008 pre-option checks
+      as needed, and present the options via the locked question
+      format?
+- [ ] **No unprompted recommendation**: No recommendation was
+      produced in the default flow. A recommendation appeared only
+      if the user explicitly asked for one; the LLM did not
+      pre-suggest ("would you like my take?").
 - [ ] **Ledger Recording**: Was a `Txxx` record appended to the
       Decision Ledger after every resolved decision in Steps 3, 4,
       and 5, each with a fresh `Txxx` ID and a `Cites:` line
@@ -465,3 +513,6 @@ transcript:
 - [ ] **Pass/Fail Gate**: Has the Terminal Output block been
       emitted with the Decision Ledger path substituted into
       `<ledger-path>`? If no, the workflow is incomplete.
+- [ ] Every citation of a Decision Ledger record from outside the
+      ledger file used the `filename#Dxxx` format (e.g.,
+      `DECISIONS-repo-feature.md#D001`), not a bare `Dxxx` ID.
