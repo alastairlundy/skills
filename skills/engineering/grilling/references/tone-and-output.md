@@ -47,13 +47,13 @@ answer.
 
 **Violation.** The agent starts the transition with praise:
 
-> Good — Option 2 sets the precondition. Now: where does the gate get
+> Good — Option 2 sets the precondition. Now: where does the branch get
 > encoded?
 
 **Correction.** Drop the praise, mirror the user's point, then transition:
 
 > Understood. You're saying Option 2 sets the precondition. Next: where
-> does the gate get encoded?
+> does the branch get encoded?
 
 ## Forbidden filler words
 
