@@ -130,6 +130,10 @@ Use only when Gate 2 Sub-check B''s adaptations all fail, or by the Default: Pro
 
 Before submitting, run the mechanical checks listed in the [Validation](#validation) section. If any check fails, fix and re-validate. Do not submit a failing draft.
 
+### End condition
+
+After three rounds of clarifying questions, the LLM should propose a default in prose or hand off to `grilling` for structured decision-making. This is a soft cap (a "should", not a "must"): more rounds are permitted if the LLM can justify that the trajectory is converging. The hand-off to `grilling` is the preferred escape hatch when the situation is a genuine multi-decision exploration.
+
 ## Validation
 
 The final output (tool call + context prose, or prose fallback) must pass these mechanical gates. Each gate is independently verifiable.
