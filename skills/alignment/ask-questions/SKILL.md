@@ -117,6 +117,7 @@ Use only when Gate 2 Sub-check B''s adaptations all fail, or by the Default: Pro
 2. **Options as a numbered or bulleted list.**
 3. **Prose discipline:** the prose must be necessary to make the choice. *Test:* if the user can pick correctly without reading the prose, the prose is too long.
 4. The LLM may indicate a recommendation in the prose ("I''d suggest B because..."), but not via a UI marker (prose questions don''t have one).
+5. **Multi-part Prose Pattern** (see `references/multi-part-pattern.md`) is permitted under Prose Fallback when the sub-questions are checks (not choices). Load `references/multi-part-pattern.md` before constructing a multi-part prose turn.
 
 ### Gate 4: Validate
 
@@ -128,7 +129,7 @@ The final output (tool call + context prose, or prose fallback) must pass these 
 
 - [ ] **Trigger Gate** — the inverted trigger passed; the Real Decision precondition passed; opt-out (if active) did not block; the LLM has a real question whose answer would change its next action.
 - [ ] **Fit Gate** — Sub-check A (realistic alternatives) passed; Sub-check B adaptations were tried before Prose Fallback.
-- [ ] **Count Gate** — 1 question per call.
+- [ ] **Count Gate** — 1 question per call (applies to tool calls only; prose path governed by Multi-part Prose Pattern in `references/multi-part-pattern.md`).
 - [ ] **Order Gate** — alphabetical by underlying option name; `(Recommended)` marker is a suffix and does not change position; the recommendation is what the LLM would commit to on the user''s behalf given the user''s stated context.
 - [ ] **Prose Discipline Gate** — context prose is necessary to make the choice (test: user can pick without it = too long); descriptions are discriminative (test: each answers "why pick this over the others?"); Prose Fallback (if used) is justified by failed adaptations or by the Default: Prose tie-breaker.
 - [ ] **Term Purity Gate** — no internal field names, no tool names, and no skill names the user did not name first appear in user-facing prose or option text.
