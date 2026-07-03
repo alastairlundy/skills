@@ -9,9 +9,7 @@ parent: <spec reference>
 ---
 ```
 
-**blocked_by reference format by output target:**
-- Issue tracker: issue numbers (e.g., `#42`)
-- Local markdown: zero-padded file basenames without extension (e.g., `001-authentication`)
+**blocked_by reference format:** The `Blocked by` field is stored as target-agnostic ticket IDs (e.g., `T001`, `T002`) during generation. At publish time, these are substituted with the appropriate format for the chosen target (issue numbers for issue-tracker targets, file basenames for local markdown targets).
 
 ## Goal
 

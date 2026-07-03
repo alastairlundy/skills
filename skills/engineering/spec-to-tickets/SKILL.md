@@ -125,7 +125,7 @@ Prefer Independent over Collaborative. A ticket should only be Collaborative if 
 2. **Target band** - 2 to 3-4 hours, calibrated to one average software developer fully implementing the ticket.
 3. **Maximum** - 3-4 hours is a hard cap; tickets should not exceed this.
 
-A **15-ticket soft cap** also applies: going over is allowed but indicates scope creep or a large spec that should be split. This is a guideline with one hard cap (the 3-4 hour maximum).
+A **15-ticket soft cap** and a **50-hour total-scope soft cap** both apply: if either is exceeded, the skill signals scope creep. This is a guideline with one hard cap (the 3-4 hour maximum per ticket).
 
 **Decision Ledger coverage matrix** - if a Decision Ledger is present, every `Dxxx` and `Txxx` record must be cited by at least one ticket's acceptance criteria or context pointers using `filename#<Dxxx|Txxx>` format, and every ticket must cite at least one ledger record (or, if the ticket covers work explicitly out of ledger scope, cite the absence explicitly with `No ledger record — out of scope: <reason>`). The coverage matrix is a grid where rows are ledger records, columns are tickets, and cells mark which ticket satisfies which record; build it during proposal. A record with no citing ticket is a coverage gap to surface before publishing. A ticket with no cited record is a scope gap to surface before publishing.
 
@@ -207,6 +207,8 @@ For the ticket body schema, see [ticket-template.md](./references/ticket-templat
 - Include only Decision Ledger records (`Dxxx`/`Txxx`) whose `Constraints` or `Normalized Requirement` this ticket must honour, cited as `filename#<Dxxx|Txxx>`. Do not reproduce the ledger.
 
 **YAML-breaking characters** - The `description` and other prose-bearing frontmatter fields shall contain no YAML-breaking characters (colons, unquoted special characters). To avoid them, use a hyphen or rewrite the phrase. For example, replace "Description: implements login" with "Description - implements login". This is a write-time rule applied during ticket generation in Step 8.
+
+**Blocked-by field format** - Store the `Blocked by` field as target-agnostic ticket IDs (e.g., `T001`, `T002`) during generation. At publish time (Step 9), substitute with the appropriate format for the chosen target: issue numbers for issue-tracker targets, file basenames for local markdown targets.
 
 #### Step 9 - Ticket Publishing
 
@@ -326,7 +328,7 @@ Prefer Independent over Collaborative. A ticket should only be Collaborative if 
 2. **Target band** - 2 to 3-4 hours, calibrated to one average software developer fully implementing the ticket.
 3. **Maximum** - 3-4 hours is a hard cap; tickets should not exceed this.
 
-A **15-ticket soft cap** also applies: going over is allowed but indicates scope creep or a large spec that should be split. This is a guideline with one hard cap (the 3-4 hour maximum).
+A **15-ticket soft cap** and a **50-hour total-scope soft cap** both apply: if either is exceeded, the skill signals scope creep. This is a guideline with one hard cap (the 3-4 hour maximum per ticket).
 
 **Decision Ledger coverage matrix** - if a Decision Ledger is present, every `Dxxx` and `Txxx` record must be cited by at least one ticket's acceptance criteria or context pointers using `filename#<Dxxx|Txxx>` format, and every ticket must cite at least one ledger record (or, if the ticket covers work explicitly out of ledger scope, cite the absence explicitly with `No ledger record — out of scope: <reason>`). The coverage matrix is a grid where rows are ledger records, columns are tickets, and cells mark which ticket satisfies which record; build it during proposal. A record with no citing ticket is a coverage gap to surface before publishing. A ticket with no cited record is a scope gap to surface before publishing.
 
@@ -399,6 +401,8 @@ For the ticket body schema, see [ticket-template.md](./references/ticket-templat
 
 **YAML-breaking characters** - The `description` and other prose-bearing frontmatter fields shall contain no YAML-breaking characters (colons, unquoted special characters). To avoid them, use a hyphen or rewrite the phrase. For example, replace "Description: implements login" with "Description - implements login". This is a write-time rule applied during ticket generation in Step 8.
 
+**Blocked-by field format** - Store the `Blocked by` field as target-agnostic ticket IDs (e.g., `T001`, `T002`) during generation. At publish time (Step 9), substitute with the appropriate format for the chosen target: issue numbers for issue-tracker targets, file basenames for local markdown targets.
+
 #### Step 9 - Ticket Publishing
 
 Load `references/publishing-rules.md` before executing Step 9's publish step.
@@ -442,6 +446,8 @@ The summary should be scannable - use clear structure (headings, tables, lists) 
 - [ ] The effort label vocabulary is exactly `XS`, `S`, `M`, `L`, `XL` (five labels, no `XXL`).
 - [ ] Any `XS` ticket surfaces a bloat warning in the summary.
 - [ ] `Review complexity` is computed per-ticket from the ticket's own `blocked-by` chain.
+- [ ] The total-scope soft cap of 50 hours applies alongside the 15-ticket soft cap.
+- [ ] The `Blocked by` field is target-agnostic in storage (e.g., `T001`, `T002`) and substituted at publish time.
 - [ ] The long Step 9 content lives in `references/publishing-rules.md`; `SKILL.md` carries only the load-trigger sentence.
 - [ ] The Step 9 trim applies to both Collaborative and Self-Contained sub-workflows.
 - [ ] Every ticket's `Blocked by` field uses issue numbers for issue-tracker targets and basenames for local markdown.

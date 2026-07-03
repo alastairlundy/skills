@@ -12,10 +12,19 @@
    - **Collaborative mode**: Follow the Installation flow in the reference (present the README-derived install command, then ask "shall I run this?" — the LLM shall not run the install without an explicit `yes`).
    - **Self-Contained mode**: Install it without prompting.
 
+## Render-time substitution
+
+The `Blocked by` field in each ticket is stored as target-agnostic ticket IDs (e.g., `T001`, `T002`). At publish time, substitute these IDs with the appropriate format:
+
+- **Issue tracker targets**: Replace target-agnostic IDs with issue numbers (e.g., `T001` becomes `#42`).
+- **Local markdown targets**: Replace target-agnostic IDs with file basenames (e.g., `T001` becomes `001-authentication`).
+
+The substitution runs once at publish, not during ticket generation.
+
 ## Issue tracker target
 
 1. Publish tickets in dependency order - blockers first, then dependents. This ensures blocking ticket issue numbers exist before they are referenced in "Blocked by" fields.
-2. For each ticket, create an issue using the host CLI. Fill in the "Blocked by" field with real issue numbers of previously published blocking tickets.
+2. For each ticket, create an issue using the host CLI. Fill in the "Blocked by" field with real issue numbers of previously published blocking tickets (substituted from target-agnostic IDs).
 3. Do NOT close or modify any parent issue.
 
 ## Local markdown target
