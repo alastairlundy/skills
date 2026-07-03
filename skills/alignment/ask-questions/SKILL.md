@@ -7,6 +7,8 @@ license: MIT
 
 # Ask Questions
 
+**opencode dialect.** This skill targets the opencode agent platform. In opencode, the abstract `ask_question` affordance is bound to the `question` tool. On other hosts, substitute the equivalent discrete-choice tool.
+
 This skill governs how the LLM uses the `ask_question` tool (and equivalent discrete-choice clarification tools) to interact with the user. It addresses two failure modes in balance:
 
 1. **Over-asking** — invoking the tool for open-ended or non-decision questions the tool cannot answer usefully, or for questions where prose (or no question at all) is the better response.
@@ -62,6 +64,8 @@ Neither invited nor opted-out. Apply the inverted trigger without modification.
 ## Workflow
 
 Four gates run in order. At every gate, failure stops the workflow.
+
+0. **Load glossary.** Load `references/glossary.md` to confirm the term definitions used in the gates below.
 
 **Default: Prose.** When the LLM is in doubt between Tool Call Path and Prose Fallback (or no question at all), the default is Prose Fallback. The over-asking cost (user friction, leaky options) exceeds the under-asking cost (the LLM proposes a default in prose that the user can correct).
 
