@@ -100,6 +100,8 @@ Two sub-checks.
 
 If any adaptation works without losing essential information, proceed to Gate 3 Tool Call Path. If all adaptations lose essential meaning, proceed to Gate 3 Prose Fallback.
 
+**Sub-check B also requires:** the prose-discipline rule (per-decision prose) and the description test (per-option descriptions) are separate checks. They test different surfaces: the prose test applies to the message text before the call, the description test applies to the option descriptions inside the call. If either is sufficient alone, the other is redundant; remove the redundant part.
+
 ### Gate 3: Construct
 
 Two paths from Gate 2.
@@ -110,8 +112,9 @@ Two paths from Gate 2.
 2. **Construct the tool call:**
    - **1 question per call. Always.** No batching.
    - **2-4 options per question.** Each option must pass the realistic alternative test.
-   - **Alphabetical order** by the option''s underlying name. The `(Recommended)` marker is appended to the label as a suffix and does not change sort position.
+   - **Alphabetical order** by the option''s underlying name (the label with any `(Recommended)` suffix, leading letter or number prefix, or trailing punctuation stripped). For example, labels "MongoDB", "Postgres (Recommended)", "SQLite" sort by underlying names "MongoDB" < "Postgres" < "SQLite". The `(Recommended)` marker is a suffix and does not change sort position.
    - **Mark the recommended option** (if the LLM has one) with `(Recommended)`. The recommendation is what the LLM would commit to on the user''s behalf given the user''s stated context — not the LLM''s preferred architecture, not the most common choice.
+   - **Length limits** (≤6-word labels, ≤80-character descriptions, ≤30-character headers) are based on user testing with AI agents: these thresholds set a readable-text boundary before the user becomes overwhelmed.
    - **Labels:** ≤6 words, parallel grammatical form (e.g., all noun phrases or all verb phrases).
    - **Descriptions:** ≤80 characters, discriminative only. *Test:* each description must answer "why pick this over the others?" If the description teaches rather than discriminates, move it to context prose.
    - **Headers:** ≤30 characters, scannable, in domain language.
@@ -126,6 +129,14 @@ Use only when Gate 2 Sub-check B''s adaptations all fail, or by the Default: Pro
 4. The LLM may indicate a recommendation in the prose ("I''d suggest B because..."), but not via a UI marker (prose questions don''t have one).
 5. **Multi-part Prose Pattern** (see `references/multi-part-pattern.md`) is permitted under Prose Fallback when the sub-questions are checks (not choices). Load `references/multi-part-pattern.md` before constructing a multi-part prose turn.
 
+#### What transfers to Prose Fallback
+
+The following transfer; other rules in this section are tool-call-specific by definition.
+
+**Transfers:** 1 question, 2-4 options, recommendation (in prose shape), prose discipline.
+
+**Does not transfer:** header, label, description, `(Recommended)` marker.
+
 ### Gate 4: Validate
 
 Before submitting, run the mechanical checks listed in the [Validation](#validation) section. If any check fails, fix and re-validate. Do not submit a failing draft.
@@ -137,6 +148,8 @@ After three rounds of clarifying questions, the LLM should propose a default in 
 ## Validation
 
 The final output (tool call + context prose, or prose fallback) must pass these mechanical gates. Each gate is independently verifiable.
+
+Mechanical verification of length limits: see `evals/ask-questions/tasks/perf-count-gate-characters.yaml`.
 
 - [ ] **Trigger-Passed Gate** — the inverted trigger passed; the Real Decision precondition passed; opt-out (if active) did not block; the LLM has a real question whose answer would change its next action.
 - [ ] **Fit Gate** — Sub-check A (realistic alternatives) passed; Sub-check B adaptations were tried before Prose Fallback.
