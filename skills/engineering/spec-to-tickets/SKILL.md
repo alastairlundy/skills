@@ -243,15 +243,14 @@ After publishing, present a summary to the user containing -
 1. **Stats** - total ticket count, Independent count, Collaborative count, leaf ticket count (tickets with no blockers).
 2. **Ticket overview** - a table with each ticket's title, classification, estimated effort, domain area, and review complexity:
    - **Estimated effort** - a fixed categorical label from a closed vocabulary, calibrated to how long one average software engineer would take to fully implement the ticket:
-     - `XS` — under 1 hour
-     - `S` — 1 hour
-     - `M` — 2-3 hours
-     - `L` — 3-4 hours
-     - `XL` — 1 working day
-     - `XXL` — 2-3 working days
-     A label of `XL` or larger surfaces a ticket-bloat warning in the summary. A label of `XXL` or larger is a hard cap and shall not appear in a published ticket — Step 6 must split the work first. The labels are the only permitted values; the agent shall not invent new tiers. This is a deterministic rule, never a free post-hoc judgement.
+      - `XS` — under 1 hour
+      - `S` — 1 hour
+      - `M` — 2-3 hours
+      - `L` — 3-4 hours
+      - `XL` — 1 working day
+      A label of `XS` surfaces a ticket-bloat warning in the summary, signaling that the ticket may need to be combined with another ticket. A label of `XL` or larger surfaces a ticket-bloat warning in the summary. Tickets shall not be published if their effort is beyond `XL`; Step 6 must split the work first. The labels are the only permitted values; the agent shall not invent new tiers. This is a deterministic rule, never a free post-hoc judgement.
    - **Domain area** - the subsystem or domain concept the ticket touches (helps identify which tickets match a team member's expertise)
-   - **Review complexity** - a deterministic label derived at summary time: `High` if any `blocked-by` chain crosses a domain boundary, else `Low`. A one-line override is permitted ("override: <reason>").
+   - **Review complexity** - computed per ticket from the ticket's own `blocked-by` chain. `High` if the chain crosses a domain boundary, else `Low`. A one-line override is permitted (`override: <reason>`).
 3. **Dependency graph** - which tickets can start immediately, which are blocked and by what.
 4. **Next steps** - suggested execution order and parallelism opportunities. Note which tickets can be worked in parallel by different team members.
 5. **Output location** - issue numbers or file paths where tickets were saved; for the local-markdown branch, include the resolved grouping strategy so the user can verify.
@@ -459,15 +458,14 @@ After publishing, present a summary to the user containing -
 1. **Stats** - total ticket count, Independent count, Collaborative count, leaf ticket count (tickets with no blockers).
 2. **Ticket overview** - a table with each ticket's title, classification, estimated effort, domain area, and review complexity:
    - **Estimated effort** - a fixed categorical label from a closed vocabulary, calibrated to how long one average software engineer would take to fully implement the ticket:
-     - `XS` — under 1 hour
-     - `S` — 1 hour
-     - `M` — 2-3 hours
-     - `L` — 3-4 hours
-     - `XL` — 1 working day
-     - `XXL` — 2-3 working days
-     A label of `XL` or larger surfaces a ticket-bloat warning in the summary. A label of `XXL` or larger is a hard cap and shall not appear in a published ticket — Step 6 must split the work first. The labels are the only permitted values; the agent shall not invent new tiers. This is a deterministic rule, never a free post-hoc judgement.
+      - `XS` — under 1 hour
+      - `S` — 1 hour
+      - `M` — 2-3 hours
+      - `L` — 3-4 hours
+      - `XL` — 1 working day
+      A label of `XS` surfaces a ticket-bloat warning in the summary, signaling that the ticket may need to be combined with another ticket. A label of `XL` or larger surfaces a ticket-bloat warning in the summary. Tickets shall not be published if their effort is beyond `XL`; Step 6 must split the work first. The labels are the only permitted values; the agent shall not invent new tiers. This is a deterministic rule, never a free post-hoc judgement.
    - **Domain area** - the subsystem or domain concept the ticket touches (helps identify which tickets match a team member's expertise)
-   - **Review complexity** - a deterministic label derived at summary time: `High` if any `blocked-by` chain crosses a domain boundary, else `Low`. A one-line override is permitted ("override: <reason>").
+   - **Review complexity** - computed per ticket from the ticket's own `blocked-by` chain. `High` if the chain crosses a domain boundary, else `Low`. A one-line override is permitted (`override: <reason>`).
 3. **Dependency graph** - which tickets can start immediately, which are blocked and by what.
 4. **Next steps** - suggested execution order and parallelism opportunities. Note which tickets can be worked in parallel by different team members.
 5. **Output location** - issue numbers or file paths where tickets were saved; for the local-markdown branch, include the resolved grouping strategy so the user can verify.
@@ -489,6 +487,9 @@ The summary should be scannable - use clear structure (headings, tables, lists) 
 - [ ] Parent field contains a 1-3 sentence summary when the source is conversation context.
 - [ ] Tickets were published in dependency order (blockers first) when targeting an issue tracker.
 - [ ] The summary report includes stats, ticket overview table, dependency graph, and next steps.
+- [ ] The effort label vocabulary is exactly `XS`, `S`, `M`, `L`, `XL` (five labels, no `XXL`).
+- [ ] Any `XS` ticket surfaces a bloat warning in the summary.
+- [ ] `Review complexity` is computed per-ticket from the ticket's own `blocked-by` chain.
 - [ ] Every ticket's `Blocked by` field uses issue numbers for issue-tracker targets and basenames for local markdown.
 - [ ] The YAML-breaking-characters check is applied at write time per Step 8's rule, not as a post-hoc validation.
 - [ ] Ticket count is at least 2 (with no exception).
