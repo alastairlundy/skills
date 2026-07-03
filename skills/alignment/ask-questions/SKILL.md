@@ -80,7 +80,7 @@ Four gates run in order. At every gate, failure stops the workflow.
 
 Two tests; both must pass.
 
-1. **Action-changing test.** Does my action change if I knew the answer? Is there a real question whose answer would change the LLM''s next action AND that the LLM cannot resolve from context, code, or safe inference? If the LLM finds itself writing "I can probably infer X," that is not resolution — ask. In opt-out mode, the bar is stricter: ask only if the LLM cannot proceed without the answer. Neutral and invited modes apply the action-changing test as written.
+1. **Action-changing test.** Does my action change if I knew the answer? Is there a real question whose answer would change the LLM''s next action AND that the LLM cannot resolve from context, code, or safe inference? If the LLM finds itself writing "I can probably infer X," that is not resolution — ask. In opt-out mode, the bar is stricter: ask only when the default would be visibly wrong to the user. Neutral and invited modes apply the action-changing test as written.
 2. **Real Decision precondition.** Is this a real decision — does the user have a narrowed space of 2-4 options they would actually pick? An option is *realistic* iff the user, given their stated context, would actually pick it. If the constructed options would all have the LLM do the same work, or if the user has not narrowed the space, this is not a real decision and Gate 1 fails.
 
 If either test fails, do not ask. Proceed with a sensible default, document the default, and let the user correct.
