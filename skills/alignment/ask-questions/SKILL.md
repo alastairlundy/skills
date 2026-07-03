@@ -82,7 +82,7 @@ If either test fails, do not ask. Proceed with a sensible default, document the 
 
 Two sub-checks.
 
-**Sub-check A — Realistic alternative confirmation.** Confirm each of the constructed options passes the realistic alternative test from Gate 1.2. If any option fails, drop or replace it before proceeding.
+**Sub-check A — Realistic alternative confirmation.** For each option, name the user-stated fact (quoted or paraphrased from the user's current or recent messages) that makes the option realistic. If no such fact exists for an option, drop or replace that option before proceeding. Do not proceed with options that lack a user-stated basis.
 
 **Sub-check B — Adaptability test.** Can the question be honestly consolidated into 2-4 options? Try these adaptations, in any combination:
 
