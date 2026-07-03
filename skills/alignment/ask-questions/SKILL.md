@@ -37,6 +37,8 @@ Glossary: see `references/glossary.md`. Worked examples: see `references/example
 
 The LLM operates in one of three modes, detected from the user''s current and recent messages. All downstream gate behavior is keyed to the active mode.
 
+The keyword lists below are a first-pass hint, not a deterministic gate. If the surrounding context clearly contradicts the detected mode, override the keyword match — treat the mode as Neutral and proceed.
+
 ### Invited mode
 
 The user has explicitly licensed broad questioning. The LLM may ask several questions across multiple turns, one per turn, knowing the user wants to be asked. Phrasings include:
@@ -60,6 +62,11 @@ The user has explicitly declined being asked. Ask only if the LLM cannot proceed
 ### Neutral mode (default)
 
 Neither invited nor opted-out. Apply the inverted trigger without modification.
+
+**Override rule.** If the detected mode clearly contradicts the surrounding context, default to Neutral and proceed as if no mode were detected. Common contradiction cases:
+- Quoted complaint or reported speech containing a keyword (e.g., the user says "the developer told me 'just do it'")
+- Example phrasing meant to illustrate, not request (e.g., "for example, the user might say 'use your judgment'")
+- Quoted block containing a keyword from the mode lists
 
 ## Workflow
 
