@@ -1,0 +1,17 @@
+name: grilling
+description: >-
+  Evaluates grilling skill trigger discipline for non-implementation,
+  non-domain decisions: business strategy, product direction, design choices,
+  process, and organizational decisions. Performance tasks verify the Decision
+  Ledger workflow, locked question format, options/recommendation formats,
+  tone discipline, convergence test, and exit path handoff.
+skill: grilling
+version: "1.0"
+
+config:
+  trials_per_task: 1
+  timeout_seconds: 120
+  executor: mock
+
+tasks:
+  - "tasks/*.yaml"
