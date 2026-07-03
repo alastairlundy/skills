@@ -487,14 +487,16 @@ The summary should be scannable - use clear structure (headings, tables, lists) 
 - [ ] The summary report includes stats, ticket overview table, dependency graph, and next steps.
 - [ ] Every ticket's `Blocked by` field uses issue numbers for issue-tracker targets and basenames for local markdown.
 - [ ] The ticket's `description:` frontmatter field contains no YAML-breaking characters (colons, unquoted special chars).
-- [ ] Ticket count is at least 2, unless the entire spec is one user story with one acceptance criterion, in which case one ticket is acceptable.
+- [ ] Ticket count is at least 2 (with no exception).
 - [ ] Each ticket represents at most 3-4 hours of focused work.
 - [ ] If ticket count exceeds 15, the decomposition pattern was reviewed for suitability.
 - [ ] No abbreviations are used in ticket content or workflow output unless defined in CONTEXT.md/glossary or explicitly used by the user/spec. Unfamiliar abbreviations are clarified in brackets on first use. "User Stories" is never abbreviated to `US` — `US` is overloaded with "United States" in some domains, and is a common abbreviation-collision target across other domains as well.
 - [ ] Decomposition pattern choice includes a recommendation with parenthetical definition, the rejected alternatives with one-line reasons, and a custom-pattern validation gate when the user proposes a non-standard pattern.
 - [ ] Ticket proposal includes decomposition rationale for non-obvious decisions.
-- [ ] Closing questions use explicit multi-part format (not binary approval). Format: a preamble paragraph, a blank line, the line `A few things to check:`, and three questions on separate lines (no numbering, no inline list markers). The three questions are: (1) "Which tickets, if any, would you combine, split, or rescope?" (2) "Are there any spec requirements not yet covered by a ticket, or any ticket that doesn't trace back to a requirement?" (3) "Are there any tickets where the `Blocked by` chain or Independent/Collaborative classification feels off?" The agent shall wait for an explicit response or a clear pass before proceeding; partial answers are accepted.
+- [ ] Closing questions follow the format specified in Step 6's Collaborative-mode validation loop.
 - [ ] Custom patterns are validated against skill constraints before proceeding.
+- [ ] The custom-patterns validation rule appears in both Step 6.1 and this Validation list.
+- [ ] The Collaborative sub-workflow's Step 7 asks the user before overwriting existing tickets; the Self-Contained sub-workflow's Step 7 retains the automatic semantic-match behavior.
 - [ ] Every ticket has a Recommended Workflow section with at least 1 step.
 - [ ] Each workflow step has all four elements: (1) verb-phrase title, (2) Where (file paths or N/A), (3) bulleted actions, (4) Verify (verification check or N/A).
 - [ ] Workflow steps respect the 3-4 hour sizing rule for the overall ticket.
