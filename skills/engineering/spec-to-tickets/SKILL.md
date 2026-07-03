@@ -22,7 +22,7 @@ The ticket body schema is loaded on demand from `references/ticket-template.md`;
 
 ## When Not to Use
 
-- The spec is incomplete, vague, or unresolved (use `grilling` to resolve, or `domain-grilling` if DDD alignment is needed, or `to-prd` to capture)
+- The spec is incomplete, vague, or unresolved (use `grilling` to resolve, or `domain-grilling` if DDD alignment is needed, or check whether the user has access to a skill that creates specifications or requirements documents; recommend it if available, otherwise name no specific skill)
 - A different granularity is needed (epics, milestones, tasks)
 - The goal is direct implementation rather than decomposition
 - The source material is a single trivial change that does not benefit from decomposition
@@ -71,7 +71,7 @@ The input must contain all four of -
 
 **Decision Ledger pairing.** If a Decision Ledger exists at `docs/decisions/DECISIONS-<repo>-<feature>.md` (produced by `domain-grilling` and/or `code-implementation-grilling`), read it alongside the spec. The ledger is the authoritative source for resolved functional (`Dxxx`) and technical (`Txxx`) decisions. Every ticket's acceptance criteria and constraints must cite a `Dxxx` or `Txxx` record using `filename#<Dxxx|Txxx>` format — paraphrase the ledger record, never the spec's summary of it. A spec that ships without a ledger, or a ledger whose `Dxxx`/`Txxx` records are not all covered by at least one ticket, is a coverage gap to surface (not to silently fix).
 
-Print the criteria status (one line per criterion: met / missing) as part of the Step 3 output and list which `Dxxx`/`Txxx` records the proposed tickets would cover. Proceed to Step 4 if all four are met; the user can interject at any point in the conversation. If any are missing, abort and report which criteria are unsatisfied. Suggest using `grilling` (or `domain-grilling` if DDD alignment is needed) or `to-prd` to fill the gaps.
+Print the criteria status (one line per criterion: met / missing) as part of the Step 3 output and list which `Dxxx`/`Txxx` records the proposed tickets would cover. Proceed to Step 4 if all four are met; the user can interject at any point in the conversation. If any are missing, abort and report which criteria are unsatisfied. Suggest using `grilling` (or `domain-grilling` if DDD alignment is needed) or check whether the user has access to a skill that creates specifications or requirements documents; recommend it if available, otherwise name no specific skill.
 
 #### Step 4 - Codebase Exploration
 
@@ -295,7 +295,7 @@ The input must contain all four of -
 
 **Decision Ledger pairing.** If a Decision Ledger exists at `docs/decisions/DECISIONS-<repo>-<feature>.md` (produced by `domain-grilling` and/or `code-implementation-grilling`), read it alongside the spec. The ledger is the authoritative source for resolved functional (`Dxxx`) and technical (`Txxx`) decisions. Every ticket's acceptance criteria and constraints must cite a `Dxxx` or `Txxx` record using `filename#<Dxxx|Txxx>` format — paraphrase the ledger record, never the spec's summary of it. A spec that ships without a ledger, or a ledger whose `Dxxx`/`Txxx` records are not all covered by at least one ticket, is a coverage gap to surface (not to silently fix).
 
-Print the criteria status (one line per criterion: met / missing) as part of the Step 3 output and list which `Dxxx`/`Txxx` records the proposed tickets would cover. Proceed to Step 4 if all four are met. If any are missing, abort and report which criteria are unsatisfied. Suggest using `grilling` (or `domain-grilling` if DDD alignment is needed) or `to-prd` to fill the gaps.
+Print the criteria status (one line per criterion: met / missing) as part of the Step 3 output and list which `Dxxx`/`Txxx` records the proposed tickets would cover. Proceed to Step 4 if all four are met. If any are missing, abort and report which criteria are unsatisfied. Suggest using `grilling` (or `domain-grilling` if DDD alignment is needed) or check whether the user has access to a skill that creates specifications or requirements documents; recommend it if available, otherwise name no specific skill.
 
 #### Step 4 - Codebase Exploration
 
@@ -501,5 +501,5 @@ The summary should be scannable - use clear structure (headings, tables, lists) 
 - [ ] Workflow derivation follows the priority order spec structure → codebase context → standard patterns; the priority order is the tie-breaker when the three inputs conflict, and the agent surfaces the conflict in plain English ("inputs X and Y conflicted; chose Y because [reason]") with a one-line inline override note permitted.
 - [ ] Workflow steps respect dependencies between steps (a step producing an artifact consumed by another comes first). Reordering by the implementer is permitted.
 - [ ] Per-step Verify lines are micro-verifications distinct from per-ticket Acceptance criteria (macro-verifications).
-- [ ] If the skill aborted in Step 3, the abort reason and the suggested next skill (`grilling` / `domain-grilling` / `to-prd`) are surfaced in the output.
+- [ ] If the skill aborted in Step 3, the abort reason and the suggested next skill (`grilling` / `domain-grilling`) are surfaced in the output.
 - [ ] The Workflow section is structured into `### Collaborative Workflow` and `### Self-Contained Workflow` sub-sections. Shared steps (1, 2, 3, 4, 8, 10) are duplicated with identical text in both sub-workflows. Divergent steps (5, 6.2, 7, 9) appear in both sub-workflows with the correct mode-specific content.
