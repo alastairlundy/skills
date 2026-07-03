@@ -195,7 +195,7 @@ Apply the ticket template below to each approved ticket.
 
 For the ticket body schema, see [ticket-template.md](./references/ticket-template.md). Load it before generating any ticket.
 
-**Parent field values by input type** -
+**Parent field values by input type** - the 1-3 sentence summary is required only for the conversation-context input type. For issue-tracker-reference and file-path input types, the issue number or relative file path is sufficient.
 - Issue tracker reference - the issue number or URL (e.g., `#123`)
 - File path - the relative file path (e.g., `docs/prds/feature-x.md`)
 - Conversation context - the date and a 1-3 sentence summary sufficient for a reader who was not part of the original conversation (e.g., `Conversation context (2026-06-07) - Implementing user authentication with OAuth2 and session management. Agreed on PKCE flow with refresh token rotation. Out of scope - social login providers.`)
@@ -205,6 +205,8 @@ For the ticket body schema, see [ticket-template.md](./references/ticket-templat
 - Include only ADRs that constrain this ticket's implementation.
 - Include only domain terms that define boundaries or clarify ambiguity for this ticket. Do not reproduce the glossary.
 - Include only Decision Ledger records (`Dxxx`/`Txxx`) whose `Constraints` or `Normalized Requirement` this ticket must honour, cited as `filename#<Dxxx|Txxx>`. Do not reproduce the ledger.
+
+**YAML-breaking characters** - The `description` and other prose-bearing frontmatter fields shall contain no YAML-breaking characters (colons, unquoted special characters). To avoid them, use a hyphen or rewrite the phrase. For example, replace "Description: implements login" with "Description - implements login". This is a write-time rule applied during ticket generation in Step 8.
 
 #### Step 9 - Ticket Publishing
 
@@ -409,7 +411,7 @@ Apply the ticket template below to each approved ticket.
 
 For the ticket body schema, see [ticket-template.md](./references/ticket-template.md). Load it before generating any ticket.
 
-**Parent field values by input type** -
+**Parent field values by input type** - the 1-3 sentence summary is required only for the conversation-context input type. For issue-tracker-reference and file-path input types, the issue number or relative file path is sufficient.
 - Issue tracker reference - the issue number or URL (e.g., `#123`)
 - File path - the relative file path (e.g., `docs/prds/feature-x.md`)
 - Conversation context - the date and a 1-3 sentence summary sufficient for a reader who was not part of the original conversation (e.g., `Conversation context (2026-06-07) - Implementing user authentication with OAuth2 and session management. Agreed on PKCE flow with refresh token rotation. Out of scope - social login providers.`)
@@ -419,6 +421,8 @@ For the ticket body schema, see [ticket-template.md](./references/ticket-templat
 - Include only ADRs that constrain this ticket's implementation.
 - Include only domain terms that define boundaries or clarify ambiguity for this ticket. Do not reproduce the glossary.
 - Include only Decision Ledger records (`Dxxx`/`Txxx`) whose `Constraints` or `Normalized Requirement` this ticket must honour, cited as `filename#<Dxxx|Txxx>`. Do not reproduce the ledger.
+
+**YAML-breaking characters** - The `description` and other prose-bearing frontmatter fields shall contain no YAML-breaking characters (colons, unquoted special characters). To avoid them, use a hyphen or rewrite the phrase. For example, replace "Description: implements login" with "Description - implements login". This is a write-time rule applied during ticket generation in Step 8.
 
 #### Step 9 - Ticket Publishing
 
@@ -486,7 +490,7 @@ The summary should be scannable - use clear structure (headings, tables, lists) 
 - [ ] Tickets were published in dependency order (blockers first) when targeting an issue tracker.
 - [ ] The summary report includes stats, ticket overview table, dependency graph, and next steps.
 - [ ] Every ticket's `Blocked by` field uses issue numbers for issue-tracker targets and basenames for local markdown.
-- [ ] The ticket's `description:` frontmatter field contains no YAML-breaking characters (colons, unquoted special chars).
+- [ ] The YAML-breaking-characters check is applied at write time per Step 8's rule, not as a post-hoc validation.
 - [ ] Ticket count is at least 2 (with no exception).
 - [ ] Each ticket represents at most 3-4 hours of focused work.
 - [ ] If ticket count exceeds 15, the decomposition pattern was reviewed for suitability.
@@ -508,4 +512,9 @@ The summary should be scannable - use clear structure (headings, tables, lists) 
 - [ ] The no-ledger branch in Step 3 routes per the DDD-alignment rule (domain-grilling if DDD-critical, otherwise grilling).
 - [ ] The first use of `ledger record` in the skill carries its inline definition (a `Dxxx` or `Txxx` entry in a Decision Ledger).
 - [ ] Step 4 explicitly informs the user about missing conventions (CONTEXT.md, docs/adr/, docs/decisions/) rather than silently falling through.
+- [ ] The parent-field summary rule is explicit: the 1-3 sentence summary is required only for the conversation-context input type.
+- [ ] The YAML-breaking-characters check is a write-time rule in Step 8 with explicit escape guidance.
+- [ ] The abbreviation rule for "User Stories" is universal and unconditional (no scoping or opt-in).
+- [ ] The context pointer rules are reactive (do not reproduce the glossary, do not reproduce the ledger).
+- [ ] Step 8 workflow-generation rules are inline (not extracted to a reference file).
 - [ ] The Workflow section is structured into `### Collaborative Workflow` and `### Self-Contained Workflow` sub-sections. Shared steps (1, 2, 3, 4, 8, 10) are duplicated with identical text in both sub-workflows. Divergent steps (5, 6.2, 7, 9) appear in both sub-workflows with the correct mode-specific content.
