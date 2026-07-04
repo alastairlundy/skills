@@ -209,7 +209,7 @@ For the ticket body schema, see [ticket-template.md](./references/ticket-templat
 
 ### Step 9 - Ticket Publishing
 
-> Mode banner: the issue-tracker branch is the only retained divergence in this step. The local-markdown branch is unified across both modes (D013).
+> Mode banner: the issue-tracker branch is the only retained divergence in this step. The local-markdown branch is unified across both modes (see `DECISIONS-repo-feature.md#D013`).
 
 Publish the generated tickets to the chosen target.
 
