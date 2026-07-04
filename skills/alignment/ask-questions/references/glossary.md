@@ -9,7 +9,7 @@ Reference for the terms the ask-questions workflow uses. Load on demand from the
 | `description` | The option''s short discriminative explanation, shown beneath the label. |
 | `context prose` | The LLM''s message text *before* the tool call, carrying the longer setup. |
 | `call` | A single invocation of the `ask_question` tool. |
-| `trigger` | The Gate 1 inverted-trigger test: is there a real question whose answer would change the LLM''s next action? |
+| `action-changing test` | The Gate 1 test (previously called the inverted-trigger test): is there a real question whose answer would change the LLM''s next action? See also: Real Decision, Realistic alternative. |
 | `Real Decision` | The Gate 1.2 precondition: the user has a narrowed space of 2-4 options they would actually pick. |
 | `Realistic alternative` | An option the user, given their stated context, would actually pick. The discriminator that separates a real decision from an over-asking trap. |
 | `fit test` | The Gate 2 test: does the question fit the tool after adaptations? |
