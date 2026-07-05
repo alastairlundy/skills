@@ -51,7 +51,7 @@ to `CONTEXT.md`).
   defer to `code-implementation-grilling`.
 - For trivial code changes or bug fixes where the domain model is not
   in question.
-- For rapid prototypes where formal DDD alignment is not required.
+- For rapid prototypes that are known to be throwaway (spike code, demo code, time-boxed experiments).
 
 ## Workflow
 
