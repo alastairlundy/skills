@@ -113,15 +113,14 @@ pass, declare: "We have reached a shared understanding."
 
 ### Step 6: Exit gate and exit paths
 
-Before listing exits, ask: "Is this a code/technical problem — a
-problem whose resolution requires a programming/code related or
-technical solution?" with options `Yes` / `No` / `I'm not sure`. Skip
-the question if the problem type is unambiguous from context.
+Before listing exits, ask: "Will resolving this require writing
+code?" with options `Yes` / `No` / `I'm not sure`. Skip the
+question if the problem type is unambiguous from context.
 
 - **`Yes`** — lead with the `code-implementation-grilling` exit, then
   present the other non-technical exits.
 - **`No`** — skip the `code-implementation-grilling` exit; lead with
-  "create a plan/PRD document" as the recommended path.
+  "document the decision" as the recommended path.
 - **`I'm not sure`** — present all available exits (including
   `code-implementation-grilling`) without a recommendation; do not
   ask a follow-up.
