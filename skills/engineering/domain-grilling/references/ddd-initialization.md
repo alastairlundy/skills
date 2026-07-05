@@ -8,14 +8,20 @@ and infrastructure checks below to have been completed.
 
 Upon activation:
 
-1. **Domain state summary.** Scan the repository for `CONTEXT.md`,
-   `docs/adr/`, and any existing Decision Ledger files at
-   `docs/decisions/DECISIONS-*.md`. Summarize the current known domain
-   state to the user *before* asking the first question. This
-   establishes the baseline and prevents redundant questioning.
-2. **Infrastructure check.** If `CONTEXT.md` is missing, inform the
-   user and suggest the `setup-matt-pocock-skills` skill to establish
-   the glossary and ADR infrastructure. If `docs/decisions/` is
+1. **Domain state summary.** Check `CONTEXT.md` at the repo root,
+   then scan for `docs/adr/` and any existing Decision Ledger files at
+   `docs/decisions/DECISIONS-*.md`. Report the `CONTEXT.md` state:
+   - **Missing** — no glossary file found; will be created lazily on
+     first term. Suggest the `setup-matt-pocock-skills` skill to
+     establish the glossary and ADR infrastructure.
+   - **Empty** — `CONTEXT.md` exists but is empty or whitespace-only;
+     will be populated as terms are resolved.
+   - **Present with content** — read and summarize the existing terms
+     to the user.
+   Summarize the current known domain state to the user *before* asking
+   the first question to establish the baseline and prevent redundant
+   questioning.
+2. **Infrastructure check.** If `docs/decisions/` is
    missing, note that the Decision Ledger directory will be created
    lazily on the first resolved branch (per `grilling/references/decision-ledger.md`).
 3. **Ledger path confirmation.** When opening Branch A, derive the
