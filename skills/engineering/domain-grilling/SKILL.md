@@ -148,13 +148,13 @@ Every exit that drives downstream implementation work must include
 the Decision Ledger path so downstream skills can cite records as
 `filename#Dxxx`:
 
-| Path | Drives downstream work? | Ledger action |
-|------|------------------------|---------------|
-| 1 — Create a plan/PRD document | Yes | Include ledger path |
-| 2 — Hand off to `code-implementation-grilling` | Yes | Include ledger path |
-| 3 — Break into tickets (`spec-to-tickets`) | Yes | Include ledger path |
-| 4 — Handoff to another agent | Yes | Include ledger path |
-| 5 — Custom Save | No | — |
+| Path | Drives downstream work? | Ledger path required? |
+|------|------------------------|------------------------|
+| 1 — Create a plan/PRD document | Yes | Yes |
+| 2 — Hand off to `code-implementation-grilling` | Yes | Yes |
+| 3 — Break into tickets (`spec-to-tickets`) | Yes | Yes |
+| 4 — Handoff to another agent | Yes | Yes |
+| 5 — Custom Save | No | No |
 
 ## Validation
 
