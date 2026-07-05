@@ -104,6 +104,8 @@ Use the DDD-specific techniques in
 
 ### Step 4: Term Resolution
 
+Term Resolution does not require a running checklist because it is a side effect of branch resolution, not a primary loop.
+
 When a resolved branch introduces a new glossary term, follow
 `references/term-resolution.md`:
 

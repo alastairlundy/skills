@@ -227,8 +227,9 @@ Interface, Contract, DTO, and Model definitions now?"*
   3. **Visible running checklist**: after introducing the type,
      show a single-line running checklist of types already
      introduced and types still to come (for example: *"Introduced:
-     A, B, C — remaining: D, E, F"*). The checklist is mandatory,
-     not optional.
+      A, B, C — remaining: D, E, F"*). The checklist is mandatory
+      because the Type Loop is a dedicated phase whose entire purpose
+      is sequential introduction.
   4. **Termination**: ask *"Any more, or ready to move on?"* The
      user decides whether to introduce the next type, expand a
      previously introduced family, or close the loop. The agent
