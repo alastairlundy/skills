@@ -4,8 +4,9 @@ description: >-
   Relentless Socratic interviewing focused on Domain-Driven Design (DDD)
   alignment — bounded contexts, ubiquitous language, glossary, terminology.
   Use when the user has a vague idea and conceptual/terminology alignment
-  is the goal. Defer to `grilling` for non-DDD decisions, to
-  `code-implementation-grilling` for code/tech with a spec.
+  is the goal. Do not use for non-DDD decisions — use `grilling`
+  instead. Do not use for code/technical implementation choices — use
+  `code-implementation-grilling` instead.
 license: MIT
 ---
 

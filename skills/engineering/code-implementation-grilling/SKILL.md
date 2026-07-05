@@ -3,8 +3,9 @@ name: code-implementation-grilling
 description: >-
   Relentless Socratic interviewing on technical implementation choices —
   language, framework, dependencies, project structure — once a spec/PRD
-  exists. Use when implementation is the question. Defer to `grilling`
-  for non-code/tech decisions, to `domain-grilling` for terminology.
+  exists. Use when implementation is the question. Do not use for
+  non-code/tech decisions — use `grilling` instead. Do not use for domain
+  modeling or terminology alignment — use `domain-grilling` instead.
 license: MIT
 ---
 
