@@ -195,8 +195,7 @@ transcript:
       written to `CONTEXT.md`.
 - [ ] `CONTEXT.md` was created lazily on the first write if it did
       not already exist.
-- [ ] Every glossary term is in `CONTEXT.md` with the same
-      definition as in the Decision Ledger record.
+- [ ] Term Store Consistency verified (per `references/term-resolution.md` § Term Store Consistency).
 - [ ] Convergence was declared only when all four checks passed.
 - [ ] No diverge mode occurred (no paraphrasing, no skipped
       branches, no bundled options, no accepted contradictions
