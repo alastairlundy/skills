@@ -89,8 +89,7 @@ Follow `references/ddd-initialization.md` to:
 
 Walk the design tree branch-by-branch using the locked question format
 and the options/recommendation format from
-`../grilling/references/*`. After each resolution, append a `Dxxx`
-record to the Decision Ledger in real time.
+`../grilling/references/*`. On first use of a `Dxxx` record in this skill, load the record format from `../grilling/references/decision-ledger.md` § "Per-branch record template". After each resolution, append a `Dxxx` record to the Decision Ledger in real time.
 
 Use the DDD-specific techniques in
 `references/ddd-initialization.md` § "Session Guidelines" to:
