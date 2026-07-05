@@ -86,13 +86,21 @@ record to the Decision Ledger in real time.
 Use the DDD-specific techniques in
 `references/ddd-initialization.md` § "Session Guidelines" to:
 
-- Challenge against the glossary when the user uses a term that
-  conflicts with `CONTEXT.md`.
-- Sharpen fuzzy language when the user uses an overloaded term.
-- Discuss concrete scenarios that stress-test domain relationships.
-- Cross-reference with code if the user states how something works.
-- Offer ADRs sparingly, only when all three criteria in
-  `references/ADR-FORMAT.md` hold.
+- When the user uses a term that conflicts with `CONTEXT.md`, load and
+  apply the procedure in
+  `references/ddd-initialization.md` §
+  "Challenge against the glossary".
+- When the user uses an overloaded term, load and apply the procedure
+  in `references/ddd-initialization.md` § "Sharpen fuzzy language".
+- When the user discusses concrete scenarios that stress-test domain
+  relationships, load and apply the procedure in
+  `references/ddd-initialization.md` § "Discuss concrete scenarios".
+- When the user states how something works, load and apply the
+  procedure in `references/ddd-initialization.md` §
+  "Cross-reference with code".
+- When all three criteria in `references/ADR-FORMAT.md` hold, load and
+  apply the procedure in
+  `references/ddd-initialization.md` § "Offer ADRs sparingly".
 
 ### Step 4: Term Resolution
 
