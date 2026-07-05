@@ -26,13 +26,22 @@ to `CONTEXT.md`).
 
 ## When to Use
 
-- When the user has a vague idea and conceptual/terminology alignment
-  is the goal (the "what" and the shared language, not the "how").
-- When domain modeling is the explicit focus — bounded contexts,
-  ubiquitous language, glossary building, terminology disambiguation.
+### Triggers
+
+- When the user has a vague idea and needs conceptual/terminology
+  alignment — clarifying the "what" and the shared language, not the
+  "how".
+- When the user explicitly wants domain-modeling work — establishing
+  bounded contexts, ubiquitous language, glossary terms, or
+  terminology boundaries.
 - When starting a new feature or architectural change that requires
-  deep conceptual alignment.
+  deep conceptual alignment before implementation can proceed.
 - When user input would clarify the request, invoke ask-questions
+
+### Examples
+
+- Bounded contexts, ubiquitous language, glossary building,
+  terminology disambiguation.
 
 ## When Not to Use
 
