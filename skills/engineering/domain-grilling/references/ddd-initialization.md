@@ -8,14 +8,20 @@ and infrastructure checks below to have been completed.
 
 Upon activation:
 
-1. **Domain state summary.** Scan the repository for `CONTEXT.md`,
-   `docs/adr/`, and any existing Decision Ledger files at
-   `docs/decisions/DECISIONS-*.md`. Summarize the current known domain
-   state to the user *before* asking the first question. This
-   establishes the baseline and prevents redundant questioning.
-2. **Infrastructure check.** If `CONTEXT.md` is missing, inform the
-   user and suggest the `setup-matt-pocock-skills` skill to establish
-   the glossary and ADR infrastructure. If `docs/decisions/` is
+1. **Domain state summary.** Check `CONTEXT.md` at the repo root,
+   then scan for `docs/adr/` and any existing Decision Ledger files at
+   `docs/decisions/DECISIONS-*.md`. Report the `CONTEXT.md` state:
+   - **Missing** — no glossary file found; will be created lazily on
+     first term. Suggest the `setup-matt-pocock-skills` skill to
+     establish the glossary and ADR infrastructure.
+   - **Empty** — `CONTEXT.md` exists but is empty or whitespace-only;
+     will be populated as terms are resolved.
+   - **Present with content** — read and summarize the existing terms
+     to the user.
+   Summarize the current known domain state to the user *before* asking
+   the first question to establish the baseline and prevent redundant
+   questioning.
+2. **Infrastructure check.** If `docs/decisions/` is
    missing, note that the Decision Ledger directory will be created
    lazily on the first resolved branch (per `grilling/references/decision-ledger.md`).
 3. **Ledger path confirmation.** When opening Branch A, derive the
@@ -92,14 +98,33 @@ meanings as options with their implications:
 
 ### Discuss concrete scenarios
 
-Stress-test domain relationships with specific scenarios. Invent edge
-cases that force the user to be precise about boundaries between
-concepts.
+Test the boundaries between concepts by inventing edge cases that force
+the user to be precise.
+
+For example, if the user defines `Customer` and `Address` as separate
+concepts, ask: when a customer moves, is the address change applied
+through the `Customer` aggregate root (preserving consistency with other
+customer state), or directly to the `Address` aggregate (treating it as a
+separate consistency boundary)? The scenario forces a choice about
+aggregate boundaries and the consistency-vs-autonomy trade-off.
 
 ### Cross-reference with code
 
 If the user states how something works, verify it against the code.
 Surface any contradictions immediately.
+
+The agent must determine at the start of the session whether the
+session is about existing code or a non-code context, then apply
+the corresponding rule:
+
+- **(a)** If the session is about ideas derived from existing code,
+  the code MUST be in scope; without it, the agent shall surface
+  the absence to the user and abort the cross-reference step.
+- **(b)** If the session is a non-code context (greenfield design,
+  abstract DDD discussion), and the code is not in scope for any
+  other reason, skip the code cross-reference and surface the
+  limitation to the user. Note in the Decision Ledger that the
+  cross-reference was skipped.
 
 ### Offer ADRs sparingly
 

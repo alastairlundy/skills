@@ -3,8 +3,9 @@ name: code-implementation-grilling
 description: >-
   Relentless Socratic interviewing on technical implementation choices —
   language, framework, dependencies, project structure — once a spec/PRD
-  exists. Use when implementation is the question. Defer to `grilling`
-  for non-code/tech decisions, to `domain-grilling` for terminology.
+  exists. Use when implementation is the question. Do not use for
+  non-code/tech decisions — use `grilling` instead. Do not use for domain
+  modeling or terminology alignment — use `domain-grilling` instead.
 license: MIT
 ---
 
@@ -37,7 +38,7 @@ Output handoff templates.
   defer to `grilling`.
 - For vague ideas, domain modeling, or terminology alignment —
   defer to `domain-grilling`.
-- For creating a spec or PRD itself — defer to `to-prd` or
+- For creating a spec or PRD document — defer to
   `domain-grilling`.
 
 ## Workflow
@@ -226,8 +227,9 @@ Interface, Contract, DTO, and Model definitions now?"*
   3. **Visible running checklist**: after introducing the type,
      show a single-line running checklist of types already
      introduced and types still to come (for example: *"Introduced:
-     A, B, C — remaining: D, E, F"*). The checklist is mandatory,
-     not optional.
+      A, B, C — remaining: D, E, F"*). The checklist is mandatory
+      because the Type Loop is a dedicated phase whose entire purpose
+      is sequential introduction.
   4. **Termination**: ask *"Any more, or ready to move on?"* The
      user decides whether to introduce the next type, expand a
      previously introduced family, or close the loop. The agent
@@ -367,11 +369,11 @@ not add any other prose around the template.
 > and constraints must cite a `Dxxx` or `Txxx` record using
 > `filename#<Dxxx|Txxx>` format.
 
-**Template: issue tracker (`to-issues`)**
+**Template: issue tracker (`spec-to-tickets`)**
 
-> Run the `to-issues` skill with the spec at `<spec-path>`, the
-> blueprint at `<blueprint-path>`, and the Decision Ledger at
-> `<ledger-path>` as context. Every issue's acceptance criteria
+> Run the `spec-to-tickets` skill with the spec at `<spec-path>`,
+> the blueprint at `<blueprint-path>`, and the Decision Ledger at
+> `<ledger-path>` as context. Every ticket's acceptance criteria
 > and constraints must cite a `Dxxx` or `Txxx` record using
 > `filename#<Dxxx|Txxx>` format.
 
@@ -394,13 +396,13 @@ not add any other prose around the template.
 > ticket's acceptance criteria and constraints must cite a
 > `Dxxx` or `Txxx` record using `filename#<Dxxx|Txxx>` format.
 
-**Template: issue tracker (`to-issues`)**
+**Template: issue tracker (`spec-to-tickets`)**
 
-> Run the `to-issues` skill with the spec at `<spec-path>` (which
-> now includes the Technical Implementation section) and the
-> Decision Ledger at `<ledger-path>` as context. Every issue's
-> acceptance criteria and constraints must cite a `Dxxx` or
-> `Txxx` record using `filename#<Dxxx|Txxx>` format.
+> Run the `spec-to-tickets` skill with the spec at `<spec-path>`
+> (which now includes the Technical Implementation section) and
+> the Decision Ledger at `<ledger-path>` as context. Every
+> ticket's acceptance criteria and constraints must cite a `Dxxx`
+> or `Txxx` record using `filename#<Dxxx|Txxx>` format.
 
 **Template: manual handoff**
 
