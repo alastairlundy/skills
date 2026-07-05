@@ -113,6 +113,19 @@ aggregate boundaries and the consistency-vs-autonomy trade-off.
 If the user states how something works, verify it against the code.
 Surface any contradictions immediately.
 
+The agent must determine at the start of the session whether the
+session is about existing code or a non-code context, then apply
+the corresponding rule:
+
+- **(a)** If the session is about ideas derived from existing code,
+  the code MUST be in scope; without it, the agent shall surface
+  the absence to the user and abort the cross-reference step.
+- **(b)** If the session is a non-code context (greenfield design,
+  abstract DDD discussion), and the code is not in scope for any
+  other reason, skip the code cross-reference and surface the
+  limitation to the user. Note in the Decision Ledger that the
+  cross-reference was skipped.
+
 ### Offer ADRs sparingly
 
 Only offer to create an ADR when all three criteria in
