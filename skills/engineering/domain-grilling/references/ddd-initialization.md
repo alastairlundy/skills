@@ -98,9 +98,15 @@ meanings as options with their implications:
 
 ### Discuss concrete scenarios
 
-Stress-test domain relationships with specific scenarios. Invent edge
-cases that force the user to be precise about boundaries between
-concepts.
+Test the boundaries between concepts by inventing edge cases that force
+the user to be precise.
+
+For example, if the user defines `Customer` and `Address` as separate
+concepts, ask: when a customer moves, is the address change applied
+through the `Customer` aggregate root (preserving consistency with other
+customer state), or directly to the `Address` aggregate (treating it as a
+separate consistency boundary)? The scenario forces a choice about
+aggregate boundaries and the consistency-vs-autonomy trade-off.
 
 ### Cross-reference with code
 

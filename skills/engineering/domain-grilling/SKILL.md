@@ -101,8 +101,8 @@ Use the DDD-specific techniques in
   "Challenge against the glossary".
 - When the user uses an overloaded term, load and apply the procedure
   in `references/ddd-initialization.md` § "Sharpen fuzzy language".
-- When the user discusses concrete scenarios that stress-test domain
-  relationships, load and apply the procedure in
+- When the user discusses concrete scenarios that test boundaries between
+  concepts, load and apply the procedure in
   `references/ddd-initialization.md` § "Discuss concrete scenarios".
 - When the user states how something works, load and apply the
   procedure in `references/ddd-initialization.md` §
