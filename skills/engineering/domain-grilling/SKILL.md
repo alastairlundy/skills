@@ -121,7 +121,7 @@ the question if the problem type is unambiguous from context.
 - **`Yes`** — lead with the `code-implementation-grilling` exit, then
   present the other non-technical exits.
 - **`No`** — skip the `code-implementation-grilling` exit; lead with
-  `to-prd` as the recommended path.
+  "create a plan/PRD document" as the recommended path.
 - **`I'm not sure`** — present all available exits (including
   `code-implementation-grilling`) without a recommendation; do not
   ask a follow-up.
@@ -132,9 +132,9 @@ the Decision Ledger path so downstream skills can cite records as
 
 | Path | Drives downstream work? | Ledger action |
 |------|------------------------|---------------|
-| 1 — Create a plan/PRD (`to-prd`) | Yes | Include ledger path |
+| 1 — Create a plan/PRD document | Yes | Include ledger path |
 | 2 — Hand off to `code-implementation-grilling` | Yes | Include ledger path |
-| 3 — Break into tickets (`spec-to-tickets` / `to-issues`) | Yes | Include ledger path |
+| 3 — Break into tickets (`spec-to-tickets`) | Yes | Include ledger path |
 | 4 — Handoff to another agent | Yes | Include ledger path |
 | 5 — Custom Save | No | — |
 

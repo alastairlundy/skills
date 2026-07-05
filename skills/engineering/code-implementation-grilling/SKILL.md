@@ -38,7 +38,7 @@ Output handoff templates.
   defer to `grilling`.
 - For vague ideas, domain modeling, or terminology alignment —
   defer to `domain-grilling`.
-- For creating a spec or PRD itself — defer to `to-prd` or
+- For creating a spec or PRD document — defer to
   `domain-grilling`.
 
 ## Workflow
@@ -368,11 +368,11 @@ not add any other prose around the template.
 > and constraints must cite a `Dxxx` or `Txxx` record using
 > `filename#<Dxxx|Txxx>` format.
 
-**Template: issue tracker (`to-issues`)**
+**Template: issue tracker (`spec-to-tickets`)**
 
-> Run the `to-issues` skill with the spec at `<spec-path>`, the
-> blueprint at `<blueprint-path>`, and the Decision Ledger at
-> `<ledger-path>` as context. Every issue's acceptance criteria
+> Run the `spec-to-tickets` skill with the spec at `<spec-path>`,
+> the blueprint at `<blueprint-path>`, and the Decision Ledger at
+> `<ledger-path>` as context. Every ticket's acceptance criteria
 > and constraints must cite a `Dxxx` or `Txxx` record using
 > `filename#<Dxxx|Txxx>` format.
 
@@ -395,13 +395,13 @@ not add any other prose around the template.
 > ticket's acceptance criteria and constraints must cite a
 > `Dxxx` or `Txxx` record using `filename#<Dxxx|Txxx>` format.
 
-**Template: issue tracker (`to-issues`)**
+**Template: issue tracker (`spec-to-tickets`)**
 
-> Run the `to-issues` skill with the spec at `<spec-path>` (which
-> now includes the Technical Implementation section) and the
-> Decision Ledger at `<ledger-path>` as context. Every issue's
-> acceptance criteria and constraints must cite a `Dxxx` or
-> `Txxx` record using `filename#<Dxxx|Txxx>` format.
+> Run the `spec-to-tickets` skill with the spec at `<spec-path>`
+> (which now includes the Technical Implementation section) and
+> the Decision Ledger at `<ledger-path>` as context. Every
+> ticket's acceptance criteria and constraints must cite a `Dxxx`
+> or `Txxx` record using `filename#<Dxxx|Txxx>` format.
 
 **Template: manual handoff**
 

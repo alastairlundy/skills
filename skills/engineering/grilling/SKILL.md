@@ -209,7 +209,7 @@ the generic behaviour described in the body of each exit.
 | Document the decision   | `to-prd` (decision memo / PRD tool)               | Local memo file in `docs/decisions/`             |
 | Specialize to DDD       | `domain-grilling` skill                           | Stay in grilling; do not spawn specialization    |
 | Specialize to code      | `code-implementation-grilling` skill              | Stay in grilling; do not spawn specialization    |
-| Decompose               | `spec-to-tickets` (tree) or `to-issues` (flat)    | Hand-roll a checklist file with ledger citations |
+| Decompose               | `spec-to-tickets`                                  | Hand-roll a checklist file with ledger citations |
 | Handoff to another agent| User-specified target agent                       | Save the ledger path; user passes it manually    |
 | Custom save             | User-specified destination                        | n/a — by definition user-supplied                |
 
