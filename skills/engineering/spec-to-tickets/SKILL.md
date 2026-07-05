@@ -354,37 +354,7 @@ When the spec explicitly enumerates components or modules, use them as the basis
 
 Before publishing, detect whether tickets already exist for this source material.
 
-1. **Local markdown** - check if a `tickets/` directory exists at the repo root and contains files with a matching `parent` frontmatter value. Matching rules by input type -
-   - Issue tracker reference - exact issue number or URL match in `parent` field.
-   - File path - exact relative path match in `parent` field.
-   - Conversation context - match on the date prefix (e.g., `Conversation context (2026-06-07)`) rather than the full summary text.
-2. **Issue tracker** - search for open issues whose body contains a matching parent reference, using the same matching rules above.
-
-**Destructive-Operation Safety** - the agent tool/harness permission layer is the safety boundary for destructive ticket operations (overwriting, modifying, or deleting existing tickets). The skill permits overwriting existing tickets when the existing tickets "directly address the concerns" of the tickets being created — a semantic match where the new ticket's goal/scope subsumes the existing ticket's scope. The LLM is told that an unwanted edit may be rejected by tool permission, and that a rejection is the expected response — on a permission rejection the LLM shall create new tickets rather than retry the edit. The user retains final control by rejecting tool permissions for writes that they do not want.
-
-**If existing tickets are found:**
-- **If the spec/PRD is available** - proceed with the normal workflow as if the tickets don't exist. The new tickets will overwrite the existing ones when the semantic-match rule above is satisfied.
-- **If the spec/PRD is NOT available** - read the existing tickets and update them to conform to the skill's template and guidance (goal, what to build, acceptance criteria, context pointers, etc.). Preserve the existing ticket content and structure where it meets the guidance.
-  - **If the existing tickets lack sufficient information to enable meaningful improvements** - gracefully fail. Explain to the user why the update is not possible (insufficient context in existing tickets) and suggest creating or providing the spec/PRD to enable proper decomposition.
-
-**Permission-rejection expectation** - if the tool/harness rejects a write to an existing ticket, the LLM shall treat the rejection as the expected response and create new tickets instead. The LLM shall not interpret a rejection as an error.
-
-#### Step 8 - Ticket Generation
-
-Apply the ticket template below to each approved ticket.
-
-**Abbreviation rule** - Do not use abbreviations in ticket content unless they are defined in CONTEXT.md, the project glossary, or explicitly used by the user/spec. When using an abbreviation that may be unfamiliar, clarify it in brackets on first use (e.g., "SSO (Single Sign-On)"). Never abbreviate "User Stories" to `US` — `US` is overloaded with "United States" in some domains, and is a common abbreviation-collision target across other domains as well.
-
-**Recommended Workflow generation** - As part of ticket creation, generate a Recommended Workflow for each ticket. The workflow is a step-by-step breakdown of how to implement the ticket. Apply these rules:
-- Always present. Minimum 1 step, even for trivial tickets. Recommended range is 2-8 steps; decide granularity based on ticket scope.
-- Derive the workflow from three inputs in priority order: (1) spec structure (what the spec prescribes or implies about sequencing), (2) codebase context (file layout, module boundaries, conventions from exploration), (3) standard patterns (common implementation sequences for this type of work). This priority order is the tie-breaker when the three inputs conflict — surface the conflict in plain English ("inputs X and Y conflicted; chose Y because [reason]") and the agent may override with a one-line inline note ("override: <reason>") in the workflow.
-- Each step has four elements:
-   1. **Verb-phrase title** (e.g., "Add login endpoint")
-   2. **Where** - file paths or `N/A`
-   3. **Bulleted actions** - the concrete actions for the step
-   4. **Verify** - the verification check or `N/A`
-- Per-step `Verify:` lines are micro-verifications. Per-ticket `Acceptance criteria` are macro-verifications. These are distinct levels.
-- Steps can be reordered by the implementer. Respect dependencies between steps.
+> Mode banner: the issue-tracker branch is the only retained divergence in this step. The local-markdown branch is unified across both modes (see `DECISIONS-repo-feature.md#D013`).
 
 For the ticket body schema, see [ticket-template.md](./references/ticket-template.md). Load it before generating any ticket.
 
@@ -458,7 +428,7 @@ The summary should be scannable - use clear structure (headings, tables, lists) 
 - [ ] No abbreviations are used in ticket content or workflow output unless defined in CONTEXT.md/glossary or explicitly used by the user/spec. Unfamiliar abbreviations are clarified in brackets on first use. "User Stories" is never abbreviated to `US` — `US` is overloaded with "United States" in some domains, and is a common abbreviation-collision target across other domains as well.
 - [ ] Decomposition pattern choice includes a recommendation with parenthetical definition, the rejected alternatives with one-line reasons, and a custom-pattern validation gate when the user proposes a non-standard pattern.
 - [ ] Ticket proposal includes decomposition rationale for non-obvious decisions.
-- [ ] Closing questions follow the format specified in Step 6's Collaborative-mode validation loop.
+- [ ] Closing questions use explicit multi-part format (not binary approval). Format: a preamble paragraph, a blank line, the line `A few things to check:`, and three questions on separate lines (no numbering, no inline list markers). The three questions are: (1) "Which tickets, if any, would you combine, split, or rescope?" (2) "Are there any spec requirements not yet covered by a ticket, or any ticket that doesn't trace back to a requirement?" (3) "Are there any tickets where the `Blocked by` chain or Independent/Collaborative classification feels off?" The agent shall wait for an explicit response or a clear pass before proceeding; partial answers are accepted. This format follows the [Multi-part Prose Pattern](../alignment/ask-questions/references/multi-part-pattern.md) from ask-questions; load that reference before constructing the closing prompt.
 - [ ] Custom patterns are validated against skill constraints before proceeding.
 - [ ] The custom-patterns validation rule appears in both Step 6.1 and this Validation list.
 - [ ] The Collaborative sub-workflow's Step 7 asks the user before overwriting existing tickets; the Self-Contained sub-workflow's Step 7 retains the automatic semantic-match behavior.
