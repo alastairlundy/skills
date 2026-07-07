@@ -32,6 +32,8 @@ Every skill must include a Waza Eval Suite in `evals/<skill-name>/`:
 
 Run evaluations with `waza run` and serve the eval UI with `waza serve`.
 
+Eval creation is the job of the downstream evaluator tool (`waza-skill-evaluator` or its successor), not the designing skill itself. See [ADR-0003](docs/adr/0003-skill-architect-does-not-create-evals.md) for the full decision.
+
 ### Attribution
 
 Derived content from upstream MIT sources must include attribution in the skill's documentation or comments.
