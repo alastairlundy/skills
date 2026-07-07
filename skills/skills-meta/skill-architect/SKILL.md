@@ -23,12 +23,18 @@ The Skill Architect is an intellectual design phase for creating agent skills. I
 
 ## Output Mode
 
-**You MUST NOT use any file system modification tools** (e.g., `write`, `edit`, `bash` for file creation) unless the user explicitly requests that the skill be written directly to the file system. By default, this skill operates entirely within the conversation. You must draft the skill's design and present it as markdown text. If the user requests file creation, complete the architectural design first, then load `references/saving-the-skill.md` and follow the save procedure there.
+By default, this skill operates entirely within the conversation. You must draft the skill's design and present it as markdown text — do not save to disk. The user can opt in to saving by indicating any clear intent to save (e.g., "save it now", "yes write it", or equivalent). If the user opts in, complete the architectural design first, then load `references/saving-the-skill.md` and follow the save procedure there.
 
 ## Workflow
 
 ### Step 1: Intent Intake
-Collect the high-level goal, target audience, and any initial sketches or "vague" requirements. Before beginning, announce the active output mode in plain language — e.g. *"Drafting the SKILL content for [purpose XYZ]. File creation is out of scope."* — and, if file creation is out of scope, follow with a one-line prompt — e.g. *"Tell me if you want the skill saved to a SKILL file after the design is resolved."*
+Collect the high-level goal, target audience, and any initial sketches or "vague" requirements. Before beginning, announce the output mode as a two-part opener:
+
+(a) **Opener (recommended, can be rephrased or omitted)**: a sentence announcing the SKILL is being drafted, e.g. *"Drafting the SKILL content for [purpose XYZ]."*
+
+(b) **Scope declaration (mandatory, verbatim)**: the exact sentence *"File creation is in scope."* or *"File creation is out of scope."*
+
+If file creation is out of scope, follow with a one-line prompt — e.g. *"Tell me if you want the skill saved to a SKILL file after the design is resolved."*
 
 The agent must collect four explicit elements:
 - (a) the **goal**,
@@ -94,5 +100,5 @@ To ensure the quality and determinism of the resulting skill, the agent must ver
 - [ ] **Structural Integrity**: Does the skill contain the 5 always-present sections (Frontmatter, When to Use, When Not to Use, Workflow, Validation)? The 2 conditional sections (Output Mode, Transitions) are required only when their trigger condition applies — Output Mode is required if the design has a non-default output behaviour; Transitions is required if the design depends on a downstream tool or skill.
 - [ ] **Determinism Audit**: Every workflow step must (a) start with a verb, (b) name a concrete action, and (c) end with a specific completion signal — for example, a returned value, a check result, a state change, a file produced, or an equivalent named artefact. If a step fails any of (a)–(c), rewrite it.
 - [ ] **Collaborative Alignment**: Was every translation of vague intent explicitly presented to the user, confirmed via the verbatim review question with Accept AS IS / Requires Modifications / Reject, and resolved through the appropriate follow-up flow?
-- [ ] **Constraint Adherence**: Did the agent refrain from using any file-writing tools unless specifically requested by the user to write to the file system? Did the agent announce the output mode at the start of Step 1?
+- [ ] **Constraint Adherence**: Did the agent refrain from saving the design to file by default? If the user indicated intent to save, did the agent follow the save procedure? Did the agent announce the output mode at the start of Step 1?
 - [ ] **Validation Utility**: Does every item in the generated Validation section name a specific pass/fail condition (yes/no) that an agent can determine from the design alone? This check covers per-validation-item verifiability only; per-step verifiability is the scope of the Determinism Audit above.
