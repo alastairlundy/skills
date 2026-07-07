@@ -220,12 +220,20 @@ Interface, Contract, DTO, and Model definitions now?"*
   Introduce exactly one named type per turn. For each type:
   1. Present the type's full signature, fields or properties, and a
      1-2 sentence rationale for why it exists.
-  2. **Family carve-out**: a discriminated union (one abstract type
-     plus its concrete variants) is introduced as a family in the
-     abstract type's turn. Present the variant names as a bulleted
-     list in alphabetical order, then ask: *"Would you like to
-     expand any of these variants? If so, which ones?"*. Do not
-     pre-emptively enumerate every variant's fields and properties.
+   2. **Family carve-out**: If the type system supports closed sum
+      types or sealed class hierarchies, apply the family carve-out;
+      otherwise introduce types individually.
+      - **Carve-out branch**: introduce the abstract type plus its
+        variants as a family in the abstract type's turn. Present the
+        variant names as a bulleted list in alphabetical order, then
+        ask: *"Would you like to expand any of these variants? If so,
+        which ones?"*. Do not pre-emptively enumerate every variant's
+        fields and properties.
+      - **Individual branch**: introduce one type per turn with no
+        carve-out.
+      - The carve-out does not apply to languages whose type systems
+        lack closed sum types or sealed class hierarchies (for
+        example, Go, Haskell, OCaml).
   3. **Visible running checklist**: after introducing the type,
      show a single-line running checklist of types already
      introduced and types still to come (for example: *"Introduced:
@@ -236,12 +244,15 @@ Interface, Contract, DTO, and Model definitions now?"*
      previously introduced family, or close the loop. The agent
      does not decide when the type list is complete.
 
-  The type loop is 1-decision-per-turn regardless of language
-  (works for C#, TypeScript, Rust, Go, and similar). A "decision"
-  in this loop is either (a) the introduction of a new named type,
-  or (b) the expansion of one previously named variant in a
-  discriminated-union family. Do not batch multiple types into a
-  single turn.
+  The type loop is 1-decision-per-turn as the general rule. The
+  family carve-out is an exception that applies only when the target
+  language's type system supports closed sum types or sealed class
+  hierarchies (for example, C#, TypeScript, Rust). Languages without
+  that support (for example, Go, Haskell, OCaml) use the simple
+  type-by-type loop. A "decision" in this loop is either (a) the
+  introduction of a new named type, or (b) the expansion of one
+  previously named variant in a discriminated-union family. Do not
+  batch multiple types into a single turn.
 
 ### Step 6: Output Selection
 
