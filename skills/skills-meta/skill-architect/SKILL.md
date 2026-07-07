@@ -34,11 +34,11 @@ The agent must collect four explicit elements:
 - (a) the **goal**,
 - (b) the **target audience**,
 - (c) the **trigger context** (when this skill should and should not fire),
-- (d) **one concrete example of the desired behaviour**.
+- (d) **one concrete example of the desired behaviour OR a description of the desired output's shape**.
 
 A fifth element, the **value proposition**, shall be inferred by the agent from the goal and audience; the agent shall ask the user about it only if the inference is unclear or ambiguous.
 
-The completion criterion is: all four explicit elements are captured; if the user cannot produce a concrete example, the workflow does not advance to Step 2.
+The completion criterion is: all four explicit elements are captured; the workflow advances only when the user has provided an example or a description of the desired output's shape. An anti-example (what the skill should NOT do) is not a substitute for either.
 
 ### Step 2: Domain Analysis
 Break down the goal into logical "branches" or decision trees. Use a Mermaid diagram to visualize the branches and intended flow when the skill has three or more branches, two or more decision points, or any non-linear flow. For simpler skills, prose decomposition is sufficient. Map the prerequisites and the intended end state. Determine what "success" looks like for this skill.
@@ -75,7 +75,7 @@ Present the final markdown content for the `SKILL.md` file as a single, clean Ma
 - **Compliant**: All mandatory sections are present and formatted correctly.
 - **Aligned**: The final design accurately reflects the validated user intent.
 
-Once verified against the validation criteria, declare: *"We have a deterministic skill design."*
+Once the checks pass, ask the user: *"Have we reached a deterministic design?"* If the user answers "no" or equivalent, re-open the appropriate earlier step — Step 2 for a domain-analysis issue, Step 3 for a translation issue, or Step 4 for a schema or compliance issue — and continue from there.
 
 ## Transitions
 
