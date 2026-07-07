@@ -1,7 +1,7 @@
 ---
 name: skill-architect
 description: >-
-  Guides users through the design, refinement, and deterministic translation of a new agent skill, ensuring the design follows established agent-skill conventions without performing file system writes. Use for creating or designing a new skill. Do not use for making minor tweaks to existing skills.
+  Guides users through the design, refinement, and deterministic translation of a new agent skill, ensuring the design follows established agent-skill conventions without performing file system writes. Use when creating or designing a new skill. Do not use when making minor tweaks to existing skills.
 license: MIT
 ---
 
@@ -36,7 +36,7 @@ The agent must collect four explicit elements:
 - (c) the **trigger context** (when this skill should and should not fire),
 - (d) **one concrete example of the desired behaviour OR a description of the desired output's shape**.
 
-A fifth element, the **value proposition**, shall be inferred by the agent from the goal and audience; the agent shall ask the user about it only if the inference is unclear or ambiguous.
+A fifth element, the **value proposition**, shall be inferred by the agent from the goal and audience. The value prop is a design input that shapes the description, the When to Use scenarios, and the When Not to Use scenarios of the designed skill. The agent shall ask the user about it only if the inference is unclear or ambiguous.
 
 The completion criterion is: all four explicit elements are captured; the workflow advances only when the user has provided an example or a description of the desired output's shape. An anti-example (what the skill should NOT do) is not a substitute for either.
 
@@ -64,6 +64,8 @@ Organize the resolved deterministic logic into the mandatory skill schema. Five 
 - **When Not to Use**: Define clear boundaries to prevent misuse as a bulleted list of out-of-scope branches.
 - **Workflow**: Document the sequence of deterministic steps, each with a completion criterion.
 - **Validation**: Create a comprehensive validation section with checkable items, each a yes/no pass/fail condition.
+
+**Value Proposition Distribution**: Take the value prop collected in Step 1 and weave it across the three output fields — (a) the `description` frontmatter field (a concise "what & why" statement), (b) the When to Use section (scenarios where the skill is valuable), and (c) the When Not to Use section (scenarios where the skill is not). The description may approach the 500-character hard limit (per the Frontmatter character limits above) when the value prop is woven in — this is expected, not a regression.
 
 **Conditional sections (include only when the trigger condition applies):**
 - **Output Mode**: Include when the design has a non-default output behaviour (i.e., the design intentionally deviates from the default of "draft in conversation, optionally save").
