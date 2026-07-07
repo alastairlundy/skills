@@ -3,8 +3,8 @@ name: code-implementation-grilling
 description: >-
   Relentless Socratic interviewing on technical implementation choices —
   language, framework, dependencies, project structure — once a spec/PRD
-  exists. Use when implementation is the question. Defer to `grilling`
-  for non-code/tech decisions, to `domain-grilling` for terminology.
+  exists. Use when implementation is the question. When non-code/tech
+  decisions, use `grilling`. When terminology, use `domain-grilling`.
 license: MIT
 ---
 
@@ -32,13 +32,10 @@ Output handoff templates.
 
 ## When Not to Use
 
-- For general planning or non-code/non-programming projects
-  (e.g., a business plan, an ops runbook, a research project) —
-  defer to `grilling`.
-- For vague ideas, domain modeling, or terminology alignment —
-  defer to `domain-grilling`.
-- For creating a spec or PRD itself — defer to `to-prd` or
-  `domain-grilling`.
+- Do not use when general planning or non-code/non-programming projects
+  (e.g., a business plan, an ops runbook, a research project).
+- Do not use when vague ideas, domain modeling, or terminology alignment.
+- Do not use when creating a spec or PRD itself.
 
 ## Workflow
 
