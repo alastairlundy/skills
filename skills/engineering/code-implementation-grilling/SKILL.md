@@ -118,7 +118,7 @@ record to the ledger using this template:
   turn the user resolves the decision, before asking the next
   question.
 
-### Step 3: Foundation Establishment (Mandatory Checklist)
+### Step 3: Foundation Establishment (items 1-6, mandatory)
 
 Iteratively resolve the following technical foundation points
 one-by-one. For each, present 2-4 natural options with trade-offs
@@ -137,10 +137,16 @@ and a recommendation.
 6. **Project Type**: If not specified in the spec, determine the
    type of project being created (e.g., CLI Console app, Desktop
    GUI program, Programming Library, etc.).
-7. **Foundational Preferences (Optional)**: Ask the user if they
-   wish to clarify any other important foundational information
-   (e.g., preference for async/await programming model, specific CSS
-   frameworks like Bootstrap vs TailwindCSS, etc.).
+
+### Step 3.1: Foundational Preferences (Optional)
+
+Optionally ask the user if they wish to clarify any other important
+foundational information (e.g., async/await programming model, CSS
+framework like Bootstrap vs TailwindCSS, ORM, test framework,
+logging, etc.).
+
+This step is optional — skip it if the user is not interested or
+the spec does not imply any of these preferences.
 
 ### Step 4: Spec-Driven Technical Extraction
 
