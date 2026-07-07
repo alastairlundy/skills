@@ -18,7 +18,7 @@ Every `SKILL.md` must have:
   - `name` field
   - `description` field using YAML block-fold syntax (`>-`)
   - `license: MIT` field
-- Sections: **When to Use**, **When Not to Use**, **Workflow**, **Validation**
+- Sections: **When to Use**, **When Not to Use**, **Workflow**, **Validation** (always present); **Output Mode** and **Transitions** are included conditionally — Output Mode when the skill has a non-default output behaviour, Transitions when the skill depends on a downstream tool or skill
 - "When to Use" section must use a bulleted list format
 - Workflow steps must be deterministic — no vague language ("be smart", "as appropriate")
 - Any skill whose workflow may need user clarification must include a "When to Use" bullet that invokes the `ask-questions` skill

@@ -56,12 +56,18 @@ For each branch identified in Step 2, translate the intent into a deterministic 
 ### Step 4: Compliance Mapping
 Before performing compliance checks, load `references/skill-standards.md` to obtain the authoritative standards target.
 
-Organize the resolved deterministic logic into the mandatory skill schema:
+Organize the resolved deterministic logic into the mandatory skill schema. Five sections are always present; two sections are conditional — include them only when the design needs them:
+
+**Always-present sections:**
 - **Frontmatter**: Generate a concise `name` and `description` (using `>-` block-fold syntax). The `license` field is included only if the user has confirmed a license; otherwise the field is omitted.
 - **When to Use**: Define the precise triggers for the skill as a bulleted list of trigger branches.
 - **When Not to Use**: Define clear boundaries to prevent misuse as a bulleted list of out-of-scope branches.
 - **Workflow**: Document the sequence of deterministic steps, each with a completion criterion.
 - **Validation**: Create a comprehensive validation section with checkable items, each a yes/no pass/fail condition.
+
+**Conditional sections (include only when the trigger condition applies):**
+- **Output Mode**: Include when the design has a non-default output behaviour (i.e., the design intentionally deviates from the default of "draft in conversation, optionally save").
+- **Transitions**: Include when the design depends on a downstream tool or skill (e.g., `waza-skill-evaluator`, `saving-the-skill.md`, or any other named dependency).
 
 ### Step 5: Final Review & Convergence
 Present the final markdown content for the `SKILL.md` file as a single, clean Markdown code block. Verify that the design is:
@@ -76,14 +82,14 @@ Once verified against the validation criteria, declare: *"We have a deterministi
 After convergence, the downstream chain is:
 1. **`references/saving-the-skill.md`** — the procedure for writing the designed skill to disk (directory confirmation, name validation, license confirmation, write, optional eval stub, post-write validation).
 2. **waza-skill-evaluator** — generates the Waza Eval Suite (eval.yaml + tasks/ + fixtures/).
-3. **waza-skill-evaluator** — runs a baseline evaluation to verify the skill works end-to-end.
+3. **waza-skill-evaluator** — runs a baseline evaluation to verify the skill works end-to-end (Phase 1: generate the suite; Phase 2: run baseline).
 
 This is the default chain. The user may override per environment.
 
 ## Validation
 To ensure the quality and determinism of the resulting skill, the agent must verify the following before presenting the final design:
 
-- [ ] **Structural Integrity**: Does the skill contain all mandatory sections (Frontmatter, When to Use, When Not to Use, Output Mode, Workflow, Transitions, Validation)?
+- [ ] **Structural Integrity**: Does the skill contain the 5 always-present sections (Frontmatter, When to Use, When Not to Use, Workflow, Validation)? The 2 conditional sections (Output Mode, Transitions) are required only when their trigger condition applies — Output Mode is required if the design has a non-default output behaviour; Transitions is required if the design depends on a downstream tool or skill.
 - [ ] **Determinism Audit**: Every workflow step must (a) start with a verb, (b) name a concrete action, and (c) end with a verifiable outcome. If a step fails any of (a)–(c), rewrite it.
 - [ ] **Collaborative Alignment**: Was every translation of vague intent explicitly presented to the user, confirmed via the verbatim review question with Accept AS IS / Requires Modifications / Reject, and resolved through the appropriate follow-up flow?
 - [ ] **Constraint Adherence**: Did the agent refrain from using any file-writing tools unless specifically requested by the user to write to the file system? Did the agent announce the output mode at the start of Step 1?
