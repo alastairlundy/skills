@@ -1,11 +1,13 @@
 ---
 name: ask-questions
 description: >-
-   Assists agents with when to ask questions via tools vs prose. Use when a request is ambiguous, has multiple valid interpretations, or needs a discrete choice before proceeding. Do not use if user input is not required, or a request has clear discrete options with concise descriptions.
+   Assists agents with when to ask questions via tools vs prose. Use when a request is ambiguous, has multiple valid interpretations, or needs a discrete choice before proceeding. Do not use when user input is not required, or a request has clear discrete options with concise descriptions.
 license: MIT
 ---
 
 # Ask Questions
+
+**opencode dialect.** This skill targets the opencode agent platform. In opencode, the abstract `ask_question` affordance is bound to the `question` tool. On other hosts, substitute the equivalent discrete-choice tool.
 
 This skill governs how the LLM uses the `ask_question` tool (and equivalent discrete-choice clarification tools) to interact with the user. It addresses two failure modes in balance:
 
@@ -35,6 +37,8 @@ Glossary: see `references/glossary.md`. Worked examples: see `references/example
 
 The LLM operates in one of three modes, detected from the user''s current and recent messages. All downstream gate behavior is keyed to the active mode.
 
+The keyword lists below are a first-pass hint, not a deterministic gate. If the surrounding context clearly contradicts the detected mode, override the keyword match — treat the mode as Neutral and proceed.
+
 ### Invited mode
 
 The user has explicitly licensed broad questioning. The LLM may ask several questions across multiple turns, one per turn, knowing the user wants to be asked. Phrasings include:
@@ -59,9 +63,16 @@ The user has explicitly declined being asked. Ask only if the LLM cannot proceed
 
 Neither invited nor opted-out. Apply the inverted trigger without modification.
 
+**Override rule.** If the detected mode clearly contradicts the surrounding context, default to Neutral and proceed as if no mode were detected. Common contradiction cases:
+- Quoted complaint or reported speech containing a keyword (e.g., the user says "the developer told me 'just do it'")
+- Example phrasing meant to illustrate, not request (e.g., "for example, the user might say 'use your judgment'")
+- Quoted block containing a keyword from the mode lists
+
 ## Workflow
 
 Four gates run in order. At every gate, failure stops the workflow.
+
+0. **Load glossary.** Load `references/glossary.md` to confirm the term definitions used in the gates below.
 
 **Default: Prose.** When the LLM is in doubt between Tool Call Path and Prose Fallback (or no question at all), the default is Prose Fallback. The over-asking cost (user friction, leaky options) exceeds the under-asking cost (the LLM proposes a default in prose that the user can correct).
 
@@ -69,7 +80,7 @@ Four gates run in order. At every gate, failure stops the workflow.
 
 Two tests; both must pass.
 
-1. **Inverted trigger test.** Is there a real question whose answer would change the LLM''s next action AND that the LLM cannot resolve from context, code, or safe inference? If the LLM finds itself writing "I can probably infer X," that is not resolution — ask. In opt-out mode, the bar is stricter: ask only if the LLM cannot proceed without the answer. Neutral and invited modes apply the inverted trigger as written.
+1. **Action-changing test.** Does my action change if I knew the answer? Is there a real question whose answer would change the LLM''s next action AND that the LLM cannot resolve from context, code, or safe inference? If the LLM finds itself writing "I can probably infer X," that is not resolution — ask. In opt-out mode, the bar is stricter: ask only when the default would be visibly wrong to the user. Neutral and invited modes apply the action-changing test as written.
 2. **Real Decision precondition.** Is this a real decision — does the user have a narrowed space of 2-4 options they would actually pick? An option is *realistic* iff the user, given their stated context, would actually pick it. If the constructed options would all have the LLM do the same work, or if the user has not narrowed the space, this is not a real decision and Gate 1 fails.
 
 If either test fails, do not ask. Proceed with a sensible default, document the default, and let the user correct.
@@ -78,7 +89,7 @@ If either test fails, do not ask. Proceed with a sensible default, document the 
 
 Two sub-checks.
 
-**Sub-check A — Realistic alternative confirmation.** Confirm each of the constructed options passes the realistic alternative test from Gate 1.2. If any option fails, drop or replace it before proceeding.
+**Sub-check A — Realistic alternative confirmation.** For each option, name the user-stated fact (quoted or paraphrased from the user's current or recent messages) that makes the option realistic. If no such fact exists for an option, drop or replace that option before proceeding. Do not proceed with options that lack a user-stated basis.
 
 **Sub-check B — Adaptability test.** Can the question be honestly consolidated into 2-4 options? Try these adaptations, in any combination:
 
@@ -88,6 +99,8 @@ Two sub-checks.
 - **Consolidate:** merge adjacent options.
 
 If any adaptation works without losing essential information, proceed to Gate 3 Tool Call Path. If all adaptations lose essential meaning, proceed to Gate 3 Prose Fallback.
+
+**Sub-check B also requires:** the prose-discipline rule (per-decision prose) and the description test (per-option descriptions) are separate checks. They test different surfaces: the prose test applies to the message text before the call, the description test applies to the option descriptions inside the call. If either is sufficient alone, the other is redundant; remove the redundant part.
 
 ### Gate 3: Construct
 
@@ -99,8 +112,9 @@ Two paths from Gate 2.
 2. **Construct the tool call:**
    - **1 question per call. Always.** No batching.
    - **2-4 options per question.** Each option must pass the realistic alternative test.
-   - **Alphabetical order** by the option''s underlying name. The `(Recommended)` marker is appended to the label as a suffix and does not change sort position.
+   - **Alphabetical order** by the option''s underlying name (the label with any `(Recommended)` suffix, leading letter or number prefix, or trailing punctuation stripped). For example, labels "MongoDB", "Postgres (Recommended)", "SQLite" sort by underlying names "MongoDB" < "Postgres" < "SQLite". The `(Recommended)` marker is a suffix and does not change sort position.
    - **Mark the recommended option** (if the LLM has one) with `(Recommended)`. The recommendation is what the LLM would commit to on the user''s behalf given the user''s stated context — not the LLM''s preferred architecture, not the most common choice.
+   - **Length limits** (≤6-word labels, ≤80-character descriptions, ≤30-character headers) are based on user testing with AI agents: these thresholds set a readable-text boundary before the user becomes overwhelmed.
    - **Labels:** ≤6 words, parallel grammatical form (e.g., all noun phrases or all verb phrases).
    - **Descriptions:** ≤80 characters, discriminative only. *Test:* each description must answer "why pick this over the others?" If the description teaches rather than discriminates, move it to context prose.
    - **Headers:** ≤30 characters, scannable, in domain language.
@@ -113,18 +127,33 @@ Use only when Gate 2 Sub-check B''s adaptations all fail, or by the Default: Pro
 2. **Options as a numbered or bulleted list.**
 3. **Prose discipline:** the prose must be necessary to make the choice. *Test:* if the user can pick correctly without reading the prose, the prose is too long.
 4. The LLM may indicate a recommendation in the prose ("I''d suggest B because..."), but not via a UI marker (prose questions don''t have one).
+5. **Multi-part Prose Pattern** (see `references/multi-part-pattern.md`) is permitted under Prose Fallback when the sub-questions are checks (not choices). Load `references/multi-part-pattern.md` before constructing a multi-part prose turn.
+
+#### What transfers to Prose Fallback
+
+The following transfer; other rules in this section are tool-call-specific by definition.
+
+**Transfers:** 1 question, 2-4 options, recommendation (in prose shape), prose discipline.
+
+**Does not transfer:** header, label, description, `(Recommended)` marker.
 
 ### Gate 4: Validate
 
 Before submitting, run the mechanical checks listed in the [Validation](#validation) section. If any check fails, fix and re-validate. Do not submit a failing draft.
 
+### End condition
+
+After three rounds of clarifying questions, the LLM should propose a default in prose or hand off to `grilling` for structured decision-making. This is a soft cap (a "should", not a "must"): more rounds are permitted if the LLM can justify that the trajectory is converging. The hand-off to `grilling` is the preferred escape hatch when the situation is a genuine multi-decision exploration.
+
 ## Validation
 
 The final output (tool call + context prose, or prose fallback) must pass these mechanical gates. Each gate is independently verifiable.
 
-- [ ] **Trigger Gate** — the inverted trigger passed; the Real Decision precondition passed; opt-out (if active) did not block; the LLM has a real question whose answer would change its next action.
+Mechanical verification of length limits: see `evals/ask-questions/tasks/perf-count-gate-characters.yaml`.
+
+- [ ] **Trigger-Passed Gate** — the inverted trigger passed; the Real Decision precondition passed; opt-out (if active) did not block; the LLM has a real question whose answer would change its next action.
 - [ ] **Fit Gate** — Sub-check A (realistic alternatives) passed; Sub-check B adaptations were tried before Prose Fallback.
-- [ ] **Count Gate** — 1 question per call.
+- [ ] **Count Gate** — 1 question per call (applies to tool calls only; prose path governed by Multi-part Prose Pattern in `references/multi-part-pattern.md`).
 - [ ] **Order Gate** — alphabetical by underlying option name; `(Recommended)` marker is a suffix and does not change position; the recommendation is what the LLM would commit to on the user''s behalf given the user''s stated context.
 - [ ] **Prose Discipline Gate** — context prose is necessary to make the choice (test: user can pick without it = too long); descriptions are discriminative (test: each answers "why pick this over the others?"); Prose Fallback (if used) is justified by failed adaptations or by the Default: Prose tie-breaker.
 - [ ] **Term Purity Gate** — no internal field names, no tool names, and no skill names the user did not name first appear in user-facing prose or option text.

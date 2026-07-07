@@ -69,7 +69,7 @@ Example — the original D007 picked Option 2; a later discovery forces a
 revisit:
 
 ```md
-### [D012] — where the gate lives
+### [D012] — where the branch lives
 
 - **Resolved Answer**: encode the precondition inside the constructor of
   the tab container.

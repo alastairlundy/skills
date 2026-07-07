@@ -25,13 +25,22 @@ to `CONTEXT.md`).
 
 ## When to Use
 
-- When the user has a vague idea and conceptual/terminology alignment
-  is the goal (the "what" and the shared language, not the "how").
-- When domain modeling is the explicit focus — bounded contexts,
-  ubiquitous language, glossary building, terminology disambiguation.
+### Triggers
+
+- When the user has a vague idea and needs conceptual/terminology
+  alignment — clarifying the "what" and the shared language, not the
+  "how".
+- When the user explicitly wants domain-modeling work — establishing
+  bounded contexts, ubiquitous language, glossary terms, or
+  terminology boundaries.
 - When starting a new feature or architectural change that requires
-  deep conceptual alignment.
+  deep conceptual alignment before implementation can proceed.
 - When user input would clarify the request, invoke ask-questions
+
+### Examples
+
+- Bounded contexts, ubiquitous language, glossary building,
+  terminology disambiguation.
 
 ## When Not to Use
 
@@ -40,7 +49,7 @@ to `CONTEXT.md`).
 - Do not use when code/technical implementation choices when a spec/PRD exists.
 - For trivial code changes or bug fixes where the domain model is not
   in question.
-- For rapid prototypes where formal DDD alignment is not required.
+- For rapid prototypes that are known to be throwaway (spike code, demo code, time-boxed experiments).
 
 ## Workflow
 
@@ -78,21 +87,30 @@ Follow `references/ddd-initialization.md` to:
 
 Walk the design tree branch-by-branch using the locked question format
 and the options/recommendation format from
-`../grilling/references/*`. After each resolution, append a `Dxxx`
-record to the Decision Ledger in real time.
+`../grilling/references/*`. On first use of a `Dxxx` record in this skill, load the record format from `../grilling/references/decision-ledger.md` § "Per-branch record template". After each resolution, append a `Dxxx` record to the Decision Ledger in real time.
 
 Use the DDD-specific techniques in
 `references/ddd-initialization.md` § "Session Guidelines" to:
 
-- Challenge against the glossary when the user uses a term that
-  conflicts with `CONTEXT.md`.
-- Sharpen fuzzy language when the user uses an overloaded term.
-- Discuss concrete scenarios that stress-test domain relationships.
-- Cross-reference with code if the user states how something works.
-- Offer ADRs sparingly, only when all three criteria in
-  `references/ADR-FORMAT.md` hold.
+- When the user uses a term that conflicts with `CONTEXT.md`, load and
+  apply the procedure in
+  `references/ddd-initialization.md` §
+  "Challenge against the glossary".
+- When the user uses an overloaded term, load and apply the procedure
+  in `references/ddd-initialization.md` § "Sharpen fuzzy language".
+- When the user discusses concrete scenarios that test boundaries between
+  concepts, load and apply the procedure in
+  `references/ddd-initialization.md` § "Discuss concrete scenarios".
+- When the user states how something works, load and apply the
+  procedure in `references/ddd-initialization.md` §
+  "Cross-reference with code".
+- When all three criteria in `references/ADR-FORMAT.md` hold, load and
+  apply the procedure in
+  `references/ddd-initialization.md` § "Offer ADRs sparingly".
 
 ### Step 4: Term Resolution
+
+Term Resolution does not require a running checklist because it is a side effect of branch resolution, not a primary loop.
 
 When a resolved branch introduces a new glossary term, follow
 `references/term-resolution.md`:
@@ -111,15 +129,14 @@ pass, declare: "We have reached a shared understanding."
 
 ### Step 6: Exit gate and exit paths
 
-Before listing exits, ask: "Is this a code/technical problem — a
-problem whose resolution requires a programming/code related or
-technical solution?" with options `Yes` / `No` / `I'm not sure`. Skip
-the question if the problem type is unambiguous from context.
+Before listing exits, ask: "Will resolving this require writing
+code?" with options `Yes` / `No` / `I'm not sure`. Skip the
+question if the problem type is unambiguous from context.
 
 - **`Yes`** — lead with the `code-implementation-grilling` exit, then
   present the other non-technical exits.
 - **`No`** — skip the `code-implementation-grilling` exit; lead with
-  `to-prd` as the recommended path.
+  "document the decision" as the recommended path.
 - **`I'm not sure`** — present all available exits (including
   `code-implementation-grilling`) without a recommendation; do not
   ask a follow-up.
@@ -128,13 +145,13 @@ Every exit that drives downstream implementation work must include
 the Decision Ledger path so downstream skills can cite records as
 `filename#Dxxx`:
 
-| Path | Drives downstream work? | Ledger action |
-|------|------------------------|---------------|
-| 1 — Create a plan/PRD (`to-prd`) | Yes | Include ledger path |
-| 2 — Hand off to `code-implementation-grilling` | Yes | Include ledger path |
-| 3 — Break into tickets (`spec-to-tickets` / `to-issues`) | Yes | Include ledger path |
-| 4 — Handoff to another agent | Yes | Include ledger path |
-| 5 — Custom Save | No | — |
+| Path | Drives downstream work? | Ledger path required? |
+|------|------------------------|------------------------|
+| 1 — Create a plan/PRD document | Yes | Yes |
+| 2 — Hand off to `code-implementation-grilling` | Yes | Yes |
+| 3 — Break into tickets (`spec-to-tickets`) | Yes | Yes |
+| 4 — Handoff to another agent | Yes | Yes |
+| 5 — Custom Save | No | No |
 
 ## Validation
 
@@ -175,8 +192,7 @@ transcript:
       written to `CONTEXT.md`.
 - [ ] `CONTEXT.md` was created lazily on the first write if it did
       not already exist.
-- [ ] Every glossary term is in `CONTEXT.md` with the same
-      definition as in the Decision Ledger record.
+- [ ] Term Store Consistency verified (per `references/term-resolution.md` § Term Store Consistency).
 - [ ] Convergence was declared only when all four checks passed.
 - [ ] No diverge mode occurred (no paraphrasing, no skipped
       branches, no bundled options, no accepted contradictions

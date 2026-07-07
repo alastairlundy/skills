@@ -18,7 +18,7 @@ Every `SKILL.md` must have:
   - `name` field
   - `description` field using YAML block-fold syntax (`>-`)
   - `license: MIT` field
-- Sections: **When to Use**, **When Not to Use**, **Workflow**, **Validation**
+- Sections: **When to Use**, **When Not to Use**, **Workflow**, **Validation** (always present); **Output Mode** and **Transitions** are included conditionally — Output Mode when the skill has a non-default output behaviour, Transitions when the skill depends on a downstream tool or skill
 - "When to Use" section must use a bulleted list format
 - Workflow steps must be deterministic — no vague language ("be smart", "as appropriate")
 - Any skill whose workflow may need user clarification must include a "When to Use" bullet that invokes the `ask-questions` skill
@@ -31,6 +31,8 @@ Every skill must include a Waza Eval Suite in `evals/<skill-name>/`:
 - `fixtures/` — test inputs and expected outputs
 
 Run evaluations with `waza run` and serve the eval UI with `waza serve`.
+
+Eval creation is the job of the downstream evaluator tool (`waza-skill-evaluator` or its successor), not the designing skill itself. See [ADR-0003](docs/adr/0003-skill-architect-does-not-create-evals.md) for the full decision.
 
 ### Attribution
 
