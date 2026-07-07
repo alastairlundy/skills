@@ -59,7 +59,7 @@ Before performing compliance checks, load `references/skill-standards.md` to obt
 Organize the resolved deterministic logic into the mandatory skill schema. Five sections are always present; two sections are conditional — include them only when the design needs them:
 
 **Always-present sections:**
-- **Frontmatter**: Generate a concise `name` and `description` (using `>-` block-fold syntax). The `license` field is included only if the user has confirmed a license; otherwise the field is omitted.
+- **Frontmatter**: Generate a `name` (≤ 50 characters, hard limit) and a `description` (≤ 500 characters hard limit; < 350 characters is a soft target; using `>-` block-fold syntax). These limits are project-local (tighter than the Waza eval convention of description ≤ 1024 characters). The `license` field is included only if the user has confirmed a license; otherwise the field is omitted.
 - **When to Use**: Define the precise triggers for the skill as a bulleted list of trigger branches.
 - **When Not to Use**: Define clear boundaries to prevent misuse as a bulleted list of out-of-scope branches.
 - **Workflow**: Document the sequence of deterministic steps, each with a completion criterion.
@@ -90,7 +90,7 @@ This is the default chain. The user may override per environment.
 To ensure the quality and determinism of the resulting skill, the agent must verify the following before presenting the final design:
 
 - [ ] **Structural Integrity**: Does the skill contain the 5 always-present sections (Frontmatter, When to Use, When Not to Use, Workflow, Validation)? The 2 conditional sections (Output Mode, Transitions) are required only when their trigger condition applies — Output Mode is required if the design has a non-default output behaviour; Transitions is required if the design depends on a downstream tool or skill.
-- [ ] **Determinism Audit**: Every workflow step must (a) start with a verb, (b) name a concrete action, and (c) end with a verifiable outcome. If a step fails any of (a)–(c), rewrite it.
+- [ ] **Determinism Audit**: Every workflow step must (a) start with a verb, (b) name a concrete action, and (c) end with a specific completion signal — for example, a returned value, a check result, a state change, a file produced, or an equivalent named artefact. If a step fails any of (a)–(c), rewrite it.
 - [ ] **Collaborative Alignment**: Was every translation of vague intent explicitly presented to the user, confirmed via the verbatim review question with Accept AS IS / Requires Modifications / Reject, and resolved through the appropriate follow-up flow?
 - [ ] **Constraint Adherence**: Did the agent refrain from using any file-writing tools unless specifically requested by the user to write to the file system? Did the agent announce the output mode at the start of Step 1?
-- [ ] **Validation Utility**: Does every item in the generated Validation section name a specific pass/fail condition (yes/no) that an agent can determine from the design alone?
+- [ ] **Validation Utility**: Does every item in the generated Validation section name a specific pass/fail condition (yes/no) that an agent can determine from the design alone? This check covers per-validation-item verifiability only; per-step verifiability is the scope of the Determinism Audit above.
