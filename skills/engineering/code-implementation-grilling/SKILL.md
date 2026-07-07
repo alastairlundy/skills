@@ -364,11 +364,11 @@ not add any other prose around the template.
 > and constraints must cite a `Dxxx` or `Txxx` record using
 > `filename#<Dxxx|Txxx>` format.
 
-**Template: issue tracker (`to-issues`)**
+**Template: issue tracker (file the spec and blueprint as issues in the project's issue tracker)**
 
-> Run the `to-issues` skill with the spec at `<spec-path>`, the
-> blueprint at `<blueprint-path>`, and the Decision Ledger at
-> `<ledger-path>` as context. Every issue's acceptance criteria
+> File the spec and blueprint as issues in the project's issue tracker,
+> citing the Decision Ledger per the same constraints as the
+> ticket-consumer template. Every issue's acceptance criteria
 > and constraints must cite a `Dxxx` or `Txxx` record using
 > `filename#<Dxxx|Txxx>` format.
 
@@ -391,11 +391,12 @@ not add any other prose around the template.
 > ticket's acceptance criteria and constraints must cite a
 > `Dxxx` or `Txxx` record using `filename#<Dxxx|Txxx>` format.
 
-**Template: issue tracker (`to-issues`)**
+**Template: issue tracker (file the spec and blueprint as issues in the project's issue tracker)**
 
-> Run the `to-issues` skill with the spec at `<spec-path>` (which
-> now includes the Technical Implementation section) and the
-> Decision Ledger at `<ledger-path>` as context. Every issue's
+> File the spec (which now includes the Technical Implementation
+> section) and the Decision Ledger as issues in the project's
+> issue tracker, citing the Decision Ledger per the same
+> constraints as the ticket-consumer template. Every issue's
 > acceptance criteria and constraints must cite a `Dxxx` or
 > `Txxx` record using `filename#<Dxxx|Txxx>` format.
 
