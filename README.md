@@ -26,10 +26,12 @@ Domain-specific tasks for software development workflows.
 
 | Skill | Description | Notes | 
 |-------|-------------|-------|
-| [spec-to-tickets](skills/engineering/spec-to-tickets/) | Decompose specs, PRDs, or conversation context into focused implementation tickets (at most 3-4 hours each) with dependency graphs, Independent/Collaborative classification, and context pointers. Outputs to issue trackers or local markdown. | Inspired by Matt Pocock's ``to-issues`` skill. |
-| [domain-grilling](skills/engineering/domain-grilling/) | Relentless DDD-aligned interviewing skill that resolves design decisions linearly, sharpens domain terminology against CONTEXT.md, and documents architectural decisions as ADRs. | Inspired by Matt Pocock's ``grill-with-docs`` skill. |
-| [code-implementation-grilling](skills/engineering/code-implementation-grilling/) | Relentlessly resolves concrete technical implementation details (language, framework, structure) from a plan or spec before ticket creation to minimize ambiguity for the implementer. | |
-| [write-changelog](skills/engineering/write-changelog/) | Generate user-facing markdown changelogs from git history by analyzing commits, transforming messages, and categorizing changes across sub-projects. | |
+| [spec-to-tickets](skills/engineering/spec-to-tickets/) | Create implementation tickets with dependency graphs and Independent/Collaborative classification. Use when breaking down a spec, PRD, or resolved conversation context into focused tickets sized for 3-4 hour sessions; outputs to issue trackers or local markdown. | Inspired by Matt Pocock's ``to-issues`` skill. |
+| [grilling](skills/engineering/grilling/) | Relentless Socratic interviewing that extracts clear decisions from vague, non-implementation, non-DDD ideas — business strategy, product direction, design choices, process, organizational decisions. Owns the Decision Ledger, options/recommendation formats, and convergence test. | Generic parent of ``domain-grilling`` and ``code-implementation-grilling``. |
+| [domain-grilling](skills/engineering/domain-grilling/) | Relentless Socratic interviewing for Domain-Driven Design alignment — bounded contexts, ubiquitous language, glossary, and terminology. Writes resolved terms to ``CONTEXT.md`` and architectural decisions to ADRs. | Specializes ``grilling``; inspired by Matt Pocock's ``grill-with-docs`` skill. |
+| [code-implementation-grilling](skills/engineering/code-implementation-grilling/) | Relentless Socratic interviewing on technical implementation choices — language, framework, dependencies, project structure — once a spec/PRD exists. Resolves ambiguity for the implementer. | Specializes ``grilling``. |
+| [write-changelog](skills/engineering/write-changelog/) | Generate ecosystem-aware, user-facing markdown changelogs from git history by analyzing commits, transforming messages, and categorizing changes across logical sub-projects. Supports tag ranges and optional emoji-prefixed category headings. | |
+| [dependency-review](skills/engineering/dependency-review/) | Audit a project's third-party dependencies for staleness, bloat, tight coupling, deprecation, and recent major changes, producing a structured report across four finding categories. | Default scope is `code` only; pass `scope: code,non-code` to opt in to OS, runtimes, hosted services, databases, and CI tooling. |
 
 ### Alignment Skills
 
@@ -37,8 +39,8 @@ Skills for ensuring LLMs stay aligned on expectations and behaviour whilst perfo
 
 | Skill | Description | Notes | 
 |-------|-------------|-------|
-| [anti-slop](skills/alignment/anti-slop/) | Sanitizes LLM output by removing "AI slop", redundant phrasing, and sycophancy to maximize information density and maintain a professional AI identity. | |
-| [ask-questions](skills/alignment/ask-questions/) | Guides LLMs in deciding when and how to ask the user questions via discrete-choice tools (e.g. `ask_question`), or in prose when no tool is available. Teaches a four-gate procedure (trigger, fit, construct, validate) that avoids overwhelming the user. | |
+| [anti-slop](skills/alignment/anti-slop/) | Constrains vocabulary and enforces structural rules on generated prose. Use for user-facing text (documentation, PR descriptions, commit messages, prose reviews) to produce tight, high-density writing. | |
+| [ask-questions](skills/alignment/ask-questions/) | Guides agents in deciding when and how to ask the user questions via discrete-choice tools (e.g. `ask_question`), or in prose when no tool is available. Teaches a four-gate procedure (trigger, fit, construct, validate) that balances over-asking and under-asking. | |
 
 ### "Meta" Skills
 
@@ -46,7 +48,7 @@ Tools for creating and evaluating other skills.
 
 | Skill | Description |
 |-------|-------------|
-| [skill-architect](skills/skills-meta/skill-architect/) | Guide the design of new agent skills by translating fuzzy intents into deterministic execution patterns. Used for AI-assisted skill design. |
+| [skill-architect](skills/skills-meta/skill-architect/) | Guide the design, refinement, and deterministic translation of a new agent skill, ensuring the design follows established agent-skill conventions without performing file system writes. Use when creating or designing a new skill. |
 
 ## Repository Structure
 
