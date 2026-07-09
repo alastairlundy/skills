@@ -81,3 +81,57 @@ to the user's own reasoning.
 - **Resolved Answer**: "Option 3 is the right choice but we haven't discussed how the LLM flags potential shifts in goals."
 - **Normalized Requirement**: The grilling skill's goal-change handling workflow shall support two paths: the user can initiate a goal change explicitly, and the LLM can flag a potential goal shift. In both cases, the user decides whether a change has occurred. When a change is confirmed, the LLM shall document the change as its own record in the Decision Ledger (with a Driver field per D004 and a link to the prior goal record), re-ask open branches with the updated context, and ask the user whether closed branches need revisiting.
 - **Constraints**: The LLM's flag is a question, not a determination. The user always decides whether the goal has changed. The LLM's flagging mechanism — when the LLM surfaces a question vs. stays quiet — is defined in a separate branch.
+
+### [D014] — LLM's flagging mechanism for potential goal shifts
+
+- **Resolved Answer**: "Option 1 - Contradictions are flagged."
+- **Normalized Requirement**: The LLM shall surface a goal-shift question only when the user's response directly contradicts the recorded goal. The LLM shall not flag subtle or gradual shifts; the user can initiate a goal change explicitly at any time.
+- **Constraints**: Direct contradiction is the only trigger for the LLM's flag. The LLM's flag is a question, not a determination. The post-pick template should remind the user that they can initiate a goal change at any time, so the user-initiated path is discoverable.
+
+### [D015] — workflow steps
+
+- **Resolved Answer**: "Option 1 - full workflow redesign is the only way to fully implement the changes specified."
+- **Normalized Requirement**: The grilling skill's workflow shall be redesigned as a sequence of clearly named phases: initialization (step zero, goal-discovery question per D008–D009), per-branch (context block per D005, Socratic elicitation per D007/D011, user-stated answer, options with preamble per D010, recommendation per D001/D006, pick), post-pick (confirmation and "you can ask" reminder per D012, recording), goal-change handling (per D013/D014), convergence, and exit paths.
+- **Constraints**: Each phase shall have a clear name and trigger. The workflow is a full redesign, not an incremental update. The format guidance should make the phases discoverable (e.g., a one-line summary of each phase at the top of the workflow section).
+
+### [D016] — convergence test
+
+- **Resolved Answer**: "Option 2 - If the goal shifts then the grilling is clearly not over and there are potential unresolved problems until the user confirms whether the goal shift is valid/not and whether the goal shift warrants revisiting the branches if the goal shift is valid."
+- **Normalized Requirement**: The convergence test shall add a check for unresolved goal shifts — if a goal shift has been flagged (per D014) or initiated by the user (per D013) but not yet confirmed by the user, or if confirmed but the question of revisiting closed branches has not yet been resolved, convergence is not reached.
+- **Constraints**: The check covers both confirmation of the shift and the revisit decision. A flagged-but-unconfirmed shift blocks convergence. A confirmed shift with an unresolved revisit decision also blocks convergence. Once both are resolved, convergence can proceed.
+
+### [D017] — exit paths
+
+- **Resolved Answer**: "Remove 'Document the decision' as an exit path. 'Specialize to DDD' should only be shown as an exit path if there are genuine domain or terminology alignment issues that need resolving. 'Specialize to Code Implementation Grilling' should only be shown as an exit path if the problem would benefit from a code/technical implementation of a solution."
+- **Normalized Requirement**: The grilling skill's exit paths shall be revised as follows: (1) "Document the decision" is removed as an exit path; the ledger is the documentation. (2) "Specialize to DDD" is conditional, shown only when genuine domain or terminology alignment issues need resolving. (3) "Specialize to Code Implementation Grilling" is conditional, shown only when the problem would benefit from a code/technical implementation. The remaining exit paths (Decompose, Handoff, Custom save) are preserved.
+- **Constraints**: The conditional paths are only shown when the condition is met, not always offered. The LLM must assess whether the conditions are met, but the user owns the decision and can override. The exit paths are offered as a reference set (consistent with D010), and the user can pick, reject, or propose their own.
+
+### [D018] — goal-change record format
+
+- **Resolved Answer**: "Option 2"
+- **Normalized Requirement**: The Decision Ledger template shall add a "Supersedes" field that explicitly links to the prior record being replaced (e.g., `Supersedes: Dxxx`), separate from the Constraints field. The field is empty for most records and is used only when a record supersedes a prior one (e.g., a goal change).
+- **Constraints**: The "Supersedes" field is empty for non-superseding records. The field is separate from Constraints, which remains for negative requirements, edge cases, and defaults. The Driver field (per D004) and the Supersedes field together capture the goal change's "why" and "from where."
+
+### [D019] — validation section
+
+- **Resolved Answer**: "Option 1"
+- **Normalized Requirement**: The validation checklist shall be updated to reflect the new design, organized by phase (initialization, per-branch, post-pick, goal-change, convergence, exit). The checklist shall include pre-conditions (six references loaded, goal-discovery question asked, ledger path confirmed) and output checks (context block provided, Socratic elicitation asked, user-stated answer before options, options preamble present, recommendation reasoning is goal-aligned, "you can ask" reminder in post-pick, goal-change handling correct, conditional exit paths correctly applied, no LLM-led options comparison, ledger complete with Driver and Supersedes fields where applicable).
+- **Constraints**: The checklist should pair each check with the principle behind it, so the checklist verifies principles, not just boxes. The checklist should distinguish "must pass" checks from "should pass" checks.
+
+### [D020] — tone and output discipline
+
+- **Resolved Answer**: "Option 1"
+- **Normalized Requirement**: The tone and output discipline shall be updated to include the new design principles: (1) no LLM-led framing — the LLM does not decide for the user; (2) explicit requirements — no hidden or opaque requirements enforced only by flow; (3) no adversarial pushback — the LLM does not push back against the user's choice; (4) Socratic posture — the LLM draws out the user's thinking rather than directing it. The existing tone rules (no evaluative openers, no forbidden filler words, conciseness, branch transitions) are preserved.
+- **Constraints**: The tone rules and the validation checklist (per D019) shall be distinguished: tone rules describe how the LLM writes, the validation checklist verifies whether the LLM followed the rules. The tone rules should state the principles, with prohibitions following from the principles, not a bare list of prohibitions.
+
+### [D021] — "When to Use" / "When Not to Use" sections
+
+- **Resolved Answer**: "Option 1"
+- **Normalized Requirement**: The "When to Use" section shall be updated with triggers that reflect the new design — e.g., "the user wants to own each decision," "the user wants the LLM to facilitate rather than direct," "the user is willing to articulate their own answers." The "When Not to Use" section shall be updated with anti-patterns that reflect the new design — e.g., "the user wants the LLM to decide for them," "the user wants the LLM to push back on their choices," "the user wants a quick recommendation without deliberation."
+- **Constraints**: The triggers must be specific enough that the skill is discoverable for the right use cases. The anti-patterns must be specific enough to exclude the wrong cases. The format guidance should give examples of substantive triggers and anti-patterns, not just rewording.
+
+### [D022] — SKILL.md implementation approach
+
+- **Resolved Answer**: "Option 3 but I'll do that later after grilling has concluded"
+- **Normalized Requirement**: The actual SKILL.md implementation shall be done using the Skill Architect skill, but the implementation is deferred until after the current grilling session concludes.
+- **Constraints**: The Skill Architect skill must be provided with all 22 decisions (D001–D022) as context so the new SKILL.md reflects the new design. The existing six reference files may need updates to reflect the new design — these updates should be done together with the SKILL.md rewrite so the SKILL.md and references stay in sync.
