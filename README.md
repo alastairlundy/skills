@@ -14,7 +14,7 @@ npx skills@latest add alastairlundy/skills
 Pick the skills you want, and which coding agents you want to install them on. 
 
 ### Dependence on Matt Pocock's Skills 
-The skills in this repo don't depend on or require [Matt Pocock's Skills](https://github.com/mattpocock/skills/) . That being said some of this repo's skills may benefit from those also being installed or used. ``domain-grilling`` supports using the CONTEXT.md glossary system from ``grill-with-docs`` and ``setup-matt-pockock-skills``, and enables interaction with ``to-issues`` and ``to-prd``.
+The skills in this repo don't depend on or require [Matt Pocock's Skills](https://github.com/mattpocock/skills/) . That being said some of this repo's skills may benefit from those also being installed or used. ``domain-grilling`` supports using the CONTEXT.md glossary system from ``setup-matt-pockock-skills``, and enables interaction with ``to-issues`` and ``to-prd``.
 
 ## Skills
 
