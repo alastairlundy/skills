@@ -1,7 +1,7 @@
 ---
 name: dependency-review
 description: >-
-  Audit a project's third-party dependencies for staleness, bloat, tight coupling, deprecation, and recent major changes. Use when a user asks to review dependencies, generate a dependency report, scan for unmaintained packages, or check for upgrade pressure. Also activate when an agent is judging dependency health as part of a broader review. Code-first scope by default; pass `scope: code,non-code` (in the user's message) or `--scope=code,non-code` (forward-compatible CLI flag) to opt in to non-code dependencies (OS, runtimes, hosted services, databases, CI tooling, third-party binaries). Out of scope: organisational dependencies, security/CVE scanning, cross-checked replacement recommendations (deferred to v2), reflection/convention-based implicit-dependency detection (deferred to v2/v3). When user input would clarify the request, invoke ask-questions.
+  Audit a project's third-party dependencies for staleness, bloat, tight coupling, deprecation, and recent major changes. Use when a user asks to review dependencies, generate a dependency report, scan for unmaintained packages, or check for upgrade pressure. Also activate when an agent is judging dependency health as part of a broader review.
 license: MIT
 ---
 
@@ -9,7 +9,7 @@ license: MIT
 
 Audit a project's third-party dependencies and produce a structured report covering four finding categories: dependencies that don't earn their keep, tight coupling between application code and external packages, unmaintained or deprecated packages, and recent major-version changes that warrant attention.
 
-The full per-category rubric, per-ecosystem implicit-dependency detection rules, per-category report structures, tier-composition rule, evidence-trail quality rule, and override policy live at `references/dependency-review-guide.md`. Load the Guide before Step 1 and consult it at each step. The Guide is the source of truth; the Skill and any future CLI are consumers of it.
+Load `references/dependency-review-guide.md` before Step 1. The Guide is the source of truth; the Skill is the only consumer.
 
 ## When to Use
 
@@ -20,20 +20,17 @@ The full per-category rubric, per-ecosystem implicit-dependency detection rules,
 - A user asks to flag tight coupling between application code and external packages
 - A user asks to check for recent major-version changes that need migration attention
 - An agent is judging dependency health as part of a broader review of a project
-- Scope flag: pass `scope: code,non-code` in the user's message (or `--scope=code,non-code` for the forward-compatible CLI) to opt in to non-code dependencies. Default scope is `code` only
-- When user input would clarify the request, invoke `ask-questions`
+- Scope flag: pass `scope: code,non-code` in the user's message to opt in to non-code dependencies. Default scope is `code` only
 
 ## When Not to Use
 
 - The task is to add, upgrade, or remove a dependency (use package-management tooling)
 - The task is a security or CVE scan (use a vulnerability-specific tool)
-- The user wants cross-checked replacement recommendations (deferred to v2)
-- The user wants reflection-based or convention-based implicit-dependency detection (deferred to v2/v3)
 - The user wants organisational or team-level dependency analysis (out of scope)
 
 ## Workflow
 
-The workflow has seven numbered steps. Steps 1 and 2 are deterministic; Steps 3-7 are judgement. Each step's tag is recorded in the Guide and is the seam the future CLI cuts along.
+The workflow has seven numbered steps. Steps 1 and 2 are deterministic; Steps 3-7 are judgement. Each step's tag is recorded in the Guide.
 
 ### Step 1 — Discovery [deterministic]
 
@@ -54,7 +51,7 @@ For each dependency in the discovery output, gather upstream data via general we
 - License in the current version
 - Recent major-version changelog highlights
 
-Per the Guide: per-ecosystem tooling (e.g., `npm view`, NuGet OData) is out of scope for v1; the upstream metadata is the deterministic source of truth. Label each finding's source as upstream-anchored or LLM-judgement.
+Per the Guide: the upstream metadata is the deterministic source of truth. Label each finding's source as upstream-anchored or LLM-judgement.
 
 ### Step 3 — Doesn't-Earn-Its-Keep analysis [judgement]
 
@@ -94,19 +91,7 @@ Compose the final report. Per the output-form rules in the Guide:
 - Suggest a file when the report exceeds ~1000 words or ~15 findings
 - Each finding lists the evidence consulted, per the evidence-trail quality rule
 - Each category uses its own report structure (Category 1 sub-criteria + tier, Category 2 tier only, Category 3 tier only with rationale, Category 4 text only)
-- If v1 limits (no cross-checked replacements) are reached, state this in the report rather than guessing
 
 ## Validation
 
-- [ ] Discovery enumerated all manifest-listed dependencies and applied the implicit-dependency rule per ecosystem
-- [ ] Enrichment gathered upstream data for every dependency and labelled each finding's source
-- [ ] Category 1 findings report sub-criteria labels and an overall tier per the tier-composition rule
-- [ ] Category 2 findings report a tier only (no sub-criteria labels in the report)
-- [ ] Category 3 findings report a tier only with rationale text naming the sub-criterion
-- [ ] Category 4 findings are text only, no tier
-- [ ] Every finding lists the evidence that materially supports it (no padding the trail)
-- [ ] Output form matches the default (prose) or the file-on-request rule; file suggested when report exceeds ~1000 words or ~15 findings
-- [ ] The report states v1 limits where they bind (no cross-checked replacements)
-- [ ] Steps 1 and 2 are tagged deterministic; Steps 3-7 are tagged judgement
-- [ ] The Guide at `references/dependency-review-guide.md` is loaded before Step 1
-- [ ] The eval suite at `evals/dependency-review/` (when built) covers per-step tasks, per-category output structure, and end-to-end scenarios
+Load `references/validation-checklist.md` before composing the report.

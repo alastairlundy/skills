@@ -1,6 +1,6 @@
 # Dependency Review Guide
 
-> Source of truth for the `dependency-review` skill. The Skill (in `SKILL.md`) is a consumer; a future CLI is also a consumer. Each step in this guide is tagged `deterministic` (extractable into the future CLI) or `judgement` (LLM-only). The tag is the seam the CLI cuts along. Update this Guide first when the workflow changes; then update the Skill.
+> Source of truth for the `dependency-review` skill. The Skill (in `SKILL.md`) is the only consumer. Each step in this guide is tagged `deterministic` (could in principle be mechanised) or `judgement` (LLM-only) — the tag signals to the agent what kind of step is in front of it. Update this Guide first when the workflow changes; then update the Skill.
 
 ## Scope
 
@@ -25,18 +25,6 @@ Adding the non-code tier to the scope flag adds:
 
 - Organisational dependencies (which team owns a dependency, internal-only packages) — explicit exclusion
 - Security and CVE scanning — use a dedicated vulnerability tool
-- Cross-checked replacement recommendations — deferred to v2
-- Reflection-based implicit-dependency detection — deferred to v2/v3
-- Convention-based implicit-dependency detection (Rails autoloading, Spring component scanning, etc.) — deferred to v2/v3
-
-## Trigger
-
-The skill activates on:
-
-- **Explicit user request** — the user names the skill or asks for a dependency report or manifest audit
-- **Agent judgement** — an LLM agent loads the skill when it judges the current task touches dependency health, even without explicit naming
-
-The skill does not run on a schedule or hook. There is no event-driven trigger.
 
 ## Output Form
 
@@ -49,7 +37,7 @@ The "always file" path is rejected. File location and naming are deferred to the
 
 ## Workflow
 
-The workflow has seven numbered steps. Steps 1 and 2 are deterministic; Steps 3-7 are judgement.
+The workflow has seven numbered steps. Steps 1 and 2 are deterministic; Steps 3-7 are judgement. Load `references/worked-examples.md` on first report — the worked threshold examples for each tiered category live there.
 
 ### Step 1 — Discovery [deterministic]
 
@@ -76,7 +64,7 @@ The workflow has seven numbered steps. Steps 1 and 2 are deterministic; Steps 3-
    - **Python**: two modules in the same Python package (same directory containing `__init__.py`)
    - **.NET**: two types sharing a namespace (same `namespace` block, or full name path)
    - **JavaScript / TypeScript**: two files in the same module path (same folder, or explicitly declared module)
-   Report these as implicit dependencies with the `source` set to `implicit-<ecosystem>`. Reflection-based and convention-based implicit-dependency patterns are deferred to v2/v3.
+   Report these as implicit dependencies with the `source` set to `implicit-<ecosystem>`.
 
 **Output**: a discovery list with one tuple per dependency. The `source` field records `manifest`, `lockfile`, or `implicit-<ecosystem>`.
 
@@ -94,7 +82,7 @@ The workflow has seven numbered steps. Steps 1 and 2 are deterministic; Steps 3-
 - **License in the current version** — read `LICENSE` or upstream metadata
 - **Recent major-version changelog** — find the changelog for the most recent major version bump and extract the breaking-change summary
 
-Per-ecosystem tooling (e.g., `npm view`, `pip index versions`, NuGet's OData feed) is out of scope for v1. The deterministic source of truth is the upstream project itself, reached via structured web search. This is a deliberate constraint to avoid re-litigating the cross-checked-recommendations decision deferred to v2.
+The deterministic source of truth is the upstream project itself, reached via structured web search.
 
 **Source labelling**: every piece of data gathered here is upstream-anchored. The judgement steps must label every finding as `upstream-anchored` (the finding rests on data from Step 2) or `llm-judgement` (the finding rests on the LLM's reasoning over the data).
 
@@ -113,14 +101,6 @@ Per-ecosystem tooling (e.g., `npm view`, `pip index versions`, NuGet's OData fee
 - The sub-criteria that fired (e.g., `trivial-task + cost-outweighs-reward`)
 - A single overall tier (High / Medium / Low) per the tier-composition rule
 
-**Example thresholds**:
-
-- All three sub-criteria firing → High
-- Trivial-task + dead-code → Medium
-- Cost-outweighs-reward alone → Low to Medium (calibrate on the size of the cost)
-
-These are defaults; the LLM may override per the override policy.
-
 ### Step 4 — Tightly-Coupled analysis [judgement]
 
 **Goal**: identify dependencies whose public API is being bypassed, mirrored, or absorbed into application code in ways that raise the cost of swapping or upgrading.
@@ -132,14 +112,6 @@ These are defaults; the LLM may override per the override policy.
 - **Type mirroring** — application code defines types whose shape mirrors dependency types, suggesting the dependency's data model has leaked into the application
 
 **Report structure**: tier only. No sub-criteria labels in the report; the rationale paragraph names what was found.
-
-**Example thresholds**:
-
-- 10+ import sites (absolute) OR a high relative share of the project's source files (project-size-relative — 5+ sites in a small project is more significant than 5+ in a large project) + internal-API reach → High
-- 5+ import sites + type mirroring → Medium
-- 5+ import sites, public API only → Low
-
-The "wide import surface" threshold is a mixture: 5+ sites baseline, with project-size relativity — a higher relative percentage of the project's total files counts as wider.
 
 ### Step 5 — Unmaintained-Deprecated analysis [judgement]
 
@@ -153,13 +125,6 @@ The "wide import surface" threshold is a mixture: 5+ sites baseline, with projec
 - **Repo archived** — the source repository is marked archived on its hosting platform
 
 **Report structure**: tier only. The rationale text names the sub-criterion that fired (e.g., "tier: High — sub-criterion: repo archived"). The sub-criterion is not a first-class label.
-
-**Example thresholds**:
-
-- Repo archived or end-of-life → High
-- Deprecation notice + long time since last release (12+ months) → High
-- Long time since last release alone → Medium
-- Deprecation notice alone, recent activity → Low (recommend planning a switch but no urgency)
 
 ### Step 6 — Recent-Major-Changes analysis [judgement]
 
@@ -185,7 +150,6 @@ The "wide import surface" threshold is a mixture: 5+ sites baseline, with projec
 - **Category 2** — Tightly-Coupled: tier only per dependency
 - **Category 3** — Unmaintained-Deprecated: tier only with rationale per dependency
 - **Category 4** — Recent-Major-Changes: text only per dependency
-- **v1 limits** — a one-line note that cross-checked replacement recommendations are out of scope for v1
 
 **Output form**:
 
@@ -214,24 +178,3 @@ The LLM may override a rubric threshold for a specific finding when the context 
 - The canonical pattern is two criteria compounding to produce a finding neither alone would produce: short time-since-last-release + deprecated status = recommend switching, even though neither criterion alone would trip a threshold
 
 The rubric is the default; overrides are the only departure, and they are auditable through the resulting finding.
-
-## Deferred Features
-
-- **v2**: cross-checked replacement recommendations — the skill currently surfaces "this dependency looks problematic" without proposing a drop-in replacement
-- **v2/v3**: reflection-based and convention-based implicit-dependency detection
-- **Future**: a CLI that consumes this Guide and extracts the deterministic steps (Steps 1, 2) — to be opened as a new branch when the deterministic gaps in the Skill-only path are documented
-
-## Build Order
-
-The skill was built in this order:
-
-1. This Guide (source of truth)
-2. The Skill (consumer of this Guide)
-3. Real-project usage to surface gaps
-4. CLI extraction (when warranted)
-
-The Guide remains the source of truth. The Skill is a consumer. The future CLI is also a consumer. No step may be tagged ambiguously; if a step is mixed, it must be split.
-
-## Source of These Decisions
-
-These rules are derived from the project's Decision Ledger: `docs/decisions/DECISIONS-skills-dependency-review.md`. Update the ledger first; then update this Guide; then update the Skill.
