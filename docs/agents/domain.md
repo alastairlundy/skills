@@ -2,6 +2,8 @@
 
 How the engineering skills should consume this repo's domain documentation when exploring the codebase.
 
+This is a single-context repo for agent skill definitions. The domain vocabulary lives in `CONTEXT.md` at the repo root.
+
 ## Before exploring, read these
 
 - **`CONTEXT.md`** at the repo root, or
@@ -12,30 +14,25 @@ If any of these files don't exist, **proceed silently**. Don't flag their absenc
 
 ## File structure
 
-Single-context repo (most repos):
+This repo:
 
 ```
 /
 ├── CONTEXT.md
-├── docs/adr/
-│   ├── 0001-event-sourced-orders.md
-│   └── 0002-postgres-for-write-model.md
-└── src/
-```
-
-Multi-context repo (presence of `CONTEXT-MAP.md` at the root):
-
-```
-/
-├── CONTEXT-MAP.md
-├── docs/adr/                          ← system-wide decisions
-└── src/
-    ├── ordering/
-    │   ├── CONTEXT.md
-    │   └── docs/adr/                  ← context-specific decisions
-    └── billing/
-        ├── CONTEXT.md
-        └── docs/adr/
+├── AGENTS.md
+├── skills/
+│   ├── engineering/
+│   │   ├── spec-to-tickets/SKILL.md
+│   │   ├── grilling/SKILL.md
+│   │   └── ...
+│   ├── alignment/
+│   │   ├── anti-slop/SKILL.md
+│   │   └── ...
+│   └── skills-meta/
+│       └── skill-architect/SKILL.md
+└── docs/
+    ├── adr/
+    └── agents/
 ```
 
 ## Use the glossary's vocabulary
