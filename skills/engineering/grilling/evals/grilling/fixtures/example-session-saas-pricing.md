@@ -105,22 +105,42 @@ options.
 - No evaluative opener ("Good", "Great", "Nice", etc.).
 - No forbidden filler word.
 
-## Record and Continue
+## Record and Continue (gated step)
 
-After the user picks Option 3, the agent should immediately:
+After the user picks Option 3, the agent runs the post-pick step. The
+post-pick step is a **gated step**: the next branch must not open until
+both the write and the read-back have succeeded (per D002 of
+`docs/decisions/DECISIONS-skills-grilling-decision-ledger-writes.md`).
 
 1. Confirm the pick in one sentence.
 2. Remind the user they can ask for the goal-aligned rejection rationale
    for the other options.
-3. Append a `D002` record to the Decision Ledger using the inline template:
-   `Driver`, `Resolved Answer`, `Normalized Requirement`, `Constraints`.
-4. Open Branch B without re-asking what the user just said.
+3. Issue a tool call to append a `D002` record to the Decision Ledger
+   using the inline template (`Driver`, `Resolved Answer`,
+   `Normalized Requirement`, `Constraints`). The write is **bound to a
+   successful tool-call result** — a narrative statement that the
+   file was updated is not a write.
+4. **Read-back verification.** After the tool call returns success,
+   re-read the ledger file and confirm the new `D002` line is the
+   last record in the file (tolerating benign differences such as
+   trailing newlines and byte-order). The next branch must not open
+   until the read-back confirms the new record is last.
+5. Open Branch B without re-asking what the user just said.
 
-A compliant continuation:
+A compliant continuation (the `(tool call: ...)` and `(read-back: ...)`
+lines are illustrative of the agent's actions, not user-facing text):
 
 > Resolved: Option 3 — Hybrid (flat base + per-seat above threshold).
 > You can ask for the goal-aligned rejection rationale for the other
-> options. Recorded as `D002` in `docs/decisions/DECISIONS-saas-pricing.md`.
+> options.
+>
+> *(tool call: append `D002` block to
+> `docs/decisions/DECISIONS-saas-pricing.md` — tool returned success)*
+>
+> *(read-back: re-read the file; `D002` is the last `### [Dxxx]`
+> block. Verified.)*
+>
+> Recorded as `D002` in `docs/decisions/DECISIONS-saas-pricing.md`.
 
 - **Goal**: find a pricing model that supports growth without alienating
   existing small-business customers (D001).
@@ -142,10 +162,13 @@ provide your answer.**
 
 **Quality expectations this turn satisfies:**
 
-- Post-pick step included: (1) one-sentence confirmation, (2) reminder
-  that the user can ask for the goal-aligned rejection rationale, (3)
-  immediate ledger append with Driver field, (4) transition to the next
-  branch.
+- Post-pick step ran as a **gated step** and did not open Branch B
+  until both the write and the read-back succeeded: (1) one-sentence
+  confirmation, (2) reminder that the user can ask for the
+  goal-aligned rejection rationale, (3) tool call to append the `D002`
+  record (bound to a successful tool-call result), (4) read-back
+  verification confirming `D002` is the last record in the file,
+  (5) transition to Branch B.
 - Decision Ledger record appended immediately after the resolution (no
   batching at session end).
 - Branch transition uses the structural `Resolved:` opener (no praise,
@@ -191,7 +214,7 @@ When reviewing any `grilling` transcript, check each item against the output:
 - [ ] Every question offered all natural options (typically 2–4) with the four required fields (What it is, Benefit, Cost, Risk) at one sentence per field.
 - [ ] Every recommendation used the three-field breakdown (`Recommendation: Option N — <name>.`, `Reasoning: ...`, `Forward risk: ...`) with the option name copied verbatim.
 - [ ] Every recommendation's `Reasoning` field was goal-aligned (not option-comparison), explaining why the recommended option serves the user's stated goal.
-- [ ] The post-pick step included: (1) one-sentence confirmation, (2) reminder that the user can ask for the goal-aligned rejection rationale, (3) immediate ledger append, (4) transition to the next branch.
+- [ ] The post-pick step ran as a **gated step** and did not open the next branch until both the write and the read-back succeeded: (1) one-sentence confirmation, (2) reminder that the user can ask for the goal-aligned rejection rationale, (3) tool call to append the `Dxxx` record (bound to a successful tool-call result — a narrative statement is not a write), (4) read-back verification confirming the new `Dxxx` is the last record in the file (tolerating benign differences such as trailing newlines and byte-order), (5) transition to the next branch.
 - [ ] When the user asked for the recommendation rationale, the agent provided concise goal-aligned rejection reasoning for the other options (not option-comparison).
 - [ ] When the user's goal changed mid-session, the change was documented as a new goal record with a `Supersedes: Dxxx` line linking to the prior goal record, open branches were re-asked, and the user was asked whether closed branches need revisiting.
 - [ ] No sentence began with a word whose function is to praise or judge the user's prior input.

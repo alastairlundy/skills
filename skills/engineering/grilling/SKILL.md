@@ -184,28 +184,42 @@ format from `references/recommendation-format.md`.
 
 ### Step 5: Record and continue
 
-After the user resolves a branch, perform the post-pick step:
+After the user resolves a branch, run the post-pick step. The
+post-pick step is a **gated step**: the next branch must not open
+until both the write and the read-back have succeeded. The step has
+five actions in a fixed order; actions 3 and 4 are load-bearing and
+are not optional.
 
 1. Confirm the pick in one sentence.
 2. Remind the user they can ask for the goal-aligned rejection rationale
    for the other options.
-3. Immediately append a `Dxxx` record to the Decision Ledger using the
-   template in `references/decision-ledger.md` (including the Driver
-   field). Do not batch the writes — append after each resolution,
-   before opening the next branch.
-4. Move to the next branch.
+3. Issue a tool call to append the new `Dxxx` record to the Decision
+   Ledger using the template in `references/decision-ledger.md`
+   (including the `Driver` field). The write is **bound to a
+   successful tool-call result** — a narrative statement that the
+   file was updated is not a write. Do not batch writes; append
+   after each resolution, before opening the next branch.
+4. **Read-back verification.** After the tool call returns success,
+   re-read the ledger file and confirm the new `Dxxx` line is the
+   last record in the file (tolerating benign differences such as
+   trailing newlines and byte-order). The next branch must not open
+   until the read-back confirms the new record is last. If the
+   read-back does not show the new `Dxxx` as the last record, treat
+   the write as failed and apply the recovery options below.
+5. Move to the next branch.
 
 The post-pick confirmation is one sentence. The "you can ask" reminder
 is part of the post-pick template, not optional prose. The LLM does not
 volunteer analysis the user did not ask for.
 
-If the write fails — permissions error, race with another process, or
-the parent directory does not exist — abort the branch transition,
-report the failure to the user (with the failure mode and the affected
-ledger path), and offer three recovery options: retry the write, skip
-the append and continue, or save the record locally for later
-back-fill. Do not proceed to the next branch until the user picks a
-recovery option.
+If the write or read-back fails — permissions error, race with
+another process, parent directory does not exist, or the read-back
+does not show the new `Dxxx` as the last record — abort the branch
+transition, report the failure to the user (with the failure mode and
+the affected ledger path), and offer three recovery options: retry
+the write, skip the append and continue, or save the record locally
+for later back-fill. Do not proceed to the next branch until the
+user picks a recovery option.
 
 Apply the tone discipline from `references/tone-and-output.md` on every
 branch transition: no evaluative openers, neutral mirroring, structural
@@ -312,12 +326,14 @@ transcript:
       ("What are your goals for this idea?") was asked as Step 3, and
       the user's response was recorded as D001 (the goal record) in the
       Decision Ledger.
-- [ ] **Must pass — verify in transcript.** One Decision Ledger record
+- [ ] **Must pass — verify in ledger file.** One Decision Ledger record
       was appended immediately after every resolved branch (no
-      batching at session end). Inspect the transcript for write-time
-      evidence: a successful append must be visible between the user's
-      resolution of one branch and the agent's first question of the
-      next.
+      batching at session end). Inspect the ledger file's last record
+      to confirm it matches the user's most recent resolution: the
+      record must be the last `Dxxx` block in the file (tolerating
+      benign differences such as trailing newlines and byte-order).
+      The ledger file is the single source of truth for post-pick
+      correctness; transcript evidence alone is not sufficient.
 - [ ] Every record used the inline template (`Driver`, `Resolved Answer`,
       `Normalized Requirement`, `Constraints`) and a fresh `Dxxx` ID
       incremented from the highest existing one.
@@ -352,10 +368,14 @@ transcript:
 - [ ] Every recommendation's `Reasoning` field was goal-aligned (not
       option-comparison), explaining why the recommended option serves
       the user's stated goal.
-- [ ] The post-pick step included: (1) one-sentence confirmation, (2)
-      reminder that the user can ask for the goal-aligned rejection
-      rationale, (3) immediate ledger append, (4) transition to the next
-      branch.
+- [ ] The post-pick step ran as a **gated step** and did not open the
+      next branch until both the write and the read-back succeeded:
+      (1) one-sentence confirmation, (2) reminder that the user can
+      ask for the goal-aligned rejection rationale, (3) tool call to
+      append the `Dxxx` record (bound to a successful tool-call
+      result — a narrative statement is not a write), (4) read-back
+      verification confirming the new `Dxxx` is the last record in
+      the file, (5) transition to the next branch.
 - [ ] When the user asked for the recommendation rationale, the agent
       provided concise goal-aligned rejection reasoning for the other
       options (not option-comparison).
