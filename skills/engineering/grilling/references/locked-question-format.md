@@ -5,6 +5,16 @@ template. The format is locked because it makes the question
 unmistakable: the user sees a stable line that means "this is a grilling
 question, and here is the branch it belongs to."
 
+## Convention: "you" in this reference
+
+In this reference, "you" and "your" inside a blockquote, a backticked
+template, or a worked-example emission **always refer to the user**, not
+the LLM. The Socratic elicitation question, the locked question line, and
+any other user-facing template in this reference are addressed to the
+user. Emit them verbatim and wait for the user to respond before
+proceeding. Free-form instructions to the agent in this reference use
+"the LLM" or "the agent" to refer to the agent.
+
 ## The sequence
 
 Every branch question follows a fixed four-part sequence. The parts are
@@ -14,6 +24,30 @@ not optional and their order is fixed.
 
 Before the Socratic question, present a fixed context block with exactly
 four elements. Each element is one sentence. No element may be omitted.
+
+The context block is a **structured bullet list with exactly four
+items, in the order shown below**. It is the *only* content the agent
+emits between the prior turn's resolution and the Socratic elicitation
+question. The four items are fixed and named: **Goal**, **Prior
+decisions**, **Stakes**, **Scope**.
+
+The context block is **not** a free-form prose summary, a "current
+state of the type" reading, a code investigation, a domain-glossary
+recap, or any other kind of analysis. If the agent has done a code
+reading or an investigation, that work belongs in the agent's
+reasoning, not in the user-facing context block. If the agent wants
+to surface that information to the user, paraphrase it into one of
+the four elements (typically **Stakes** or **Scope**) or present it
+as a separate explicit step *before* the context block with its own
+heading — never in place of the four-element bullet list.
+
+The `<one sentence — ...>` placeholders below are substituted with
+real content drawn from the Decision Ledger and the user's stated
+goal. Do not emit the angle brackets or the placeholder text
+literally. Each substituted element is exactly one sentence. Cite
+`Dxxx` IDs in the **Goal**, **Prior decisions**, and **Stakes**
+items. The **Scope** item names what is in and out of scope for this
+branch.
 
 ```md
 - **Goal**: <one sentence — the goal of the overall decision, citing D001>
@@ -32,7 +66,13 @@ dimension.
 
 The fixed question is:
 
-> **What are you working toward in this decision?**
+The Socratic elicitation question is the following user-facing template.
+The "you" inside refers to the user; emit it verbatim and wait for the
+user to respond before proceeding.
+
+```md
+**What are you working toward in this decision?**
+```
 
 Wait for the user's response before proceeding. The response grounds the
 options that follow in the user's actual values rather than the agent's
@@ -84,6 +124,14 @@ hybridize.
   user and is bewildering.
 - **The context block is mandatory for every branch.** Do not skip it,
   even when the prior decisions are few or the stakes seem obvious.
+- **Do not replace the context block with a free-form prose summary,
+  a code reading, or an investigation.** A "current state of the
+  type" summary, a domain recap, a file walk-through, or any other
+  analysis is **not** a context block. The context block is the
+  four-element bullet list above, in order, each element one
+  sentence, each filled in from the Decision Ledger and the user's
+  stated goal. See "Counter-example — what the context block is not"
+  below for the wrong and right forms side by side.
 
 ## Worked example
 
@@ -125,3 +173,55 @@ catching precondition failures early.`
 `Forward risk: a future factory method bypasses the constructor and
 silently constructs an invalid container.`
 ```
+
+## Counter-example — what the context block is not
+
+The agent must emit the four-element bullet list verbatim, in order,
+with each element filled in. The following emission is **not** a
+context block and must not appear in its place, even partially.
+
+**Wrong** — an investigation or code reading in place of the context
+block:
+
+```md
+**Current state of the type**
+
+`ProcessConfiguration` (346 lines, `CLIinvoke.Core/Primitives/`):
+
+- Two ctors. Public 3-param ctor at line 29 (the friendly one used by
+  `CliRun` and direct callers). Protected 15-param ctor at line 59
+  (the builder-grade one). They produce *different* default states...
+- `ProcessConfigurationWrapper` at
+  `ProcessConfigurationBuilder.cs:426-443`. An internal subclass
+  whose sole constructor delegates to the protected 15-param base
+  ctor...
+- 13 properties. 10 are `{ get; }` only. 3 have setters and are the
+  leak surface...
+
+The wrapper exists because the builder needs the protected ctor's
+shape (every field as a parameter) and the protected ctor isn't
+reachable from the builder class. The two-ctor shape is the seam
+problem; the wrapper is the workaround.
+```
+
+**Right** — the four-element bullet list, each element one sentence,
+each filled in from the Decision Ledger and the user's stated goal:
+
+```md
+- **Goal**: decide whether `ProcessConfiguration` should be a frozen
+  value object or remain a mutable config (D001).
+- **Prior decisions**: D001 established the session goal; no prior
+  branch decisions yet (D002 is the next slot).
+- **Stakes**: the choice determines whether precondition failures
+  are caught at construction or deferred to a later validation step.
+- **Scope**: this decision covers the mutability of
+  `ProcessConfiguration`; it does not cover the builder API.
+```
+
+The "Current state of the type" reading is useful agent reasoning.
+It does not belong in the user-facing context block. If the agent
+wants to share it with the user, paraphrase the key finding into
+one of the four elements (typically **Stakes** or **Scope**) or
+present it as a separate explicit step *before* the context block
+with its own heading — never in place of the four-element bullet
+list.

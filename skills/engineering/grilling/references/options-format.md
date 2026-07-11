@@ -4,6 +4,16 @@ Every decision point the agent presents must show the user the full range
 of natural options, not just the recommended one. The user must see the
 landscape of choices to make an informed decision.
 
+## Convention: "you" in this reference
+
+In this reference, "you" and "your" inside a blockquote, a backticked
+template, or a worked-example emission **always refer to the user**, not
+the LLM. The reference-set preamble and any other user-facing template
+in this reference are addressed to the user. Emit them verbatim and wait
+for the user to respond before proceeding. Free-form instructions to
+the agent in this reference use "the LLM" or "the agent" to refer to
+the agent.
+
 ## Reference-set preamble
 
 The options block is preceded by a brief preamble that frames the options
@@ -16,8 +26,14 @@ optional prose. The preamble must convey:
 
 The fixed preamble is:
 
-> Here are options to help you refine or confirm your answer. Pick one,
-> reject all, or hybridize.
+The reference-set preamble is the following user-facing template. The
+"you" inside refers to the user; emit it verbatim and wait for the user
+to respond.
+
+```md
+Here are options to help you refine or confirm your answer. Pick one,
+reject all, or hybridize.
+```
 
 ## How many options
 

@@ -131,11 +131,21 @@ Branch on the detection result:
   `docs/decisions/`, and confirm the path with the user before the
   first append.
 
+**Stop and wait for the user to confirm or change the path before
+proceeding.** The path confirmation in Step 2, the goal discovery in
+Step 3, and the first branch in Step 4 are three separate turns. Do
+not emit the goal-discovery question or the first branch question in
+the same turn as the path confirmation.
+
 ### Step 3: Goal discovery
 
-The first turn after the ledger state summary is an open Socratic
-question to surface the goal of the session. This is step zero of the
-grilling — it happens before any branch is opened.
+The first turn after the user has confirmed the ledger path in Step 2
+is an open Socratic question to surface the goal of the session. This
+is step zero of the grilling — it happens before any branch is opened.
+The goal-discovery turn, the locked-question turn, and the
+options/recommendation turn for the first branch are all separate
+turns — do not collapse any of them into the path-confirmation turn
+or into each other.
 
 If the user has pre-stated a goal in the initial message, acknowledge it
 and ask for confirmation or refinement. If the user has not stated a
@@ -149,38 +159,87 @@ The question's instruction explicitly states that the user may provide
 one goal or multiple goals. The LLM does not pressure the user to
 provide multiple goals when they have one.
 
-Wait for the user's response. Record the response as the foundational
-goal record (D001) in the Decision Ledger using the goal record template
-from `references/decision-ledger.md`. Append the record immediately.
-Subsequent context blocks (per `references/locked-question-format.md`)
-and recommendation reasoning reference this record.
+**Stop and wait for the user's response.** Do not proceed to Step 4
+or open any branch question until the user has answered. Record the
+response as the foundational goal record (D001) in the Decision Ledger
+using the goal record template from `references/decision-ledger.md`.
+Append the record immediately. Subsequent context blocks (per
+`references/locked-question-format.md`) and recommendation reasoning
+reference this record.
 
 ### Step 4: Open Branch A
 
 Open the first decision branch using the four-part locked question
-sequence from `references/locked-question-format.md`:
+sequence from `references/locked-question-format.md`. The four parts
+are emitted across three separate agent turns with mandatory waits
+between them. The agent must not collapse them into a single turn and
+must not skip the context block or Socratic elicitation question,
+even on a re-ask or a follow-up after the user has answered earlier
+parts.
 
-1. **Context block** — present the fixed context block (goal, prior
-   decisions, stakes, scope), each element one sentence, citing the
-   goal record (D001) and any prior branch records.
-2. **Socratic elicitation question** — ask "What are you working toward
-   in this decision?" Wait for the user's response.
-3. **Locked question line** — present the locked question line with the
-   explicit required framing: `required — state your answer before the
-   LLM presents options.` Wait for the user's answer.
-4. **Options and recommendation** — present the options block (with the
-   reference-set preamble from `references/options-format.md`) and the
-   recommendation (with goal-aligned reasoning from
+In the four-part sequence, "you" and "your" always refer to the **user**,
+not the LLM. The locked question line, the Socratic elicitation
+question, the reference-set preamble, and any other user-facing prompt
+are addressed to the user. The agent emits them verbatim and waits
+for the user to respond.
+
+The three turns are:
+
+1. **Turn 1 — Context block (Part 1) + Socratic elicitation question
+   (Part 2).** Present the fixed context block (goal, prior decisions,
+   stakes, scope), each element one sentence, citing the goal record
+   (D001) and any prior branch records. Then ask the Socratic
+   elicitation question verbatim. **Stop and wait for the user's
+   response.**
+
+   The Socratic elicitation question is:
+
+   ```
+   **What are you working toward in this decision?**
+   ```
+
+2. **Turn 2 — Locked question line (Part 3).** After the user answers
+   the Socratic elicitation question, present the locked question line
+   verbatim. **Stop and wait for the user's answer.**
+
+   The locked question line is:
+
+   ```
+   **For [Dxxx] – [branch name]: required — state your answer before
+   the LLM presents options. You may also pick an option, or provide
+   your answer.**
+   ```
+
+   The `[Dxxx]` is `max(existing Dxxx) + 1`. The `[branch name]` is a
+   short, descriptive, stable name for the branch (do not embed the
+   full question in it). The "you" and "your" inside the template
+   refer to the user.
+
+3. **Turn 3 — Options and recommendation (Part 4).** After the user
+   answers the locked question, present the options block (with the
+   reference-set preamble from `references/options-format.md`) and
+   the recommendation (with goal-aligned reasoning from
    `references/recommendation-format.md`).
 
-The user may confirm their answer, revise it in light of the options, or
-hybridize. The user's own answer is the anchor; the options are a
+   The reference-set preamble is:
+
+   ```
+   Here are options to help you refine or confirm your answer. Pick
+   one, reject all, or hybridize.
+   ```
+
+   Again, the "you" and "your" inside the preamble refer to the user.
+
+The user may confirm their answer, revise it in light of the options,
+or hybridize. The user's own answer is the anchor; the options are a
 reference set.
 
-Walk the user through one question at a time. For every question,
-present all natural options (typically 2–4) using the options format
-from `references/options-format.md`, then the recommendation using the
-format from `references/recommendation-format.md`.
+Walk the user through one branch at a time. For every branch, the
+three turns above are mandatory. Re-asking a branch (because the user
+did not answer, asked for clarification, or because of a follow-up)
+restarts at Turn 1 with a fresh context block and Socratic elicitation
+question — do not skip straight to the locked question line or the
+options.
 
 ### Step 5: Record and continue
 
@@ -349,9 +408,19 @@ transcript:
       sequence: context block, Socratic elicitation question, locked
       question line with explicit required framing, options and
       recommendation.
-- [ ] Every context block included all four mandatory elements (goal,
-      prior decisions, stakes, scope), each one sentence, with ledger
-      citations.
+- [ ] Every branch question, including re-asks and follow-ups, emitted
+      the full four-part sequence across three separate agent turns:
+      a context block + Socratic elicitation question turn, a locked
+      question line turn, and an options + recommendation turn. The
+      agent did not skip the context block or Socratic elicitation
+      question on a re-ask, and did not collapse the four parts into
+      a single turn.
+- [ ] Every context block was emitted as the four-element bullet list
+      (Goal, Prior decisions, Stakes, Scope) in that order, each
+      element exactly one sentence, with ledger citations. The context
+      block was not replaced with a free-form prose summary, a "current
+      state" investigation, a code reading, a domain-glossary recap,
+      or any other kind of analysis.
 - [ ] Every Socratic elicitation question used the fixed phrasing:
       "What are you working toward in this decision?"
 - [ ] Every locked question line included the explicit required framing:

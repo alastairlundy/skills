@@ -3,6 +3,15 @@
 After presenting the natural options, the agent names a recommendation.
 The recommendation is **a three-field breakdown with explicit labels**.
 
+## Convention: "you" in this reference
+
+In this reference, "you" and "your" inside a backticked template or a
+worked-example emission **always refer to the user**, not the LLM. The
+Recommendation, Reasoning, and Forward-risk templates are addressed to
+the user; "your goal" inside the Reasoning template means the user's
+goal. Emit the templates verbatim. Free-form instructions to the agent
+in this reference use "the LLM" or "the agent" to refer to the agent.
+
 ## Format
 
 ```md
