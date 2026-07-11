@@ -26,7 +26,6 @@ This repo:
 │   │   ├── grilling/SKILL.md
 │   │   └── ...
 │   ├── alignment/
-│   │   ├── anti-slop/SKILL.md
 │   │   └── ...
 │   └── skills-meta/
 │       └── skill-architect/SKILL.md

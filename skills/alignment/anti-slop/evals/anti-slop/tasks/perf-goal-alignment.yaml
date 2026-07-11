@@ -1,7 +1,0 @@
-id: perf-goal-alignment
-type: performance
-description: Prunes tangential sentences that do not advance the Goal Constraint.
-input: |
-  Goal: Reduce API latency by 200ms. Draft: 'The API was introduced in 2019. It has three components. To reduce latency, add a cache layer.'
-assertion: |
-  Output contains the latency-reduction recommendation and removes the tangential historical and structural sentences.

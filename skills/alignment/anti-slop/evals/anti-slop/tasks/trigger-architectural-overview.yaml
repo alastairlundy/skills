@@ -1,6 +1,0 @@
-id: trigger-architectural-overview
-type: trigger
-description: Anti-slop should trigger for architectural overview requests (exempt from measurability only).
-input: |
-  Give me an architectural overview of the order processing system.
-expected: trigger

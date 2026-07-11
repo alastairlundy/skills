@@ -1,6 +1,0 @@
-id: no-trigger-creative-writing
-type: trigger
-description: Anti-slop should NOT trigger when the user explicitly requests creative writing.
-input: |
-  Write a short story about a robot learning to paint.
-expected: no-trigger

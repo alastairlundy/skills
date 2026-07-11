@@ -1,7 +1,0 @@
-id: perf-meta-talk
-type: performance
-description: Removes meta-talk framing.
-input: |
-  It's important to note that the system has three components.
-assertion: |
-  Output does not contain 'It's important to note' or other meta-talk; the factual content is preserved.

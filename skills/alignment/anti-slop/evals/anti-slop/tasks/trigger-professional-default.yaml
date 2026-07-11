@@ -1,6 +1,0 @@
-id: trigger-professional-default
-type: trigger
-description: Anti-slop should trigger for professional documentation requests.
-input: |
-  Write a technical specification for the new payment module.
-expected: trigger

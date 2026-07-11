@@ -39,7 +39,6 @@ Skills for ensuring LLMs stay aligned on expectations and behaviour whilst perfo
 
 | Skill | Description | Notes | 
 |-------|-------------|-------|
-| [anti-slop](skills/alignment/anti-slop/) | Constrains vocabulary and enforces structural rules on generated prose. Use for user-facing text (documentation, PR descriptions, commit messages, prose reviews) to produce tight, high-density writing. | |
 | [ask-questions](skills/alignment/ask-questions/) | Guides agents in deciding when and how to ask the user questions via discrete-choice tools (e.g. `ask_question`), or in prose when no tool is available. Teaches a four-gate procedure (trigger, fit, construct, validate) that balances over-asking and under-asking. | |
 
 ### "Meta" Skills

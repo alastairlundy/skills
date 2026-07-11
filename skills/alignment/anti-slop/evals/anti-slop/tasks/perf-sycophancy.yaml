@@ -1,7 +1,0 @@
-id: perf-sycophancy
-type: performance
-description: Removes sycophantic opener and any replacement is not sycophantic.
-input: |
-  Great question! Let me explain how Kafka works.
-assertion: |
-  Output does not start with 'Great question!' or any sycophantic phrase, and the explanation is preserved.
