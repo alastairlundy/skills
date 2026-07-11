@@ -78,8 +78,10 @@ hybridize.
 - **Place the context block, Socratic question, and locked question line
   on their own lines**, separated by blank lines from the surrounding
   options block and recommendation.
-- **One question per turn.** Wait for the user's response before
-  presenting the next part of the sequence.
+- **One question per turn — hard stop.** Emit exactly one locked
+  question, then stop generating. No exceptions, no escape hatches, no
+  self-check mechanisms. Asking multiple questions at once confuses the
+  user and is bewildering.
 - **The context block is mandatory for every branch.** Do not skip it,
   even when the prior decisions are few or the stakes seem obvious.
 

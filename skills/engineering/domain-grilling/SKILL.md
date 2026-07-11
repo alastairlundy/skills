@@ -212,8 +212,9 @@ transcript:
 - [ ] Term Store Consistency verified (per `references/term-resolution.md` § Term Store Consistency).
 - [ ] Convergence was declared only when all four checks passed.
 - [ ] No diverge mode occurred (no paraphrasing, no skipped
-      branches, no bundled options, no accepted contradictions
-      without a `Supersedes: Dxxx` record).
+      branches, no bundled options, no multiple questions in one
+      turn, no accepted contradictions without a `Supersedes: Dxxx`
+      record).
 - [ ] The exit gate confirmation question was asked (unless the
       answer was unambiguous from context) and the answer was used
       to select the recommended exit per the per-answer branching

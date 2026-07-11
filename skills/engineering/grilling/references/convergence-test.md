@@ -57,10 +57,13 @@ are the *negative* bar — explicit divergences the agent must avoid.
 - **Bundling options.** A 3-option question is asked as a 5-option
   question, or a 5-option question is asked as a 3-option one. The
   user sees a different decision space than the agent's working set.
+- **Asking multiple questions in one turn.** The agent emits more than
+  one locked question before stopping. The user receives a wall of
+  questions instead of a single focused prompt.
 - **Accepting a contradictory answer.** The user gives an answer that
   contradicts a previously resolved decision, and the agent accepts it
   without flagging the conflict or creating a `Supersedes: Dxxx` record.
 
-The recovery for the first three is to revisit the affected branch and
-re-record. The recovery for the fourth is to apply the supersede rule
+The recovery for the first four is to revisit the affected branch and
+re-record. The recovery for the fifth is to apply the supersede rule
 (re-open gets a new `Dxxx`) and resolve the contradiction explicitly.
