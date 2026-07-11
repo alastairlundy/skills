@@ -41,6 +41,7 @@ before drift compounds.
 ```md
 ### [Dxxx] — <branch name>
 
+- **Driver**: <the user's underlying principle or motivation>
 - **Resolved Answer**: <verbatim user choice>
 - **Normalized Requirement**: <concise, testable statement>
 - **Constraints**: <negative requirements, edge cases, or defaults>
@@ -49,6 +50,11 @@ before drift compounds.
 - `Dxxx` is a zero-padded sequence: `D001`, `D002`, `D003`, … Scan the
   existing ledger file and increment from the highest existing `Dxxx`
   number. Do not reuse IDs.
+- `Driver` captures the **why** — the user's underlying principle or
+  motivation behind the decision. It is distinct from `Resolved Answer`
+  (the **what**) and `Normalized Requirement` (the testable outcome).
+  If the user states multiple motivations, record the primary one and
+  note the rest in `Constraints`.
 - `Resolved Answer` is the user's exact wording (or a close paraphrase the
   user has explicitly accepted). It is **not** the agent's summary.
 - `Normalized Requirement` is a single concise, testable statement an
@@ -57,6 +63,25 @@ before drift compounds.
 - `Constraints` are negative requirements, edge cases, or defaults the
   user named (e.g., "Do not collapse multiple tabs into one session",
   "All open tabs must survive restart"). If none, write `None.`
+
+## Goal record
+
+The first record in the ledger (D001) is the **goal record**. It captures
+the session's foundational goal as surfaced by the goal-discovery question.
+The goal record uses the same template but with goal-specific content:
+
+```md
+### [D001] — session goal
+
+- **Driver**: <the user's underlying motivation for the session>
+- **Resolved Answer**: <the user's stated goal or goals>
+- **Normalized Requirement**: <a testable statement of the session's purpose>
+- **Constraints**: <any scope boundaries the user named>
+```
+
+If the user's goal changes mid-session, add a new goal record with a
+fresh `Dxxx` ID and a `Supersedes: Dxxx` line in `Constraints` linking
+to the prior goal record. Do not amend the prior goal record.
 
 ## Re-opens
 
@@ -71,6 +96,8 @@ revisit:
 ```md
 ### [D012] — where the branch lives
 
+- **Driver**: the user wants precondition failures to be visible at the
+  call site, not deferred to a later validation step.
 - **Resolved Answer**: encode the precondition inside the constructor of
   the tab container.
 - **Normalized Requirement**: `TabContainer` shall reject construction
@@ -91,8 +118,21 @@ interview genuinely needs more.
 ## Worked example — full ledger excerpt
 
 ```md
-### [D001] — who hires whom
+### [D001] — session goal
 
+- **Driver**: the user wants to build a platform that correctly models
+  the payment relationship between contacts and client organizations.
+- **Resolved Answer**: "clarify the domain model for a freelancing
+  platform where contacts message on behalf of client organizations."
+- **Normalized Requirement**: The session shall produce a domain model
+  that distinguishes contacts from client organizations and defines the
+  payment flow.
+- **Constraints**: `None.`
+
+### [D002] — who hires whom
+
+- **Driver**: the user wants the model to reflect real-world agency —
+  the contact acts for an organization, not for themselves.
 - **Resolved Answer**: "the contact is a person acting for a client
   organization; the client organization is the payer."
 - **Normalized Requirement**: The platform shall distinguish between a
@@ -101,8 +141,10 @@ interview genuinely needs more.
 - **Constraints**: Both terms must exist in the glossary
   (`docs/CONTEXT.md`) with the definitions recorded inline here.
 
-### [D002] — how payments are routed
+### [D003] — how payments are routed
 
+- **Driver**: the user wants the platform fee to be transparent and
+  deducted before the freelancer receives funds.
 - **Resolved Answer**: "client organization is the payer; freelancer is
   the payee; platform takes a percentage fee."
 - **Normalized Requirement**: Payment flow shall route funds from

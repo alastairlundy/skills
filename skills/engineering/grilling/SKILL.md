@@ -14,10 +14,12 @@ license: MIT
 
 # Grilling
 
-A relentless Socratic interviewing skill. The user has a vague decision; the
-agent walks it down a tree of branches, presents options with trade-offs, and
-records the resolved answer in a Decision Ledger. The session ends when a
-shared understanding is reached and the user picks an exit path.
+A relentless Socratic interviewing skill. The user has a vague decision;
+the agent facilitates — the user owns each decision. The agent walks the
+decision down a tree of branches, asks Socratic questions to surface the
+user's values, presents options as a reference set, and records the
+resolved answer in a Decision Ledger. The session ends when a shared
+understanding is reached and the user picks an exit path.
 
 This skill is the **generic parent** of `domain-grilling` and
 `code-implementation-grilling`. It owns the core machinery — the Decision
@@ -79,13 +81,16 @@ After the pre-flight passes, load and read each of the six references
 in full before the first user question:
 
 - `references/decision-ledger.md` — Decision Ledger path derivation,
-  `Dxxx` record format, lazy creation, soft cap, re-opens.
-- `references/options-format.md` — the four-field option block
-  (What it is / Benefit / Cost / Risk).
+  `Dxxx` record format with Driver field, goal record, lazy creation,
+  soft cap, re-opens.
+- `references/options-format.md` — the reference-set preamble and the
+  four-field option block (What it is / Benefit / Cost / Risk).
 - `references/recommendation-format.md` — the three-field recommendation
-  breakdown with the verbatim-name rule.
-- `references/locked-question-format.md` — the locked question template
-  used at every branch.
+  breakdown with goal-aligned reasoning, the verbatim-name rule, and the
+  recommendation-rationale-on-request mechanism.
+- `references/locked-question-format.md` — the four-part locked question
+  sequence: context block, Socratic elicitation question, locked question
+  line with explicit required framing, options and recommendation.
 - `references/tone-and-output.md` — tone discipline, forbidden filler
   words, branch transitions, neutral mirroring.
 - `references/convergence-test.md` — the four-check convergence test and
@@ -126,23 +131,73 @@ Branch on the detection result:
   `docs/decisions/`, and confirm the path with the user before the
   first append.
 
-### Step 3: Open Branch A
+### Step 3: Goal discovery
 
-Open the first decision branch using the locked question format from
-`references/locked-question-format.md`. The locked format is:
-`For [Dxxx] – [branch name]: pick an option, or provide your answer.`
-Walk the user through it one question at a time.
+The first turn after the ledger state summary is an open Socratic
+question to surface the goal of the session. This is step zero of the
+grilling — it happens before any branch is opened.
 
-For every question, present all natural options (typically 2–4) using
-the options format from `references/options-format.md`, then the
-recommendation using the format from `references/recommendation-format.md`.
+If the user has pre-stated a goal in the initial message, acknowledge it
+and ask for confirmation or refinement. If the user has not stated a
+goal, ask the goal-discovery question.
 
-### Step 4: Record and continue
+The goal-discovery question is:
 
-After the user resolves a branch, immediately append a `Dxxx` record to
-the Decision Ledger using the template in
-`references/decision-ledger.md`. Do not batch the writes — append
-after each resolution, before opening the next branch.
+> **What are your goals for this idea?**
+
+The question's instruction explicitly states that the user may provide
+one goal or multiple goals. The LLM does not pressure the user to
+provide multiple goals when they have one.
+
+Wait for the user's response. Record the response as the foundational
+goal record (D001) in the Decision Ledger using the goal record template
+from `references/decision-ledger.md`. Append the record immediately.
+Subsequent context blocks (per `references/locked-question-format.md`)
+and recommendation reasoning reference this record.
+
+### Step 4: Open Branch A
+
+Open the first decision branch using the four-part locked question
+sequence from `references/locked-question-format.md`:
+
+1. **Context block** — present the fixed context block (goal, prior
+   decisions, stakes, scope), each element one sentence, citing the
+   goal record (D001) and any prior branch records.
+2. **Socratic elicitation question** — ask "What are you working toward
+   in this decision?" Wait for the user's response.
+3. **Locked question line** — present the locked question line with the
+   explicit required framing: `required — state your answer before the
+   LLM presents options.` Wait for the user's answer.
+4. **Options and recommendation** — present the options block (with the
+   reference-set preamble from `references/options-format.md`) and the
+   recommendation (with goal-aligned reasoning from
+   `references/recommendation-format.md`).
+
+The user may confirm their answer, revise it in light of the options, or
+hybridize. The user's own answer is the anchor; the options are a
+reference set.
+
+Walk the user through one question at a time. For every question,
+present all natural options (typically 2–4) using the options format
+from `references/options-format.md`, then the recommendation using the
+format from `references/recommendation-format.md`.
+
+### Step 5: Record and continue
+
+After the user resolves a branch, perform the post-pick step:
+
+1. Confirm the pick in one sentence.
+2. Remind the user they can ask for the goal-aligned rejection rationale
+   for the other options.
+3. Immediately append a `Dxxx` record to the Decision Ledger using the
+   template in `references/decision-ledger.md` (including the Driver
+   field). Do not batch the writes — append after each resolution,
+   before opening the next branch.
+4. Move to the next branch.
+
+The post-pick confirmation is one sentence. The "you can ask" reminder
+is part of the post-pick template, not optional prose. The LLM does not
+volunteer analysis the user did not ask for.
 
 If the write fails — permissions error, race with another process, or
 the parent directory does not exist — abort the branch transition,
@@ -167,14 +222,36 @@ write a record. Do not run the convergence test. The partial ledger
 state is preserved as-is until the user decides to delete or continue
 it.
 
-### Step 5: Convergence
+### Step 6: Goal-change handling
+
+The goal-change handling workflow supports two paths:
+
+**User-initiated goal change.** The user explicitly states their goal has
+changed. The LLM confirms the change with the user, then:
+
+1. Documents the change as a new goal record in the Decision Ledger
+   (with a fresh `Dxxx` ID, a Driver field, and a `Supersedes: Dxxx`
+   line in Constraints linking to the prior goal record).
+2. Re-asks all open branches with the updated context.
+3. Asks the user whether closed branches need revisiting. The LLM does
+   not decide unilaterally.
+
+**LLM-flagged potential shift.** The LLM notices the user's answers may
+reflect a shift in goals. The LLM flags the potential shift as a
+question, not a determination. The user decides whether the goal has
+changed. If the user confirms, the same three steps apply.
+
+The goal change or clarification is documented as its own record (with
+its own Driver field), not amended into the prior goal record.
+
+### Step 7: Convergence
 
 Before declaring convergence, run the four-check convergence test from
 `references/convergence-test.md`. If any check fails, continue grilling
 (or re-open the affected branch). When all four pass, declare: "We have
 reached a shared understanding."
 
-### Step 6: Exit paths
+### Step 8: Exit paths
 
 Once convergence is declared, offer the user the exit paths appropriate
 to the type of decision reached. Every exit that drives downstream
@@ -231,29 +308,61 @@ transcript:
 
 - [ ] Existing Decision Ledger state was summarized to the user before
       the first question.
+- [ ] **Must pass — verify in transcript.** The goal-discovery question
+      ("What are your goals for this idea?") was asked as Step 3, and
+      the user's response was recorded as D001 (the goal record) in the
+      Decision Ledger.
 - [ ] **Must pass — verify in transcript.** One Decision Ledger record
       was appended immediately after every resolved branch (no
       batching at session end). Inspect the transcript for write-time
       evidence: a successful append must be visible between the user's
       resolution of one branch and the agent's first question of the
       next.
-- [ ] Every record used the inline template (`Resolved Answer`,
+- [ ] Every record used the inline template (`Driver`, `Resolved Answer`,
       `Normalized Requirement`, `Constraints`) and a fresh `Dxxx` ID
       incremented from the highest existing one.
 - [ ] Every record's field headers matched the reference template
-      verbatim (`Resolved Answer` / `Normalized Requirement` /
+      verbatim (`Driver` / `Resolved Answer` / `Normalized Requirement` /
       `Constraints`).
+- [ ] Every record's `Driver` field captured the user's underlying
+      principle or motivation, distinct from `Resolved Answer` (the
+      what) and `Normalized Requirement` (the testable outcome).
 - [ ] Re-opened branches produced a new record with a `Supersedes: Dxxx`
       line in `Constraints` rather than amending the prior record.
+- [ ] Every branch question followed the four-part locked question
+      sequence: context block, Socratic elicitation question, locked
+      question line with explicit required framing, options and
+      recommendation.
+- [ ] Every context block included all four mandatory elements (goal,
+      prior decisions, stakes, scope), each one sentence, with ledger
+      citations.
+- [ ] Every Socratic elicitation question used the fixed phrasing:
+      "What are you working toward in this decision?"
+- [ ] Every locked question line included the explicit required framing:
+      `required — state your answer before the LLM presents options.`
+- [ ] Every options block was preceded by the reference-set preamble:
+      "Here are options to help you refine or confirm your answer. Pick
+      one, reject all, or hybridize."
 - [ ] Every question offered all natural options (typically 2–4) with
       the four required fields (What it is, Benefit, Cost, Risk) at one
       sentence per field.
 - [ ] Every recommendation used the three-field breakdown
       (`Recommendation: Option N — <name>.`, `Reasoning: ...`,
       `Forward risk: ...`) with the option name copied verbatim.
-- [ ] Every question used the locked format from
-      `references/locked-question-format.md` with the `Dxxx` and name
-      verbatim.
+- [ ] Every recommendation's `Reasoning` field was goal-aligned (not
+      option-comparison), explaining why the recommended option serves
+      the user's stated goal.
+- [ ] The post-pick step included: (1) one-sentence confirmation, (2)
+      reminder that the user can ask for the goal-aligned rejection
+      rationale, (3) immediate ledger append, (4) transition to the next
+      branch.
+- [ ] When the user asked for the recommendation rationale, the agent
+      provided concise goal-aligned rejection reasoning for the other
+      options (not option-comparison).
+- [ ] When the user's goal changed mid-session, the change was documented
+      as a new goal record with a `Supersedes: Dxxx` line linking to the
+      prior goal record, open branches were re-asked, and the user was
+      asked whether closed branches need revisiting.
 - [ ] No sentence began with a word whose function is to praise or
       judge the user's prior input.
 - [ ] No forbidden filler word appeared in any agent turn

@@ -168,19 +168,36 @@ transcript:
       with the user before the first write.
 - [ ] One Decision Ledger record was appended immediately after
       every resolved branch (no batching at session end).
-- [ ] Every record used the inline template (`Resolved Answer`,
+- [ ] Every record used the inline template (`Driver`, `Resolved Answer`,
       `Normalized Requirement`, `Constraints`) and a fresh `Dxxx` ID
       incremented from the highest existing one.
+- [ ] Every record's `Driver` field captured the user's underlying
+      principle or motivation, distinct from `Resolved Answer` (the
+      what) and `Normalized Requirement` (the testable outcome).
 - [ ] Re-opened branches produced a new record with a `Supersedes:
       Dxxx` line in `Constraints`.
+- [ ] Every branch question followed the four-part locked question
+      sequence: context block, Socratic elicitation question, locked
+      question line with explicit required framing, options and
+      recommendation.
+- [ ] Every context block included all four mandatory elements (goal,
+      prior decisions, stakes, scope), each one sentence, with ledger
+      citations.
+- [ ] Every Socratic elicitation question used the fixed phrasing:
+      "What are you working toward in this decision?"
+- [ ] Every locked question line included the explicit required framing:
+      `required — state your answer before the LLM presents options.`
+- [ ] Every options block was preceded by the reference-set preamble:
+      "Here are options to help you refine or confirm your answer. Pick
+      one, reject all, or hybridize."
 - [ ] Every question offered all natural options (typically 2–4)
       that passed the four-field defensibility test.
 - [ ] Every recommendation used the three-field breakdown
       (`Recommendation: Option N — <name>.`, `Reasoning: ...`,
       `Forward risk: ...`) with the option name copied verbatim.
-- [ ] Every question used the locked format
-      `For [Dxxx] – [branch name]: pick an option, or provide your answer.`
-      with the `Dxxx` and name verbatim.
+- [ ] Every recommendation's `Reasoning` field was goal-aligned (not
+      option-comparison), explaining why the recommended option serves
+      the user's stated goal.
 - [ ] No sentence began with a word whose function is to praise or
       judge the user's prior input.
 - [ ] No forbidden filler word appeared in any agent turn
