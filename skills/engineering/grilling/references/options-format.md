@@ -4,6 +4,21 @@ Every decision point the agent presents must show the user the full range
 of natural options, not just the recommended one. The user must see the
 landscape of choices to make an informed decision.
 
+## Reference-set preamble
+
+The options block is preceded by a brief preamble that frames the options
+as a reference set. The preamble is part of the options block — it is not
+optional prose. The preamble must convey:
+
+- The options are a reference set the user can use to confirm, revise,
+  or hybridize their own answer.
+- The user may pick one, reject all, or combine elements.
+
+The fixed preamble is:
+
+> Here are options to help you refine or confirm your answer. Pick one,
+> reject all, or hybridize.
+
 ## How many options
 
 Typically 2–4. An option is defensible if all four fields below can be
@@ -36,8 +51,14 @@ The `<Name>` is copied verbatim into the recommendation block — see
 
 ## Worked example
 
-**For D007 – where the precondition check lives: pick an option, or
+**For D007 – where the precondition check lives: required — state your
+answer before the LLM presents options. You may also pick an option, or
 provide your answer.**
+
+<user states their answer>
+
+Here are options to help you refine or confirm your answer. Pick one,
+reject all, or hybridize.
 
 - **Option 1 — Constructor check.** What it is: the precondition runs in
   the tab container's constructor, throwing on null dependencies.

@@ -16,9 +16,11 @@ The recommendation is **a three-field breakdown with explicit labels**.
   abbreviate, or re-order the name. Do not modify, augment, combine, or
   qualify the option. If a clause is essential, promote it to a
   *separate* option first, then recommend that option.
-- `Reasoning: <one-to-two sentences>.` — why this option's trade-offs
-  and risks are acceptable in this specific context. Justify the
-  recommended option only; do not re-justify the rejected options.
+- `Reasoning: <one-to-two sentences>.` — goal-aligned reasoning for why
+  this option serves the user's stated goal. The reasoning must explain
+  why the recommended option aligns with the user's goal; it must not
+  compare options against each other. Do not re-justify the rejected
+  options.
 - `Forward risk: <one sentence naming the most likely failure mode of the
   chosen option>.` — the most likely way this choice goes wrong, in
   one sentence. The point is to surface the failure mode so the user can
@@ -45,9 +47,10 @@ and recommend that:
 >   `TryCreate` in production to "tidy up" error handling.
 >
 > `Recommendation: Option 4 — Constructor check with a TryCreate escape hatch.`
-> `Reasoning: production code keeps the synchronous failure signal, and
-> test scaffolding gets a documented escape hatch that the lint rule can
-> flag if it leaks into non-test code.`
+> `Reasoning: production code keeps the synchronous failure signal, which
+> aligns with your goal of catching precondition failures at the call
+> site; test scaffolding gets a documented escape hatch that the lint
+> rule can flag if it leaks into non-test code.`
 > `Forward risk: a future developer uses TryCreate in production code to
 > "tidy up" error handling, hiding the precondition failure.`
 
@@ -65,3 +68,16 @@ The fix is to keep the recommendation line a pure reference: copy the
 name verbatim, copy the option number verbatim, and put any nuance in
 `Reasoning` or `Forward risk`. The recommendation is the *pointer*; the
 nuance is the *justification*.
+
+## Recommendation rationale on request
+
+After presenting the recommendation, the agent reminds the user they can
+ask for the recommendation rationale. The reminder is part of the
+post-pick template (see `SKILL.md` Step 4), not optional prose.
+
+When the user asks for the rationale, the agent provides concise
+goal-aligned rejection reasoning for the other options. The rejection
+reasoning must explain why each rejected option is less aligned with the
+user's stated goal; it must not compare options against each other.
+
+If the user does not ask, the agent does not volunteer the rationale.

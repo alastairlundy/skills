@@ -31,8 +31,8 @@ owns the Decision Ledger, formats, tone, and convergence test).
 
 ## Workflow
 
-**Core Constraint**: Ask exactly one question at a time. Wait for the
-response and resolve before proceeding.
+**Core Constraint**: Ask exactly one question per turn — hard stop.
+Emit one locked question, then stop generating. No exceptions.
 
 ### Step 1: Load the references
 

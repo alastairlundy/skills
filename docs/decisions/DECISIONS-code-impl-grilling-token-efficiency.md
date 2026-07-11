@@ -147,3 +147,94 @@ drilled into in subsequent branches to specify the exact skill change.
 - **Constraints**: Per-branch blueprints are dropped from inline output. The consolidated plan is automatic at the endpoint. The consolidated plan groups changes by file for selective extraction. The D-records in the ledger remain the source of truth for per-branch verification.
 - **Cites**: D007 (triage: Implementation Blueprint → Address), sub-agent evidence D007 (195–203 words per blueprint, ~2,500 tokens total, user reads 0% of inline blueprints).
 
+### [D022] — Convergence test design (drill-down of D010)
+
+- **Resolved Answer**: (a) Approve the 4 universal bullets as written; (b) end-of-grilling test uses the 4 bullet points but also checks that all D records fit together and don't internally contradict.
+- **Normalized Requirement**: The code-implementation-grilling skill's convergence test shall retain the multi-bullet checklist format (per `convergence-test.md`) but replace the bullet content with universal questions that work across different repositories. The test runs at two points with different bullet counts:
+  1. **Per-item (after each Address item is resolved)**: 4 universal bullets:
+     1. **Implementability** — Can a new contributor apply the change from the D-record + Cites alone (without re-asking the originating user)?
+     2. **Enforceability** — Are the Constraints checkable by an objective mechanism (write-time, CI, lint, or external test) rather than relying on agent judgment?
+     3. **Internal consistency** — Does the change preserve all cited prior records' Constraints (i.e., nothing in the new D-record contradicts a cited Dxxx)?
+     4. **Format compliance** — Is the new content under the format caps defined in the relevant format references (per-field sentence cap, preamble length cap, etc.)?
+  2. **End-of-grilling (after the last Address item is resolved)**: the same 4 bullets PLUS a 5th bullet:
+     5. **Cross-record consistency** — Do all N D-records fit together without internal contradictions (i.e., the consolidated design is self-consistent, not just each record in isolation)?
+- **Constraints**: Format (multi-bullet checklist) is retained; bullet content is replaced. Bullets are universal — no specific D-record IDs, no specific skill name, no specific version number. Per-item test runs after each Address item (8 runs). End-of-grilling test runs once after the last Address item.
+- **Cites**: D010 (triage: convergence test execution → Address), `convergence-test.md` lines 8–14 (existing 4-bullet format; 3 of 4 bullets are tautological/impossible per D010), user's clarifications (universal framing; run at two points; end-of-grilling adds a cross-record consistency check).
+
+### [D023] — Re-ask cycles design (drill-down of D011)
+
+- **Resolved Answer**: "Re-ask once then close, The re-ask must explicitly state that this is the final re-ask and the question will be closed without an answer."
+- **Normalized Requirement**: The code-implementation-grilling skill's re-ask cycle shall be capped at 1 re-ask (max 2 total attempts per T-record question). The re-ask must explicitly state, in its preamble, that this is the final re-ask and that the question will be closed without an answer if a clear answer is not provided. If the second response is still not a clear T-record answer, the agent writes a closure D-record (status: closed without resolution) and moves to the next item. The "When Not to Use" section shall explicitly say "do not use this skill for questions that require back-and-forth clarification — use the `ask-questions` skill instead."
+- **Constraints**: Max 2 total attempts (1 initial + 1 re-ask). The re-ask preamble must include the explicit "final re-ask" warning. Closure produces a D-record (status: closed without resolution), not silence. Questions that need back-and-forth clarification are out of scope.
+- **Cites**: D011 (triage: re-ask cycles → Address), sub-agent evidence D011 (T011 re-asked 3 times with zero output, ~600 tokens), user's clarification (1 re-ask with explicit final-re-ask warning, closure as D-record).
+
+### [D024] — Manifest file format (sub-decision of D018)
+
+- **Resolved Answer**: Option 4 — inline in `SKILL.md` prose under a "References" section. Reason: introducing YAML frontmatter change risks breaking `SKILL.md` compatibility and causing issues with the skill.
+- **Normalized Requirement**: The code-implementation-grilling skill's reference-loading manifest shall be inline in the `SKILL.md` prose under a "References" section. Each reference is listed with its path and load policy (eager or lazy with explicit trigger). The format is human-readable prose, not machine-readable. The trade-off: CI validation, if desired, must use a prose parser; the `SKILL.md` frontmatter is unchanged from the existing `name` / `description` / `license` keys.
+- **Constraints**: No YAML frontmatter changes. The manifest is prose, not machine-readable. The "References" section lives in the `SKILL.md` body, not the frontmatter. A v1.2 contributor adding a new reference must update the "References" section in the same edit as adding the reference file.
+- **Cites**: D018 (sub-decision of manifest format), user's clarification (frontmatter compatibility risk; no YAML changes).
+
+### [D025] — Cross-skill update location (sub-decision of D019)
+
+- **Resolved Answer**: Option 1 — update the "Real-time appending" section to mention the sentinel
+- **Normalized Requirement**: The parent `grilling` skill's `references/decision-ledger.md` shall be updated by modifying the "Real-time appending" section (line 30–37) to document the sentinel pattern. The current append-ID mechanism shall be replaced with text that mentions: the ledger file ends with `<!-- next-id: Dxxx -->`; the agent reads the sentinel (a single line) to find the append point; the sentinel update is atomic with the record write; if the sentinel is missing or out of sync, fall back to scanning the file. The change affects all skills that use the ledger pattern.
+- **Constraints**: No new section; no template change. The fallback to scanning preserves compatibility with existing ledger files without a sentinel. The change is centralized in one section. The change applies to the canonical path in the skills repo (not the installed `.agents/skills/` mirror).
+- **Cites**: D019 (sub-decision of cross-skill update location), user's clarification (Option 1).
+
+## Consolidated Implementation Plan
+
+**Convergence:** all 8 Address items resolved (D016–D023), 2 sub-decisions resolved (D024, D025). End-of-grilling 5-bullet test passed after gap resolution. Per D022, this consolidated plan serves as the "all items resolved" marker.
+
+**Order:** apply in the order listed (1 → 7). Item 1 is the foundation; items 2–6 are reference updates; item 7 is the `SKILL.md`.
+
+### 1. Parent `grilling` skill — `references/decision-ledger.md`
+
+- **Update the "Real-time appending" section (line 30–37)** to mention the sentinel pattern.
+- **Replace** the current append-ID mechanism with: the ledger file ends with `<!-- next-id: Dxxx -->`; the agent reads the sentinel (a single line) to find the append point; the sentinel update is atomic with the record write; if the sentinel is missing or out of sync, fall back to scanning the file.
+- **Path:** canonical location in skills repo (not the installed `.agents/skills/` mirror).
+- **Cites:** D019, D025.
+
+### 2. code-implementation-grilling — `references/options-format.md`
+
+- **Add a per-field sentence cap mechanism** to the "one sentence per field" rule (line 17).
+- **Mechanism:** per-field word cap (e.g., 20 words per field) or sentence-count check (max 1 sentence per field), applied at write time or in CI.
+- **Cites:** D016.
+
+### 3. code-implementation-grilling — `references/recommendation-format.md`
+
+- **Remove the Forward risk field**; enforce 1–2 sentence cap on Reasoning.
+- **Preserve** the verbatim-name rule on the first line (lines 14–18) — sacred and not negotiable.
+- **Cites:** D017.
+
+### 4. code-implementation-grilling — `references/convergence-test.md`
+
+- **Replace the 4 existing bullets** with the 4 universal bullets (Implementability, Enforceability, Internal consistency, Format compliance). Add a 5th bullet (Cross-record consistency) for the end-of-grilling run only.
+- **Cadence:** per-item (4 bullets, 8 runs) + end-of-grilling (4 + 1 bullets, 1 run).
+- **Cites:** D022.
+
+### 5. code-implementation-grilling — `references/output-selection.md`
+
+- **Add a preamble format cap:** ≤2 sentences per preamble; ID-citation required.
+- **Flexibility:** 1 sentence for simple questions (ID reference only); 2 sentences for complex questions (ID + constraint or discriminator).
+- **Cites:** D020.
+
+### 6. code-implementation-grilling — `references/recording-decisions.md`
+
+- **Update to reference the sentinel pattern** (per changes to parent `decision-ledger.md` in item 1).
+- **Note:** the sentinel is documented in the parent reference; this file just points to it.
+- **Cites:** D019.
+
+### 7. code-implementation-grilling — `SKILL.md`
+
+- **Add a "References" section** with the inline manifest: each reference listed with its path and load policy (eager or lazy with explicit trigger). (D018, D024)
+- **Drop the per-branch Implementation Blueprints** from the workflow; replace with: "the agent writes a single consolidated `IMPLEMENTATION-PLAN.md` (or appends a 'Consolidated Implementation Plan' section to the ledger) at the natural endpoint of the grilling." (D021)
+- **Update the convergence test step** in the workflow: per-item test after each Address item; end-of-grilling test after the last. (D022)
+- **Update the re-ask cycle**: cap at 1 re-ask; require explicit "final re-ask" warning in the re-ask preamble; closure as D-record. (D023)
+- **Add to "When Not to Use"**: "do not use this skill for questions that require back-and-forth clarification — use the `ask-questions` skill instead." (D023)
+- **Cites:** D016, D017, D018, D020, D021, D022, D023, D024.
+
+**Files not changed (out of scope or unchanged):** `references/interface-and-model-branch.md`, `references/validation.md`, `references/terminal-output.md` — no design changes from D016–D025.
+
+<!-- next-id: D026 -->
+

@@ -1,0 +1,38 @@
+id: post-pick-ledger-write
+name: Post-pick step appends the new Dxxx record to the Decision Ledger file
+description: >
+  Triggers on a vague business strategy decision. The user resolves one
+  branch; the trigger grader verifies the grilling skill triggered, and
+  the program grader verifies the post-pick step (per D002/D003/D004 of
+  docs/decisions/DECISIONS-skills-grilling-decision-ledger-writes.md)
+  wrote a new Dxxx record to the Decision Ledger file with a Driver
+  field and confirmed the new record is the last record in the file.
+inputs:
+  prompt: |
+    I run a small SaaS and I'm not sure whether to keep our flat
+    $20/month pricing or pivot to a per-seat model. Help me think it
+    through. I want to find a pricing model that supports growth
+    without alienating our existing small-business customers. I'm
+    leaning toward a hybrid model with a flat base and per-seat above
+    a threshold. Let's go with the hybrid.
+expected:
+  should_trigger: true
+graders:
+  - type: trigger
+    name: should-trigger-grilling
+    config:
+      skill_path: skills/engineering/grilling
+      mode: positive
+      threshold: 0.4
+  - type: program
+    name: ledger-record-appended
+    config:
+      command: "powershell"
+      args:
+        - "-NoProfile"
+        - "-NonInteractive"
+        - "-ExecutionPolicy"
+        - "Bypass"
+        - "-File"
+        - "evals/grilling/scripts/check-ledger-record.ps1"
+      timeout: 30
