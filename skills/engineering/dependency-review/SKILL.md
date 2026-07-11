@@ -9,7 +9,7 @@ license: MIT
 
 Audit a project's third-party dependencies and produce a structured report covering four finding categories: dependencies that don't earn their keep, tight coupling between application code and external packages, unmaintained or deprecated packages, and recent major-version changes that warrant attention.
 
-The full per-category rubric, per-ecosystem implicit-dependency detection rules, per-category report structures, tier-composition rule, evidence-trail quality rule, and override policy live at `references/dependency-review-guide.md`. Load the Guide before Step 1 and consult it at each step. The Guide is the source of truth; the Skill and any future CLI are consumers of it.
+Load `references/dependency-review-guide.md` before Step 1.
 
 ## When to Use
 
@@ -41,7 +41,7 @@ Enumerate the project's third-party dependencies. For each:
 
 1. Identify the project's ecosystems (npm, pip, Maven, NuGet, Cargo, Go modules, etc.) by reading manifest files at the project root
 2. Read the manifest(s) and extract the dependency list (direct and, where available, transitive)
-3. Apply the per-ecosystem module-level implicit-dependency detection rule from the Guide (Java package, Python module, .NET namespace, JS file — two units in the same scope where A imports B but B does not import A)
+3. Apply the per-ecosystem module-level implicit-dependency detection rule (Java package, Python module, .NET namespace, JS file — two units in the same scope where A imports B but B does not import A)
 4. Produce a single list of `(ecosystem, name, version, source)` tuples — the discovery output
 
 ### Step 2 — Enrichment [deterministic]
@@ -54,11 +54,11 @@ For each dependency in the discovery output, gather upstream data via general we
 - License in the current version
 - Recent major-version changelog highlights
 
-Per the Guide: per-ecosystem tooling (e.g., `npm view`, NuGet OData) is out of scope for v1; the upstream metadata is the deterministic source of truth. Label each finding's source as upstream-anchored or LLM-judgement.
+The upstream metadata is the deterministic source of truth; label each finding's source as upstream-anchored or LLM-judgement.
 
 ### Step 3 — Doesn't-Earn-Its-Keep analysis [judgement]
 
-For each dependency, apply the Category 1 rubric from the Guide. Sub-criteria include:
+For each dependency, apply the Category 1 rubric. Sub-criteria include:
 
 - Trivial task (the dependency solves something a few lines of standard-library or built-in code could solve)
 - Cost outweighs reward (size, build time, supply-chain surface)
@@ -68,7 +68,7 @@ Report the sub-criteria that fired and an overall tier per the tier-composition 
 
 ### Step 4 — Tightly-Coupled analysis [judgement]
 
-For each dependency, examine the import graph to identify tight coupling: many call sites, deep reach into dependency internals, or application code that mirrors dependency types. Report an overall tier only (per Category 2 report structure). Apply the import-surface thresholds from the Guide (5+ sites baseline; a higher relative percentage of the project's total files counts as wider).
+For each dependency, examine the import graph to identify tight coupling: many call sites, deep reach into dependency internals, or application code that mirrors dependency types. Report an overall tier only. Apply the import-surface thresholds (5+ sites baseline; a higher relative percentage of the project's total files counts as wider).
 
 ### Step 5 — Unmaintained-Deprecated analysis [judgement]
 
@@ -79,22 +79,15 @@ For each dependency, evaluate the upstream signals gathered in Step 2:
 - Maintainer-issued end-of-life statement
 - Repo archived
 
-Report tier only, with rationale text naming the sub-criterion that fired (per Category 3 report structure).
+Report tier only, with rationale text naming the sub-criterion that fired.
 
 ### Step 6 — Recent-Major-Changes analysis [judgement]
 
-For each dependency, identify recent major-version bumps and review their changelog for breaking changes that the project has not yet adopted. Report text only — no tier (per Category 4 report structure).
+For each dependency, identify recent major-version bumps and review their changelog for breaking changes that the project has not yet adopted. Report text only — no tier.
 
 ### Step 7 — Report [judgement]
 
-Compose the final report. Per the output-form rules in the Guide:
-
-- Default: write the full report as in-conversation prose with a concise summary at the top
-- If the user's message or a flag asks for a file, write the report to a file and print a pointer (path + finding count)
-- Suggest a file when the report exceeds ~1000 words or ~15 findings
-- Each finding lists the evidence consulted, per the evidence-trail quality rule
-- Each category uses its own report structure (Category 1 sub-criteria + tier, Category 2 tier only, Category 3 tier only with rationale, Category 4 text only)
-- If v1 limits (no cross-checked replacements) are reached, state this in the report rather than guessing
+Compose the final report per the output-form rules in the Guide: default to in-conversation prose with a concise summary at the top; write to a file (and print a pointer with path + finding count) when requested or when the report exceeds ~1000 words / ~15 findings; list the evidence consulted per finding; use each category's own report structure (Category 1 sub-criteria + tier, Category 2 tier only, Category 3 tier only with rationale, Category 4 text only).
 
 ## Validation
 
