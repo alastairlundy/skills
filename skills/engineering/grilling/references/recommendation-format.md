@@ -35,6 +35,38 @@ in this reference use "the LLM" or "the agent" to refer to the agent.
   one sentence. The point is to surface the failure mode so the user can
   watch for it later, not to repeat the option's `Risk` field.
 
+## Goal-alignment rule
+
+The `Reasoning` field **must explicitly tie the recommended option to
+the user's stated goal**. Use phrasing like *"aligns with your goal of
+X"* or *"serves your goal of X"*, where X is the session-level goal
+recorded in D001 (or the current goal record, if a `Supersedes: Dxxx`
+has been issued). The reasoning must explain *why* this option serves
+the goal; it must not compare options against each other or
+re-justify the rejected options.
+
+A reasoning that cites ledger records (`Dxxx`/`Txxx`) without naming
+the user's goal is insufficient. The agent must always surface the
+goal-alignment explicitly so the user can verify the recommendation
+serves their actual intent, not the agent's assumptions. When ledger
+records (e.g., a `Dxxx` constraint) are relevant, they belong in the
+reasoning *alongside* the goal-alignment phrasing, not as a
+substitute for it.
+
+**Anti-pattern**: `Reasoning: D005's per-stream rule and D004's
+per-stream cancellation rule both map cleanly onto two method-shaped
+entry points, and two methods is the shape .NET developers reach for
+first when two independent async streams exist.` — this reasoning
+cites ledger rules and developer ergonomics but never names the
+user's goal. The user cannot tell whether the recommendation serves
+their intent.
+
+**Correct**: `Reasoning: Option 1 aligns with your goal of exposing
+both streams independently — D005's per-stream rule and D004's
+per-stream cancellation rule both map cleanly onto two method-shaped
+entry points.` — the goal is named first, then the supporting
+evidence follows.
+
 ## Worked example — violation and correction
 
 **Violation.** The agent tries to qualify the recommended option with an
