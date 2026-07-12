@@ -29,133 +29,45 @@ owns the Decision Ledger, formats, tone, and convergence test).
   `domain-grilling` instead).
 - Creating a spec/PRD itself.
 
-## Convention: "you" in this skill
-
-In this skill, "you" and "your" inside a backticked template, a fenced
-code block, or a user-facing prompt **always refer to the user**, not
-the LLM. The Socratic elicitation question, the locked question line,
-the reference-set preamble, the neutral-mirroring template, and any
-other text the agent emits to the user are addressed to the user. Emit
-them verbatim and wait for the user to respond before proceeding.
-Free-form instructions to the agent in this skill use "the LLM" or
-"the agent" to refer to the agent. The shared references
-(`../grilling/references/*`) state this rule explicitly under their
-own "Convention" headers.
-
 ## Workflow
 
-**Core Constraint**: Ask exactly one question per turn — hard stop.
-Emit one locked question, then stop generating. No exceptions. A
-branch question is not a single question; it is the four-part
-sequence (context block, Socratic elicitation question, locked
-question line, options + recommendation). Each branch is therefore
-emitted across **three** separate agent turns, not one — Turn 1 is
-the context block + Socratic elicitation question, Turn 2 is the
-locked question line, Turn 3 is the options + recommendation. Re-asks
-restart at Turn 1; the agent does not skip the context block or
-Socratic elicitation question, and does not collapse the four parts
-into a single turn. See the three-turn branch procedure below.
-
-### Three-turn branch procedure
-
-Every branch question in this skill — Foundation Establishment
-(Step 3), Spec-Driven Technical Extraction (Step 4), and any
-re-ask or follow-up — follows the four-part locked question sequence
-from `../grilling/references/locked-question-format.md`. The four
-parts are emitted across three separate agent turns with mandatory
-waits between them. The agent must not collapse them into a single
-turn and must not skip the context block or Socratic elicitation
-question, even on a re-ask or a follow-up after the user has answered
-earlier parts.
-
-In the four-part sequence, "you" and "your" always refer to the
-**user**, not the LLM. The locked question line, the Socratic
-elicitation question, the reference-set preamble, and any other
-user-facing prompt are addressed to the user. The agent emits them
-verbatim and waits for the user to respond.
-
-The three turns are:
-
-1. **Turn 1 — Context block (Part 1) + Socratic elicitation question
-   (Part 2).** Present the fixed context block (goal, prior decisions,
-   stakes, scope), each element one sentence, citing the goal record
-   and any prior branch records. Then ask the Socratic elicitation
-   question verbatim. **Stop and wait for the user's response.**
-
-   The Socratic elicitation question is:
-
-   ```
-   **What are you working toward in this decision?**
-   ```
-
-2. **Turn 2 — Locked question line (Part 3).** After the user answers
-   the Socratic elicitation question, present the locked question line
-   verbatim. **Stop and wait for the user's answer.**
-
-   The locked question line is:
-
-   ```
-   **For [Dxxx | Txxx] – [branch name]: required — state your answer
-   before the LLM presents options. You may also pick an option, or
-   provide your answer.**
-   ```
-
-   The `[Dxxx | Txxx]` is `max(existing Dxxx/Txxx) + 1` — use `Dxxx`
-   for functional decisions and `Txxx` for technical decisions. The
-   `[branch name]` is a short, descriptive, stable name for the
-   branch (do not embed the full question in it). The "you" and
-   "your" inside the template refer to the user.
-
-3. **Turn 3 — Options and recommendation (Part 4).** After the user
-   answers the locked question, present the options block (with the
-   reference-set preamble from `../grilling/references/options-format.md`)
-   and the recommendation (with goal-aligned reasoning from
-   `../grilling/references/recommendation-format.md`).
-
-   The reference-set preamble is:
-
-   ```
-   Here are options to help you refine or confirm your answer. Pick
-   one, reject all, or hybridize.
-   ```
-
-   Again, the "you" and "your" inside the preamble refer to the user.
-
-The user may confirm their answer, revise it in light of the options,
-or hybridize. The user's own answer is the anchor; the options are a
-reference set.
-
-Walk the user through one branch at a time. For every branch, the
-three turns above are mandatory. Re-asking a branch (because the user
-did not answer, asked for clarification, or because of a follow-up)
-restarts at Turn 1 with a fresh context block and Socratic elicitation
-question — do not skip straight to the locked question line or the
-options.
+Every branch question in this skill follows the three-turn locked
+question sequence from `../grilling/references/locked-question-format.md`.
+The skill's steps (4, 5, 6) call the sequence, but the format itself —
+context block, Socratic elicitation question, locked question line,
+options + recommendation — is defined by that reference. The shared
+references (`../grilling/references/*`) also define the "you"
+convention, tone discipline, options format, and recommendation
+format. This skill defers to those references for all of those
+formats. Re-asking a branch restarts at Turn 1 with a fresh context
+block and Socratic elicitation question — do not skip straight to
+the locked question line or the options.
 
 ### Step 1: Load the references
 
-Before the first question, load and read in full:
-`../grilling/references/decision-ledger.md`,
-`../grilling/references/options-format.md`,
-`../grilling/references/recommendation-format.md`,
-`../grilling/references/locked-question-format.md`,
-`../grilling/references/tone-and-output.md`,
-`../grilling/references/convergence-test.md`.
+Run the pre-flight check from `../grilling/SKILL.md` Step 1.0 to
+confirm all six reference files exist and are readable. If any are
+missing, abort and report. After the pre-flight passes, load and
+read each of the six references in full:
 
-Apply their formats verbatim. If any file is missing, abort and report.
+- `../grilling/references/decision-ledger.md`
+- `../grilling/references/options-format.md`
+- `../grilling/references/recommendation-format.md`
+- `../grilling/references/locked-question-format.md`
+- `../grilling/references/tone-and-output.md`
+- `../grilling/references/convergence-test.md`
+
+Apply their formats verbatim. Do not paraphrase, abbreviate, or
+modify the formats.
 
 ### Step 2: Spec and Decision Ledger resolution
 
-The Decision Ledger is shared across `grilling`, `domain-grilling`, and
-this skill. Functional decisions are `Dxxx` records; technical decisions
-are `Txxx` records. Both live in
-`docs/decisions/DECISIONS-<repo>-<feature>.md`.
+Follow grilling's Step 2 (Decision Ledger state summary) with the
+following code-specific additions:
 
 1. **Locate the spec.** Derive the spec identifier by precedence:
    file path > issue tracker > conversation context.
-2. **Locate the ledger.** Scan `docs/decisions/` for a match. If
-   multiple exist, ask which to extend. If none, ask whether to start
-   a new one or abort.
+2. **Locate the ledger.** Same as grilling's Step 2.
 3. **Read records.** Note the highest `Dxxx`/`Txxx` and every `Dxxx`
    answer/constraint — the functional requirements the tech decisions
    must satisfy.
@@ -163,13 +75,31 @@ are `Txxx` records. Both live in
 5. **Conflict pre-check.** Surface any `Dxxx`-`Dxxx` contradictions
    and resolve before proceeding.
 
-If no ledger exists, recommend running `domain-grilling` first.
+The first turn of this step is one agent turn: confirm the spec and
+ledger paths, then stop. Do not surface TDPs, foundation items, or
+any other branch content in this turn. If no ledger exists, recommend
+running `domain-grilling` first.
 
-Load `references/recording-decisions.md` before the first `Txxx` append.
+Load `references/recording-decisions.md` before the first `Txxx`
+append.
 
-### Step 3: Foundation Establishment (mandatory)
+### Step 3: Goal discovery
 
-Resolve one-by-one with 2-4 options, trade-offs, and a recommendation:
+Follow grilling's Step 3 (Goal discovery). The first turn after the
+user has confirmed the spec and ledger paths in Step 2 is an open
+Socratic question to surface the goal. The goal-discovery turn, the
+locked-question turn, and the options/recommendation turn for the
+first branch are all separate turns — do not collapse them. The goal
+record (D001) is recorded in the shared Decision Ledger using the
+goal record template from `../grilling/references/decision-ledger.md`.
+
+### Step 4: Foundation Establishment (mandatory)
+
+Resolve one-by-one using the three-turn locked question sequence from
+`../grilling/references/locked-question-format.md`. For each
+foundation item, emit a context block, Socratic elicitation question,
+locked question line, and options + recommendation across three
+separate agent turns. Resolve with 2-4 options:
 
 1. **Language** — primary language?
 2. **Framework/Runtime** — primary framework?
@@ -178,20 +108,25 @@ Resolve one-by-one with 2-4 options, trade-offs, and a recommendation:
 5. **Sub-projects** — scope and purpose of each?
 6. **Project Type** — CLI, library, desktop GUI, etc.?
 
-### Step 3.1: Foundational Preferences (optional)
+### Step 4.1: Foundational Preferences (optional)
 
 Ask if the user wants to clarify other preferences (async model, CSS
 framework, ORM, test framework, logging, etc.). Skip if not interested.
 
-### Step 4: Spec-Driven Technical Extraction
+### Step 5: Spec-Driven Technical Extraction
 
-1. **Identify TDPs**: Extract every functional requirement that implies
-   a technical choice (e.g., "Real-time updates" → WebSocket vs Long
-   Polling).
-2. **Filter deferred features**: Skip items marked "deferred" or "out
-   of scope".
-3. **Resolve**: Grill on each point using Options → Recommendation →
-   Risk. Never use the abbreviation "TDP" with the user.
+1. **Identify TDPs** (internal agent step): Extract every functional
+   requirement that implies a technical choice (e.g., "Real-time
+   updates" → WebSocket vs Long Polling). Skip items marked "deferred"
+   or "out of scope". Never use the abbreviation "TDP" with the user.
+2. **Surface TDP list** (separate turn): After the foundation is
+   resolved, present the TDP list to the user in dependency order.
+   State that the agent will walk through them one at a time using
+   the three-turn sequence, starting with the first. Do not include
+   the context block or Socratic question for the first TDP in this
+   turn — that comes in the next turn.
+3. **Resolve**: Grill on each TDP using the three-turn sequence from
+   `../grilling/references/locked-question-format.md`.
 
 Load `references/interface-and-model-branch.md` before asking the user
 whether they want interface grilling.
@@ -199,7 +134,20 @@ whether they want interface grilling.
 Load `references/output-selection.md` before presenting the output
 format choice to the user.
 
-### Step 7: Final Alignment Check & Convergence
+### Step 6: Interface & Model Branch (optional)
+
+Follow `references/interface-and-model-branch.md`. The phases are
+sequential, not nested. Use the three-turn locked question sequence
+from `../grilling/references/locked-question-format.md` for each
+architectural decision, source-of-truth conflict, and type
+introduction.
+
+### Step 7: Output Selection
+
+Follow `references/output-selection.md`. Present the two-part choice
+one part at a time, using the three-turn sequence for each part.
+
+### Step 8: Final Alignment Check & Convergence
 
 1. **Cross-reference** the technical output against the original spec.
 2. **Conflict detection** — any tech choices contradict functional reqs?
@@ -272,8 +220,7 @@ transcript:
 - [ ] The "you" and "your" inside every user-facing template (Socratic
       elicitation question, locked question line, reference-set
       preamble, neutral-mirroring template) referred to the **user**,
-      not the LLM. The Convention section in this skill and the
-      "Convention: 'you' in this reference" headers in
+      not the LLM. The "Convention: 'you' in this reference" headers in
       `../grilling/references/*` make the rule explicit.
 - [ ] No sentence began with a word whose function is to praise or
       judge the user's prior input.

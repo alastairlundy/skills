@@ -5,7 +5,7 @@ it is incomplete.
 
 At the end of the workflow, the agent emits exactly one of the
 following pre-written handoff templates. Template selection is
-keyed on the captured choices from Step 6: first select the
+keyed on the captured choices from Step 7: first select the
 template set by Output format (Option A = Implementation Blueprint,
 Option B = PRD Augmentation), then select the specific template by
 Downstream consumer. The agent substitutes `<spec-path>`,

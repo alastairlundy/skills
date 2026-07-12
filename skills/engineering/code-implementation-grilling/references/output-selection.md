@@ -1,4 +1,4 @@
-### Step 6: Output Selection
+### Step 7: Output Selection
 
 Present the user with the following two-part choice, one part at a
 time.
@@ -65,7 +65,7 @@ time.
 - **Manual handoff**: no automated decomposition; the user takes
   the artifacts from here.
 
-**Step 6.1: Filename confirmation (Option A only)**
+**Step 7.1: Filename confirmation (Option A only)**
 
 If the user chose Option A (Implementation Blueprint), surface the
 resolved filename in a confirmation prompt (e.g., *"I'm going to

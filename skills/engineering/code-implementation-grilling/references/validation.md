@@ -7,6 +7,15 @@ transcript:
       loaded and read in full before the first user question. If
       any reference file was missing or unreadable, the session
       aborted and the missing file was reported to the user.
+- [ ] **Three-turn procedure**: Did every branch question — including
+      foundation items, TDP branches, and any re-ask or follow-up —
+      emit the full four-part locked question sequence across three
+      separate agent turns: a context block + Socratic elicitation
+      question turn, a locked question line turn, and an options +
+      recommendation turn? The agent did not skip the context block or
+      Socratic elicitation question on a re-ask, and did not collapse
+      the four parts into a single turn. See
+      `../grilling/references/locked-question-format.md`.
 - [ ] **Atomic Questioning**: Did the agent ask exactly one
       question at a time, waiting for a response before
       proceeding?
@@ -21,8 +30,8 @@ transcript:
 - [ ] **No Abbreviations**: Did the agent avoid using the
       abbreviation "TDP" in all user-facing communication?
 - [ ] **Ledger Recording**: Was a `Txxx` record appended to the
-      Decision Ledger after every resolved decision in Steps 3, 4,
-      and 5, each with a fresh `Txxx` ID and a `Cites:` line
+      Decision Ledger after every resolved decision in Steps 4, 5,
+      and 6, each with a fresh `Txxx` ID and a `Cites:` line
       naming the `Dxxx`/`Txxx` records the answer respects?
 - [ ] **Optionality Handled**: Was the user asked about
       Interfaces, and given the "Collaborative ticket" warning if
@@ -37,6 +46,14 @@ transcript:
       and PRD augmentation after seeing trade-offs?
 - [ ] **Alignment Check**: Was a final pass performed to ensure
       the technical "how" supports the functional "what"?
+- [ ] **Goal-aligned reasoning**: Does every recommendation's
+      `Reasoning` field explicitly tie to the session-level goal
+      (D001 or current goal record) using phrasing like "aligns
+      with your goal of X" or "serves your goal of X"? Citing
+      ledger records without naming the user's goal is insufficient —
+      the goal must be surfaced explicitly. See
+      `../grilling/references/recommendation-format.md` Goal-alignment
+      rule.
 - [ ] **Ledger Coverage**: Does every blueprint body statement
       that satisfies a functional requirement inline-cite a
       `Dxxx`/`Txxx` record using `filename#<Dxxx|Txxx>` format,

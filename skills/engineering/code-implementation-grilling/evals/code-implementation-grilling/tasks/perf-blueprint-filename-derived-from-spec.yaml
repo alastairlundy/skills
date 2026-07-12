@@ -1,7 +1,7 @@
 id: perf-blueprint-filename-derived-from-spec
 type: performance
-description: Step 4 confirmation prompt shows the blueprint filename derived from the spec's identifying token, not the hard-coded IMPLEMENTATION.md.
+description: Step 7.1 (filename confirmation) prompt shows the blueprint filename derived from the spec's identifying token, not the hard-coded IMPLEMENTATION.md.
 input: |
   Spec at docs/prds/feature-x.md: build a CLI todo app. Run code-implementation-grilling.
 assertion: |
-  Step 4 confirmation prompt shows a blueprint filename of the form IMPLEMENTATION-feature-x.md (derived from the spec's identifying token), not a hard-coded IMPLEMENTATION.md. The output contains a confirmation prompt of the shape 'I'm going to write the blueprint to IMPLEMENTATION-feature-x.md ...' (or equivalent derived filename). The output does not propose writing to a bare IMPLEMENTATION.md.
+  Step 7.1 filename confirmation prompt shows a blueprint filename of the form IMPLEMENTATION-feature-x.md (derived from the spec's identifying token), not a hard-coded IMPLEMENTATION.md. The output contains a confirmation prompt of the shape 'I'm going to write the blueprint to IMPLEMENTATION-feature-x.md ...' (or equivalent derived filename). The output does not propose writing to a bare IMPLEMENTATION.md.
