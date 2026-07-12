@@ -51,6 +51,19 @@ to `CONTEXT.md`).
   in question.
 - For rapid prototypes that are known to be throwaway (spike code, demo code, time-boxed experiments).
 
+## Convention: "you" in this skill
+
+In this skill, "you" and "your" inside a backticked template, a fenced
+code block, or a user-facing prompt **always refer to the user**, not
+the LLM. The Socratic elicitation question, the locked question line,
+the reference-set preamble, the neutral-mirroring template, and any
+other text the agent emits to the user are addressed to the user. Emit
+them verbatim and wait for the user to respond before proceeding.
+Free-form instructions to the agent in this skill use "the LLM" or
+"the agent" to refer to the agent. The shared references
+(`../grilling/references/*`) state this rule explicitly under their
+own "Convention" headers.
+
 ## Workflow
 
 ### Step 1: Load the references
@@ -83,11 +96,92 @@ Follow `references/ddd-initialization.md` to:
    the file.
 3. Confirm the Decision Ledger path before the first write.
 
+**Stop and wait for the user to confirm or change the path before
+proceeding.** The path confirmation, the first branch in Step 3, and
+each part of the four-part sequence within a branch are all separate
+turns. Do not emit the first branch question in the same turn as the
+path confirmation, and do not collapse the context block, Socratic
+elicitation question, locked question line, and options into a single
+turn.
+
 ### Step 3: Open branches, ask questions, record decisions
 
-Walk the design tree branch-by-branch using the locked question format
-and the options/recommendation format from
-`../grilling/references/*`. On first use of a `Dxxx` record in this skill, load the record format from `../grilling/references/decision-ledger.md` § "Per-branch record template". After each resolution, append a `Dxxx` record to the Decision Ledger in real time.
+Open each decision branch using the four-part locked question sequence
+from `../grilling/references/locked-question-format.md`. The four
+parts are emitted across three separate agent turns with mandatory
+waits between them. The agent must not collapse them into a single
+turn and must not skip the context block or Socratic elicitation
+question, even on a re-ask or a follow-up after the user has answered
+earlier parts.
+
+In the four-part sequence, "you" and "your" always refer to the
+**user**, not the LLM. The locked question line, the Socratic
+elicitation question, the reference-set preamble, and any other
+user-facing prompt are addressed to the user. The agent emits them
+verbatim and waits for the user to respond.
+
+The three turns are:
+
+1. **Turn 1 — Context block (Part 1) + Socratic elicitation question
+   (Part 2).** Present the fixed context block (goal, prior decisions,
+   stakes, scope), each element one sentence, citing the goal record
+   (D001) and any prior branch records. Then ask the Socratic
+   elicitation question verbatim. **Stop and wait for the user's
+   response.**
+
+   The Socratic elicitation question is:
+
+   ```
+   **What are you working toward in this decision?**
+   ```
+
+2. **Turn 2 — Locked question line (Part 3).** After the user answers
+   the Socratic elicitation question, present the locked question line
+   verbatim. **Stop and wait for the user's answer.**
+
+   The locked question line is:
+
+   ```
+   **For [Dxxx] – [branch name]: required — state your answer before
+   the LLM presents options. You may also pick an option, or provide
+   your answer.**
+   ```
+
+   The `[Dxxx]` is `max(existing Dxxx) + 1`. The `[branch name]` is a
+   short, descriptive, stable name for the branch (do not embed the
+   full question in it). The "you" and "your" inside the template
+   refer to the user.
+
+3. **Turn 3 — Options and recommendation (Part 4).** After the user
+   answers the locked question, present the options block (with the
+   reference-set preamble from `../grilling/references/options-format.md`)
+   and the recommendation (with goal-aligned reasoning from
+   `../grilling/references/recommendation-format.md`).
+
+   The reference-set preamble is:
+
+   ```
+   Here are options to help you refine or confirm your answer. Pick
+   one, reject all, or hybridize.
+   ```
+
+   Again, the "you" and "your" inside the preamble refer to the user.
+
+The user may confirm their answer, revise it in light of the options,
+or hybridize. The user's own answer is the anchor; the options are a
+reference set.
+
+Walk the user through one branch at a time. For every branch, the
+three turns above are mandatory. Re-asking a branch (because the user
+did not answer, asked for clarification, or because of a follow-up)
+restarts at Turn 1 with a fresh context block and Socratic elicitation
+question — do not skip straight to the locked question line or the
+options.
+
+On first use of a `Dxxx` record in this skill, load the record format
+from `../grilling/references/decision-ledger.md` § "Per-branch record
+template". After each resolution, append a `Dxxx` record to the
+Decision Ledger in real time.
 
 Use the DDD-specific techniques in
 `references/ddd-initialization.md` § "Session Guidelines" to:
@@ -180,6 +274,19 @@ transcript:
       sequence: context block, Socratic elicitation question, locked
       question line with explicit required framing, options and
       recommendation.
+- [ ] Every branch question, including re-asks and follow-ups, emitted
+      the full four-part sequence across three separate agent turns:
+      a context block + Socratic elicitation question turn, a locked
+      question line turn, and an options + recommendation turn. The
+      agent did not skip the context block or Socratic elicitation
+      question on a re-ask, and did not collapse the four parts into
+      a single turn.
+- [ ] Every context block was emitted as the four-element bullet list
+      (Goal, Prior decisions, Stakes, Scope) in that order, each
+      element exactly one sentence, with ledger citations. The context
+      block was not replaced with a free-form prose summary, a "current
+      state" investigation, a code reading, a domain-glossary recap,
+      or any other kind of analysis.
 - [ ] Every context block included all four mandatory elements (goal,
       prior decisions, stakes, scope), each one sentence, with ledger
       citations.
