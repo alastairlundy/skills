@@ -1,0 +1,6 @@
+id: trigger-execute-spec-to-tickets-output
+type: trigger
+description: Triggers when the user references the spec-to-tickets output and asks to run it.
+input: |
+  Run the implementer on the spec-to-tickets output for the auth spec. Self-contained mode.
+expected: trigger

@@ -1,0 +1,9 @@
+id: perf-end-of-run-report
+type: performance
+description: >-
+  An end-of-run report is written to tickets/.runs/<run-id>.md and committed
+  on the shared branch per D010.
+input: |
+  Implement the tickets in tickets/. The set has 5 tickets; 4 commit and 1 escalates.
+assertion: |
+  A markdown file exists at tickets/.runs/<run-id>.md containing the sections: Run header (run id, mode, workspace, breaker threshold, timestamps, wall-clock), Stats (loaded, ready, skipped, batches, dispatch units, committed, escalated, conflicted), Per-ticket outcomes (one row per ticket with id, title, status, commit sha, strikes used), Failures (category, ticket id, one-line reason, route), Deviations, and Next steps. The report is committed on the shared branch with subject "[run/<run-id>] implement-tickets end-of-run report". In Collaborative mode the user is asked to acknowledge before finalizing; in Self-Contained mode only a one-line summary is printed and the report is committed.

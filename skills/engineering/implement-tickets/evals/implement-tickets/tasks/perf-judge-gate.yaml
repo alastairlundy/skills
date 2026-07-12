@@ -1,0 +1,9 @@
+id: perf-judge-gate
+type: performance
+description: >-
+  No ticket is committed without a judge LLM "approve" verdict against the
+  ticket's acceptance criteria per D008.
+input: |
+  Implement the tickets in tickets/. T001's acceptance criteria is "returns 200 OK with status=ok". The sub-agent's first attempt misses the JSON body shape.
+assertion: |
+  The first judge verdict on T001 is "reject-with-feedback" because the diff does not produce a JSON body. The sub-agent re-attempts with the judge's feedback. The second judge verdict is "approve". Only then does the commit appear. The strike counter increments once. The run's per-ticket outcomes reflect one rejection and one approval for T001.

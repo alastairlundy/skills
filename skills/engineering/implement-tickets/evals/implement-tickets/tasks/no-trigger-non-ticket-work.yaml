@@ -1,0 +1,6 @@
+id: no-trigger-non-ticket-work
+type: trigger
+description: Does NOT trigger on ad-hoc refactor or non-ticket implementation work.
+input: |
+  Refactor the user service to use the new repository pattern. No tickets for this.
+expected: no-trigger

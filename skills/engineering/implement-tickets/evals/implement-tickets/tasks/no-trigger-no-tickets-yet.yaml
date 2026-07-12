@@ -1,0 +1,6 @@
+id: no-trigger-no-tickets-yet
+type: trigger
+description: Does NOT trigger when only a spec exists and no tickets have been generated.
+input: |
+  Here's the spec for the new notifications module. Start implementing it.
+expected: no-trigger

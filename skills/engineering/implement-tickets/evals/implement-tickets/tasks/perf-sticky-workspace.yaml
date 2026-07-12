@@ -1,0 +1,9 @@
+id: perf-sticky-workspace
+type: performance
+description: >-
+  All work stays in the resolved branch or worktree unless the user specifies
+  an override per D005.
+input: |
+  Implement the tickets in tickets/. The repo is currently on main.
+assertion: |
+  The skill creates a new branch named tickets/impl-<run-id> from HEAD (or a worktree if specified). All per-ticket commits land on that branch. No commits are made to main, HEAD, or any other branch outside the resolved workspace. The branch name follows the pattern tickets/impl-<run-id> where run-id is a stable identifier (timestamp or short hash). The end-of-run report commit is on the same branch.

@@ -1,0 +1,9 @@
+id: perf-fresh-context-dispatch
+type: performance
+description: >-
+  Each sub-agent dispatch is independent: no carry-over scratchpad, no shared
+  in-flight state between dispatches per D005.
+input: |
+  Implement the tickets in tickets/. The set has 3 independent tickets.
+assertion: |
+  Each sub-agent is invoked with a clean context: ticket id, normalized ticket body, completion criteria, owned files, and staging-area path. No scratchpad, conversation history, or partial diff from a prior ticket is included in the dispatch payload. Staging-area paths are unique per ticket (e.g. .implement-runs/<run-id>/staging/<ticket-id>/) so no two sub-agents share filesystem state.

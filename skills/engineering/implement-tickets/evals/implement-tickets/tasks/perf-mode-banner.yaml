@@ -1,0 +1,9 @@
+id: perf-mode-banner
+type: performance
+description: >-
+  Phase 0 prints a single-line mode banner: [OK] mode=<Collaborative|Self-Contained>
+  workspace=<branch-or-worktree> breaker=<n>.
+input: |
+  Implement the tickets in tickets/. Self-contained mode. Use a worktree at .worktrees/impl-001. Breaker threshold 5.
+assertion: |
+  The first non-empty line of the run output (after any framing prose) is exactly: [OK] mode=Self-Contained workspace=.worktrees/impl-001 breaker=5 (or the resolved branch name in branch mode). The banner appears before Phase 1 begins. Mode and workspace match the user's explicit signals; the breaker override of 5 takes precedence over the default 3.

@@ -1,0 +1,9 @@
+id: perf-failure-categorization
+type: performance
+description: >-
+  Failures are categorized as transient, persistent, dependency, or ambiguous
+  and routed accordingly per D009.
+input: |
+  Implement the tickets in tickets/. During the run, observe: (a) a flaky network call retrying, (b) a missing file that won't appear, (c) a downstream ticket that depends on a failed ticket, (d) a sub-agent output that is unclear about whether it succeeded.
+assertion: |
+  Each of the four observed failures is assigned a category from {transient, persistent, dependency, ambiguous} and a route from {auto-retry, auto-skip, mark-downstream-blocked, escalate}. The categorization and route are visible in the run summary under "Failures". The (a) failure auto-retries with backoff; the (b) failure is auto-skipped; the (c) failure marks downstream tickets as blocked; the (d) failure escalates in Collaborative mode or auto-skips in Self-Contained mode. No failure is recorded without a category.

@@ -1,0 +1,43 @@
+id: perf-source-agnostic-load
+type: performance
+description: >-
+  Skill accepts tickets in the normalized markdown format and parses frontmatter
+  fields (id, title, status, Depends on:, acceptance criteria) per D003.
+input: |
+  Implement the tickets in tickets/.
+
+  The set is:
+
+  ---
+  id: T001
+  title: Add /health endpoint
+  status: ready
+  Depends on: []
+  ---
+  ## Acceptance criteria
+  - [ ] Returns 200 OK with a JSON body containing {"status": "ok"}
+  - [ ] Wired into the existing router
+
+  ## Recommended Workflow
+  ### Step 1 — Implement endpoint
+  Where: src/api/health.go
+  - Add a GET /health handler
+  - Verify: curl returns 200 with the expected JSON
+
+  ## Files
+  - src/api/health.go
+
+  ---
+
+  id: T002
+  title: Add /version endpoint
+  status: ready
+  Depends on: [T001]
+  ---
+  ## Acceptance criteria
+  - [ ] Returns 200 OK with the build version
+
+  ## Files
+  - src/api/health.go
+assertion: |
+  Skill loads both tickets from the normalized format. T001 and T002 are present in the batch summary with parsed id, title, status=ready, and Depends on: edges. T001's "Blocked by" is empty; T002's is [T001]. Tickets missing any of the four required normalized fields (id, title, status, Depends on:) are rejected with a per-file error.

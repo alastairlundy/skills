@@ -1,0 +1,10 @@
+id: perf-per-ticket-commit-format
+type: performance
+description: >-
+  Each per-ticket commit subject matches [<ticket-id>] <brief description> with
+  total length <= 72 chars, body is a bullet list, and footer carries references
+  per D007.
+input: |
+  Implement the tickets in tickets/. The set has T001 ("Add /health endpoint") and T002 ("Add /version endpoint") with T002 depending on T001.
+assertion: |
+  Exactly one commit per ticket on the shared branch. T001's commit subject is "[T001] Add /health endpoint" (or another brief description <= 72 chars total including the prefix). T002's commit subject is "[T002] Add /version endpoint". Each commit body is a bullet list of changes (not prose). Each commit footer contains the relevant references (Refs: T001 for T002, or an empty footer if no cross-references). No WIP, fixup, or merge commits appear between the two per-ticket commits.
