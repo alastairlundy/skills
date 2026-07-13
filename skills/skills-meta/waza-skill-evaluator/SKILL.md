@@ -62,39 +62,17 @@ Proceed through these nine phases methodically. Do not skip phases or execute th
 
 ### Phase 0: Prerequisites (Waza CLI detection)
 
-Before invoking any `waza` command, load [references/waza-cli.md](references/waza-cli.md) to obtain the current Waza CLI command catalogue (commands, flags, exit codes). This gate prevents the agent from using stale or invented CLI flags.
+Before invoking any `waza` command, load [references/waza-cli.md](references/waza-cli.md) to obtain the current Waza CLI command catalogue, installation instructions, and the list of version features the workflow requires. This gate prevents the agent from using stale or invented CLI flags.
 
-1. **Check for Waza CLI**: Run `waza --version` to confirm the Waza CLI is installed.
-2. **If Waza is not installed**:
-   - Inform the user that the Waza CLI is required for this evaluation.
-   - Present the installation instructions from <https://github.com/microsoft/waza>. Native PowerShell: `irm https://raw.githubusercontent.com/microsoft/waza/main/install.ps1 | iex`.
-   - Ask the user for **explicit permission** before downloading or installing anything. Do not proceed with installation until the user confirms.
-   - After installation, re-run `waza --version` to confirm success.
-3. **Verify version features**: Confirm that the installed Waza version supports the features required by later phases:
-   - `waza run --baseline` (enables lift measurement).
-   - `waza run --context-dir` and `--output` (capturing results JSON and pointing to the fixtures directory).
-   - The `config.inject_skill_body: false` field in `eval.yaml` (required for trigger-precision evals).
-   - `waza compare <result-A> <result-B>` (side-by-side comparison).
-   - `waza new eval <skill-name>` (suite scaffolding).
-   - If any feature is missing, run `waza update` (after obtaining user permission) to upgrade, and re-verify.
+1. Run `waza --version` to confirm the Waza CLI is installed. If not, present the install command from the `waza-cli.md` Installation section and obtain **explicit user permission** before downloading or installing anything; re-run `waza --version` after install.
+2. Confirm the installed Waza version supports the features required by later phases (see `waza-cli.md` "Required version features"). If any feature is missing, run `waza update` (after obtaining user permission) and re-verify.
 
 ### Phase 1: Suite validation
 
-Verify that a valid Waza evaluation suite exists for the target skill before running any evaluations.
+Before running any evaluations, load [references/eval-generation.md](references/eval-generation.md) to obtain the suite-format requirements, generation workflow, and assertion-type mapping. The reference covers `waza new eval`, `waza new task from-prompt`, and the Waza YAML structure; do not duplicate that detail here.
 
-1. **Check for Waza eval format**: Verify that the target skill directory contains:
-   - An `eval.yaml` (or `eval.yml`) file (the evaluation configuration).
-   - A `tasks/` directory (containing individual task definitions referenced by a glob or by `tasks_from`).
-   - A `fixtures/` directory (containing test inputs and expected outputs).
-   - The eval spec must reference tasks via `tasks:` (glob list) or `tasks_from:` (external file).
-2. **If the eval suite is missing or inadequate**:
-   - Reference [references/eval-generation.md](references/eval-generation.md) for guidance on creating a comprehensive evaluation suite.
-   - Guide the user through the eval generation process using `waza new eval <skill-name>` to scaffold a new evaluation structure (creates `eval.yaml` plus positive/negative trigger task files).
-   - Use `waza new task from-prompt "<prompt>" <task-path>` to record a real Copilot session and convert it into a task YAML with inferred validators.
-   - Review the generated eval suite with the user and ensure it covers:
-     - **Performance evals**: Tasks that measure the quality of the skill's output (graded by `code`, `regex`, `file`, `diff`, `behavior`, `prompt`, etc.).
-     - **Trigger evals**: Tasks that measure whether the skill triggers correctly (both positive and negative cases). Use the `trigger` grader or `action_sequence` / `skill_invocation` graders.
-3. **User approval**: Do not proceed to Phase 2 until the user explicitly approves the validated evaluation suite. Present the suite structure and task count to the user for confirmation.
+1. Verify the target skill directory contains a Waza-compatible eval suite (`eval.yaml` + `tasks/` + `fixtures/`; tasks referenced via `tasks:` or `tasks_from:`). If the suite is missing or inadequate, follow the generation workflow in `eval-generation.md` and the suite must cover both performance and trigger evals.
+2. Do not proceed to Phase 2 until the user explicitly approves the validated evaluation suite. Present the suite structure and task count to the user for confirmation.
 
 ### Phase 2: Performance evaluation (lift / A/B comparison)
 
@@ -176,24 +154,12 @@ Evaluate the quality of the evaluation suite and the grading regime, applying th
 
 ### Phase 7: Diagnostic report
 
-Before writing the report, load [references/diagnostic-report-template.md](references/diagnostic-report-template.md) to obtain the six-section template shape. This gate prevents the agent from inventing a report structure or omitting required sections.
+Before writing the report, load [references/diagnostic-report-template.md](references/diagnostic-report-template.md) to obtain the six-section template shape, the per-failure block schema, and the report path rules. This gate prevents the agent from inventing a report structure or omitting required sections.
 
-1. **Synthesise per-failure insights**: for each significant failure or regression surfaced in Phases 4–6, compose:
-   - **Eval ID**: the specific task that failed.
-   - **Context/Insight**: a technical explanation of *why* the failure occurred, drawing on the model's transcript, the skill's `SKILL.md` content, and the task's input/output. Examples: "The skill's description mentions 'code review' but the task uses the term 'local review', causing a trigger failure." / "The skill's workflow step 3 instructs the agent to 'analyze the diff', but the agent skipped this step because the task input didn't explicitly mention a diff." / "The `output_contains` assertion checks for 'Python 3.8+' but the skill's output says 'Python 3 or later', causing a false failure."
-2. **Compose recommended fixes**: for each per-failure insight, propose two options:
-   - **Recommended Fix A (Conservative)**: a surgical, minimal change. Example: "Change line 12 of SKILL.md from 'code review' to 'code review or local review' to improve trigger accuracy."
-   - **Recommended Fix B (Structural)**: a broader architectural or pattern change. Example: "Reorganise the 'Use For' section to explicitly list all synonymous terms (code review, local review, PR review) to prevent similar trigger failures across the suite."
-3. **Report path**: write the report to `<repo-root>/diagnostic-report.md` by default. If the user supplied a different path (at Phase 0, Phase 1, or via a `--output` flag), use the supplied path instead.
-4. **Report sections** (six, in the order defined by `references/diagnostic-report-template.md`):
-   1. Executive summary
-   2. Per-failure insights (the output of sub-step 1 above)
-   3. Hybrid grading results (the output of Phase 6, including a one-line user-facing definition: "Hybrid grading combines Waza's deterministic validator and LLM judge with the skill's own LLM grading, so the report covers more than the Waza evaluations alone.")
-   4. Claim verification results (the output of Phase 5)
-   5. Eval critique (the output of Phase 6's eval-suite critique and content-quality score)
-   6. Dashboard link (a markdown link to the Waza dashboard URL from sub-step 5 below)
-5. **Launch quantitative dashboard**: execute `waza serve [--port 3000]` to launch Waza's interactive dashboard. The dashboard displays pass/fail status per task, score distributions, model comparisons, and aggregated metrics. Record the dashboard URL (`http://localhost:<port>`) for sub-step 4.6. For headless / non-interactive analysis, also surface the `--format json` output of `waza run` and `waza compare`.
-6. **Trial count reporting**: include the trial count used (per Phase 3 sub-step 3) in the report's Executive Summary or as a metadata header, so the user can verify the choice.
+1. **Per-failure insights and recommended fixes** (synthesised from Phases 4–6): for each significant failure, compose an **Eval ID**, a **Context/Insight** (why it failed, drawing on transcript + target SKILL.md + task I/O), a **Recommended Fix A (Conservative)** (surgical), and a **Recommended Fix B (Structural)** (broader). The reference template defines the per-failure block schema and the six-section order (Executive summary → Per-failure insights → Hybrid grading → Claim verification → Eval critique → Dashboard link).
+2. **Report path**: write to `<repo-root>/diagnostic-report.md` by default; honour a user-supplied path (from Phase 0, Phase 1, or a `--output` flag) when given.
+3. **Trial count reporting**: include the trial count used (per Phase 3 sub-step 3) in the Executive Summary or as a metadata header.
+4. **Launch quantitative dashboard**: execute `waza serve [--port 3000]` to launch Waza's interactive dashboard; record the URL (`http://localhost:<port>`) for the report's Dashboard link section. For headless / non-interactive analysis, surface the `--format json` output of `waza run` and `waza compare`. Mode-conditional launch rules and URL validation are in Phase 8.
 
 ### Phase 8: Validation
 
