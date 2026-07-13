@@ -1,4 +1,4 @@
----
+﻿---
 name: spec-to-tickets
 description: >-
   Create implementation tickets with dependency graphs and Independent/Collaborative classification. Use when a user wants to break down a spec or tasks into tickets, or wants to create implementation tickets. Don't use when - spec is incomplete or vague (use grilling first, or domain-grilling if the resolution needs DDD alignment), a different granularity is needed (epics, tasks), direct implementation is the goal, or the user explicitly wants to send tickets to an issue tracker without dependency graphs or classification.
@@ -302,4 +302,3 @@ The summary should be scannable - use clear structure (headings, tables, lists) 
 - [ ] Workflow derivation follows the mixed rule: spec structure, then codebase context, then standard patterns.
 - [ ] Workflow steps respect dependencies between steps (a step producing an artifact consumed by another comes first). Reordering by the implementer is permitted.
 - [ ] Per-step Verify lines are micro-verifications distinct from per-ticket Acceptance criteria (macro-verifications).
-

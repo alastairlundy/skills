@@ -110,7 +110,7 @@ graders:
       assertions:
         - "len(output) > 0"
         - "'error' not in output.lower()"
-  
+
   - type: llm
     name: quality_check
     model: gpt-4o-mini
