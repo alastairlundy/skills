@@ -7,7 +7,7 @@ inputs:
   prompt: "Fix this null pointer exception in my Java service class"
 expected:
   should_trigger: false
-  graders:
+graders:
   - type: text
     name: omits-skill-keywords
     config:

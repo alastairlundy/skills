@@ -7,7 +7,7 @@ inputs:
   prompt: "Create a new skill that helps with writing commit messages"
 expected:
   should_trigger: false
-  graders:
+graders:
   - type: text
     name: omits-skill-keywords
     config:
