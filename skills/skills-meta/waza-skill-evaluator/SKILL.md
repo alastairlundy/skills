@@ -2,16 +2,17 @@
 name: waza-skill-evaluator
 description: >-
   Rigorously evaluate, benchmark, and diagnose the performance and discoverability of agent skills
-  using the Waza CLI. Use when you need to verify a skill's correctness, measure its
+  using the Waza CLI. Use for verifying a skill's correctness, measuring its
   "lift" over a baseline, analyze trigger accuracy (discoverability), or generate a
   diagnostic report with actionable recommended fixes.
-compatibility: waza CLI required (github.com/microsoft/waza)
+compatibility:
+  tools: waza CLI
 license: MIT
 ---
 
 # Waza Skill Evaluator
 
-> **First-run probe.** If interactive: ask the user "Do you want a diagnostic evaluation of a specific skill (full run with report), or a one-shot `waza check`? If the latter, defer to `waza check` and stop." If non-interactive: default to diagnostic evaluation and proceed. If the user has not named the skill to be evaluated, ask for it (interactive) or refuse with a help message pointing to this skill's description and "When to Use" list (non-interactive).
+> **First-run probe.** If interactive: ask the user "Do you want a diagnostic evaluation of a specific skill (full run with report), or a one-shot `waza check`? If the latter, defer to `waza check` and stop." If non-interactive: default to diagnostic evaluation and proceed. If the user has not named the skill to be evaluated, ask for it (interactive) or refuse with a help message pointing to this skill's description and "Use For" list (non-interactive).
 
 The Waza Skill Evaluator acts as a **Diagnostic Advisor**. Its primary purpose is to provide high-fidelity Verification & Validation (V&V) of a skill's effectiveness using the Waza CLI for execution, aggregation, and visualization.
 
@@ -38,7 +39,7 @@ The following rules are load-bearing and apply to every phase. Violating either 
 - **Hybrid grading** = the combination of Waza's deterministic validator, Waza's optional LLM judge, and the skill's separate LLM grading with rubric, applied in sequence.
 - **recommended fixes** = proposed code snippets or rule changes the user can apply.
 
-## When to Use
+## Use For
 
 - When you need to evaluate a skill's correctness and measure its lift over a baseline (no-skill or alternative skill).
 - When you need to analyze a skill's trigger accuracy (discoverability) — whether it triggers when it should and doesn't trigger when it shouldn't.
@@ -47,7 +48,7 @@ The following rules are load-bearing and apply to every phase. Violating either 
 - When you need to validate that a skill's evaluation suite is well-structured.
 - When you need to run an isolation test to determine whether a skill triggers correctly without competition from other skills.
 
-## When Not to Use
+## Do Not Use For
 
 - When you need to create or scaffold a new skill (use `skill-architect` or `create-skill` instead).
 - When you need to apply edits to a skill's SKILL.md (this skill only diagnoses and recommends fixes).
@@ -61,7 +62,7 @@ Proceed through these nine phases methodically. Do not skip phases or execute th
 
 ### Phase 0: Prerequisites (Waza CLI detection)
 
-Before invoking any `waza` command, load `references/waza-cli.md` to obtain the current Waza CLI command catalogue (commands, flags, exit codes). This gate prevents the agent from using stale or invented CLI flags.
+Before invoking any `waza` command, load [references/waza-cli.md](references/waza-cli.md) to obtain the current Waza CLI command catalogue (commands, flags, exit codes). This gate prevents the agent from using stale or invented CLI flags.
 
 1. **Check for Waza CLI**: Run `waza --version` to confirm the Waza CLI is installed.
 2. **If Waza is not installed**:
@@ -87,7 +88,7 @@ Verify that a valid Waza evaluation suite exists for the target skill before run
    - A `fixtures/` directory (containing test inputs and expected outputs).
    - The eval spec must reference tasks via `tasks:` (glob list) or `tasks_from:` (external file).
 2. **If the eval suite is missing or inadequate**:
-   - Reference `references/eval-generation.md` for guidance on creating a comprehensive evaluation suite.
+   - Reference [references/eval-generation.md](references/eval-generation.md) for guidance on creating a comprehensive evaluation suite.
    - Guide the user through the eval generation process using `waza new eval <skill-name>` to scaffold a new evaluation structure (creates `eval.yaml` plus positive/negative trigger task files).
    - Use `waza new task from-prompt "<prompt>" <task-path>` to record a real Copilot session and convert it into a task YAML with inferred validators.
    - Review the generated eval suite with the user and ensure it covers:
@@ -175,14 +176,14 @@ Evaluate the quality of the evaluation suite and the grading regime, applying th
 
 ### Phase 7: Diagnostic report
 
-Before writing the report, load `references/diagnostic-report-template.md` to obtain the six-section template shape. This gate prevents the agent from inventing a report structure or omitting required sections.
+Before writing the report, load [references/diagnostic-report-template.md](references/diagnostic-report-template.md) to obtain the six-section template shape. This gate prevents the agent from inventing a report structure or omitting required sections.
 
 1. **Synthesise per-failure insights**: for each significant failure or regression surfaced in Phases 4–6, compose:
    - **Eval ID**: the specific task that failed.
    - **Context/Insight**: a technical explanation of *why* the failure occurred, drawing on the model's transcript, the skill's `SKILL.md` content, and the task's input/output. Examples: "The skill's description mentions 'code review' but the task uses the term 'local review', causing a trigger failure." / "The skill's workflow step 3 instructs the agent to 'analyze the diff', but the agent skipped this step because the task input didn't explicitly mention a diff." / "The `output_contains` assertion checks for 'Python 3.8+' but the skill's output says 'Python 3 or later', causing a false failure."
 2. **Compose recommended fixes**: for each per-failure insight, propose two options:
    - **Recommended Fix A (Conservative)**: a surgical, minimal change. Example: "Change line 12 of SKILL.md from 'code review' to 'code review or local review' to improve trigger accuracy."
-   - **Recommended Fix B (Structural)**: a broader architectural or pattern change. Example: "Reorganise the 'When to Use' section to explicitly list all synonymous terms (code review, local review, PR review) to prevent similar trigger failures across the suite."
+   - **Recommended Fix B (Structural)**: a broader architectural or pattern change. Example: "Reorganise the 'Use For' section to explicitly list all synonymous terms (code review, local review, PR review) to prevent similar trigger failures across the suite."
 3. **Report path**: write the report to `<repo-root>/diagnostic-report.md` by default. If the user supplied a different path (at Phase 0, Phase 1, or via a `--output` flag), use the supplied path instead.
 4. **Report sections** (six, in the order defined by `references/diagnostic-report-template.md`):
    1. Executive summary

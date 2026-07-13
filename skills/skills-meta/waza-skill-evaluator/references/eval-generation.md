@@ -91,7 +91,7 @@ Map the conceptual assertion types to specific Waza validators:
 | Assertion Type | Description | Waza Validator | Example |
 |---------------|-------------|----------------|---------|
 | **Binary** (pass/fail pattern match) | Output contains a specific keyword or follows a format | `regex` or `text` | Output contains `/local-review-uncommitted` |
-| **Structural** (code structure, file existence) | Response follows a template or includes required sections | `code` or `text` | Generated code compiles; output contains both Summary and Prescription sections |
+| **Structural** (code structure, file existence) | Response follows a template or includes required sections | `code` or `text` | Generated code compiles; output contains both Summary and Recommended Fix sections |
 | **Functional** (behavioral outcomes, tool usage) | Output can be executed or matches known-good behavior | `behavior` or `diff` | Agent called the correct tool; file written to expected path |
 | **Negative** (absence of pattern) | Response must NOT contain certain elements | `regex` with negative pattern | Output does not contain `rm -rf` |
 

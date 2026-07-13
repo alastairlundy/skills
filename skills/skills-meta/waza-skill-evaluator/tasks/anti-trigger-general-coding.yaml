@@ -7,7 +7,7 @@ inputs:
   prompt: "Write a TypeScript function that debounces another function"
 expected:
   should_trigger: false
-graders:
+  graders:
   - type: text
     name: omits-skill-keywords
     config:
@@ -15,6 +15,7 @@ graders:
         - "waza"
         - "benchmark"
         - "diagnostic"
-        - "Prescription"
+        - "Recommended Fix"
         - "baseline lift"
         - "eval suite"
+

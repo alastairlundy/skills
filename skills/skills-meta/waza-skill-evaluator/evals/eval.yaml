@@ -10,5 +10,11 @@ config:
   executor: mock
   model: gpt-5-mini
 
+metrics:
+  - name: pass_rate
+    weight: 1.0
+    threshold: 0.7
+    description: Fraction of tasks whose graders all pass on every trial
+
 tasks:
   - "../tasks/*.yaml"

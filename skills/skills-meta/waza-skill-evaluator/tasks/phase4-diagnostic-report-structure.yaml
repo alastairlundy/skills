@@ -1,6 +1,6 @@
 id: phase4-diagnostic-report-structure
 name: "Phase 4: generate diagnostic-report.md with correct structure"
-description: Agent must generate a diagnostic-report.md file containing an executive summary, per-failure insights, and dual-option prescriptions
+description: Agent must generate a diagnostic-report.md file containing an executive summary, per-failure insights, and dual-option recommended fixes
 tags:
   - phase4
   - diagnostic-report
@@ -19,5 +19,5 @@ graders:
     config:
       contains:
         - "Summary"
-        - "Prescription A"
-        - "Prescription B"
+        - "Recommended Fix A"
+        - "Recommended Fix B"

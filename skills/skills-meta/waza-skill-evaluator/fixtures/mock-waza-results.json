@@ -27,9 +27,9 @@
         },
         {
           "type": "regex",
-          "pattern": "## .*Summary|## .*Prescription",
+          "pattern": "## .*Summary|## .*Recommended Fix",
           "passed": true,
-          "matched_content": "## Executive Summary\n## Prescription A\n## Prescription B"
+          "matched_content": "## Executive Summary\n## Recommended Fix A\n## Recommended Fix B"
         }
       ],
       "transcript_path": "outputs/perf-generate-report/transcript.md"

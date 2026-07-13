@@ -1,0 +1,19 @@
+id: phase4-dual-recommended-fixes
+name: "Phase 4: generate dual-option recommended fixes A and B"
+description: Agent must provide two recommended fix options per failure - Recommended Fix A (conservative) and Recommended Fix B (structural)
+tags:
+  - phase4
+  - diagnostic-report
+inputs:
+  prompt: "For each failing task, give me both a minimal fix and a structural fix"
+expected:
+  should_trigger: true
+graders:
+  - type: text
+    name: dual-recommended-fixes
+    config:
+      contains:
+        - "Recommended Fix A"
+        - "Recommended Fix B"
+        - "conservative"
+        - "structural"
