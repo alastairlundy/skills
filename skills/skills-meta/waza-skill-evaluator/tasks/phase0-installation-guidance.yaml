@@ -14,7 +14,7 @@ graders:
     config:
       contains:
         - "install"
-        - "github.com/microsoft/waza"
+        - "waza"
         - "permission"
   - type: text
     name: explicit-mention
