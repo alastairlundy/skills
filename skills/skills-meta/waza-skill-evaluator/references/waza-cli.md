@@ -2,16 +2,6 @@
 
 This document is the authoritative catalogue of Waza CLI commands used by the `waza-skill-evaluator` skill. It is loaded in Phase 0 (after the first-run probe, before any `waza` invocation) and consulted throughout the workflow whenever a Waza command is needed. Refer to this file rather than guessing flags or invocations.
 
-## Installation
-
-The Waza CLI is installed from <https://github.com/microsoft/waza>. Native PowerShell:
-
-```powershell
-irm https://raw.githubusercontent.com/microsoft/waza/main/install.ps1 | iex
-```
-
-Always obtain explicit user permission before downloading or installing.
-
 ## Version detection
 
 - `waza --version` — print the installed Waza CLI version. The single command for confirming Waza is installed. There is no `waza version` subcommand; do not try one.
@@ -50,8 +40,6 @@ The workflow assumes the installed Waza version supports each of the following. 
 - `waza run <skill-B> --output waza-output/description-edits.json` — same as above for the treatment arm of an A/B comparison; the treatment file name is a hyphenated phrase describing what is being changed.
 - `waza compare waza-output/base.json waza-output/description-edits.json [--format table|json]` — produce a side-by-side comparison of the two result files. The `table` format is human-readable; `json` is machine-readable.
 - `waza results compare <run-id-1> <run-id-2>` — compare two cloud-stored runs by their run IDs.
-- `waza coverage <root>` — produce a per-task coverage report (full / partial / missing) over `<root>`. Useful as a complement to running the suite.
-- `waza grade <eval.yaml> --results results.json --output graded.json` — re-score an existing `results.json` against the graders in `<eval.yaml>` without re-executing the agent. Use this when graders have been updated and only the scoring needs to be re-run.
 
 ## Quality and one-shot checks
 
