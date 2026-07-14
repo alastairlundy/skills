@@ -1,6 +1,6 @@
 id: phase0-check-waza-version
 name: "Phase 0: verify waza CLI is installed"
-description: Agent must run 'waza version' before proceeding with any evaluation steps
+description: Agent must run 'waza --version' before proceeding with any evaluation steps
 tags:
   - phase0
   - prerequisites
