@@ -1,5 +1,70 @@
 ### Step 6: Interface & Model Branch (Optional)
 
+## Code-impl context block (5 elements)
+
+Every per-decision question in this file (architectural decisions in
+Phase 1, source-of-truth conflicts in Phase 2, type introductions in
+Phase 3) emits a 5-element code-impl context block before the
+locked question line. The first four elements match the parent
+grilling skill's 4-element block (Goal, Prior decisions, Stakes,
+Scope) in name, order, and shape — each element exactly one sentence,
+with ledger citations in the **Goal**, **Prior decisions**, and
+**Stakes** items. The 5th element — **Spec section** — is purely
+additive: it captures the spec file path and the specific section or
+functional requirement the branch addresses.
+
+The 5th element is **required for every code-impl per-decision
+question**; it is not optional. The citation format for the 5th
+element is fixed: the spec file path plus the section or
+requirement, in the form `specs/feature-x.md §3.2` (file path plus
+section or requirement). The 5th element is one sentence and must
+include the inline citation.
+
+The parent 4-element block (Goal, Prior decisions, Stakes, Scope) is
+emitted verbatim, in order, each element exactly one sentence, with
+ledger citations. See
+`../grilling/references/locked-question-format.md` Part 1 for the
+parent definition and constraints. The context block is not a
+free-form prose summary, a "current state" reading, a code
+investigation, a domain-glossary recap, or any other kind of
+analysis.
+
+### 5-element code-impl context block template
+
+```md
+- **Goal**: <one sentence — the goal of the overall decision, citing D001>
+- **Prior decisions**: <one sentence — the prior decisions that affect
+  this branch, with ledger citations (e.g., D002, D003)>
+- **Stakes**: <one sentence — why this decision matters>
+- **Scope**: <one sentence — what is in and out of this decision>
+- **Spec section**: <one sentence — the spec file path and the
+  specific section or functional requirement the branch addresses,
+  cited inline (e.g., `specs/feature-x.md §3.2`)>
+```
+
+The 5th element is required, not optional. The citation format is
+fixed. The parent's 4 elements stay aligned with the parent grilling
+skill; the 5th element is the only code-impl addition.
+
+### Worked example
+
+```md
+- **Goal**: define the type for the freelancing platform's contact
+  record (D001).
+- **Prior decisions**: D002 established that the contact acts for a
+  client organization; D003 established the payment flow.
+- **Stakes**: the type shape determines whether contacts can be
+  serialized for messages and whether the payment flow type-checks.
+- **Scope**: this decision covers the `Contact` type's fields and
+  invariants; it does not cover `ClientOrganization` or `Invoice`.
+- **Spec section**: the `Contact` type is required by
+  `specs/freelancing-platform.md §3.2 (Contact record)` to carry an
+  identity, a display name, and a reference to a single
+  `ClientOrganization`.
+```
+
+---
+
 Ask the user: *"Would you like to be grilled on the specific
 Interface, Contract, DTO, and Model definitions now?"*
 
