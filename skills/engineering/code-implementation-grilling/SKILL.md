@@ -31,7 +31,7 @@ owns the Decision Ledger, formats, tone, and convergence test).
 
 ## Workflow
 
-Every branch question in this skill follows the three-turn locked
+Every branch question in this skill follows the two-turn locked
 question sequence from `../grilling/references/locked-question-format.md`.
 The skill's steps (4, 5, 6) call the sequence, but the format itself —
 context block, Socratic elicitation question, locked question line,
@@ -95,10 +95,10 @@ goal record template from `../grilling/references/decision-ledger.md`.
 
 ### Step 4: Foundation Establishment (mandatory)
 
-Resolve one-by-one using the three-turn locked question sequence from
+Resolve one-by-one using the two-turn locked question sequence from
 `../grilling/references/locked-question-format.md`. For each
 foundation item, emit a context block, Socratic elicitation question,
-locked question line, and options + recommendation across three
+locked question line, and options + recommendation across two
 separate agent turns. Resolve with 2-4 options:
 
 1. **Language** — primary language?
@@ -122,13 +122,13 @@ framework, ORM, test framework, logging, etc.). Skip if not interested.
 2. **Surface TDP list** (separate turn): After the foundation is
    resolved, present the TDP list to the user in dependency order.
    State that the agent will walk through them one at a time using
-   the three-turn sequence, starting with the first. Do not include
+   the two-turn sequence, starting with the first. Do not include
    the context block or Socratic question for the first TDP in this
    turn — that comes in the next turn. The TDP list surfacing is a
    meta-step (not a branch); the context block is not emitted on
    this turn. The first TDP's full context block appears in the next
    turn when the agent begins resolving the first TDP.
-3. **Resolve**: Grill on each TDP using the three-turn sequence from
+3. **Resolve**: Grill on each TDP using the two-turn sequence from
    `../grilling/references/locked-question-format.md`.
 
 Load `references/interface-and-model-branch.md` before asking the user
@@ -140,7 +140,7 @@ format choice to the user.
 ### Step 6: Interface & Model Branch (optional)
 
 Follow `references/interface-and-model-branch.md`. The phases are
-sequential, not nested. Use the three-turn locked question sequence
+sequential, not nested. Use the two-turn locked question sequence
 from `../grilling/references/locked-question-format.md` for each
 architectural decision, source-of-truth conflict, and type
 introduction.
@@ -148,7 +148,7 @@ introduction.
 ### Step 7: Output Selection
 
 Follow `references/output-selection.md`. Present the two-part choice
-one part at a time, using the three-turn sequence for each part.
+one part at a time, using the two-turn sequence for each part.
 
 ### Step 8: Final Alignment Check & Convergence
 
@@ -192,22 +192,24 @@ transcript:
       question line with explicit required framing, options and
       recommendation.
 - [ ] Every branch question, including re-asks and follow-ups, emitted
-      the full four-part sequence across three separate agent turns:
-      a context block + Socratic elicitation question turn, a locked
-      question line turn, and an options + recommendation turn. The
-      agent did not skip the context block or Socratic elicitation
-      question on a re-ask, and did not collapse the four parts into
-      a single turn.
+      the full four-part sequence across two separate agent turns:
+      a context block + Socratic elicitation question turn, and a
+      locked question line + options + recommendation turn. The agent
+      did not skip the context block or Socratic elicitation question
+      on a re-ask, and did not collapse the two turns into a single
+      turn.
 - [ ] Every context block was emitted as the four-element bullet list
       (Goal, Prior decisions, Stakes, Scope) in that order, each
       element exactly one sentence, with ledger citations. The context
       block was not replaced with a free-form prose summary, a "current
       state" investigation, a code reading, a domain-glossary recap,
       or any other kind of analysis.
-- [ ] Every Socratic elicitation question used the fixed phrasing:
-      "What are you working toward in this decision?"
-- [ ] Every locked question line included the explicit required framing:
-      `required — state your answer before the LLM presents options.`
+- [ ] Every Socratic elicitation question used the D003 verbatim
+      phrasing: "What are you working toward in this decision? You may
+      answer, or skip and see the options as-is."
+- [ ] Every locked question line used the D004 verbatim phrasing:
+      "**For [Txxx] – [branch name]: pick an option, hybridize, or
+      provide your own answer.**"
 - [ ] Every options block was preceded by the reference-set preamble:
       "Here are options to help you refine or confirm your answer. Pick
       one, reject all, or hybridize."

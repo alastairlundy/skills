@@ -7,14 +7,14 @@ transcript:
       loaded and read in full before the first user question. If
       any reference file was missing or unreadable, the session
       aborted and the missing file was reported to the user.
-- [ ] **Three-turn procedure**: Did every branch question — including
+- [ ] **Two-turn procedure**: Did every branch question — including
       foundation items, TDP branches, and any re-ask or follow-up —
-      emit the full four-part locked question sequence across three
+      emit the full four-part locked question sequence across two
       separate agent turns: a context block + Socratic elicitation
-      question turn, a locked question line turn, and an options +
+      question turn, and a locked question line + options +
       recommendation turn? The agent did not skip the context block or
       Socratic elicitation question on a re-ask, and did not collapse
-      the four parts into a single turn. See
+      the two turns into a single turn. See
       `../grilling/references/locked-question-format.md`.
 - [ ] **Context block (parent 4-element)**: Every context block was
       emitted as the four-element bullet list (Goal, Prior decisions,
