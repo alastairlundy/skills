@@ -169,45 +169,74 @@ reference this record.
 
 ### Step 4: Open Branch A
 
-Open the first decision branch using the four-part locked question
-sequence from `references/locked-question-format.md`. The four parts
-are emitted across three separate agent turns with mandatory waits
-between them. The agent must not collapse them into a single turn and
-must not skip the context block or Socratic elicitation question,
-even on a re-ask or a follow-up after the user has answered earlier
-parts.
+Open the first decision branch using the locked question sequence
+from `references/locked-question-format.md`. The four parts (context
+block, Socratic elicitation question, locked question line, options
+plus recommendation) are emitted across **two separate agent turns**
+with a mandatory wait between them. The agent must not collapse the
+two turns into a single turn and must not skip the context block or
+the optional Socratic elicitation question, even on a re-ask or a
+follow-up after the user has answered earlier parts. The locked
+question line, the options, and the recommendation are emitted
+together in Turn 2 — they are not split into separate turns.
 
-In the four-part sequence, "you" and "your" always refer to the **user**,
-not the LLM. The locked question line, the Socratic elicitation
-question, the reference-set preamble, and any other user-facing prompt
-are addressed to the user. The agent emits them verbatim and waits
-for the user to respond.
+In the locked question sequence, "you" and "your" always refer to the
+**user**, not the LLM. The optional Socratic elicitation question,
+the locked question line, the reference-set preamble, and any other
+user-facing prompt are addressed to the user. The agent emits them
+verbatim and waits for the user to respond.
 
-The three turns are:
+The two turns are:
 
-1. **Turn 1 — Context block (Part 1) + Socratic elicitation question
-   (Part 2).** Present the fixed context block (goal, prior decisions,
-   stakes, scope), each element one sentence, citing the goal record
-   (D001) and any prior branch records. Then ask the Socratic
-   elicitation question verbatim. **Stop and wait for the user's
-   response.**
+1. **Turn 1 — Context block (Part 1) + optional Socratic elicitation
+   question (Part 2).** Present the fixed context block (Goal, Prior
+   decisions, Stakes, Scope), each element one sentence, citing the
+   goal record (D001) and any prior branch records. Then ask the
+   optional Socratic elicitation question verbatim. **Stop and wait
+   for the user's response.**
 
    The Socratic elicitation question is:
 
    ```
-   **What are you working toward in this decision?**
+   What are you working toward in this decision? You may answer, or
+   skip and see the options as-is.
    ```
 
-2. **Turn 2 — Locked question line (Part 3).** After the user answers
-   the Socratic elicitation question, present the locked question line
-   verbatim. **Stop and wait for the user's answer.**
+   The Socratic elicitation question is **optional**. The user may
+   engage to steer the direction of the options, or decline. The
+   agent recognizes decline signals — "skip", "no", "as-is", or a
+   no-op response — and proceeds to Turn 2 in the next user turn
+   without re-asking and without attempting to extract direction
+   from a "skip". The agent must not pressure the user to engage
+   with the Socratic question and must not treat a no-op response
+   as a missing answer.
+
+   - **Engage case (per D005).** When the user provides a direction
+     rather than declining, the agent uses the direction as a soft
+     steering signal in Turn 2: it informs the option names, the
+     "What it is" descriptions, and the recommendation's `Reasoning`
+     field. The underlying choice space is unchanged; the reframing
+     is a soft signal across all options, not a filter. Defensible
+     options are not dropped.
+   - **Decline case (per D013).** When the user declines, the agent
+     proceeds to Turn 2 with options framed on the branch context
+     (Goal, Prior decisions, Stakes, Scope) without steering; the
+     recommendation's `Reasoning` field is based on the branch
+     context, not on a direction.
+
+2. **Turn 2 — Locked question line (Part 3) + options and
+   recommendation (Part 4).** Present the locked question line
+   verbatim, then the options block (preceded by the reference-set
+   preamble from `references/options-format.md`) and the
+   recommendation (with goal-aligned reasoning from
+   `references/recommendation-format.md`). **Stop and wait for the
+   user's response.**
 
    The locked question line is:
 
    ```
-   **For [Dxxx] – [branch name]: required — state your answer before
-   the LLM presents options. You may also pick an option, or provide
-   your answer.**
+   **For [Dxxx] – [branch name]: pick an option, hybridize, or
+   provide your own answer.**
    ```
 
    The `[Dxxx]` is `max(existing Dxxx) + 1`. The `[branch name]` is a
@@ -215,11 +244,10 @@ The three turns are:
    full question in it). The "you" and "your" inside the template
    refer to the user.
 
-3. **Turn 3 — Options and recommendation (Part 4).** After the user
-   answers the locked question, present the options block (with the
-   reference-set preamble from `references/options-format.md`) and
-   the recommendation (with goal-aligned reasoning from
-   `references/recommendation-format.md`).
+   All three response types are **equally valid**: pick an option,
+   hybridize, or provide your own answer. The agent must not default
+   to a closed-ended "pick one" framing, and must not treat the
+   locked question line as demanding a specific answer format.
 
    The reference-set preamble is:
 
@@ -230,16 +258,17 @@ The three turns are:
 
    Again, the "you" and "your" inside the preamble refer to the user.
 
-The user may confirm their answer, revise it in light of the options,
-or hybridize. The user's own answer is the anchor; the options are a
-reference set.
+The user may engage with the Socratic question to steer the options,
+decline and let the agent proceed with the default framing, confirm
+an answer, revise it in light of the options, or hybridize. The
+user's own answer is the anchor; the options are a reference set.
 
 Walk the user through one branch at a time. For every branch, the
-three turns above are mandatory. Re-asking a branch (because the user
+two turns above are mandatory. Re-asking a branch (because the user
 did not answer, asked for clarification, or because of a follow-up)
-restarts at Turn 1 with a fresh context block and Socratic elicitation
-question — do not skip straight to the locked question line or the
-options.
+restarts at Turn 1 with a fresh context block and optional Socratic
+elicitation question — do not skip straight to Turn 2, and do not
+collapse the two turns into one.
 
 ### Step 5: Record and continue
 
@@ -406,25 +435,46 @@ transcript:
       line in `Constraints` rather than amending the prior record.
 - [ ] Every branch question followed the four-part locked question
       sequence: context block, Socratic elicitation question, locked
-      question line with explicit required framing, options and
-      recommendation.
+      question line, options and recommendation. The four parts were
+      emitted across **two separate agent turns** (Turn 1: context
+      block plus optional Socratic elicitation question; Turn 2:
+      locked question line, options, and recommendation together).
 - [ ] Every branch question, including re-asks and follow-ups, emitted
-      the full four-part sequence across three separate agent turns:
-      a context block + Socratic elicitation question turn, a locked
-      question line turn, and an options + recommendation turn. The
-      agent did not skip the context block or Socratic elicitation
-      question on a re-ask, and did not collapse the four parts into
-      a single turn.
+      the full two-turn sequence: a context block + Socratic
+      elicitation question turn, and a locked question line + options
+      + recommendation turn. The agent did not skip the context block
+      or the optional Socratic elicitation question on a re-ask, and
+      did not collapse the two turns into a single turn. The locked
+      question line, the options, and the recommendation were emitted
+      together in Turn 2 — they were not split into separate turns.
 - [ ] Every context block was emitted as the four-element bullet list
       (Goal, Prior decisions, Stakes, Scope) in that order, each
       element exactly one sentence, with ledger citations. The context
       block was not replaced with a free-form prose summary, a "current
       state" investigation, a code reading, a domain-glossary recap,
       or any other kind of analysis.
-- [ ] Every Socratic elicitation question used the fixed phrasing:
-      "What are you working toward in this decision?"
-- [ ] Every locked question line included the explicit required framing:
-      `required — state your answer before the LLM presents options.`
+- [ ] Every Socratic elicitation question used the D003 verbatim
+      phrasing: "What are you working toward in this decision? You may
+      answer, or skip and see the options as-is."
+- [ ] Every Socratic elicitation question was presented as optional.
+      When the user declined (signals: "skip", "no", "as-is", or a
+      no-op response), the agent recognized the decline and proceeded
+      to Turn 2 without re-asking and without attempting to extract
+      direction from a "skip". The agent did not pressure the user to
+      engage with the Socratic question.
+- [ ] When the user engaged with the Socratic question, the agent
+      used the direction as a soft steering signal in Turn 2 —
+      informing the option names, the "What it is" descriptions, and
+      the recommendation's `Reasoning` field — without dropping
+      defensible options. The underlying choice space was unchanged.
+- [ ] Every locked question line used the D004 verbatim phrasing:
+      "**For [Dxxx] – [branch name]: pick an option, hybridize, or
+      provide your own answer.**"
+- [ ] Every locked question line presented all three response types
+      (pick an option, hybridize, provide your own answer) as equally
+      valid. The agent did not default to a closed-ended "pick one"
+      framing, and did not treat the locked question line as demanding
+      a specific answer format.
 - [ ] Every options block was preceded by the reference-set preamble:
       "Here are options to help you refine or confirm your answer. Pick
       one, reject all, or hybridize."

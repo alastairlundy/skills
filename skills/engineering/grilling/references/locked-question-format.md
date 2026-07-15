@@ -18,7 +18,19 @@ proceeding. Free-form instructions to the agent in this reference use
 ## The sequence
 
 Every branch question follows a fixed four-part sequence. The parts are
-not optional and their order is fixed.
+not optional and their order is fixed. The four parts are emitted
+across **two separate agent turns** with a mandatory wait between them:
+
+- **Turn 1** — Part 1 (context block) + Part 2 (optional Socratic
+  elicitation question). The agent stops and waits for the user's
+  response.
+- **Turn 2** — Part 3 (locked question line) + Part 4 (options block
+  preceded by the reference-set preamble, then the recommendation).
+  The agent stops and waits for the user's response.
+
+The locked question line, the options, and the recommendation are
+emitted together in Turn 2 — they are not split into separate turns.
+The agent must not collapse the two turns into a single turn.
 
 ### Part 1 — Context block
 
@@ -64,6 +76,12 @@ question. The question is open-ended and value-surfacing. It does not
 presuppose what matters or narrow the user's thinking to a preset
 dimension.
 
+The Socratic elicitation question is **optional**. The user may
+engage to steer the direction of the options, or decline and let the
+agent proceed with the default framing. The agent must not pressure
+the user to engage with the Socratic question and must not treat a
+no-op response as a missing answer.
+
 The fixed question is:
 
 The Socratic elicitation question is the following user-facing template.
@@ -71,22 +89,58 @@ The "you" inside refers to the user; emit it verbatim and wait for the
 user to respond before proceeding.
 
 ```md
-**What are you working toward in this decision?**
+What are you working toward in this decision? You may answer, or skip
+and see the options as-is.
 ```
 
-Wait for the user's response before proceeding. The response grounds the
-options that follow in the user's actual values rather than the agent's
-assumptions.
+The "You may answer, or skip and see the options as-is" clause is
+part of the wording and is not optional. The wording combines a direct
+question (inviting direction-surfacing) with an explicit opt-out
+(making skipping acceptable).
+
+Wait for the user's response before proceeding. The response grounds
+the options that follow in the user's actual values rather than the
+agent's assumptions.
+
+#### Decline case (per D013)
+
+When the user declines the Socratic elicitation question — signalled
+by "skip", "no", "as-is", or a no-op response — the agent shall
+recognize the decline and proceed to Part 4 in the next user turn.
+The agent must not re-ask and must not attempt to extract direction
+from a "skip". The options in Part 4 are framed on the branch
+context (Goal, Prior decisions, Stakes, Scope) without steering; the
+recommendation's `Reasoning` field is based on the branch context,
+not on a direction.
+
+#### Engage case (per D005)
+
+When the user engages with the Socratic elicitation question (i.e.,
+provides a direction rather than declining), the agent shall use the
+direction as a steering signal in Part 4. The signal is a **soft
+signal across all options, not a filter**: the underlying choice
+space is unchanged. Concretely, the direction informs:
+
+- the option names,
+- the "What it is" descriptions, and
+- the recommendation's `Reasoning` field.
+
+Defensible options are not dropped because of the direction. The
+reframing is a re-presentation of the same choice space in terms of
+the user's stated direction, not a narrowing of the choice space.
 
 ### Part 3 — Locked question line
 
-After the user answers the Socratic question, present the locked
-question line. The line makes the requirement explicit:
+In Turn 2, the locked question line is emitted together with the
+options and the recommendation. Present the locked question line
+verbatim before the options block. The line names the branch (for
+traceability) and presents three equally valid response options.
+
+The locked question line is:
 
 ```md
-**For [Dxxx] – [branch name]: required — state your answer before the
-LLM presents options. You may also pick an option, or provide your
-answer.**
+**For [Dxxx] – [branch name]: pick an option, hybridize, or provide
+your own answer.**
 ```
 
 - `[Dxxx]` is the stable identifier from the Decision Ledger template.
@@ -96,34 +150,52 @@ answer.**
   record itself, not in the question.
 - `[branch name]` is the human-readable name of the branch. It should be
   short, descriptive, and stable for the life of the branch.
-- The `: required — state your answer before the LLM presents options.`
-  suffix is fixed. The user is required to state their own answer before
-  the agent presents options. The user may also pick from the options or
-  provide a hybrid.
+- The `pick an option, hybridize, or provide your own answer` clause
+  is fixed. The agent shall treat all three response types as
+  **equally valid**: pick an option, hybridize, or provide your own
+  answer. The agent must not default to a closed-ended "pick one"
+  framing and must not treat the locked question line as demanding a
+  specific answer format.
 
 Wait for the user's answer before presenting options.
 
 ### Part 4 — Options and recommendation
 
-After the user states their answer, present the options block from
-`references/options-format.md` (preceded by the reference-set preamble)
-and the recommendation from `references/recommendation-format.md`. The
-user may confirm their answer, revise it in light of the options, or
-hybridize.
+In Turn 2, immediately after the locked question line, present the
+options block from `references/options-format.md` (preceded by the
+reference-set preamble) and the recommendation from
+`references/recommendation-format.md`. The user may pick an option,
+hybridize, or provide their own answer.
 
 ## Rules
 
 - **Use the same `Dxxx` and name verbatim in every question for that
   branch.** Do not rephrase, abbreviate, or rename mid-session.
-- **Place the context block, Socratic question, and locked question line
-  on their own lines**, separated by blank lines from the surrounding
-  options block and recommendation.
+- **Two turns are mandatory — hard stop.** Emit Turn 1 (context
+  block plus optional Socratic elicitation question), stop and wait
+  for the user's response, then emit Turn 2 (locked question line
+  plus options plus recommendation), and stop and wait for the
+  user's response. The agent must not collapse the two turns into
+  one and must not split Turn 2 into multiple turns.
+- **Place the context block, Socratic question, and locked question
+  line on their own lines**, separated by blank lines from the
+  surrounding options block and recommendation.
 - **One question per turn — hard stop.** Emit exactly one locked
-  question, then stop generating. No exceptions, no escape hatches, no
-  self-check mechanisms. Asking multiple questions at once confuses the
-  user and is bewildering.
+  question, then stop generating. No exceptions, no escape hatches,
+  no self-check mechanisms. Asking multiple questions at once
+  confuses the user and is bewildering.
 - **The context block is mandatory for every branch.** Do not skip it,
   even when the prior decisions are few or the stakes seem obvious.
+- **The Socratic elicitation question is optional.** The user may
+  engage to steer the options or decline. The agent recognizes
+  decline signals ("skip", "no", "as-is", or a no-op response) and
+  proceeds to Turn 2 without re-asking. The agent must not pressure
+  the user to engage and must not treat a no-op response as a
+  missing answer.
+- **All three response types in the locked question line are equally
+  valid.** The agent must not default to a closed-ended "pick one"
+  framing and must not treat the line as demanding a specific answer
+  format.
 - **Do not replace the context block with a free-form prose summary,
   a code reading, or an investigation.** A "current state of the
   type" summary, a domain recap, a file walk-through, or any other
@@ -145,15 +217,16 @@ hybridize.
 - **Scope**: this decision covers where the precondition check lives;
   it does not cover what the precondition checks.
 
-**What are you working toward in this decision?**
+What are you working toward in this decision? You may answer, or skip
+and see the options as-is.
 
-<user answers>
+<user answers, or says "skip">
 
-**For D007 – where the precondition check lives: required — state your
-answer before the LLM presents options. You may also pick an option, or
-provide your answer.**
+**For D007 – where the precondition check lives: pick an option,
+hybridize, or provide your own answer.**
 
-<user states their answer>
+Here are options to help you refine or confirm your answer. Pick one,
+reject all, or hybridize.
 
 - **Option 1 — Constructor check.** What it is: the precondition runs
   in the tab container's constructor, throwing on null dependencies.

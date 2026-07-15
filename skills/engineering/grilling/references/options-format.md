@@ -67,9 +67,8 @@ The `<Name>` is copied verbatim into the recommendation block — see
 
 ## Worked example
 
-**For D007 – where the precondition check lives: required — state your
-answer before the LLM presents options. You may also pick an option, or
-provide your answer.**
+**For D007 – where the precondition check lives: pick an option,
+hybridize, or provide your own answer.**
 
 <user states their answer>
 
