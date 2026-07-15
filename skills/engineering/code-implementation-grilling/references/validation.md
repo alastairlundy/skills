@@ -16,6 +16,19 @@ transcript:
       Socratic elicitation question on a re-ask, and did not collapse
       the four parts into a single turn. See
       `../grilling/references/locked-question-format.md`.
+- [ ] **Context block (parent 4-element)**: Every context block was
+      emitted as the four-element bullet list (Goal, Prior decisions,
+      Stakes, Scope) in that order, each element exactly one sentence,
+      with ledger citations. The context block was not replaced with a
+      free-form prose summary, a 'current state' investigation, a code
+      reading, a domain-glossary recap, or any other kind of analysis.
+- [ ] **Context block (5th element, Spec section)**: Every code-impl
+      per-decision context block included the 5th element ('Spec
+      section') as a single sentence naming the spec file path and the
+      specific section or functional requirement the branch addresses,
+      with an inline citation such as `specs/feature-x.md §3.2`. The
+      5th element is required, not optional, and the citation format
+      is fixed.
 - [ ] **Atomic Questioning**: Did the agent ask exactly one
       question at a time, waiting for a response before
       proceeding?
