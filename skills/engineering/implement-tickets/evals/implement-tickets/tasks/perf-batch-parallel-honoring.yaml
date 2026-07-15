@@ -1,0 +1,9 @@
+id: perf-batch-parallel-honoring
+type: performance
+description: >-
+  The batch summary reflects DAG-based parallelism: independent tickets appear
+  in the same batch; dependent tickets appear in later batches.
+input: |
+  Implement the tickets in tickets/. The set has T001 and T002 with no dependencies; T003 depends on T001 and T002; T004 depends only on T003.
+assertion: |
+  The batch summary lists three batches in topological order. Batch 1 contains T001 and T002 (both ready, no blockers). Batch 2 contains T003 (blocked only by batch-1 tickets). Batch 3 contains T004 (blocked only by T003). The summary reports "batches=3 dispatch-units=<N>" with dispatch-units reflecting same-file grouping within each batch.

@@ -1,0 +1,11 @@
+name: implement-tickets
+description: >-
+  Evaluates implement-tickets skill trigger discipline (when to use, when to
+  defer to spec-to-tickets or direct dispatch) and performance against the
+  Validation list in SKILL.md, derived from
+  DECISIONS-skills-ticket-implementer.md#D001-#D010. Performance tasks cover
+  source-agnostic loading, cycle detection, same-file grouping, batch
+  parallelism, per-ticket commit format, fresh-context dispatch, judge gate,
+  failure categorization, circuit breaker, live-update prefix vocabulary,
+  end-of-run report, staging-area isolation, mode banner, sticky workspace,
+  conflict default, and criteria-source fallback.

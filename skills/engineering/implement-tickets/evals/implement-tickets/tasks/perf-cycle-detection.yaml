@@ -1,0 +1,9 @@
+id: perf-cycle-detection
+type: performance
+description: >-
+  When the ticket dependency graph contains a cycle, the skill aborts and
+  prints the cycle rather than starting execution.
+input: |
+  Implement the tickets in tickets/. The set has a circular dependency between T001, T002, and T003.
+assertion: |
+  Skill detects the cycle and aborts before any commit. The cycle is printed (the chain of ticket ids forming the loop, e.g. "T001 -> T002 -> T003 -> T001"). The skill recommends re-deriving the dependency graph via spec-to-tickets. No commits are made; no staging areas are created; the shared branch is untouched.
