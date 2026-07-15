@@ -72,7 +72,20 @@ the next step does not start until the current one reports a stable state.
 
 **Completion criterion**: ticket set loaded, DAG acyclic, batches and dispatch units computed, batch summary printed.
 
-Load `references/sub-agent-dispatch.md` before Step 3; load `references/judge-prompt.md` before the judge-loop sub-step in Step 3.
+Load `references/sub-agent-dispatch.md` before Step 3 for the full dispatch template variables and prompt shape; load `references/judge-prompt.md` before the judge-loop sub-step in Step 3.
+
+### Sub-Agent Contract (MANDATORY)
+
+These rules are non-negotiable. They apply to every sub-agent dispatch regardless of
+ticket content, batch, or mode. The coordinator enforces them; the sub-agent is bound
+by them. Violations are contract breaches, not suggestions.
+
+- **REQUIRED**: All work happens inside `<STAGING_PATH>`. No file outside the staging area may be written. VIOLATION: return `status: error` with `notes: wrote-outside-staging`.
+- **REQUIRED**: No commits. The sub-agent must not run `git add`, `git commit`, `git push`, `git checkout` to a different branch, or any commit-related or branch-switching command. The coordinator owns all commits. VIOLATION: return `status: error` with `notes: attempted-commit`.
+- **REQUIRED**: The sub-agent must return the structured response format exactly as specified (status / files_changed / criteria_check / notes). VIOLATION: treat as `status: error` with `notes: malformed-response`.
+- **REQUIRED**: The sub-agent must not ask the coordinator questions mid-dispatch. One prompt in, one structured response out. VIOLATION: treat as `status: error` with `notes: attempted-interaction`.
+- **REQUIRED**: The sub-agent must not see other in-flight staging areas. Each dispatch gets a clean, pinned checkout.
+- **REQUIRED**: Changes must be scoped to the ticket's acceptance criteria. No refactoring unrelated code; no reformatting untouched lines.
 
 ### Step 3 — Per-dispatch-unit execution
 
@@ -89,10 +102,24 @@ inside the dispatch unit runs in ticket order within the group.
    - The sub-agent's working copy for this ticket is a clean checkout pinned to the commit at which the dispatch began, plus all already-applied staging areas from earlier (DAG-respecting) tickets in the same run.
    - The sub-agent does **not** see any other in-flight staging areas.
 3. **Dispatch a sub-agent with a fresh context**:
-   - Load `references/sub-agent-dispatch.md` and follow the dispatch template.
-   - The sub-agent is told: ticket id, normalized ticket body, the resolved completion criteria, the list of files it owns, and the staging-area path.
-   - The sub-agent accumulates all changes silently. No WIP commits appear in the shared branch's history. Sub-agents are forbidden from committing during dispatch; the coordinator owns commits.
-4. **Capture the sub-agent's diff** at the staging area's `git status` + `git diff` once the sub-agent reports done.
+    - **Pre-dispatch checklist** — before sending the dispatch prompt, verify every item:
+      - [ ] Prompt includes the no-commit rule (verbatim from the Sub-Agent Contract above).
+      - [ ] Prompt includes the staging-area-only rule (verbatim from the Sub-Agent Contract above).
+      - [ ] Prompt includes the structured response format (status / files_changed / criteria_check / notes).
+      - [ ] Prompt includes the no-interaction rule (one prompt in, one response out).
+      - [ ] Prompt uses imperative language (REQUIRED / VIOLATION) for all constraints — not advisory language ("should", "please", "try to").
+      - If any item is missing, abort the dispatch and fix the prompt before sending. Do not dispatch with a partial contract.
+    - Load `references/sub-agent-dispatch.md` and follow the dispatch template.
+    - The sub-agent is told: ticket id, normalized ticket body, the resolved completion criteria, the list of files it owns, and the staging-area path.
+    - The sub-agent accumulates all changes silently. No WIP commits appear in the shared branch's history. Sub-agents are forbidden from committing during dispatch; the coordinator owns commits.
+4. **Capture the sub-agent's diff and validate**:
+    - Capture the staging area's `git status` + `git diff` once the sub-agent reports done.
+    - **Post-dispatch validation** — verify every item before proceeding to the judge loop:
+      - [ ] The sub-agent did not run any commit-related command (check the staging area's `git log`; only `<STARTING_COMMIT>` should be reachable before the coordinator commits).
+      - [ ] All paths in `files_changed` are within `<OWNED_FILES>`. If not, treat as `status: error` with the offending path in `notes` and increment the strike counter.
+      - [ ] The sub-agent returned the structured response format (status / files_changed / criteria_check / notes). If unstructured or missing required fields, treat as `status: error` with `notes: malformed-response` and increment the strike counter.
+      - [ ] The sub-agent did not write outside `<STAGING_PATH>`. If it did, treat as `status: error` with `notes: wrote-outside-staging` and increment the strike counter.
+      - If any check fails, do not proceed to the judge loop. Record the violation, increment the strike counter, and route through failure handling (Step 4).
 5. **Run the judge loop**:
    - Load `references/judge-prompt.md` and follow the judge template.
    - The judge receives: the ticket's completion criteria, the sub-agent's diff, and the staging-area state.
@@ -113,6 +140,18 @@ inside the dispatch unit runs in ticket order within the group.
    - `[ESCALATION] ticket=<id> <detail>` on user-facing interrupts.
 
 **Completion criterion (per ticket)**: either a commit on the shared branch, a recorded skip with reason, or a recorded escalation to the user. Strike count for the ticket is reset to 0 on commit.
+
+### Common Sub-Agent Violations
+
+These are contract violations, not warnings. Each one increments the strike counter
+and routes through failure handling (Step 4). The coordinator must detect and record
+every instance.
+
+- **Sub-agent committed**: The sub-agent ran `git add`, `git commit`, or any commit-related command. Contract violation — the coordinator owns commits. Treat as `status: error` with `notes: attempted-commit`.
+- **Sub-agent wrote outside staging**: The sub-agent modified a file outside `<STAGING_PATH>` or `<OWNED_FILES>`. Contract violation — the staging area is the only writable surface. Treat as `status: error` with `notes: wrote-outside-staging`.
+- **Sub-agent returned unstructured response**: The sub-agent's response does not match the required format (status / files_changed / criteria_check / notes). Contract violation — the judge cannot evaluate an unstructured response. Treat as `status: error` with `notes: malformed-response`.
+- **Sub-agent attempted interaction**: The sub-agent asked the coordinator a question or waited for input mid-dispatch. Contract violation — one prompt in, one response out. Treat as `status: error` with `notes: attempted-interaction`.
+- **Sub-agent refactored out of scope**: The sub-agent changed code outside the ticket's acceptance criteria (unrelated refactors, reformatting of untouched lines). Not a hard error, but the judge should flag it; if the judge rejects, route through the normal re-dispatch path.
 
 ### Step 4 — Failure handling and circuit breaker
 
@@ -176,6 +215,9 @@ This skill writes a structured end-of-run markdown report to `tickets/.runs/<run
 - [ ] Step 2's batch summary was printed (`[OK] loaded=... ready=... skipped=... batches=... dispatch-units=...`).
 - [ ] Same-file tickets were grouped into a single dispatch unit.
 - [ ] Each sub-agent received a fresh context (no shared scratchpad, no carry-over context from prior tickets).
+- [ ] Pre-dispatch checklist was completed before each dispatch (all five items verified; no dispatch sent with a partial contract).
+- [ ] Post-dispatch validation was completed after each sub-agent response (all four items verified; no judge loop started with a failed validation).
+- [ ] Common sub-agent violations (commit attempts, writes outside staging, unstructured responses, interaction attempts) were detected, recorded, and routed through failure handling.
 - [ ] No WIP commits appear on the shared branch between per-ticket commits (the per-ticket commit is the only commit authored for the ticket).
 - [ ] Each per-ticket commit subject matches `[<ticket-id>] <brief description>` (≤72 chars).
 - [ ] Each per-ticket commit body is a bullet list of changes; each footer has references or is explicitly empty.
