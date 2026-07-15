@@ -124,7 +124,10 @@ framework, ORM, test framework, logging, etc.). Skip if not interested.
    State that the agent will walk through them one at a time using
    the three-turn sequence, starting with the first. Do not include
    the context block or Socratic question for the first TDP in this
-   turn — that comes in the next turn.
+   turn — that comes in the next turn. The TDP list surfacing is a
+   meta-step (not a branch); the context block is not emitted on
+   this turn. The first TDP's full context block appears in the next
+   turn when the agent begins resolving the first TDP.
 3. **Resolve**: Grill on each TDP using the three-turn sequence from
    `../grilling/references/locked-question-format.md`.
 
