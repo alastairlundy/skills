@@ -63,6 +63,121 @@ skill; the 5th element is the only code-impl addition.
   `ClientOrganization`.
 ```
 
+## Format: meta-questions vs. per-decision questions
+
+This file uses two question formats, distinguished by their purpose.
+The agent must apply the correct format to each question type.
+
+### Phase-transition meta-questions (lightweight)
+
+Phase-transition meta-questions pace the workflow. They are
+**not** subject to the locked question format and keep their
+lightweight one-line form. Examples in this file:
+
+- *"How many architectural decisions do you want to resolve? (0-3)"*
+  (Phase 1 count question)
+- *"Ready to move to Source of Truth?"* (Phase 1 transition)
+- *"Ready to move to the type loop?"* (Phase 2 transition)
+- *"Would you like to expand any of these variants? If so, which
+  ones?"* (Phase 3 family carve-out follow-up)
+- *"Any more, or ready to move on?"* (Phase 3 termination)
+
+### Per-decision questions (locked question format)
+
+Per-decision questions are about a specific decision and **are**
+subject to the parent grilling skill's locked question format. The
+per-decision questions in this file are:
+
+- **Phase 1** — architectural decisions (layer boundaries,
+  dependency direction, separation mechanism)
+- **Phase 2** — source-of-truth conflicts
+- **Phase 3** — type introductions (including the family carve-out
+  branch and the individual branch)
+
+For each per-decision question, the agent emits the locked question
+format across two turns:
+
+- **Turn 1** — the 5-element code-impl context block (from the
+  section above), followed by the optional Socratic elicitation
+  question using the D003 verbatim wording: *"What are you working
+  toward in this decision? You may answer, or skip and see the
+  options as-is."* The Socratic question is optional; the user may
+  engage to steer or decline (signals: "skip", "no", "as-is", or a
+  no-op response), and the agent proceeds to Turn 2 without
+  re-asking. Stop and wait for the user's response.
+- **Turn 2** — the locked question line using the D004 verbatim
+  wording: *"**For [Txxx] – [branch name]: pick an option,
+  hybridize, or provide your own answer.**"*, followed by the
+  reference-set preamble ("Here are options to help you refine or
+  confirm your answer. Pick one, reject all, or hybridize."), the
+  options block (What it is / Benefit / Cost / Risk, each one
+  sentence, 2–4 options), and the recommendation (Recommendation /
+  Reasoning / Forward risk). All three response types (pick,
+  hybridize, provide) are equally valid. Stop and wait for the
+  user's response.
+
+See `../grilling/references/locked-question-format.md` for the
+full locked question format, the 2-turn sequence, the engage and
+decline behaviors, and the worked example.
+
+### Worked example — hybrid format
+
+A Phase 1 architectural decision (layer boundaries) presented in
+the hybrid format:
+
+```md
+- **Goal**: establish the architectural shape for the freelancing
+  platform (D001).
+- **Prior decisions**: D002 established the contact-vs-organization
+  model; T001 established C# as the primary language.
+- **Stakes**: the layer boundary determines whether the domain
+  model can be tested without infrastructure dependencies.
+- **Scope**: this decision covers where one layer ends and the
+  next begins; it does not cover dependency direction or
+  separation mechanism.
+- **Spec section**: the layer boundary is required by
+  `specs/freelancing-platform.md §2.1 (Architecture)` to keep the
+  domain model free of infrastructure concerns.
+
+What are you working toward in this decision? You may answer, or
+skip and see the options as-is.
+
+<user answers or says "skip">
+
+**For T007 – layer boundaries: pick an option, hybridize, or provide
+your own answer.**
+
+Here are options to help you refine or confirm your answer. Pick
+one, reject all, or hybridize.
+
+- **Option 1 — Domain in its own project, no infrastructure
+  references.** What it is: the domain project has no references
+  to infrastructure projects; infrastructure depends on domain.
+  Benefit: the domain model is testable without infrastructure.
+  Cost: infrastructure must adapt to domain interfaces, which can
+  feel constraining. Risk: a future developer adds a one-way
+  infrastructure reference to "simplify" a feature, breaking the
+  boundary.
+- **Option 2 — Shared kernel between domain and infrastructure.**
+  What it is: a shared kernel project holds types both layers
+  consume. Benefit: less ceremony for cross-cutting types. Cost:
+  the shared kernel becomes a dumping ground and the boundary
+  blurs. Risk: a future type in the shared kernel pulls in
+  infrastructure concerns, polluting the domain.
+
+`Recommendation: Option 1 — Domain in its own project, no
+infrastructure references.`
+`Reasoning: keeping the domain free of infrastructure aligns with
+your goal of a testable domain model (D001).`
+`Forward risk: a future developer adds an infrastructure reference
+to the domain project to "simplify" a feature, breaking the
+testability boundary.`
+```
+
+The meta-question that follows ("Ready to move to Source of Truth?")
+is a phase-transition meta-question and stays lightweight — no
+context block, no Socratic, no locked question line.
+
 ---
 
 Ask the user: *"Would you like to be grilled on the specific
@@ -92,9 +207,14 @@ Interface, Contract, DTO, and Model definitions now?"*
   - **Separation mechanism**: How are layers physically separated
     (e.g., separate project, class library, microservice)?
 
-  Present each decision with 2-4 options, trade-offs, and a
-  recommendation. Wait for the user's response before presenting the
-  next decision.
+  Present each decision using the locked question format described
+  in the "Format" section above: Turn 1 emits the 5-element code-impl
+  context block plus the optional Socratic elicitation question;
+  Turn 2 emits the locked question line plus the reference-set
+  preamble plus the options block (2–4 options, each with What it is
+  / Benefit / Cost / Risk, one sentence per field) plus the
+  recommendation (Recommendation / Reasoning / Forward risk). Wait
+  for the user's response before presenting the next decision.
 
   When all architectural decisions are resolved, ask: *"Ready to
   move to Source of Truth?"* The user confirms or revises before
@@ -106,9 +226,14 @@ Interface, Contract, DTO, and Model definitions now?"*
   for the same functionality or data. If 0 conflicts exist, skip
   directly to the transition prompt. If 1-3 conflicts exist
   (typical: 0-2), resolve each one at a time, each with its own
-  gate. For each conflict, present the two plausible sources and
-  ask the user which is canonical. Wait for the user's response
-  before presenting the next conflict.
+  gate. For each conflict, use the locked question format described
+  in the "Format" section above: Turn 1 emits the 5-element code-impl
+  context block plus the optional Socratic elicitation question;
+  Turn 2 emits the locked question line plus the reference-set
+  preamble plus the options block (the two plausible sources framed
+  as options, each with What it is / Benefit / Cost / Risk, one
+  sentence per field) plus the recommendation. Wait for the user's
+  response before presenting the next conflict.
 
   When all conflicts are resolved (or none were found), ask: *"Ready
   to move to the type loop?"* The user confirms or revises before
@@ -116,16 +241,26 @@ Interface, Contract, DTO, and Model definitions now?"*
 
   #### Phase 3: Detailed Definition (Type Loop)
 
-  Introduce exactly one named type per turn. For each type:
-  1. Present the type's full signature, fields or properties, and a
-     1-2 sentence rationale for why it exists.
+  Introduce exactly one named type per turn. For each type, use the
+  locked question format described in the "Format" section above:
+  Turn 1 emits the 5-element code-impl context block plus the
+  optional Socratic elicitation question; Turn 2 emits the locked
+  question line plus the reference-set preamble plus the options
+  block (2–4 alternative type shapes, each with What it is /
+  Benefit / Cost / Risk, one sentence per field) plus the
+  recommendation (the type's full signature, fields or properties,
+  and a 1–2 sentence rationale for why it exists).
    2. **Family carve-out**: If the type system supports closed sum
       types or sealed class hierarchies, apply the family carve-out;
-      otherwise introduce types individually.
+      otherwise introduce types individually. Both the carve-out
+      branch and the individual branch are per-decision questions
+      subject to the locked question format described in the
+      "Format" section above.
       - **Carve-out branch**: introduce the abstract type plus its
         variants as a family in the abstract type's turn. Present the
-        variant names as a bulleted list in alphabetical order, then
-        ask: *"Would you like to expand any of these variants? If so,
+        variant names as a bulleted list in alphabetical order as the
+        options block, then ask the phase-transition meta-question:
+        *"Would you like to expand any of these variants? If so,
         which ones?"*. Do not pre-emptively enumerate every variant's
         fields and properties.
       - **Individual branch**: introduce one type per turn with no
