@@ -5,11 +5,22 @@ time.
 
 **Part A: Output format**
 
+Each option below uses the parent grilling skill's 4-field option
+format: **What it is** / **Benefit** / **Cost** / **Risk**, in that
+order. Each field is exactly one sentence. All four fields are
+required.
+
 **Option A: Implementation Blueprint (Recommended)**
 
-- **What**: A standalone blueprint file at the repo root, with a
-  `Scope Binding` section that links the blueprint to the source
+- **What it is**: A standalone blueprint file at the repo root, with
+  a `Scope Binding` section that links the blueprint to the source
   spec and the Decision Ledger.
+- **Benefit**: High clarity; serves as a clean "Context Pointer"
+  for tickets, keeping the PRD focused on "What".
+- **Cost**: A temporary file overhead and an extra artifact to keep
+  in sync with the PRD.
+- **Risk**: The blueprint drifts from the PRD over time if the
+  linking discipline lapses.
 - **Filename derivation**: Derive the blueprint filename from the
   spec's identifying token by input type — file path → basename
   without extension (e.g., `docs/prds/feature-x.md` →
@@ -22,9 +33,6 @@ time.
   tracker reference > conversation context** — pick the
   highest-precedence source present. The default location is the
   repo root.
-- **Trade-offs**: High clarity; serves as a clean "Context Pointer"
-  for tickets; keeps the PRD focused on "What".
-- **Risks**: Temporary file overhead.
 - **Scope Binding contents**: The blueprint must include
   `Linked Spec: <path_to_spec>`,
   `Decision Ledger: <ledger-path>`, and a notice that the
@@ -44,11 +52,14 @@ time.
 
 **Option B: PRD Augmentation**
 
-- **What**: Appending a "Technical Implementation" section to the
-  existing spec/PRD.
-- **Trade-offs**: Single source of truth; no fragmented files.
-- **Risks**: Can clutter high-level requirements with low-level
-  technical noise.
+- **What it is**: Appending a "Technical Implementation" section to
+  the existing spec/PRD.
+- **Benefit**: Single source of truth; no fragmented files to
+  reconcile.
+- **Cost**: High-level requirements and low-level technical detail
+  live in the same document, making each harder to scan.
+- **Risk**: Low-level technical noise clutters the requirements view
+  and may be skimmed by non-technical readers.
 - **Ledger Binding (Option B)**: The appended Technical
   Implementation section must inline-cite the `Dxxx`/`Txxx`
   records using `filename#<Dxxx|Txxx>` format, and must open with a
