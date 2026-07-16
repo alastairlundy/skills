@@ -34,16 +34,24 @@ owns the Decision Ledger, formats, tone, and convergence test).
 ## Workflow
 
 Every branch question in this skill follows the two-turn locked
-question sequence from `../grilling/references/locked-question-format.md`.
-The skill's steps (4, 5, 6) call the sequence, but the format itself —
-context block, Socratic elicitation question, locked question line,
-options + recommendation — is defined by that reference. The shared
-references (`../grilling/references/*`) also define the "you"
-convention, tone discipline, options format, and recommendation
-format. This skill defers to those references for all of those
-formats. Re-asking a branch restarts at Turn 1 with a fresh context
-block and Socratic elicitation question — do not skip straight to
-the locked question line or the options.
+question sequence from the parent grilling skill. The skill's
+per-decision context block is the 5-element code-impl variant
+(Goal, Prior decisions, Stakes, Scope, Spec section) defined in
+`references/locked-question-format.md`. The skill's steps (4, 5, 6)
+call the sequence, but the format itself — context block, Socratic
+elicitation question, locked question line, options + recommendation
+— is defined by the parent reference and the local 5-element
+extension. The shared references (`../grilling/references/*`) define
+the parent's 4-element context block, the Socratic elicitation
+question wording (D003), the locked question line wording (D004), the
+"you" convention, tone discipline, options format, and recommendation
+format. The local `references/locked-question-format.md` extends the
+parent with the code-impl 5th element (Spec section) and is the
+loadable source of truth for the 5-element context block per D011.
+This skill defers to the parent for the parts of the format that are
+unchanged. Re-asking a branch restarts at Turn 1 with a fresh
+context block and Socratic elicitation question — do not skip
+straight to the locked question line or the options.
 
 ### Re-ask cycle cap
 
@@ -250,10 +258,21 @@ in by listing the reference here with an explicit `eager` or
   two-field recommendation block (Recommendation / Reasoning) with
   the 1-2 sentence cap on Reasoning and the verbatim-name rule.
 - **`../grilling/references/locked-question-format.md`** — *eager*.
-  Load in full before the first user question. Defines the
-  two-turn locked question sequence (context block + Socratic
-  elicitation question; locked question line + options +
-  recommendation).
+  Load in full before the first user question. Defines the parent's
+  two-turn locked question sequence, the 4-element context block,
+  the Socratic elicitation question wording (D003), the locked
+  question line wording (D004), the engage and decline behaviors, the
+  options format, and the recommendation format. The local
+  `references/locked-question-format.md` extends this reference
+  with the 5-element code-impl context block (per D011) and is the
+  loadable source of truth for the 5th element.
+- **`references/locked-question-format.md`** — *eager*. Load in
+  full before the first user question. Defines the 5-element
+  code-impl context block (Goal, Prior decisions, Stakes, Scope,
+  Spec section) used on every per-decision question in Steps 4, 5,
+  and 6. Extends the parent with the 5th element (Spec section)
+  per D011. See "The 5th element — Spec section" for the citation
+  format and the requirement that the 5th element is not optional.
 
 ### Lazy references (load on demand)
 
@@ -321,12 +340,15 @@ transcript:
       the final re-ask; closure without resolution produced a
       `Dxxx`/`Txxx` record with status `closed without resolution` in
       `Constraints`, not silence.
-- [ ] Every context block was emitted as the four-element bullet list
-      (Goal, Prior decisions, Stakes, Scope) in that order, each
-      element exactly one sentence, with ledger citations. The context
-      block was not replaced with a free-form prose summary, a "current
-      state" investigation, a code reading, a domain-glossary recap,
-      or any other kind of analysis.
+- [ ] Every context block was emitted as the 5-element code-impl
+      bullet list (Goal, Prior decisions, Stakes, Scope, Spec
+      section) in that order, each element exactly one sentence, with
+      ledger citations and an inline spec citation in the 5th element.
+      The context block was not replaced with a free-form prose
+      summary, a "current state" investigation, a code reading, a
+      domain-glossary recap, or any other kind of analysis. See
+      `references/locked-question-format.md` for the 5-element
+      template.
 - [ ] Every preamble before an options block was capped at 2
       sentences, with mandatory ID-citation of the relevant prior
       record(s), per `references/output-selection.md` Step 7.

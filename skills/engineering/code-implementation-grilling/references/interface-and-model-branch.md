@@ -5,48 +5,21 @@
 Every per-decision question in this file (architectural decisions in
 Phase 1, source-of-truth conflicts in Phase 2, type introductions in
 Phase 3) emits a 5-element code-impl context block before the
-locked question line. The first four elements match the parent
-grilling skill's 4-element block (Goal, Prior decisions, Stakes,
-Scope) in name, order, and shape — each element exactly one sentence,
-with ledger citations in the **Goal**, **Prior decisions**, and
-**Stakes** items. The 5th element — **Spec section** — is purely
-additive: it captures the spec file path and the specific section or
-functional requirement the branch addresses.
+locked question line. The 5-element context block is defined in
+`references/locked-question-format.md`; the first four elements
+(Goal, Prior decisions, Stakes, Scope) are the parent grilling
+skill's 4-element block unchanged, and the 5th element (Spec
+section) is the code-impl addition per D011. See
+`references/locked-question-format.md` for the full template, the
+citation format, and the requirement that the 5th element is not
+optional. The context block is not a free-form prose summary, a
+"current state" reading, a code investigation, a domain-glossary
+recap, or any other kind of analysis.
 
-The 5th element is **required for every code-impl per-decision
-question**; it is not optional. The citation format for the 5th
-element is fixed: the spec file path plus the section or
-requirement, in the form `specs/feature-x.md §3.2` (file path plus
-section or requirement). The 5th element is one sentence and must
-include the inline citation.
+### Worked example (Interface & Model Branch)
 
-The parent 4-element block (Goal, Prior decisions, Stakes, Scope) is
-emitted verbatim, in order, each element exactly one sentence, with
-ledger citations. See
-`../grilling/references/locked-question-format.md` Part 1 for the
-parent definition and constraints. The context block is not a
-free-form prose summary, a "current state" reading, a code
-investigation, a domain-glossary recap, or any other kind of
-analysis.
-
-### 5-element code-impl context block template
-
-```md
-- **Goal**: <one sentence — the goal of the overall decision, citing D001>
-- **Prior decisions**: <one sentence — the prior decisions that affect
-  this branch, with ledger citations (e.g., D002, D003)>
-- **Stakes**: <one sentence — why this decision matters>
-- **Scope**: <one sentence — what is in and out of this decision>
-- **Spec section**: <one sentence — the spec file path and the
-  specific section or functional requirement the branch addresses,
-  cited inline (e.g., `specs/feature-x.md §3.2`)>
-```
-
-The 5th element is required, not optional. The citation format is
-fixed. The parent's 4 elements stay aligned with the parent grilling
-skill; the 5th element is the only code-impl addition.
-
-### Worked example
+A Type Loop decision (Contact type) presented in the 5-element
+code-impl format:
 
 ```md
 - **Goal**: define the type for the freelancing platform's contact
@@ -97,8 +70,9 @@ per-decision questions in this file are:
 For each per-decision question, the agent emits the locked question
 format across two turns:
 
-- **Turn 1** — the 5-element code-impl context block (from the
-  section above), followed by the optional Socratic elicitation
+- **Turn 1** — the 5-element code-impl context block (per
+  `references/locked-question-format.md`), followed by the optional
+  Socratic elicitation
   question using the D003 verbatim wording: *"What are you working
   toward in this decision? You may answer, or skip and see the
   options as-is."* The Socratic question is optional; the user may

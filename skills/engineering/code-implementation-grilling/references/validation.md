@@ -22,13 +22,18 @@ transcript:
       with ledger citations. The context block was not replaced with a
       free-form prose summary, a 'current state' investigation, a code
       reading, a domain-glossary recap, or any other kind of analysis.
+      See `../grilling/references/locked-question-format.md` for the
+      parent 4-element definition. Code-impl per-decision context
+      blocks extend this with the 5th element (Spec section) per
+      `references/locked-question-format.md`.
 - [ ] **Context block (5th element, Spec section)**: Every code-impl
       per-decision context block included the 5th element ('Spec
       section') as a single sentence naming the spec file path and the
       specific section or functional requirement the branch addresses,
       with an inline citation such as `specs/feature-x.md §3.2`. The
       5th element is required, not optional, and the citation format
-      is fixed.
+      is fixed. See `references/locked-question-format.md` for the
+      5-element template and the citation format.
 - [ ] **Atomic Questioning**: Did the agent ask exactly one
       question at a time, waiting for a response before
       proceeding?
