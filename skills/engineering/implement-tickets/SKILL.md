@@ -28,7 +28,7 @@ real time.
 - The user asks to "run the ticket implementer", "implement the tickets in tickets/", or "execute the spec-to-tickets output"
 - The user wants parallel work across independent tickets, with a per-ticket commit history on one branch
 - The user explicitly opts into the local `implement-tickets` skill over any globally-installed version
-- When user input would clarify the request (workspace choice, circuit-breaker threshold override, partial-ticket set selection), invoke ask-questions
+- When user input would clarify the request (workspace choice, circuit-breaker threshold override, partial-ticket set selection, attribution policy), invoke ask-questions
 
 ## When Not to Use
 
@@ -53,9 +53,26 @@ the next step does not start until the current one reports a stable state.
    - Default: create a new branch named `tickets/impl-<run-id>` from the current `HEAD`. Record the branch name; all work stays in this branch unless the user specifies otherwise.
    - Override: if the user specifies a worktree path, branch name, or "use a worktree", initialize a worktree at the resolved path. Record the worktree path.
 4. Capture the circuit-breaker threshold override (default = 3 strikes); if the user does not specify, the default applies.
-5. Print a one-line mode banner: `[OK] mode=<Collaborative|Self-Contained> workspace=<branch-or-worktree> breaker=<n>`.
+5. Capture the **attribution policy** ∈ {`human-only`, `human+ai-coauthor`, `ai-only`}.
+   - Parse the user's input for an explicit policy signal. Accepted phrasings: "as me", "as me with the bot as co-author", "as the bot with me as co-author", "as the bot", or a literal policy name.
+   - If the policy is not stated, invoke `ask-questions` with one question and three options: `ai-only`, `human-only`, `human+ai-coauthor`. The recommended default is `human-only` (lowest surprise, matches the default shell git config in most setups). Ask even in Self-Contained mode — identity is an irreversible, audit-visible decision.
+   - Record the chosen policy before printing the mode banner. The skill does not advance to Step 2 without a recorded policy.
 
-**Completion criterion**: mode recorded, workspace initialized and clean, breaker threshold recorded, mode banner printed.
+Before asking the user for the AI identity in sub-step 6, load `references/commit-author-policy.md` to surface canonical bot identities per host platform.
+
+6. If the recorded policy is `human+ai-coauthor` or `ai-only`:
+   1. Ask the user for the AI `name` and `email`. The user may copy from `references/commit-author-policy.md` or supply their own. The skill does **not** propose a default value, does **not** invent a handle, and does **not** read the host's CLI version or env vars to auto-fill.
+   2. Record the AI name and email as captured strings, verbatim from the user's reply. Trimming whitespace only.
+   3. If the user has not provided a name and email, refuse to proceed: emit `[DEVIATION] step=1.sub-step-6 reason=ai-identity-required policy=<recorded>` and abort the run. The skill does not advance to Step 2.
+   4. For `human-only`, skip this sub-step. The shell's `git config user.name` / `user.email` is the implicit human identity; if the shell has none, the eventual `git commit` fails with git's own error and the failure routes through Step 4.
+
+7. Print a one-line mode banner in this exact shape:
+
+   `[OK] mode=<Collaborative|Self-Contained> workspace=<branch-or-worktree> breaker=<n> attribution=<policy>`
+
+   If the policy is `human+ai-coauthor` or `ai-only`, append a single space and `ai=<name> <email>` to the banner.
+
+**Completion criterion**: mode recorded, workspace initialized and clean, breaker threshold recorded, attribution policy recorded, AI identity recorded (if policy involves AI), mode banner printed.
 
 ### Step 2 — Ticket loading and dependency graph
 
@@ -128,9 +145,26 @@ inside the dispatch unit runs in ticket order within the group.
    - On `reject-with-feedback`: re-dispatch the sub-agent with the judge's feedback as additional context. Increment the strike counter for this ticket.
    - On `reject-with-ambiguity`: surface the ambiguity to the user immediately with `[ESCALATION] ticket=<id> ambiguity=<one-line-summary>` (Collaborative mode) or auto-skip with a recorded reason (Self-Contained mode).
 6. **Commit on the shared branch**:
-   - Subject line: `[<ticket-id>] <brief description>` (≤72 chars total).
-   - Body: bullet list of what was done (one bullet per discrete change).
-   - Footer: references to related tickets (`Refs #<id>` for issue-tracker-format parents, or `Refs: <basename>` for local markdown), and any `BREAKING CHANGE:` line if applicable.
+   - **Subject line**: starts with the ticket-id bracket prefix, followed by a plain-language description.
+     - Single-ticket dispatch: prefix is `[<ticket-id>]`. Example: `[T003] add subject-quality gate to commit step`.
+     - Same-file-group dispatch (multiple tickets in one commit unit): prefix is `[<ticket-id-1>,<ticket-id-2>,...]` (comma-separated, no spaces). Example: `[T003,T007] add subject-quality gate and post-commit identity check`.
+     - The bracket prefix **stays in the subject**. It is what makes commits greppable against the ticket set. It is not moved to the body footer.
+     - Treat 72 characters as a soft cap, not a hard limit. A 90-character self-explanatory subject is preferable to a truncated cryptic one.
+     - The rest of the subject (after the bracket prefix) reads as a public changelog entry. The reader has not read the ticket, the decision ledger, or any prior work.
+     - The negative rules (no ledger IDs, no other-ticket IDs, no host-tool acronyms, plain-language verb/noun) are enforced by the subject-quality gate below; the format description does not restate them.
+   - **Body**: bullet list of what was done (one bullet per discrete change).
+   - **Footer**: references to related tickets and decision-ledger records (`Refs: ticket-<id>, DECISIONS-<name>.md#Dxxx`), and any `BREAKING CHANGE:` line if applicable.
+   - **Commit invocation by policy**:
+     - `human-only`: `git commit -m '<subject>' -m '<body>' -m '<footer>'`. The shell's `git config user.name` / `user.email` is the human identity.
+     - `human+ai-coauthor`: the coordinator reads `git config user.name` and `git config user.email` immediately before the commit to obtain the shell human identity, then runs `git -c user.name='<shell-human-name>' -c user.email='<shell-human-email>' commit -m '<subject>' -m '<body>' -m '<footer>' -m 'Co-authored-by: <ai-name> <<ai-email>>'`.
+     - `ai-only`: `git -c user.name='<ai-name>' -c user.email='<ai-email>' commit -m '<subject>' -m '<body>' -m '<footer>'`.
+     - In all three cases, the identity is supplied at commit time via the `-c` flag. The skill does not call `git config user.name` / `git config user.email` to mutate the shell's persistent git config.
+   - **Subject-quality gate** (run before the commit invocation): the coordinator inspects the subject against the following rules; any failure rejects the subject. These are the canonical home for the negative rules — the subject-format description above does not restate them.
+     - No ledger IDs in the subject: subject does not match the regex `\bD\d{3}\b` or `\bT\d{3}\b` outside the ticket-id bracket.
+     - No other-ticket IDs in the subject: subject does not match `T\d{3}` for any ticket id other than the one in the bracket prefix.
+     - No host-tool acronyms in the subject: the subject must not contain host-tool acronyms that the repo glossary in `CONTEXT.md` does not recognise as universal (e.g. `MTP`, `VSTest`, `CPM`, `TFM`, `AOT`).
+     - Plain-language: subject contains at least one verb or noun phrase that names the user-visible effect of the change.
+     - On rejection: the coordinator increments the strike counter for this ticket and re-dispatches the sub-agent with the gate's feedback (mirroring the `reject-with-feedback` re-dispatch path). A second rejection on the same ticket escalates to the user via the circuit breaker.
    - One commit per ticket. No WIP commits, no merge commits inside a ticket's staging area, no squash — the per-ticket commit is the source of truth.
 7. **Reconcile the staging area into the shared branch**: the commit is the reconciliation artefact. Staging-area files are now on the shared branch in DAG order. Staging directories are retained until end of run, then removed.
 8. **Live update** after each ticket:
@@ -204,12 +238,12 @@ This skill writes a structured end-of-run markdown report to `tickets/.runs/<run
 
 ## Transitions
 
-- **`write-changelog`** — may run after this skill to summarize the per-ticket commits as user-facing release notes. The per-ticket commit subjects (`[<ticket-id>] <brief description>`) are designed to be changelog-friendly.
+- **`write-changelog`** — may run after this skill to summarize the per-ticket commits as user-facing release notes. The per-ticket commit subjects (`[<ticket-id(s)>] <plain-language description>`) are designed to be changelog-friendly.
 
 ## Validation
 
-- [ ] Step 1 resolved mode, workspace, and breaker threshold before any ticket work began.
-- [ ] Mode banner was printed at Step 1 completion (`[OK] mode=... workspace=... breaker=...`).
+- [ ] Step 1 resolved mode, workspace, breaker threshold, and attribution policy before any ticket work began.
+- [ ] Mode banner was printed at Step 1 completion in the form `[OK] mode=... workspace=... breaker=... attribution=<policy>[ ai=<name> <email>]`.
 - [ ] Step 2 rejected tickets with missing normalized frontmatter fields with a per-file error.
 - [ ] Step 2 detected cycles in the dependency DAG and aborted with the cycle printed, or confirmed acyclic.
 - [ ] Step 2's batch summary was printed (`[OK] loaded=... ready=... skipped=... batches=... dispatch-units=...`).
@@ -219,7 +253,13 @@ This skill writes a structured end-of-run markdown report to `tickets/.runs/<run
 - [ ] Post-dispatch validation was completed after each sub-agent response (all four items verified; no judge loop started with a failed validation).
 - [ ] Common sub-agent violations (commit attempts, writes outside staging, unstructured responses, interaction attempts) were detected, recorded, and routed through failure handling.
 - [ ] No WIP commits appear on the shared branch between per-ticket commits (the per-ticket commit is the only commit authored for the ticket).
-- [ ] Each per-ticket commit subject matches `[<ticket-id>] <brief description>` (≤72 chars).
+- [ ] Each per-ticket commit subject matches the form `[<ticket-id(s)>] <plain-language description>`. The 72-character limit is a soft cap.
+- [ ] Each per-ticket commit's cross-references appear in the body footer in the `Refs: ticket-<id>, DECISIONS-<name>.md#Dxxx` format, never in the subject.
+- [ ] Step 1 captured the attribution policy before any ticket work began. The mode banner shows `attribution=<policy>` (and `ai=<name> <email>` when policy involves AI).
+- [ ] For `human+ai-coauthor` and `ai-only` policies, the user supplied the AI name and email; the skill did not auto-fill, did not invent a handle, and did not mutate the shell git config.
+- [ ] For `human+ai-coauthor` policy, the per-ticket commit carries a `Co-authored-by: <ai-name> <<ai-email>>` trailer; for `ai-only` policy, the commit's author is the AI identity.
+- [ ] `references/commit-author-policy.md` was loaded before sub-step 6 of Step 1 when the policy involved AI.
+- [ ] The subject-quality gate ran before every per-ticket commit and rejected any subject that violated the four rules in Step 3.6.
 - [ ] Each per-ticket commit body is a bullet list of changes; each footer has references or is explicitly empty.
 - [ ] Judge loop ran for every ticket; no ticket was committed without a judge `approve` verdict.
 - [ ] Sub-agents did not see other in-flight staging areas (verified by the staging-area path and the pinned starting commit).

@@ -8,7 +8,7 @@ tickets, dispatched as a single unit) without committing to the shared branch
 The dispatch is one prompt; the sub-agent returns one structured response. The
 coordinator does not inject additional context mid-run.
 
-## Variables
+## Variables (coordinator fills before sending)
 
 The coordinator fills these placeholders before sending the prompt:
 
@@ -28,6 +28,12 @@ The coordinator fills these placeholders before sending the prompt:
 - `<SHARED_BRANCH>` — the name of the shared branch all work lands on.
 - `<JUDGE_FEEDBACK>` — empty on first dispatch; on re-dispatch, the verbatim
   feedback from the judge's prior `reject-with-feedback` verdict.
+
+## Outputs (sub-agent returns)
+
+These fields appear in the sub-agent's structured response. The coordinator consumes them after the dispatch.
+
+- `<PROPOSED_SUBJECT>` — the sub-agent's plain-language commit subject proposal, written as a public changelog entry. The coordinator reviews it against the subject-quality gate before using it.
 
 ## Prompt
 
@@ -85,6 +91,7 @@ return `blocked: <file-path>` in your response.
    switching command.
 7. Do not modify files outside <OWNED_FILES>. If a ticket's criteria require
    touching a file you do not own, return `blocked: <file-path>` and stop.
+8. Propose a commit subject in the `proposed_subject` field of your response. The subject must read as a public changelog entry — a future maintainer who has not read the ticket should understand what the change does. Do not include ledger IDs, other-ticket IDs, or host-tool acronyms in the subject. Put cross-references in `notes:` instead.
 
 ## What to return
 
@@ -93,6 +100,7 @@ Return a single structured response, in plain text, in this exact shape:
 ```
 status: done | blocked | error
 tickets: <TICKET_IDS>
+proposed_subject: "[<ticket-id>] <plain-language description>"
 files_changed:
   - <path> — <one-line summary of the change>
   - <path> — <one-line summary of the change>
@@ -107,7 +115,9 @@ If `status: blocked`, replace `files_changed` with `blocked_files:
   - <path>` and put the reason in `notes`.
 
 If `status: error`, put the error message in `notes` and leave
-`files_changed` empty.
+`files_changed` empty. `proposed_subject:` is required only for
+`status: done`; for `status: blocked` and `status: error`, omit the
+field.
 
 ## Constraints
 
