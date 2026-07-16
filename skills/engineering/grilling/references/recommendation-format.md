@@ -1,23 +1,22 @@
 # Recommendation Format
 
 After presenting the natural options, the agent names a recommendation.
-The recommendation is **a three-field breakdown with explicit labels**.
+The recommendation is **a two-field breakdown with explicit labels**.
 
 ## Convention: "you" in this reference
 
 In this reference, "you" and "your" inside a backticked template or a
 worked-example emission **always refer to the user**, not the LLM. The
-Recommendation, Reasoning, and Forward-risk templates are addressed to
-the user; "your goal" inside the Reasoning template means the user's
-goal. Emit the templates verbatim. Free-form instructions to the agent
-in this reference use "the LLM" or "the agent" to refer to the agent.
+Recommendation and Reasoning templates are addressed to the user;
+"your goal" inside the Reasoning template means the user's goal. Emit
+the templates verbatim. Free-form instructions to the agent in this
+reference use "the LLM" or "the agent" to refer to the agent.
 
 ## Format
 
 ```md
 `Recommendation: Option N — <name>.`
 `Reasoning: <one-to-two sentences>.`
-`Forward risk: <one sentence naming the most likely failure mode of the chosen option>.`
 ```
 
 - `Recommendation: Option N — <name>.` — `<name>` is copied **verbatim**
@@ -29,11 +28,11 @@ in this reference use "the LLM" or "the agent" to refer to the agent.
   this option serves the user's stated goal. The reasoning must explain
   why the recommended option aligns with the user's goal; it must not
   compare options against each other. Do not re-justify the rejected
-  options.
-- `Forward risk: <one sentence naming the most likely failure mode of the
-  chosen option>.` — the most likely way this choice goes wrong, in
-  one sentence. The point is to surface the failure mode so the user can
-  watch for it later, not to repeat the option's `Risk` field.
+  options. **The cap is strict: maximum 2 sentences, enforced at write
+  time, not by agent judgment.** If a longer explanation is needed,
+  promote the additional rationale into the chosen option's `Cost` or
+  `Risk` field (per `options-format.md`), or into the `Reasoning` field
+  of a subsequent branch — never by exceeding the sentence cap.
 
 ## Goal-alignment rule
 
@@ -92,8 +91,6 @@ and recommend that:
 > aligns with your goal of catching precondition failures at the call
 > site; test scaffolding gets a documented escape hatch that the lint
 > rule can flag if it leaks into non-test code.`
-> `Forward risk: a future developer uses TryCreate in production code to
-> "tidy up" error handling, hiding the precondition failure.`
 
 ## Why the verbatim-name rule
 
@@ -107,8 +104,10 @@ changed.
 
 The fix is to keep the recommendation line a pure reference: copy the
 name verbatim, copy the option number verbatim, and put any nuance in
-`Reasoning` or `Forward risk`. The recommendation is the *pointer*; the
-nuance is the *justification*.
+`Reasoning`. The recommendation is the *pointer*; the nuance is the
+*justification*. Risk articulation belongs in the chosen option's
+`Risk` field (per `options-format.md`); it is no longer surfaced
+separately in the recommendation block.
 
 ## Recommendation rationale on request
 
