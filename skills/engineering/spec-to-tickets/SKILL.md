@@ -15,7 +15,7 @@ The ticket body schema is loaded on demand from `references/ticket-template.md`;
 
 - A spec, PRD, or design document exists and is complete enough to decompose
 - The conversation context contains a resolved plan with problem statement, solution approach, scope boundaries, and acceptance criteria
-- Tickets need to be sized for focused work sessions (3-4 hours each)
+- Tickets need to be sized by coherence — each ticket covers one logical concern, one reviewable unit, one mergeable change
 - Output should target an issue tracker or local markdown files
 - Parallel work is desired (dependency graph enables concurrent work on leaf tickets)
 - When user input would clarify the request, invoke ask-questions
@@ -93,9 +93,35 @@ Determine where to publish the tickets. This must be resolved before decompositi
 1. Parse the user's natural language input for output target signals. Phrases like "send to github issues", "target is gitlab", "save as markdown files", "local tickets" indicate the target.
 2. If no signal is present - ask the user to choose from the following options: local markdown files, GitHub Issues, GitLab Issues, Gitea Issues, Codeberg Issues, or a hosted Forgejo Instance's Issues. Use the `ask_question` tool to present these options if available.
 
+##### PR Count Resolution
+
+Determine the anticipated number of pull requests this ticket set will produce. This must be resolved before decomposition because the PR count determines how tickets are grouped.
+
+1. Parse the user's natural language input for explicit PR count signals. Phrases like "this should be two PRs", "all in one PR", or "split across three PRs" indicate the count.
+2. If no signal is present in the user's input, check the spec for explicit PR count signals (see PR-Path Override Mechanism in Step 6).
+3. If no explicit signal is found from any source, default to 1 PR — all tickets are grouped under a single pull request.
+4. Record the resolved PR count. It is used in Step 6 to group tickets and in Step 9 to scope publishing.
+
 #### Step 6 - Ticket Decomposition Proposal
 
 Break the source material into focused tickets in two phases - first choose the decomposition pattern, then propose the tickets. These phases are separate because the pattern choice determines the structure of the entire decomposition, and should be validated before generating tickets.
+
+##### PR-Path Override Mechanism
+
+Before selecting a decomposition pattern, reconcile the PR count across sources. Three override sources exist, in priority order -
+
+1. **User** (highest) — explicit PR count stated by the user in conversation.
+2. **Spec** — explicit PR count stated in the specification document.
+3. **Supporting Documentation** (lowest) — explicit PR count stated in any document or file provided (besides the spec) or referenced that contributes to understanding the work.
+
+**Explicit vs non-explicit language** - only an explicit call for multiple PRs (e.g., "this should be two PRs", "split into three PRs") shall be treated as a definitive source answer. Non-explicit language (e.g., "this could be split into multiple PRs", "contemplates separate PRs", "might warrant two PRs") is a weak signal — not a definitive answer.
+
+**Reconciliation rules** -
+- If all sources agree (or only one source has an answer), use that answer.
+- If sources conflict on explicit answers, the higher-priority source wins.
+- If a lower-priority source has a non-explicit signal that conflicts with a higher-priority source's explicit answer, raise a reconciliation ask to the user - "The spec mentions this 'could' be two PRs, but you've stated one PR. Should this be one PR or two?" The user decides; the LLM does not decide.
+- If a lower-priority source has a non-explicit signal and no higher-priority source has an answer, raise a reconciliation ask to the user to clarify.
+- The ticket is not an override source.
 
 ##### 6.1 Decomposition Pattern Choice
 
@@ -119,13 +145,18 @@ When the spec explicitly enumerates components or modules, note this constraint 
 
 Prefer Independent over Collaborative. A ticket should only be Collaborative if there is a genuine decision or discussion that the spec does not resolve.
 
-**Ticket size rule** - applies to both modes. The three limits, calibrated to "one average software developer fully implementing the ticket" (matching the gauge used by the Effort label system in Step 10):
+**Coherence primitive** - tickets are sized by what they coherently cover, not by time or effort. The same primitive applies to both human and AI-agent implementers, producing a single ticket shape.
 
-1. **Soft minimum** - under 1 hour is allowed but indicates the ticket is too thin.
-2. **Target band** - 2 to 3-4 hours, calibrated to one average software developer fully implementing the ticket.
-3. **Maximum** - 3-4 hours is a hard cap; tickets should not exceed this.
+**Ticket-set coherence** - all tickets in the set collectively work toward a shared objective. Different tickets may focus on different units of work, types of work, or themes, but they must collectively advance the same goal. In a multi-PR decomposition, each PR's ticket set has its own shared objective.
 
-A **15-ticket soft cap** and a **50-hour total-scope soft cap** both apply: if either is exceeded, the skill signals scope creep. This is a guideline with one hard cap (the 3-4 hour maximum per ticket).
+**Per-ticket coherence** - each ticket must satisfy all three sub-criteria:
+1. **Single mergeable change** - a set of individual changes that collectively and coherently become a single change to be made in the codebase (e.g., implementing a new feature).
+2. **Reviewable unit** - a unit of work, such as a change or set of changes, that can be logically identified as belonging together, and that collectively address an issue in a way that they individually or separately would not be able to.
+3. **Single logical concern** - an area of work that focuses on dealing with a specific domain or problem.
+
+A ticket that fails any sub-criterion is incoherent and must be split or rescoped before being accepted into the proposal. The three sub-criteria are not fully independent — a single mergeable change typically produces a reviewable unit, and a single logical concern typically produces a single mergeable change — but all three must be applied explicitly.
+
+**Coherence validation gate** - during proposal, each proposed ticket is checked against all three sub-criteria. If any sub-criterion fails, the ticket is rescoped or split before proceeding. This gate applies to every ticket before it is included in the proposal table.
 
 **Decision Ledger coverage matrix** - if a Decision Ledger is present, every `Dxxx` and `Txxx` record must be cited by at least one ticket's acceptance criteria or context pointers using `filename#<Dxxx|Txxx>` format, and every ticket must cite at least one ledger record (or, if the ticket covers work explicitly out of ledger scope, cite the absence explicitly with `No ledger record — out of scope: <reason>`). The coverage matrix is a grid where rows are ledger records, columns are tickets, and cells mark which ticket satisfies which record; build it during proposal. A record with no citing ticket is a coverage gap to surface before publishing. A ticket with no cited record is a scope gap to surface before publishing.
 
@@ -210,6 +241,21 @@ For the ticket body schema, see [ticket-template.md](./references/ticket-templat
 
 **Blocked-by field format** - Store the `Blocked by` field as target-agnostic ticket IDs (e.g., `T001`, `T002`) during generation. At publish time (Step 9), substitute with the appropriate format for the chosen target: issue numbers for issue-tracker targets, file basenames for local markdown targets.
 
+**Relative-size signal** - for each ticket that involves files, present the following size information in the ticket body:
+- **File count** - the number of files to create, edit, or delete, as explicitly described by the ticket.
+- **Large Files to be created** - apply this label if any new file described by the ticket is >= 500 lines.
+- **Large Edits required** - apply this label if the total lines to add, remove, or change across all files is >= 500 lines.
+
+For tickets that involve no file additions, edits, or deletions (e.g., documentation-only, decision-only), no relative size is offered. The 500-line threshold is fixed. The "Large" language is descriptive, not prescriptive — it does not imply duration or effort. The file count is the number of files explicitly described by the ticket, not inferred from adjacent code.
+
+**Same-file parallelization rule** - when a ticket modifies a named specific file, later tickets that modify that same named file shall be blocked by the initial ticket until it is completed. Apply these rules:
+- After generating all ticket bodies, scan each ticket's file list (the set of files explicitly described by the ticket).
+- For any pair of tickets where the later ticket's file list overlaps with the earlier ticket's file list, automatically populate the later ticket's `blocked by` field with the earlier ticket's ID.
+- When both tickets are leaves (neither is blocked by the other from elsewhere), the LLM must pick a deterministic ordering — the ticket listed first in the proposal is treated as the earlier one.
+- Partial overlap is sufficient to trigger the block.
+- The user may override the automatic `blocked by` population if they want different ordering.
+- This rule applies regardless of implementer (human or AI agent).
+
 #### Step 9 - Ticket Publishing
 
 Load `references/publishing-rules.md` before executing Step 9's publish step.
@@ -219,16 +265,10 @@ Load `references/publishing-rules.md` before executing Step 9's publish step.
 After publishing, present a summary to the user containing -
 
 1. **Stats** - total ticket count, Independent count, Collaborative count, leaf ticket count (tickets with no blockers).
-2. **Ticket overview** - a table with each ticket's title, classification, estimated effort, domain area, and review complexity:
-   - **Estimated effort** - a fixed categorical label from a closed vocabulary, calibrated to how long one average software engineer would take to fully implement the ticket:
-      - `XS` — under 1 hour
-      - `S` — 1 hour
-      - `M` — 2-3 hours
-      - `L` — 3-4 hours
-      - `XL` — 1 working day
-      A label of `XS` surfaces a ticket-bloat warning in the summary, signaling that the ticket may need to be combined with another ticket. A label of `XL` or larger surfaces a ticket-bloat warning in the summary. Tickets shall not be published if their effort is beyond `XL`; Step 6 must split the work first. The labels are the only permitted values; the agent shall not invent new tiers. This is a deterministic rule, never a free post-hoc judgement.
-   - **Domain area** - the subsystem or domain concept the ticket touches (helps identify which tickets match a team member's expertise)
-   - **Review complexity** - computed per ticket from the ticket's own `blocked-by` chain. `High` if the chain crosses a domain boundary, else `Low`. A one-line override is permitted (`override: <reason>`).
+2. **Ticket overview** - a table with each ticket's title, classification, relative size, domain area, and review complexity:
+    - **Relative size** - signaled by file count and line count, with no duration prescription. For tickets that involve files: present the number of files to create, edit, or delete; apply the label "Large Files to be created" if any new file is >= 500 lines; apply the label "Large Edits required" if the total lines to add, remove, or change is >= 500 lines. For tickets that involve no file changes: no relative size is offered.
+    - **Domain area** - the subsystem or domain concept the ticket touches (helps identify which tickets match a team member's expertise)
+    - **Review complexity** - computed per ticket from the ticket's own `blocked-by` chain. `High` if the chain crosses a domain boundary, else `Low`. A one-line override is permitted (`override: <reason>`).
 3. **Dependency graph** - which tickets can start immediately, which are blocked and by what.
 4. **Next steps** - suggested execution order and parallelism opportunities. Note which tickets can be worked in parallel by different team members.
 5. **Output location** - issue numbers or file paths where tickets were saved; for the local-markdown branch, include the resolved grouping strategy so the user can verify.
@@ -296,9 +336,28 @@ Determine where to publish the tickets. This must be resolved before decompositi
 1. Parse the user's natural language input for output target signals. Phrases like "send to github issues", "target is gitlab", "save as markdown files", "local tickets" indicate the target.
 2. If no signal is present - default to local markdown files.
 
+##### PR Count Resolution
+
+Determine the anticipated number of pull requests this ticket set will produce. In Self-Contained mode, the spec is treated as the User's voice for PR count purposes.
+
+1. Read the spec for explicit PR count signals. Phrases like "this should be two PRs", "split across three PRs", or "all in one PR" indicate the count.
+2. If no explicit signal is found in the spec, default to 1 PR — all tickets are grouped under a single pull request.
+3. No reconciliation ask is issued in Self-Contained mode (no user is in the loop).
+4. Record the resolved PR count. It is used in Step 6 to group tickets and in Step 9 to scope publishing.
+
 #### Step 6 - Ticket Decomposition Proposal
 
 Break the source material into focused tickets in two phases - first choose the decomposition pattern, then propose the tickets. These phases are separate because the pattern choice determines the structure of the entire decomposition, and should be validated before generating tickets.
+
+##### PR-Path Override Mechanism
+
+In Self-Contained mode, the spec is the User's voice. The priority order is: Spec > Supporting Documentation. No reconciliation ask is issued.
+
+1. Read the spec for explicit PR count signals. Only an explicit call for multiple PRs (e.g., "this should be two PRs", "split into three PRs") is a definitive answer.
+2. If the spec has no explicit signal, check Supporting Documentation for explicit PR count signals.
+3. Non-explicit language (e.g., "could", "might", "contemplates") in any source is a weak signal and is ignored in Self-Contained mode.
+4. If no explicit signal is found from any source, default to 1 PR.
+5. The ticket is not an override source.
 
 ##### 6.1 Decomposition Pattern Choice
 
@@ -322,13 +381,18 @@ When the spec explicitly enumerates components or modules, note this constraint 
 
 Prefer Independent over Collaborative. A ticket should only be Collaborative if there is a genuine decision or discussion that the spec does not resolve.
 
-**Ticket size rule** - applies to both modes. The three limits, calibrated to "one average software developer fully implementing the ticket" (matching the gauge used by the Effort label system in Step 10):
+**Coherence primitive** - tickets are sized by what they coherently cover, not by time or effort. The same primitive applies to both human and AI-agent implementers, producing a single ticket shape.
 
-1. **Soft minimum** - under 1 hour is allowed but indicates the ticket is too thin.
-2. **Target band** - 2 to 3-4 hours, calibrated to one average software developer fully implementing the ticket.
-3. **Maximum** - 3-4 hours is a hard cap; tickets should not exceed this.
+**Ticket-set coherence** - all tickets in the set collectively work toward a shared objective. Different tickets may focus on different units of work, types of work, or themes, but they must collectively advance the same goal. In a multi-PR decomposition, each PR's ticket set has its own shared objective.
 
-A **15-ticket soft cap** and a **50-hour total-scope soft cap** both apply: if either is exceeded, the skill signals scope creep. This is a guideline with one hard cap (the 3-4 hour maximum per ticket).
+**Per-ticket coherence** - each ticket must satisfy all three sub-criteria:
+1. **Single mergeable change** - a set of individual changes that collectively and coherently become a single change to be made in the codebase (e.g., implementing a new feature).
+2. **Reviewable unit** - a unit of work, such as a change or set of changes, that can be logically identified as belonging together, and that collectively address an issue in a way that they individually or separately would not be able to.
+3. **Single logical concern** - an area of work that focuses on dealing with a specific domain or problem.
+
+A ticket that fails any sub-criterion is incoherent and must be split or rescoped before being accepted into the proposal. The three sub-criteria are not fully independent — a single mergeable change typically produces a reviewable unit, and a single logical concern typically produces a single mergeable change — but all three must be applied explicitly.
+
+**Coherence validation gate** - during proposal, each proposed ticket is checked against all three sub-criteria. If any sub-criterion fails, the ticket is rescoped or split before proceeding. This gate applies to every ticket before it is included in the proposal table.
 
 **Decision Ledger coverage matrix** - if a Decision Ledger is present, every `Dxxx` and `Txxx` record must be cited by at least one ticket's acceptance criteria or context pointers using `filename#<Dxxx|Txxx>` format, and every ticket must cite at least one ledger record (or, if the ticket covers work explicitly out of ledger scope, cite the absence explicitly with `No ledger record — out of scope: <reason>`). The coverage matrix is a grid where rows are ledger records, columns are tickets, and cells mark which ticket satisfies which record; build it during proposal. A record with no citing ticket is a coverage gap to surface before publishing. A ticket with no cited record is a scope gap to surface before publishing.
 
@@ -373,6 +437,21 @@ For the ticket body schema, see [ticket-template.md](./references/ticket-templat
 
 **Blocked-by field format** - Store the `Blocked by` field as target-agnostic ticket IDs (e.g., `T001`, `T002`) during generation. At publish time (Step 9), substitute with the appropriate format for the chosen target: issue numbers for issue-tracker targets, file basenames for local markdown targets.
 
+**Relative-size signal** - for each ticket that involves files, present the following size information in the ticket body:
+- **File count** - the number of files to create, edit, or delete, as explicitly described by the ticket.
+- **Large Files to be created** - apply this label if any new file described by the ticket is >= 500 lines.
+- **Large Edits required** - apply this label if the total lines to add, remove, or change across all files is >= 500 lines.
+
+For tickets that involve no file additions, edits, or deletions (e.g., documentation-only, decision-only), no relative size is offered. The 500-line threshold is fixed. The "Large" language is descriptive, not prescriptive — it does not imply duration or effort. The file count is the number of files explicitly described by the ticket, not inferred from adjacent code.
+
+**Same-file parallelization rule** - when a ticket modifies a named specific file, later tickets that modify that same named file shall be blocked by the initial ticket until it is completed. Apply these rules:
+- After generating all ticket bodies, scan each ticket's file list (the set of files explicitly described by the ticket).
+- For any pair of tickets where the later ticket's file list overlaps with the earlier ticket's file list, automatically populate the later ticket's `blocked by` field with the earlier ticket's ID.
+- When both tickets are leaves (neither is blocked by the other from elsewhere), the LLM must pick a deterministic ordering — the ticket listed first in the proposal is treated as the earlier one.
+- Partial overlap is sufficient to trigger the block.
+- The user may override the automatic `blocked by` population if they want different ordering.
+- This rule applies regardless of implementer (human or AI agent).
+
 #### Step 9 - Ticket Publishing
 
 Load `references/publishing-rules.md` before executing Step 9's publish step.
@@ -382,16 +461,10 @@ Load `references/publishing-rules.md` before executing Step 9's publish step.
 After publishing, present a summary to the user containing -
 
 1. **Stats** - total ticket count, Independent count, Collaborative count, leaf ticket count (tickets with no blockers).
-2. **Ticket overview** - a table with each ticket's title, classification, estimated effort, domain area, and review complexity:
-   - **Estimated effort** - a fixed categorical label from a closed vocabulary, calibrated to how long one average software engineer would take to fully implement the ticket:
-      - `XS` — under 1 hour
-      - `S` — 1 hour
-      - `M` — 2-3 hours
-      - `L` — 3-4 hours
-      - `XL` — 1 working day
-      A label of `XS` surfaces a ticket-bloat warning in the summary, signaling that the ticket may need to be combined with another ticket. A label of `XL` or larger surfaces a ticket-bloat warning in the summary. Tickets shall not be published if their effort is beyond `XL`; Step 6 must split the work first. The labels are the only permitted values; the agent shall not invent new tiers. This is a deterministic rule, never a free post-hoc judgement.
-   - **Domain area** - the subsystem or domain concept the ticket touches (helps identify which tickets match a team member's expertise)
-   - **Review complexity** - computed per ticket from the ticket's own `blocked-by` chain. `High` if the chain crosses a domain boundary, else `Low`. A one-line override is permitted (`override: <reason>`).
+2. **Ticket overview** - a table with each ticket's title, classification, relative size, domain area, and review complexity:
+    - **Relative size** - signaled by file count and line count, with no duration prescription. For tickets that involve files: present the number of files to create, edit, or delete; apply the label "Large Files to be created" if any new file is >= 500 lines; apply the label "Large Edits required" if the total lines to add, remove, or change is >= 500 lines. For tickets that involve no file changes: no relative size is offered.
+    - **Domain area** - the subsystem or domain concept the ticket touches (helps identify which tickets match a team member's expertise)
+    - **Review complexity** - computed per ticket from the ticket's own `blocked-by` chain. `High` if the chain crosses a domain boundary, else `Low`. A one-line override is permitted (`override: <reason>`).
 3. **Dependency graph** - which tickets can start immediately, which are blocked and by what.
 4. **Next steps** - suggested execution order and parallelism opportunities. Note which tickets can be worked in parallel by different team members.
 5. **Output location** - issue numbers or file paths where tickets were saved; for the local-markdown branch, include the resolved grouping strategy so the user can verify.
@@ -413,18 +486,16 @@ The summary should be scannable - use clear structure (headings, tables, lists) 
 - [ ] Parent field contains a 1-3 sentence summary when the source is conversation context.
 - [ ] Tickets were published in dependency order (blockers first) when targeting an issue tracker.
 - [ ] The summary report includes stats, ticket overview table, dependency graph, and next steps.
-- [ ] The effort label vocabulary is exactly `XS`, `S`, `M`, `L`, `XL` (five labels, no `XXL`).
-- [ ] Any `XS` ticket surfaces a bloat warning in the summary.
 - [ ] `Review complexity` is computed per-ticket from the ticket's own `blocked-by` chain.
-- [ ] The total-scope soft cap of 50 hours applies alongside the 15-ticket soft cap.
 - [ ] The `Blocked by` field is target-agnostic in storage (e.g., `T001`, `T002`) and substituted at publish time.
 - [ ] The long Step 9 content lives in `references/publishing-rules.md`; `SKILL.md` carries only the load-trigger sentence.
 - [ ] The Step 9 trim applies to both Collaborative and Self-Contained sub-workflows.
 - [ ] Every ticket's `Blocked by` field uses issue numbers for issue-tracker targets and basenames for local markdown.
 - [ ] The YAML-breaking-characters check is applied at write time per Step 8's rule, not as a post-hoc validation.
 - [ ] Ticket count is at least 2 (with no exception).
-- [ ] Each ticket represents at most 3-4 hours of focused work.
-- [ ] If ticket count exceeds 15, the decomposition pattern was reviewed for suitability.
+- [ ] Each ticket satisfies the coherence primitive — it is a single mergeable change, a reviewable unit, and addresses a single logical concern.
+- [ ] All tickets in the set collectively work toward a shared objective.
+- [ ] The coherence validation gate was applied during proposal — any ticket failing a sub-criterion was rescoped or split before acceptance.
 - [ ] No abbreviations are used in ticket content or workflow output unless defined in CONTEXT.md/glossary or explicitly used by the user/spec. Unfamiliar abbreviations are clarified in brackets on first use. "User Stories" is never abbreviated to `US` — `US` is overloaded with "United States" in some domains, and is a common abbreviation-collision target across other domains as well.
 - [ ] Decomposition pattern choice includes a recommendation with parenthetical definition, the rejected alternatives with one-line reasons, and a custom-pattern validation gate when the user proposes a non-standard pattern.
 - [ ] Ticket proposal includes decomposition rationale for non-obvious decisions.
@@ -434,7 +505,6 @@ The summary should be scannable - use clear structure (headings, tables, lists) 
 - [ ] The Collaborative sub-workflow's Step 7 asks the user before overwriting existing tickets; the Self-Contained sub-workflow's Step 7 retains the automatic semantic-match behavior.
 - [ ] Every ticket has a Recommended Workflow section with at least 1 step.
 - [ ] Each workflow step has all four elements: (1) verb-phrase title, (2) Where (file paths or N/A), (3) bulleted actions, (4) Verify (verification check or N/A).
-- [ ] Workflow steps respect the 3-4 hour sizing rule for the overall ticket.
 - [ ] Workflow derivation follows the priority order spec structure → codebase context → standard patterns; the priority order is the tie-breaker when the three inputs conflict, and the agent surfaces the conflict in plain English ("inputs X and Y conflicted; chose Y because [reason]") with a one-line inline override note permitted.
 - [ ] Workflow steps respect dependencies between steps (a step producing an artifact consumed by another comes first). Reordering by the implementer is permitted.
 - [ ] Per-step Verify lines are micro-verifications distinct from per-ticket Acceptance criteria (macro-verifications).
@@ -448,4 +518,12 @@ The summary should be scannable - use clear structure (headings, tables, lists) 
 - [ ] The abbreviation rule for "User Stories" is universal and unconditional (no scoping or opt-in).
 - [ ] The context pointer rules are reactive (do not reproduce the glossary, do not reproduce the ledger).
 - [ ] Step 8 workflow-generation rules are inline (not extracted to a reference file).
-- [ ] The Workflow section is structured into `### Collaborative Workflow` and `### Self-Contained Workflow` sub-sections. Shared steps (1, 2, 3, 4, 8, 10) are duplicated with identical text in both sub-workflows. Divergent steps (5, 6.2, 7, 9) appear in both sub-workflows with the correct mode-specific content.
+- [ ] PR count is resolved in Step 5 — Collaborative mode asks the user or reads from spec/supporting documentation; Self-Contained mode reads the spec only, defaulting to 1 PR.
+- [ ] The PR-path override mechanism is applied in Step 6 before decomposition pattern selection — three sources (User, Spec, Supporting Documentation) in priority order; only explicit calls for multiple PRs are definitive; non-explicit language triggers reconciliation asks in Collaborative mode only.
+- [ ] In Self-Contained mode, no reconciliation ask is issued for PR count — the spec is the User's voice, and non-explicit signals are ignored.
+- [ ] Relative-size signal is present in each ticket body for tickets that involve files — file count, "Large Files to be created" (any new file >= 500 lines), and "Large Edits required" (total lines to add/remove/change >= 500 lines).
+- [ ] Tickets that involve no file changes have no relative size signal.
+- [ ] The same-file parallelization rule is applied after ticket body generation — later tickets whose file list overlaps with an earlier ticket's file list are automatically blocked by the earlier ticket.
+- [ ] The user may override the automatic `blocked by` population from the same-file parallelization rule.
+- [ ] The summary report's ticket overview uses relative size (file count and Large labels) instead of time-based effort labels.
+- [ ] The Workflow section is structured into `### Collaborative Workflow` and `### Self-Contained Workflow` sub-sections. Shared steps (1, 2, 3, 4, 8, 10) are duplicated with identical text in both sub-workflows. Divergent steps (5, 6, 7, 9) appear in both sub-workflows with the correct mode-specific content.

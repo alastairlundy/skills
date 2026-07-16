@@ -19,6 +19,15 @@ Brief statement of what this ticket accomplishes and why it matters. One to thre
 
 Description of the end-to-end behavior with sufficient context for an implementer to understand what to do and why. Describe what the system should do and the outcomes it must achieve. Include file paths when they help the implementer orient themselves, but avoid prescribing exact file paths or code snippets as implementation requirements unless the file structure is itself a deliverable. Exceptions - if a prototype produced a snippet that encodes a decision more precisely than prose can (state machine, reducer, schema, type shape), inline it and note that it came from a prototype.
 
+## Size
+
+For tickets that involve files:
+- **Files** - <number of files to create, edit, or delete, as explicitly described by this ticket>
+- **Large Files to be created** - <applied if any new file is >= 500 lines, otherwise omit this line>
+- **Large Edits required** - <applied if total lines to add, remove, or change is >= 500 lines, otherwise omit this line>
+
+For tickets that involve no file changes, omit this section entirely.
+
 ## Recommended Workflow
 
 A step-by-step breakdown of how to implement this ticket. Always present (minimum 1 step), even for trivial tickets. Recommended range is 2-8 steps; the agent decides granularity based on ticket scope.
