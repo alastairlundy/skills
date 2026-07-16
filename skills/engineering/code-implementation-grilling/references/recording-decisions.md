@@ -33,3 +33,12 @@ record to the ledger using this template:
   the same turn the user resolves the decision, before asking the
   next question. See
   `../grilling/references/decision-ledger.md` for the rule.
+- The next available `Txxx` ID is read from the trailing
+  `<!-- next-id: Txxx -->` sentinel at the end of the ledger file.
+  The sentinel is documented in
+  `../grilling/references/decision-ledger.md` (Sentinel comment
+  for next append ID); the agent uses the sentinel for
+  append-point lookup rather than re-reading the full ledger
+  tail. If the sentinel is missing or out of sync, fall back to
+  scanning the file for the highest existing `Txxx` and re-seed
+  the sentinel before the next append.
