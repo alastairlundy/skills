@@ -1,47 +1,69 @@
 # Convergence Test
 
 Convergence is the final step of the workflow. The session may declare a
-shared understanding and offer exit paths only when all four checks below
-hold. The test is observable in the recent exchange history and in the
-ledger file — not in the agent's sense that things feel resolved.
+shared understanding and offer exit paths only when all checks for the
+current cadence pass. The test is observable in the recent exchange
+history and in the ledger file — not in the agent's sense that things
+feel resolved.
 
-## The four checks
+## The four universal checks
 
-### 1. All branches resolved
+The convergence test runs at two cadences with different bullet counts:
 
-Every branch opened during the session has a recorded decision, or has
-been explicitly closed by the user. A branch with no `Dxxx` record and
-no explicit close is a silent skip; re-open it or close it before
-declaring convergence.
+- **Per-item** — runs after each Address item is resolved. Four
+  universal bullets.
+- **End-of-grilling** — runs once after the last Address item. The
+  four universal bullets plus the fifth cross-record consistency
+  bullet.
 
-### 2. No contradictions
+### 1. Implementability
 
-Re-open any branch whose recorded decision contradicts another branch's
-recorded decision, and resolve the contradiction first. A `Dxxx` record
-that depends on a fact another `Dxxx` record denies is a contradiction.
+Can a new contributor apply the change from the new D-record and its
+Cites alone, without re-asking the originating user? If the answer
+requires session-specific context that the record and its Cites do
+not capture, the change is not yet implementable — re-open the branch
+and tighten the record.
 
-### 3. No new question in the last three turns
+### 2. Enforceability
 
-The most recent three exchanges have not introduced a new branch,
-surfaced a contradiction, or required a glossary revision. If a new
-question or contradiction appeared in the last three turns, the session
-is not yet convergent — continue grilling.
+Are the new `Constraints` checkable by an objective mechanism — write
+time, CI, lint, or an external test — rather than relying on agent
+judgment? A constraint that is "be reasonable" or "use good judgment"
+is not enforceable. Restate it as a checkable rule or relax it.
 
-### 4. Decision Ledger complete
+### 3. Internal consistency
 
-Read the Decision Ledger file and verify that every branch resolved
-during this session has a corresponding `Dxxx` record, and that every
-re-opened branch has a fresh `Supersedes: Dxxx` record. A branch that is
-resolved in conversation but missing from the ledger is a silent loss;
-re-open it, write the record, and re-verify before declaring
-convergence. Do not allow convergence on the strength of conversational
-memory alone.
+Does the new D-record preserve every `Constraint` of every cited
+prior record? Nothing in the new D-record may contradict a cited
+`Dxxx`. If a contradiction appears, the new record is rejected
+automatically and the branch must be re-opened with a
+`Supersedes: Dxxx` line in `Constraints` against the contradicted
+record.
+
+### 4. Format compliance
+
+Is the new content under the format caps defined in the relevant
+format references? Each format reference (options-format,
+recommendation-format, locked-question-format, recording-decisions)
+defines its own cap; the convergence check verifies the new content
+sits under the cap the format reference requires.
+
+## Fifth bullet (end-of-grilling only)
+
+### 5. Cross-record consistency
+
+Do all `N` D-records fit together without internal contradictions? The
+per-item checks verify each record against the records it cites. The
+end-of-grilling check verifies the **set** against itself: every
+implied consequence of any D-record holds across the whole ledger. If
+two non-citing records imply mutually exclusive facts, re-open the
+later record and add a `Supersedes: Dxxx` line.
 
 ## Declaration
 
-When all four checks pass, declare: "We have reached a shared
-understanding." Do not declare convergence based on intent or partial
-progress.
+When all checks for the current cadence pass, declare: "We have
+reached a shared understanding." Do not declare convergence based on
+intent or partial progress.
 
 ## Diverge modes
 
