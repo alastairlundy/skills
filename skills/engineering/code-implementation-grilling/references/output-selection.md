@@ -3,6 +3,22 @@
 Present the user with the following two-part choice, one part at a
 time.
 
+#### Preamble format cap (rule, not example)
+
+Each preamble the agent emits before presenting options for a branch
+question is capped at **2 sentences maximum**, with mandatory
+ID-citation of the relevant prior record(s):
+
+- **1 sentence** for simple questions — the preamble is the ID
+  reference alone.
+- **2 sentences** for complex questions — the first sentence is the
+  ID reference, the second adds the specific constraint or
+  discriminator the user is being asked to weigh.
+
+The rule is a length cap plus an ID-citation requirement; no verbatim
+example is encoded. The preamble must not exceed 2 sentences, and the
+first sentence must always carry the `Dxxx`/`Txxx` reference.
+
 **Part A: Output format**
 
 Each option below uses the parent grilling skill's 4-field option
