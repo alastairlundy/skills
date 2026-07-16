@@ -55,6 +55,25 @@ Professional Minimalist style: punchy, direct, clear. No filler.
 - **Risk** — one sentence describing what might go wrong later.
   Answers: "What could happen in the future?"
 
+### Per-field cap (enforceable)
+
+The "one sentence per field" rule is enforced objectively rather than
+left to agent judgment. Two equivalent mechanisms are acceptable;
+pick one and apply it consistently:
+
+- **Word cap** — at most **20 words per field**.
+- **Sentence-count check** — at most **1 sentence per field**, verified
+  by counting terminal punctuation (`.`, `?`, `!`) in the field text.
+
+The cap is applied at write time or in CI, not by reader judgment. A
+field that exceeds the cap must be trimmed or rewritten — the rule
+exists so the discriminator between options stays scannable.
+
+Complex options (a branch that would require four sub-decisions to
+disambiguate) are out of scope for this rule: promote them to
+separate branches per the format guidance above. The cap is the
+mechanism, not a new field.
+
 ## Format
 
 ```md
