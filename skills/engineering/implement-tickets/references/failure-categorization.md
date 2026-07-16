@@ -85,6 +85,22 @@ fit. The default for any unrecognized error is ambiguous. Examples:
 - Two categories seem to apply equally and the tie-breaker rules above do
   not resolve the conflict.
 
+### Identity mismatch
+
+A failure is an identity mismatch when the post-commit identity check
+(referenced from `SKILL.md` Step 3.6) returns a non-match on the author
+string or, for the co-author policy, on the `Co-authored-by:` trailer.
+
+- Signal: the verbatim line `[DEVIATION] ticket=<id> author=<actual> expected=<expected>`.
+- Category: `persistent`. A wrong identity is a real error; the same
+  commit, re-run with the same inputs, will produce the same wrong
+  identity. It is not transient.
+- Route: `auto-skip with reason`. The run summary records the failure
+  under `Failures` with `task: commit-identity-verify` and the deviation
+  line as `signal`.
+- Strike counter: increments on each occurrence; the circuit breaker
+  applies per `SKILL.md` Step 4.
+
 ## Routing rules
 
 Per `DECISIONS-skills-ticket-implementer.md#D009`:

@@ -166,8 +166,45 @@ inside the dispatch unit runs in ticket order within the group.
      - Plain-language: subject contains at least one verb or noun phrase that names the user-visible effect of the change.
      - On rejection: the coordinator increments the strike counter for this ticket and re-dispatches the sub-agent with the gate's feedback (mirroring the `reject-with-feedback` re-dispatch path). A second rejection on the same ticket escalates to the user via the circuit breaker.
    - One commit per ticket. No WIP commits, no merge commits inside a ticket's staging area, no squash — the per-ticket commit is the source of truth.
-7. **Reconcile the staging area into the shared branch**: the commit is the reconciliation artefact. Staging-area files are now on the shared branch in DAG order. Staging directories are retained until end of run, then removed.
-8. **Live update** after each ticket:
+7. **Post-commit identity check** (run immediately after the commit, before
+   reconciling the staging area):
+   - **Skip rule**: if the attribution policy is `human-only`, skip this
+     sub-step entirely. The shell's `git config user.{name,email}` is the
+     contract.
+   - **Capture the expected author string**:
+     - `ai-only` → expected = `<ai-name> <<ai-email>>` (the strings
+       recorded at Step 1.6, byte-identical to the user-supplied values).
+     - `human+ai-coauthor` → expected = `<shell-human-name> <<shell-human-email>>`,
+       where `shell-human-name` and `shell-human-email` are captured by
+       running `git config user.name` and `git config user.email`
+       immediately *before* the commit invocation in sub-step 6, and
+       stored in local variables for use here. If either `git config`
+       lookup returns an empty string, abort with
+       `[DEVIATION] ticket=<id> reason=human-identity-missing` and route
+       through `references/failure-categorization.md` as `persistent`.
+   - **Capture the recorded author**: run `git log -1 --format='%an <%ae>'`
+     in the shared branch's working tree and trim trailing whitespace.
+   - **Compare** the recorded author to the expected author (string
+     equality, case-sensitive on name, case-insensitive on email). On
+     match, continue. On mismatch, go to the "Mismatch" branch below.
+   - **Co-author trailer check** (only if the policy is `human+ai-coauthor`):
+     run `git log -1 --format='%B'` and grep for the regex
+     `^Co-authored-by: <ai-name> <<ai-email>>\s*$` (case-insensitive on
+     the name and email). On match, the post-commit check passes. On
+     miss, go to the "Mismatch" branch below.
+   - **Mismatch branch**: emit exactly one line in this shape —
+     `[DEVIATION] ticket=<id> author=<actual> expected=<expected>`
+     — then call the failure handler with `category=persistent`,
+     `task=commit-identity-verify`, and the deviation line as the
+     `signal`. The strike counter for this ticket increments. The run
+     summary records the failure under `Failures`. The per-ticket loop
+     does **not** advance to the next ticket until the failure is routed
+     per `references/failure-categorization.md`.
+   - **Completion signal**: either a recorded match on both checks and
+     the per-ticket loop advancing, or a recorded `[DEVIATION]` line and
+     a routed failure under `Failures` in the run summary.
+8. **Reconcile the staging area into the shared branch**: the commit is the reconciliation artefact. Staging-area files are now on the shared branch in DAG order. Staging directories are retained until end of run, then removed.
+9. **Live update** after each ticket:
    - `[OK] ticket=<id> commit=<sha> batch=<n>` on success.
    - `[ERROR] ticket=<id> reason=<one-line>` on judge rejection that hits the circuit breaker.
    - `[DEVIATION] ticket=<id> <detail>` on criteria-source fallbacks, conflict-resolution events, or other plan deviations.
@@ -259,6 +296,8 @@ This skill writes a structured end-of-run markdown report to `tickets/.runs/<run
 - [ ] For `human+ai-coauthor` and `ai-only` policies, the user supplied the AI name and email; the skill did not auto-fill, did not invent a handle, and did not mutate the shell git config.
 - [ ] For `human+ai-coauthor` policy, the per-ticket commit carries a `Co-authored-by: <ai-name> <<ai-email>>` trailer; for `ai-only` policy, the commit's author is the AI identity.
 - [ ] `references/commit-author-policy.md` was loaded before sub-step 6 of Step 1 when the policy involved AI.
+- [ ] The post-commit identity check ran for every per-ticket commit where the policy involved AI; the recorded author matched the expected; for `human+ai-coauthor` the `Co-authored-by:` trailer matched the AI identity. The check did not run for `human-only` commits.
+- [ ] An identity mismatch produced exactly one `[DEVIATION] ticket=<id> author=<actual> expected=<expected>` line and was routed through `references/failure-categorization.md` as `persistent`; the strike counter for the ticket incremented; the run summary recorded the failure under `Failures`. The per-ticket loop did not advance past the failing ticket.
 - [ ] The subject-quality gate ran before every per-ticket commit and rejected any subject that violated the four rules in Step 3.6.
 - [ ] Each per-ticket commit body is a bullet list of changes; each footer has references or is explicitly empty.
 - [ ] Judge loop ran for every ticket; no ticket was committed without a judge `approve` verdict.
