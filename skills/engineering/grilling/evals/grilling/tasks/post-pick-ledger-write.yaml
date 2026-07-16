@@ -3,10 +3,9 @@ name: Post-pick step appends the new Dxxx record to the Decision Ledger file
 description: >
   Triggers on a vague business strategy decision. The user resolves one
   branch; the trigger grader verifies the grilling skill triggered, and
-  the program grader verifies the post-pick step (per D002/D003/D004 of
-  docs/decisions/DECISIONS-skills-grilling-decision-ledger-writes.md)
-  wrote a new Dxxx record to the Decision Ledger file with a Driver
-  field and confirmed the new record is the last record in the file.
+  the program grader verifies the post-pick step wrote a new Dxxx record
+  to the Decision Ledger file with a Driver field and confirmed the new
+  record is the last record in the file.
 inputs:
   prompt: |
     I run a small SaaS and I'm not sure whether to keep our flat

@@ -109,8 +109,7 @@ options.
 
 After the user picks Option 3, the agent runs the post-pick step. The
 post-pick step is a **gated step**: the next branch must not open until
-both the write and the read-back have succeeded (per D002 of
-`docs/decisions/DECISIONS-skills-grilling-decision-ledger-writes.md`).
+both the write and the read-back have succeeded.
 
 1. Confirm the pick in one sentence.
 2. Remind the user they can ask for the goal-aligned rejection rationale

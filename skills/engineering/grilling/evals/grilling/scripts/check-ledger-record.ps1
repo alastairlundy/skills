@@ -1,7 +1,6 @@
 # check-ledger-record.ps1
-# Verifies the post-pick step (per D002/D003/D004 of
-# docs/decisions/DECISIONS-skills-grilling-decision-ledger-writes.md)
-# wrote a new Dxxx record to the Decision Ledger file.
+# Verifies the post-pick step wrote a new Dxxx record to the Decision
+# Ledger file.
 #
 # Pass criteria:
 #   1. A DECISIONS-*.md file exists under <workspace>/docs/decisions/.
