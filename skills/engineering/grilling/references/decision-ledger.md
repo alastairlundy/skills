@@ -36,6 +36,25 @@ up-to-date record to reference in later branches, and they let the user
 spot a missing or weakened entry at the next branch and correct it
 before drift compounds.
 
+### Sentinel comment for next append ID
+
+Every ledger file ends with a single-line sentinel comment that encodes
+the next available `Dxxx` ID:
+
+```md
+<!-- next-id: Dxxx -->
+```
+
+The agent reads this one line (via a targeted `read` or `grep`) to find
+the next append point, instead of re-reading the entire ledger tail.
+The sentinel update is **atomic with the record write** — the same
+`edit` call that appends the new `Dxxx` record also bumps the sentinel
+to `<!-- next-id: D<NEXT> -->`.
+
+If the sentinel is missing or out of sync with the highest existing ID,
+fall back to scanning the file for the highest existing `Dxxx` and
+re-seeding the sentinel before the next append.
+
 ## Per-branch record template
 
 ```md
@@ -47,9 +66,13 @@ before drift compounds.
 - **Constraints**: <negative requirements, edge cases, or defaults>
 ```
 
-- `Dxxx` is a zero-padded sequence: `D001`, `D002`, `D003`, … Scan the
-  existing ledger file and increment from the highest existing `Dxxx`
-  number. Do not reuse IDs.
+- `Dxxx` is a zero-padded sequence: `D001`, `D002`, `D003`, … The
+  next available ID is read from the trailing `<!-- next-id: Dxxx -->`
+  sentinel at the end of the ledger file (see
+  [Sentinel comment for next append ID](#sentinel-comment-for-next-append-id)).
+  Do not reuse IDs. If the sentinel is missing or out of sync, fall
+  back to scanning the file for the highest existing `Dxxx` and
+  re-seeding the sentinel before the next append.
 - `Driver` captures the **why** — the user's underlying principle or
   motivation behind the decision. It is distinct from `Resolved Answer`
   (the **what**) and `Normalized Requirement` (the testable outcome).
