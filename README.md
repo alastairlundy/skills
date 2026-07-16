@@ -26,12 +26,13 @@ Domain-specific tasks for software development workflows.
 
 | Skill | Description | Notes | 
 |-------|-------------|-------|
-| [spec-to-tickets](skills/engineering/spec-to-tickets/) | Create implementation tickets with dependency graphs and Independent/Collaborative classification. Use when breaking down a spec, PRD, or resolved conversation context into focused tickets sized for 3-4 hour sessions; outputs to issue trackers or local markdown. | Inspired by Matt Pocock's ``to-issues`` skill. |
-| [grilling](skills/engineering/grilling/) | Relentless Socratic interviewing that extracts clear decisions from vague, non-implementation, non-DDD ideas — business strategy, product direction, design choices, process, organizational decisions. Owns the Decision Ledger, options/recommendation formats, and convergence test. | Generic parent of ``domain-grilling`` and ``code-implementation-grilling``. |
-| [domain-grilling](skills/engineering/domain-grilling/) | Relentless Socratic interviewing for Domain-Driven Design alignment — bounded contexts, ubiquitous language, glossary, and terminology. Writes resolved terms to ``CONTEXT.md`` and architectural decisions to ADRs. | Specializes ``grilling``; inspired by Matt Pocock's ``grill-with-docs`` skill. |
-| [code-implementation-grilling](skills/engineering/code-implementation-grilling/) | Relentless Socratic interviewing on technical implementation choices — language, framework, dependencies, project structure — once a spec/PRD exists. Resolves ambiguity for the implementer. | Specializes ``grilling``. |
-| [write-changelog](skills/engineering/write-changelog/) | Generate ecosystem-aware, user-facing markdown changelogs from git history by analyzing commits, transforming messages, and categorizing changes across logical sub-projects. Supports tag ranges and optional emoji-prefixed category headings. | |
-| [dependency-review](skills/engineering/dependency-review/) | Audit a project's third-party dependencies for staleness, bloat, tight coupling, deprecation, and recent major changes, producing a structured report across four finding categories. | Default scope is `code` only; pass `scope: code,non-code` to opt in to OS, runtimes, hosted services, databases, and CI tooling. |
+| [spec-to-tickets](skills/engineering/spec-to-tickets/) | Break specs, PRDs, or conversation context into focused tickets sized by coherence, with dependency ordering. Outputs to issue trackers or local markdown. | Inspired by Matt Pocock's ``to-issues`` skill. |
+| [grilling](skills/engineering/grilling/) | Socratic interviewing for non-code, non-domain decisions — strategy, direction, design, process. Extracts clear decisions from vague ideas. | Generic parent of ``domain-grilling`` and ``code-implementation-grilling``. |
+| [domain-grilling](skills/engineering/domain-grilling/) | Socratic interviewing for domain modeling — bounded contexts, glossary, terminology. Aligns ubiquitous language and writes decisions to ADRs. | Specializes ``grilling``; inspired by Matt Pocock's ``grill-with-docs`` skill. |
+| [code-implementation-grilling](skills/engineering/code-implementation-grilling/) | Socratic interviewing on technical choices — language, framework, dependencies, structure. Resolves implementation ambiguity once a spec exists. | Specializes ``grilling``. |
+| [write-changelog](skills/engineering/write-changelog/) | Generate user-facing changelogs from git history. Analyzes commits, groups changes by sub-project, supports tag ranges. | |
+| [dependency-review](skills/engineering/dependency-review/) | Audit dependencies for staleness, bloat, coupling, and deprecation. Produces a structured report. Default scope is code only. | Pass `scope: code,non-code` to opt in to OS, runtimes, hosted services, databases, and CI tooling. |
+| [implement-tickets](skills/engineering/implement-tickets/) | Coordinate parallel ticket implementation. Builds dependency order, dispatches tickets to sub-agents, validates against acceptance criteria, commits per ticket. | Use when a batch of tickets should be implemented with per-ticket commits and an end-of-run report. |
 
 ### Alignment Skills
 
@@ -39,7 +40,7 @@ Skills for ensuring LLMs stay aligned on expectations and behaviour whilst perfo
 
 | Skill | Description | Notes | 
 |-------|-------------|-------|
-| [ask-questions](skills/alignment/ask-questions/) | Guides agents in deciding when and how to ask the user questions via discrete-choice tools (e.g. `ask_question`), or in prose when no tool is available. Teaches a four-gate procedure (trigger, fit, construct, validate) that balances over-asking and under-asking. | |
+| [ask-questions](skills/alignment/ask-questions/) | Guide agents on when and how to ask questions via discrete-choice tools or prose. Teaches a four-gate procedure to balance over-asking and under-asking. | |
 
 ### "Meta" Skills
 
@@ -47,7 +48,8 @@ Tools for creating and evaluating other skills.
 
 | Skill | Description |
 |-------|-------------|
-| [skill-architect](skills/skills-meta/skill-architect/) | Guide the design, refinement, and deterministic translation of a new agent skill, ensuring the design follows established agent-skill conventions without performing file system writes. Use when creating or designing a new skill. |
+| [skill-architect](skills/skills-meta/skill-architect/) | Guide the design and refinement of new agent skills. Ensures designs follow established conventions without writing files. |
+| [setup-alastairlundy-skills](skills/skills-meta/setup-alastairlundy-skills/) | Configure a repository to use the skill family. Writes agent-consumable docs and updates AGENTS.md or CLAUDE.md with skill configuration. | Use when setting up a new repo for AI agents, switching the repo's issue tracker, or re-running after a config change. |
 
 ## Repository Structure
 
