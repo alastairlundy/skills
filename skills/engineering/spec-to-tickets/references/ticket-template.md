@@ -9,7 +9,7 @@ parent: <spec reference>
 ---
 ```
 
-**blocked_by reference format:** The `Blocked by` field is stored as target-agnostic ticket IDs (e.g., `T001`, `T002`) during generation. At publish time, these are substituted with the appropriate format for the chosen target (issue numbers for issue-tracker targets, file basenames for local markdown targets).
+**blocked_by reference format:** The `Blocked by` field is stored as target-agnostic ticket IDs using the `TKxxx` prefix (e.g., `TK001`, `TK002`) during generation. The `TKxxx` prefix is chosen to avoid collision with Decision Ledger record IDs (`Dxxx` for functional decisions, `Txxx` for technical decisions) when a spec is decomposed against an existing ledger. At publish time, these are substituted with the appropriate format for the chosen target (issue numbers for issue-tracker targets, file basenames for local markdown targets).
 
 ## Goal
 

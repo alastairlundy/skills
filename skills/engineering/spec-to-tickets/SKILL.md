@@ -239,7 +239,7 @@ For the ticket body schema, see [ticket-template.md](./references/ticket-templat
 
 **YAML-breaking characters** - The `description` and other prose-bearing frontmatter fields shall contain no YAML-breaking characters (colons, unquoted special characters). To avoid them, use a hyphen or rewrite the phrase. For example, replace "Description: implements login" with "Description - implements login". This is a write-time rule applied during ticket generation in Step 8.
 
-**Blocked-by field format** - Store the `Blocked by` field as target-agnostic ticket IDs (e.g., `T001`, `T002`) during generation. At publish time (Step 9), substitute with the appropriate format for the chosen target: issue numbers for issue-tracker targets, file basenames for local markdown targets.
+**Blocked-by field format** - Store the `Blocked by` field as target-agnostic ticket IDs using the `TKxxx` prefix (e.g., `TK001`, `TK002`) during generation. The `TKxxx` prefix is chosen to avoid collision with Decision Ledger record IDs (`Dxxx` for functional decisions, `Txxx` for technical decisions) when a spec is decomposed against an existing ledger. At publish time (Step 9), substitute with the appropriate format for the chosen target: issue numbers for issue-tracker targets, file basenames for local markdown targets.
 
 **Relative-size signal** - for each ticket that involves files, present the following size information in the ticket body:
 - **File count** - the number of files to create, edit, or delete, as explicitly described by the ticket.
@@ -435,7 +435,7 @@ For the ticket body schema, see [ticket-template.md](./references/ticket-templat
 
 **YAML-breaking characters** - The `description` and other prose-bearing frontmatter fields shall contain no YAML-breaking characters (colons, unquoted special characters). To avoid them, use a hyphen or rewrite the phrase. For example, replace "Description: implements login" with "Description - implements login". This is a write-time rule applied during ticket generation in Step 8.
 
-**Blocked-by field format** - Store the `Blocked by` field as target-agnostic ticket IDs (e.g., `T001`, `T002`) during generation. At publish time (Step 9), substitute with the appropriate format for the chosen target: issue numbers for issue-tracker targets, file basenames for local markdown targets.
+**Blocked-by field format** - Store the `Blocked by` field as target-agnostic ticket IDs using the `TKxxx` prefix (e.g., `TK001`, `TK002`) during generation. The `TKxxx` prefix is chosen to avoid collision with Decision Ledger record IDs (`Dxxx` for functional decisions, `Txxx` for technical decisions) when a spec is decomposed against an existing ledger. At publish time (Step 9), substitute with the appropriate format for the chosen target: issue numbers for issue-tracker targets, file basenames for local markdown targets.
 
 **Relative-size signal** - for each ticket that involves files, present the following size information in the ticket body:
 - **File count** - the number of files to create, edit, or delete, as explicitly described by the ticket.
@@ -487,7 +487,7 @@ The summary should be scannable - use clear structure (headings, tables, lists) 
 - [ ] Tickets were published in dependency order (blockers first) when targeting an issue tracker.
 - [ ] The summary report includes stats, ticket overview table, dependency graph, and next steps.
 - [ ] `Review complexity` is computed per-ticket from the ticket's own `blocked-by` chain.
-- [ ] The `Blocked by` field is target-agnostic in storage (e.g., `T001`, `T002`) and substituted at publish time.
+- [ ] The `Blocked by` field is target-agnostic in storage using the `TKxxx` prefix (e.g., `TK001`, `TK002`) and substituted at publish time. The `TKxxx` prefix avoids collision with Decision Ledger record IDs (`Dxxx` for functional decisions, `Txxx` for technical decisions).
 - [ ] The long Step 9 content lives in `references/publishing-rules.md`; `SKILL.md` carries only the load-trigger sentence.
 - [ ] The Step 9 trim applies to both Collaborative and Self-Contained sub-workflows.
 - [ ] Every ticket's `Blocked by` field uses issue numbers for issue-tracker targets and basenames for local markdown.

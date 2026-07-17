@@ -6,4 +6,4 @@ description: >-
 input: |
   Implement the tickets in tickets/. Three tickets touch src/api/health.go.
 assertion: |
-  The batch summary lists a single dispatch unit for the three same-file tickets (e.g. "unit=1 tickets=[T001,T002,T003] shared=[src/api/health.go]") rather than three separate dispatch units. The shared file appears in the unit's "shared" list. Other tickets in the batch that do not share a file with the group remain individual dispatch units.
+  The batch summary lists a single dispatch unit for the three same-file tickets (e.g. "unit=1 tickets=[TK001,TK002,TK003] shared=[src/api/health.go]") rather than three separate dispatch units. The shared file appears in the unit's "shared" list. Other tickets in the batch that do not share a file with the group remain individual dispatch units.

@@ -9,7 +9,7 @@ input: |
   The set is:
 
   ---
-  id: T001
+  id: TK001
   title: Add /health endpoint
   status: ready
   Depends on: []
@@ -29,10 +29,10 @@ input: |
 
   ---
 
-  id: T002
+  id: TK002
   title: Add /version endpoint
   status: ready
-  Depends on: [T001]
+  Depends on: [TK001]
   ---
   ## Acceptance criteria
   - [ ] Returns 200 OK with the build version
@@ -40,4 +40,4 @@ input: |
   ## Files
   - src/api/health.go
 assertion: |
-  Skill loads both tickets from the normalized format. T001 and T002 are present in the batch summary with parsed id, title, status=ready, and Depends on: edges. T001's "Blocked by" is empty; T002's is [T001]. Tickets missing any of the four required normalized fields (id, title, status, Depends on:) are rejected with a per-file error.
+  Skill loads both tickets from the normalized format. TK001 and TK002 are present in the batch summary with parsed id, title, status=ready, and Depends on: edges. TK001's "Blocked by" is empty; TK002's is [TK001]. Tickets missing any of the four required normalized fields (id, title, status, Depends on:) are rejected with a per-file error.

@@ -14,10 +14,10 @@
 
 ## Render-time substitution
 
-The `Blocked by` field in each ticket is stored as target-agnostic ticket IDs (e.g., `T001`, `T002`). At publish time, substitute these IDs with the appropriate format:
+The `Blocked by` field in each ticket is stored as target-agnostic ticket IDs using the `TKxxx` prefix (e.g., `TK001`, `TK002`). The `TKxxx` prefix avoids collision with Decision Ledger record IDs (`Dxxx` for functional decisions, `Txxx` for technical decisions). At publish time, substitute these IDs with the appropriate format:
 
-- **Issue tracker targets**: Replace target-agnostic IDs with issue numbers (e.g., `T001` becomes `#42`).
-- **Local markdown targets**: Replace target-agnostic IDs with file basenames (e.g., `T001` becomes `001-authentication`).
+- **Issue tracker targets**: Replace target-agnostic IDs with issue numbers (e.g., `TK001` becomes `#42`).
+- **Local markdown targets**: Replace target-agnostic IDs with file basenames (e.g., `TK001` becomes `001-authentication`).
 
 The substitution runs once at publish, not during ticket generation.
 

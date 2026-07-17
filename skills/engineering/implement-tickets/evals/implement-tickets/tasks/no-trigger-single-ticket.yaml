@@ -2,5 +2,5 @@ id: no-trigger-single-ticket
 type: trigger
 description: Does NOT trigger when the user names one specific ticket; direct dispatch is preferred.
 input: |
-  Implement ticket T003 from tickets/. That's the only one I need done.
+  Implement ticket TK003 from tickets/. That's the only one I need done.
 expected: no-trigger
