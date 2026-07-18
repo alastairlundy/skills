@@ -7,14 +7,14 @@ license: MIT
 
 # Ask Questions
 
-**opencode dialect.** This skill targets the opencode agent platform. In opencode, the abstract `ask_question` affordance is bound to the `question` tool. On other hosts, substitute the equivalent discrete-choice tool.
-
 This skill governs how the LLM uses the `ask_question` tool (and equivalent discrete-choice clarification tools) to interact with the user. It addresses two failure modes in balance:
 
 1. **Over-asking** — invoking the tool for open-ended or non-decision questions the tool cannot answer usefully, or for questions where prose (or no question at all) is the better response.
 2. **Under-asking** — having the tool but not using it when a real decision is on the table that the LLM cannot resolve from context, code, or safe inference.
 
 Both directions are weighted equally; the skill is not an instruction to ask more.
+
+**opencode dialect.** This skill targets the opencode agent platform. In opencode, the abstract `ask_question` affordance is bound to the `question` tool. On other hosts, substitute the equivalent discrete-choice tool.
 
 **Tool unavailable.** If no discrete-choice tool is available, treat every question as Prose Fallback.
 
