@@ -17,16 +17,35 @@ The `fj` entry is intentionally tagged as community-maintained and is not part o
 
 ## Installation
 
-When the user has chosen a host CLI that is not installed, the skill does not auto-install. The flow is:
+The skill never installs host CLIs. The user is responsible for installing the CLI required by the chosen publishing target. This rule applies in both Collaborative and Self-Contained modes and is not overridable by either mode.
 
-1. The agent locates the canonical source repository for the selected CLI:
-   - `gh` — `cli/cli`
-   - `glab` — `profclems/glab`
-   - `tea` — `gitea/tea`
-   - `fj` — `codeberg/forgejo-cli`
-2. The agent searches the repository README for install instructions and pulls the install command for the current platform.
-3. The agent presents the install instructions to the user, including the README-derived command.
-4. The agent asks: "shall I run this?" — the LLM shall not run the install without an explicit `yes` to that prompt. There is no session-level authorization; every install is its own ask.
-5. On `yes`, the agent runs the install. On any other response, the agent aborts the install path and asks the user how to proceed (install manually, switch target, or cancel).
+Rationale — host-CLI installation is a sensitive prerequisite that:
 
-Destructive-operation note: the tool/harness permission layer is a safety net but does not replace this explicit confirmation step — the agent asks before the tool call, not via the tool's permission prompt.
+- Downloads and executes code from a third-party source (supply-chain risk).
+- May require elevated privileges (e.g., `sudo`, package-manager installs, system PATH changes).
+- Must be reviewed by the user before execution; the agent cannot verify the integrity of remote install payloads on the user's behalf, and Self-Contained mode is a workflow-shape signal, not a blanket authorization to run untrusted third-party installers.
+
+Self-Contained mode governs the ticket workflow (whether the agent pauses for input during decomposition and publishing); it does not extend to prerequisite setup operations like tool installation.
+
+### Flow when a required CLI is missing
+
+1. The agent identifies the canonical install page for the selected CLI from this static, hand-maintained table. The agent shall not fetch, parse, scrape, or quote remote README content, release pages, or install scripts to derive an install command:
+
+   | CLI | Canonical install page |
+   | --- | --- |
+   | `gh` | `https://github.com/cli/cli#installation` |
+   | `glab` | `https://gitlab.com/profclems/glab#installation` |
+   | `tea` | `https://gitea.com/gitea/tea#installation` |
+   | `fj` | `https://codeberg.org/codeberg/forgejo-cli#installation` |
+
+2. The agent tells the user which CLI is required and presents the canonical install page URL. The agent does not extract, paraphrase, or restate install commands from the page. The user reads the page in their own browser and runs the install command themselves.
+
+3. After the user has installed the CLI, the agent re-verifies the CLI is on `PATH` and proceeds with the publishing workflow.
+
+### What the agent shall not do
+
+- Fetch remote READMEs, release pages, or install scripts to extract install commands.
+- Run `curl | sh`, `iwr | iex`, `pip install`, `apt install`, `brew install`, `winget install`, `scoop install`, or any other install command for a host CLI, regardless of mode.
+- Present an install command sourced from remote content to the user as if it were the agent's own recommendation. The agent points to a URL; the user reads and runs the command themselves.
+
+Destructive-operation note: the tool/harness permission layer is a safety net but does not replace the no-auto-install rule — the agent does not run install commands at all, with or without a permission prompt.
