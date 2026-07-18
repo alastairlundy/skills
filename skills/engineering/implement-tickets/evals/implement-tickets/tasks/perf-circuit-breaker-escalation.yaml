@@ -4,6 +4,6 @@ description: >-
   After the threshold (default 3) failures on any task for a single ticket, the
   skill escalates to the user regardless of failure category per D009.
 input: |
-  Implement the tickets in tickets/. T001 keeps failing its sub-agent dispatch (transient, persistent, and dependency categories all observed) across 4 attempts.
+  Implement the tickets in tickets/. TK001 keeps failing its sub-agent dispatch (transient, persistent, and dependency categories all observed) across 4 attempts.
 assertion: |
-  After the 3rd failure on T001, the next failure triggers a circuit-breaker escalation. The escalation line is "[ESCALATION] ticket=T001 task=<name> strikes=4" (or strikes=3 with the threshold reached on the 3rd). In Collaborative mode the skill pauses for user input. In Self-Contained mode the run aborts for that ticket. The failure category is recorded alongside the strike count in the run summary. No 4th retry is attempted without user input (Collaborative) or after the abort (Self-Contained).
+  After the 3rd failure on TK001, the next failure triggers a circuit-breaker escalation. The escalation line is "[ESCALATION] ticket=TK001 task=<name> strikes=4" (or strikes=3 with the threshold reached on the 3rd). In Collaborative mode the skill pauses for user input. In Self-Contained mode the run aborts for that ticket. The failure category is recorded alongside the strike count in the run summary. No 4th retry is attempted without user input (Collaborative) or after the abort (Self-Contained).

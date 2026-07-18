@@ -5,6 +5,6 @@ description: >-
   section, the skill falls back to Goal + What to build and emits a [DEVIATION]
   line per D008.
 input: |
-  Implement the tickets in tickets/. T001 has no Acceptance criteria section and no Definition of Done section, but has Goal and What to build.
+  Implement the tickets in tickets/. TK001 has no Acceptance criteria section and no Definition of Done section, but has Goal and What to build.
 assertion: |
-  Phase 2 surfaces a [DEVIATION] line for T001: "[DEVIATION] ticket=T001 no explicit criteria -- using Goal+What to build". The judge is invoked with the Goal + What to build as the criteria. The run summary records T001's deviation in the Deviations section. T001 is not silently treated as acceptance-criteria-free; the deviation is observable.
+  Phase 2 surfaces a [DEVIATION] line for TK001: "[DEVIATION] ticket=TK001 no explicit criteria -- using Goal+What to build". The judge is invoked with the Goal + What to build as the criteria. The run summary records TK001's deviation in the Deviations section. TK001 is not silently treated as acceptance-criteria-free; the deviation is observable.

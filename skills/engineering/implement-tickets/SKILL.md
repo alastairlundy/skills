@@ -146,8 +146,8 @@ inside the dispatch unit runs in ticket order within the group.
    - On `reject-with-ambiguity`: surface the ambiguity to the user immediately with `[ESCALATION] ticket=<id> ambiguity=<one-line-summary>` (Collaborative mode) or auto-skip with a recorded reason (Self-Contained mode).
 6. **Commit on the shared branch**:
    - **Subject line**: starts with the ticket-id bracket prefix, followed by a plain-language description.
-     - Single-ticket dispatch: prefix is `[<ticket-id>]`. Example: `[T003] add subject-quality gate to commit step`.
-     - Same-file-group dispatch (multiple tickets in one commit unit): prefix is `[<ticket-id-1>,<ticket-id-2>,...]` (comma-separated, no spaces). Example: `[T003,T007] add subject-quality gate and post-commit identity check`.
+     - Single-ticket dispatch: prefix is `[<ticket-id>]`. Example: `[TK003] add subject-quality gate to commit step`.
+     - Same-file-group dispatch (multiple tickets in one commit unit): prefix is `[<ticket-id-1>,<ticket-id-2>,...]` (comma-separated, no spaces). Example: `[TK003,TK007] add subject-quality gate and post-commit identity check`.
      - The bracket prefix **stays in the subject**. It is what makes commits greppable against the ticket set. It is not moved to the body footer.
      - Treat 72 characters as a soft cap, not a hard limit. A 90-character self-explanatory subject is preferable to a truncated cryptic one.
      - The rest of the subject (after the bracket prefix) reads as a public changelog entry. The reader has not read the ticket, the decision ledger, or any prior work.
@@ -161,7 +161,7 @@ inside the dispatch unit runs in ticket order within the group.
      - In all three cases, the identity is supplied at commit time via the `-c` flag. The skill does not call `git config user.name` / `git config user.email` to mutate the shell's persistent git config.
    - **Subject-quality gate** (run before the commit invocation): the coordinator inspects the subject against the following rules; any failure rejects the subject. These are the canonical home for the negative rules — the subject-format description above does not restate them.
      - No ledger IDs in the subject: subject does not match the regex `\bD\d{3}\b` or `\bT\d{3}\b` outside the ticket-id bracket.
-     - No other-ticket IDs in the subject: subject does not match `T\d{3}` for any ticket id other than the one in the bracket prefix.
+     - No other-ticket IDs in the subject: subject does not match `TK\d{3}` for any ticket id other than the one in the bracket prefix.
      - No host-tool acronyms in the subject: the subject must not contain host-tool acronyms that the repo glossary in `CONTEXT.md` does not recognise as universal (e.g. `MTP`, `VSTest`, `CPM`, `TFM`, `AOT`).
      - Plain-language: subject contains at least one verb or noun phrase that names the user-visible effect of the change.
      - On rejection: the coordinator increments the strike counter for this ticket and re-dispatches the sub-agent with the gate's feedback (mirroring the `reject-with-feedback` re-dispatch path). A second rejection on the same ticket escalates to the user via the circuit breaker.
