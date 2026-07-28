@@ -5,10 +5,10 @@
 1. Detect the project's git host:
    a. Parse `git remote -v` to extract the hostname.
    b. If the hostname is ambiguous (e.g., self-hosted with custom domain), check for host-specific config files (`.github/`, `.gitlab-ci.yml`, `.gitea/`).
-   c. If detection fails, ask the user which host the project uses. The options to present are: GitHub Issues, GitLab Issues, Gitea, Codeberg Issues, or a hosted Forgejo Instance. Use the `ask_question` tool to present these options if available (Collaborative mode) or present them as a list (Self-Contained mode).
+   c. If detection fails, ask the user which host the project uses. The options to present are: GitHub Issues, GitLab Issues, Gitea, Codeberg Issues, or a hosted Forgejo Instance. Use the `ask_question` tool to present these options if available.
 2. Load `references/host-cli-detection.md` for the CLI support-model tags and the Installation flow. The Installation section is the source of truth for how missing CLIs are handled and overrides any per-mode branch in this file.
 3. Look up the expected CLI for the detected host using the loaded reference.
-4. Verify the CLI is installed by checking if it is available in `PATH`. If not found, follow the no-auto-install flow defined in the loaded reference — in both Collaborative and Self-Contained modes. The agent shall not install host CLIs under any circumstance; the user is responsible for installing the CLI on their own machine and the agent shall point the user to the canonical install page URL.
+4. Verify the CLI is installed by checking if it is available in `PATH`. If not found, follow the no-auto-install flow defined in the loaded reference. The agent shall not install host CLIs under any circumstance; the user is responsible for installing the CLI on their own machine and the agent shall point the user to the canonical install page URL.
 
 ## Render-time substitution
 
