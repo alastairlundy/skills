@@ -1,6 +1,15 @@
 id: no-trigger-trivial-change
-type: trigger
+name: No trigger on trivial change
 description: Does NOT trigger when user wants to make a trivial change to an existing skill.
-input: |
-  Can you fix a typo in the ask-questions SKILL.md file?
-expected: no-trigger
+inputs:
+  prompt: |
+    Can you fix a typo in the ask-questions SKILL.md file?
+expected:
+  should_trigger: false
+graders:
+  - type: trigger
+    name: should-not-trigger-skill-architect
+    config:
+      skill_path: skills/skills-meta/skill-architect
+      mode: negative
+      threshold: 0.4

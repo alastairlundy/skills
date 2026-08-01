@@ -1,6 +1,15 @@
 id: no-trigger-vague-idea
-type: trigger
+name: No trigger on vague idea
 description: Does NOT trigger when user provides a vague idea with no spec.
-input: |
-  I'm thinking about adding some kind of notification system. Can you help me plan it out?
-expected: no-trigger
+inputs:
+  prompt: |
+    I'm thinking about adding some kind of notification system. Can you help me plan it out?
+expected:
+  should_trigger: false
+graders:
+  - type: trigger
+    name: should-not-trigger-spec-to-tickets
+    config:
+      skill_path: skills/engineering/spec-to-tickets
+      mode: negative
+      threshold: 0.4

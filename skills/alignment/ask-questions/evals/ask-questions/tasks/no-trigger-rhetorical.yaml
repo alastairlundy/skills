@@ -1,6 +1,15 @@
 id: no-trigger-rhetorical
-type: trigger
+name: No trigger on rhetorical question
 description: Does NOT trigger for a question where the LLM is making a point rather than soliciting input.
-input: |
-  This caching layer is going to be a maintenance nightmare, isn't it? Let's add it anyway.
-expected: no-trigger
+inputs:
+  prompt: |
+    This caching layer is going to be a maintenance nightmare, isn't it? Let's add it anyway.
+expected:
+  should_trigger: false
+graders:
+  - type: trigger
+    name: should-not-trigger-ask-questions
+    config:
+      skill_path: skills/alignment/ask-questions
+      mode: negative
+      threshold: 0.4

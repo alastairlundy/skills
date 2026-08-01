@@ -1,6 +1,15 @@
 id: no-trigger-vague-plan
-type: trigger
+name: No trigger on vague plan
 description: Does NOT trigger on a bare 'plan' mention with no spec/PRD present.
-input: |
-  I have a plan for a todo app.
-expected: no-trigger
+inputs:
+  prompt: |
+    I have a plan for a todo app.
+expected:
+  should_trigger: false
+graders:
+  - type: trigger
+    name: should-not-trigger-code-implementation-grilling
+    config:
+      skill_path: skills/engineering/code-implementation-grilling
+      mode: negative
+      threshold: 0.4
