@@ -9,9 +9,7 @@ parent: <spec reference>
 ---
 ```
 
-**blocked_by reference format by output target:**
-- Issue tracker: issue numbers (e.g., `#42`)
-- Local markdown: zero-padded file basenames without extension (e.g., `001-authentication`)
+**blocked_by reference format:** The `Blocked by` field is stored as target-agnostic ticket IDs using the `TKxxx` prefix (e.g., `TK001`, `TK002`) during generation. The `TKxxx` prefix is chosen to avoid collision with Decision Ledger record IDs (`Dxxx` for functional decisions, `Txxx` for technical decisions) when a spec is decomposed against an existing ledger. At publish time, these are substituted with the appropriate format for the chosen target (issue numbers for issue-tracker targets, file basenames for local markdown targets).
 
 ## Goal
 
@@ -20,6 +18,15 @@ Brief statement of what this ticket accomplishes and why it matters. One to thre
 ## What to build
 
 Description of the end-to-end behavior with sufficient context for an implementer to understand what to do and why. Describe what the system should do and the outcomes it must achieve. Include file paths when they help the implementer orient themselves, but avoid prescribing exact file paths or code snippets as implementation requirements unless the file structure is itself a deliverable. Exceptions - if a prototype produced a snippet that encodes a decision more precisely than prose can (state machine, reducer, schema, type shape), inline it and note that it came from a prototype.
+
+## Size
+
+For tickets that involve files:
+- **Files** - <number of files to create, edit, or delete, as explicitly described by this ticket>
+- **Large Files to be created** - <applied if any new file is >= 500 lines, otherwise omit this line>
+- **Large Edits required** - <applied if total lines to add, remove, or change is >= 500 lines, otherwise omit this line>
+
+For tickets that involve no file changes, omit this section entirely.
 
 ## Recommended Workflow
 
@@ -67,7 +74,7 @@ Verify: <verification check or N/A>
 **Files** - <key files to examine or modify, with brief notes on why they're relevant>
 **ADRs** - <relevant architectural decisions by reference>
 **Domain terms** - <terms from CONTEXT.md that help understand this ticket's scope and boundaries - include enough to prevent confusion, but do not reproduce the glossary>
-**Ledger records** - <`Dxxx`/`Txxx` records this ticket's acceptance criteria and constraints must honour, by ID — do not reproduce the ledger record body, only the ID and a brief note on why it is relevant>
+**Ledger records** - <`Dxxx`/`Txxx` records this ticket's acceptance criteria and constraints must honour, cited as `filename#<Dxxx|Txxx>` — do not reproduce the ledger record body, only the ID and a brief note on why it is relevant>
 
 ## Acceptance criteria
 
@@ -76,5 +83,7 @@ Verify: <verification check or N/A>
 - [ ] Criterion 3
 
 ## Dependencies
+
+All dependencies are tracked via the `Blocked by` field; the `Blocks` field is reserved for forward-looking dependency statements only and shall not be used in tickets produced by this skill.
 
 **Blocked by** - <ticket references that must complete first, or "None - can start immediately">

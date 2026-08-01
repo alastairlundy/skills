@@ -1,0 +1,9 @@
+id: perf-rejects-non-normalized-source
+type: performance
+description: >-
+  When the user names an external source (e.g., GitHub Issues) without a prior
+  adapter run, the skill aborts cleanly and recommends the adapter per D003.
+input: |
+  Implement the GitHub Issues in the alastairlundy/skills repo labelled "ready-for-agent". They're already triaged.
+assertion: |
+  Skill does NOT begin executing tickets. It surfaces a clear one-line message: external sources must be converted to the normalized format by a source adapter before this skill runs. It names the missing step (run the GitHub Issues adapter first) and exits without modifying the workspace. It does not silently start fetching GitHub Issues or making assumptions about issue-tracker-specific fields.

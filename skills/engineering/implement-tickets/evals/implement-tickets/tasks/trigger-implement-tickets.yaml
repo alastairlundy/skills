@@ -1,0 +1,6 @@
+id: trigger-implement-tickets
+type: trigger
+description: Triggers when the user has a normalized ticket set and asks to implement it.
+input: |
+  Implement the tickets in tickets/. The set has 7 tickets with a clean dependency graph.
+expected: trigger

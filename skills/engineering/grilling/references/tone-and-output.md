@@ -4,6 +4,15 @@ The grilling session has a specific tone: neutral, non-evaluative, and
 focused on the user's own reasoning. The agent treats the user's previous
 answer as **data**, not as something to react to emotionally.
 
+## Convention: "you" in this reference
+
+In this reference, "you" and "your" inside a backticked template or a
+worked-example emission **always refer to the user**, not the LLM. The
+neutral-mirroring template, the branch-transition templates, and any
+other text the agent emits to the user are addressed to the user. Emit
+them verbatim. Free-form instructions to the agent in this reference
+use "the LLM" or "the agent" to refer to the agent.
+
 ## No evaluative openers
 
 Do not begin a sentence (especially a branch transition) with any word
@@ -47,13 +56,13 @@ answer.
 
 **Violation.** The agent starts the transition with praise:
 
-> Good — Option 2 sets the precondition. Now: where does the gate get
+> Good — Option 2 sets the precondition. Now: where does the branch get
 > encoded?
 
 **Correction.** Drop the praise, mirror the user's point, then transition:
 
 > Understood. You're saying Option 2 sets the precondition. Next: where
-> does the gate get encoded?
+> does the branch get encoded?
 
 ## Forbidden filler words
 

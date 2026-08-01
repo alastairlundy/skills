@@ -1,0 +1,10 @@
+id: perf-conflict-default-lww
+type: performance
+description: >-
+  Cross-batch same-file conflicts default to last-writer-wins (LWW) by commit
+  order on the shared branch until references/conflict-resolution.md is
+  authored, per D006.
+input: |
+  Implement the tickets in tickets/. Two tickets in different batches touch the same file region.
+assertion: |
+  The conflict is detected at the end of the second batch. The skill applies the LWW default: the earlier commit's overlapping region is preserved only where the later commit's diff did not touch it. The conflict, the rule applied (LWW), and the result are recorded in the run summary under "Conflicts". If the LWW outcome would contradict a ticket's acceptance criteria, the skill escalates with [ESCALATION] ticket=<id> conflict=<file> reason=<one-line> rather than applying LWW silently.

@@ -4,6 +4,37 @@ Every decision point the agent presents must show the user the full range
 of natural options, not just the recommended one. The user must see the
 landscape of choices to make an informed decision.
 
+## Convention: "you" in this reference
+
+In this reference, "you" and "your" inside a blockquote, a backticked
+template, or a worked-example emission **always refer to the user**, not
+the LLM. The reference-set preamble and any other user-facing template
+in this reference are addressed to the user. Emit them verbatim and wait
+for the user to respond before proceeding. Free-form instructions to
+the agent in this reference use "the LLM" or "the agent" to refer to
+the agent.
+
+## Reference-set preamble
+
+The options block is preceded by a brief preamble that frames the options
+as a reference set. The preamble is part of the options block — it is not
+optional prose. The preamble must convey:
+
+- The options are a reference set the user can use to confirm, revise,
+  or hybridize their own answer.
+- The user may pick one, reject all, or combine elements.
+
+The fixed preamble is:
+
+The reference-set preamble is the following user-facing template. The
+"you" inside refers to the user; emit it verbatim and wait for the user
+to respond.
+
+```md
+Here are options to help you refine or confirm your answer. Pick one,
+reject all, or hybridize.
+```
+
 ## How many options
 
 Typically 2–4. An option is defensible if all four fields below can be
@@ -24,6 +55,25 @@ Professional Minimalist style: punchy, direct, clear. No filler.
 - **Risk** — one sentence describing what might go wrong later.
   Answers: "What could happen in the future?"
 
+### Per-field cap (enforceable)
+
+The "one sentence per field" rule is enforced objectively rather than
+left to agent judgment. Two equivalent mechanisms are acceptable;
+pick one and apply it consistently:
+
+- **Word cap** — at most **20 words per field**.
+- **Sentence-count check** — at most **1 sentence per field**, verified
+  by counting terminal punctuation (`.`, `?`, `!`) in the field text.
+
+The cap is applied at write time or in CI, not by reader judgment. A
+field that exceeds the cap must be trimmed or rewritten — the rule
+exists so the discriminator between options stays scannable.
+
+Complex options (a branch that would require four sub-decisions to
+disambiguate) are out of scope for this rule: promote them to
+separate branches per the format guidance above. The cap is the
+mechanism, not a new field.
+
 ## Format
 
 ```md
@@ -36,8 +86,13 @@ The `<Name>` is copied verbatim into the recommendation block — see
 
 ## Worked example
 
-**For D007 – where the precondition check lives: pick an option, or
-provide your answer.**
+**For D007 – where the precondition check lives: pick an option,
+hybridize, or provide your own answer.**
+
+<user states their answer>
+
+Here are options to help you refine or confirm your answer. Pick one,
+reject all, or hybridize.
 
 - **Option 1 — Constructor check.** What it is: the precondition runs in
   the tab container's constructor, throwing on null dependencies.

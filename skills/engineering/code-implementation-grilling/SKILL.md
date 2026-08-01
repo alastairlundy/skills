@@ -3,463 +3,407 @@ name: code-implementation-grilling
 description: >-
   Relentless Socratic interviewing on technical implementation choices —
   language, framework, dependencies, project structure — once a spec/PRD
-  exists. Use when implementation is the question. Defer to `grilling`
-  for non-code/tech decisions, to `domain-grilling` for terminology.
+  exists. Use when implementation is the question. When non-code/tech
+  decisions, use `grilling`. When terminology, use `domain-grilling`.
 license: MIT
 ---
 
 # Code Implementation Grilling
 
-A relentless Socratic interviewing skill, focused on resolving
-technical implementation choices once a functional spec/PRD exists.
-This skill specializes `grilling` for the case where the user has a
-spec and is now answering "how do we build it?"
-
-The core grilling machinery (Decision Ledger, options/recommendation
-formats, locked question format, tone discipline, convergence test)
-is owned by the `grilling` skill. This skill adds spec/PRD reading,
-the Foundation checklist, Technical Decision Point extraction, the
-optional Interface/Model branch, and the code-specific Terminal
-Output handoff templates.
+A Socratic interviewing skill that resolves technical implementation
+choices once a functional spec/PRD exists. Adds spec reading, Foundation
+checklist, Technical Decision Point extraction, optional Interface/Model
+branch, and code-specific handoff templates on top of `grilling` (which
+owns the Decision Ledger, formats, tone, and convergence test).
 
 ## When to Use
 
-- When a spec or PRD is referenced as a file path, attached as a
-  document, or substantively laid out in the conversation, and the
-  goal is to produce a code implementation plan for a code/programming
-  project.
-- When user input would clarify the request, invoke ask-questions
+- A spec/PRD is referenced (file, attachment, or conversation) and the
+  goal is a code implementation plan.
+- When user input would clarify the request, invoke ask-questions.
 
 ## When Not to Use
 
-- For general planning or non-code/non-programming projects
-  (e.g., a business plan, an ops runbook, a research project) —
-  defer to `grilling`.
-- For vague ideas, domain modeling, or terminology alignment —
-  defer to `domain-grilling`.
-- For creating a spec or PRD itself — defer to `to-prd` or
-  `domain-grilling`.
+- Non-code projects (e.g., business plans, runbooks, research).
+- Vague ideas, domain modeling, or terminology alignment (use
+  `domain-grilling` instead).
+- Questions that require back-and-forth clarification — use the
+  `ask-questions` skill instead.
+- Creating a spec/PRD itself.
 
 ## Workflow
 
-**Core Constraint**: To avoid overwhelming the user, ask exactly one
-question at a time. Wait for the user's response and resolve the
-current point before proceeding to the next question.
+Every branch question in this skill follows the two-turn locked
+question sequence from the parent grilling skill. The skill's
+per-decision context block is the 5-element code-impl variant
+(Goal, Prior decisions, Stakes, Scope, Spec section) defined in
+`references/locked-question-format.md`. The skill's steps (4, 5, 6)
+call the sequence, but the format itself — context block, Socratic
+elicitation question, locked question line, options + recommendation
+— is defined by the parent reference and the local 5-element
+extension. The shared references (`../grilling/references/*`) define
+the parent's 4-element context block, the Socratic elicitation
+question wording (D003), the locked question line wording (D004), the
+"you" convention, tone discipline, options format, and recommendation
+format. The local `references/locked-question-format.md` extends the
+parent with the code-impl 5th element (Spec section) and is the
+loadable source of truth for the 5-element context block per D011.
+This skill defers to the parent for the parts of the format that are
+unchanged. Re-asking a branch restarts at Turn 1 with a fresh
+context block and Socratic elicitation question — do not skip
+straight to the locked question line or the options.
+
+### Re-ask cycle cap
+
+A branch question may be re-asked at most **once** (max 2 total
+attempts: 1 initial + 1 re-ask). The re-ask preamble **must** state
+explicitly that this is the final re-ask, and that the question will
+be **closed without resolution** if a clear answer is not provided.
+Closure without resolution produces a `Dxxx` (or `Txxx` for
+technical decisions) record with status `closed without resolution`
+in `Constraints`; the agent does not stay silent and does not loop
+indefinitely. After closure, the agent moves to the next branch.
 
 ### Step 1: Load the references
 
-Before the first user question, load and read in full:
+Run the pre-flight check from `../grilling/SKILL.md` Step 1.0 to
+confirm all required reference files exist and are readable. If any
+are missing, abort and report. After the pre-flight passes, apply
+the per-reference load policy from the **References** section below:
+load each eager reference in full before the first user question;
+leave the lazy references unloaded and load them only on their
+declared trigger.
 
-- `../grilling/references/decision-ledger.md` (Decision Ledger
-  mechanics, including the `Dxxx` and `Txxx` record formats)
-- `../grilling/references/options-format.md`
-- `../grilling/references/recommendation-format.md`
-- `../grilling/references/locked-question-format.md`
-- `../grilling/references/tone-and-output.md`
-- `../grilling/references/convergence-test.md`
-
-Apply the formats from those files verbatim throughout the session.
-If any file is missing or unreadable, abort the session and report
-the missing file to the user.
+Apply the loaded formats verbatim. Do not paraphrase, abbreviate, or
+modify the formats.
 
 ### Step 2: Spec and Decision Ledger resolution
 
-The Decision Ledger is the shared artifact between `grilling`,
-`domain-grilling`, and this skill. Functional decisions land as
-`Dxxx` records (typically by `domain-grilling`); technical decisions
-land as `Txxx` records (by this skill). Both share one file at
-`docs/decisions/DECISIONS-<repo>-<feature>.md`.
+Follow grilling's Step 2 (Decision Ledger state summary) with the
+following code-specific additions:
 
-1. **Locate the spec.** Identify the spec/PRD that grounds the
-   session. Derive the spec's identifying token using the
-   precedence **file path > issue tracker reference > conversation
-   context**.
-2. **Locate the Decision Ledger.** Scan `docs/decisions/` for the
-   matching ledger. If exactly one match exists, use it. If
-   multiple matches exist for the same feature slug, ask the user
-   which one to extend. If none exist, ask the user whether to
-   start a new ledger or abort.
-3. **Read existing records.** Read the file end-to-end and note:
-   - The highest existing `Dxxx` and `Txxx` numbers — the next
-     `Txxx` is `max(Txxx) + 1`, or `T001` if no `Txxx` records
-     exist.
-   - Every `Dxxx` record's `Resolved Answer` and `Constraints` —
-     these are the functional requirements the technical decisions
-     must satisfy.
-4. **Confirm both paths with the user** before the first append.
-5. **Conflict pre-check.** If any `Dxxx` record contradicts another
-   (e.g., "single tab per session" vs. "all open tabs survive
-   restart"), surface the contradiction now and resolve it before
-   proceeding. Do not silently record a Technical Decision that
-   violates a `Dxxx` constraint.
+1. **Locate the spec.** Derive the spec identifier by precedence:
+   file path > issue tracker > conversation context.
+2. **Locate the ledger.** Same as grilling's Step 2.
+3. **Read records.** Note the highest `Dxxx`/`Txxx` and every `Dxxx`
+   answer/constraint — the functional requirements the tech decisions
+   must satisfy.
+4. **Confirm paths** before the first append.
+5. **Conflict pre-check.** Surface any `Dxxx`-`Dxxx` contradictions
+   and resolve before proceeding.
 
-If the user cannot produce or locate a ledger, do not invent one.
-The recommended path is to run `domain-grilling` first; this skill
-assumes a durable functional record exists.
+The first turn of this step is one agent turn: confirm the spec and
+ledger paths, then stop. Do not surface TDPs, foundation items, or
+any other branch content in this turn. If no ledger exists, recommend
+running `domain-grilling` first.
 
-### Recording Technical Decisions to the Ledger
+Load `references/recording-decisions.md` before the first `Txxx`
+append.
 
-After every resolved decision in Steps 3, 4, and 5, append a `Txxx`
-record to the ledger using this template:
+### Step 3: Goal discovery
 
-```md
-### [Txxx] — <Decision label>
+Follow grilling's Step 3 (Goal discovery). The first turn after the
+user has confirmed the spec and ledger paths in Step 2 is an open
+Socratic question to surface the goal. The goal-discovery turn, the
+locked-question turn, and the options/recommendation turn for the
+first branch are all separate turns — do not collapse them. The goal
+record (D001) is recorded in the shared Decision Ledger using the
+goal record template from `../grilling/references/decision-ledger.md`.
 
-- **Resolved Answer**: <verbatim user choice>
-- **Normalized Requirement**: <concise, testable statement>
-- **Constraints**: <negative requirements, edge cases, or defaults>
-- **Cites**: <Dxxx ids from the same ledger whose constraints this answer respects>
-```
+### Step 4: Foundation Establishment (mandatory)
 
-- `Txxx` is a zero-padded sequence incremented from the highest
-  existing `Txxx`.
-- `Cites` lists every `Dxxx` (or earlier `Txxx`) record whose
-  `Constraints` the technical answer must respect. A Technical
-  Decision that ignores a cited constraint is a silent loss; do not
-  cite a record unless the answer actually honours it.
-- The Core Constraint still applies: append the record in the same
-  turn the user resolves the decision, before asking the next
-  question.
+Resolve one-by-one using the two-turn locked question sequence from
+`../grilling/references/locked-question-format.md`. For each
+foundation item, emit a context block, Socratic elicitation question,
+locked question line, and options + recommendation across two
+separate agent turns. Resolve with 2-4 options:
 
-### Step 3: Foundation Establishment (Mandatory Checklist)
+1. **Language** — primary language?
+2. **Framework/Runtime** — primary framework?
+3. **Key Dependencies** — critical libraries/APIs?
+4. **Project Structure** — layout (layered, vertical slices, etc.)?
+5. **Sub-projects** — scope and purpose of each?
+6. **Project Type** — CLI, library, desktop GUI, etc.?
 
-Iteratively resolve the following technical foundation points
-one-by-one. For each, present 2-4 natural options with trade-offs
-and a recommendation.
+### Step 4.1: Foundational Preferences (optional)
 
-1. **Programming Language**: Which language will be used?
-2. **Framework/Runtime**: Which primary framework or runtime is
-   required?
-3. **Key Dependencies**: What are the critical libraries or external
-   APIs that must be used?
-4. **Project Structure**: What is the overall organizational layout
-   of the code (e.g., Layered, Vertical Slices, Monolith,
-   Microservices)?
-5. **Sub-projects**: If multiple sub-projects are called for in the
-   spec, define the scope and purpose of each.
-6. **Project Type**: If not specified in the spec, determine the
-   type of project being created (e.g., CLI Console app, Desktop
-   GUI program, Programming Library, etc.).
-7. **Foundational Preferences (Optional)**: Ask the user if they
-   wish to clarify any other important foundational information
-   (e.g., preference for async/await programming model, specific CSS
-   frameworks like Bootstrap vs TailwindCSS, etc.).
+Ask if the user wants to clarify other preferences (async model, CSS
+framework, ORM, test framework, logging, etc.). Skip if not interested.
 
-### Step 4: Spec-Driven Technical Extraction
+### Step 5: Spec-Driven Technical Extraction
 
-Analyze the spec for remaining "how" gaps.
+1. **Identify TDPs** (internal agent step): Extract every functional
+   requirement that implies a technical choice (e.g., "Real-time
+   updates" → WebSocket vs Long Polling). Skip items marked "deferred"
+   or "out of scope". Never use the abbreviation "TDP" with the user.
+2. **Surface TDP list** (separate turn): After the foundation is
+   resolved, present the TDP list to the user in dependency order.
+   State that the agent will walk through them one at a time using
+   the two-turn sequence, starting with the first. Do not include
+   the context block or Socratic question for the first TDP in this
+   turn — that comes in the next turn. The TDP list surfacing is a
+   meta-step (not a branch); the context block is not emitted on
+   this turn. The first TDP's full context block appears in the next
+   turn when the agent begins resolving the first TDP.
+3. **Resolve**: Grill on each TDP using the two-turn sequence from
+   `../grilling/references/locked-question-format.md`.
 
-1. **Identify Technical Decision Points (TDPs)**: Extract every
-   functional requirement that implies a technical choice
-   (e.g., "Real-time updates" → WebSocket vs Long Polling).
-2. **Filter Deferred Features**: Identify and skip any features
-   explicitly marked as "deferred" or "out of scope" in the spec
-   to avoid decision fatigue.
-3. **Resolve Technical Decision Points**: Grill the user on each
-   identified point using the "Options → Recommendation → Risk"
-   pattern from `../grilling/references/*`. **Crucial**: Never use
-   the abbreviation "TDP" when communicating with the user; always
-   use the full term "Technical Decision Point".
+Load `references/interface-and-model-branch.md` before asking the user
+whether they want interface grilling.
 
-### Step 5: Interface & Model Branch (Optional)
+Load `references/output-selection.md` before presenting the output
+format choice to the user.
 
-Ask the user: *"Would you like to be grilled on the specific
-Interface, Contract, DTO, and Model definitions now?"*
+### Step 6: Interface & Model Branch (optional)
 
-- **If No**: Provide the following warning: *"Skipping detailed
-  interface resolution means these details must be determined during
-  implementation. This will likely result in more 'Collaborative'
-  tickets that require human-in-the-loop intervention."* Then skip
-  directly to Step 6 (Output Selection).
-- **If Yes**: Walk through three sequenced phases. The phases are
-  sequential, not nested — once a phase transitions, do not
-  interleave its decisions back into a later phase. Each phase uses
-  1-decision-per-turn discipline.
+Follow `references/interface-and-model-branch.md`. The phases are
+sequential, not nested. Use the two-turn locked question sequence
+from `../grilling/references/locked-question-format.md` for each
+architectural decision, source-of-truth conflict, and type
+introduction.
 
-  #### Phase 1: Architectural Separation
+### Step 7: Output Selection
 
-  First, ask the user: *"How many architectural decisions do you
-  want to resolve? (0-3)"*. Use the chosen count N; walk the first
-  N items from the typical list below, in order. If N=0, skip
-  directly to the Phase 1 transition prompt. Resolve 1-3
-  architectural decisions one at a time, each with its own gate.
-  Typical decisions:
-  - **Layer boundaries**: Where does one layer end and the next
-    begin?
-  - **Dependency direction**: Which layer depends on which?
-  - **Separation mechanism**: How are layers physically separated
-    (e.g., separate project, class library, microservice)?
+Follow `references/output-selection.md`. Present the two-part choice
+one part at a time, using the two-turn sequence for each part. The
+output is **not** a per-branch Implementation Blueprint; the
+consolidated plan is produced once at the endpoint of the grilling
+(see Step 8.5).
 
-  Present each decision with 2-4 options, trade-offs, and a
-  recommendation. Wait for the user's response before presenting the
-  next decision.
+### Step 8: Final Alignment Check & Convergence
 
-  When all architectural decisions are resolved, ask: *"Ready to
-  move to Source of Truth?"* The user confirms or revises before
-  the phase transitions. Do not advance without confirmation.
+The convergence test runs at two cadences with different bullet
+counts, per `../grilling/references/convergence-test.md`:
 
-  #### Phase 2: Source of Truth
+- **Per-item convergence** — after each Address item is resolved, run
+  the four universal bullets (Implementability, Enforceability,
+  Internal consistency, Format compliance).
+- **End-of-grilling convergence** — after the last Address item, run
+  the four universal bullets plus the fifth cross-record consistency
+  bullet.
 
-  Identify any conflicts where two plausible sources claim authority
-  for the same functionality or data. If 0 conflicts exist, skip
-  directly to the transition prompt. If 1-3 conflicts exist
-  (typical: 0-2), resolve each one at a time, each with its own
-  gate. For each conflict, present the two plausible sources and
-  ask the user which is canonical. Wait for the user's response
-  before presenting the next conflict.
+1. **Cross-reference** the technical output against the original spec.
+2. **Conflict detection** — any tech choices contradict functional reqs?
+3. **Resolve** any contradictions.
+4. **Ledger coverage** — every resolved TDP has a `Txxx`, every cited
+   statement uses `filename#<Dxxx|Txxx>`, and the consolidated plan
+   lists all cited records.
+5. **Declare**: "We have reached a shared implementation understanding."
 
-  When all conflicts are resolved (or none were found), ask: *"Ready
-  to move to the type loop?"* The user confirms or revises before
-  the phase transitions. Do not advance without confirmation.
+Load `references/validation.md` before declaring convergence.
 
-  #### Phase 3: Detailed Definition (Type Loop)
+Load `references/terminal-output.md` before emitting the terminal
+handoff template.
 
-  Introduce exactly one named type per turn. For each type:
-  1. Present the type's full signature, fields or properties, and a
-     1-2 sentence rationale for why it exists.
-  2. **Family carve-out**: a discriminated union (one abstract type
-     plus its concrete variants) is introduced as a family in the
-     abstract type's turn. Present the variant names as a bulleted
-     list in alphabetical order, then ask: *"Would you like to
-     expand any of these variants? If so, which ones?"*. Do not
-     pre-emptively enumerate every variant's fields and properties.
-  3. **Visible running checklist**: after introducing the type,
-     show a single-line running checklist of types already
-     introduced and types still to come (for example: *"Introduced:
-     A, B, C — remaining: D, E, F"*). The checklist is mandatory,
-     not optional.
-  4. **Termination**: ask *"Any more, or ready to move on?"* The
-     user decides whether to introduce the next type, expand a
-     previously introduced family, or close the loop. The agent
-     does not decide when the type list is complete.
+### Step 8.5: Consolidated Implementation Plan
 
-  The type loop is 1-decision-per-turn regardless of language
-  (works for C#, TypeScript, Rust, Go, and similar). A "decision"
-  in this loop is either (a) the introduction of a new named type,
-  or (b) the expansion of one previously named variant in a
-  discriminated-union family. Do not batch multiple types into a
-  single turn.
+At the natural endpoint of the grilling — after the last Address
+item passes the end-of-grilling convergence check — produce a single
+**Consolidated Implementation Plan** that lists every file change
+across all Address items, grouped by file. The plan is the source of
+truth for downstream ticket generation.
 
-### Step 6: Output Selection
+**Format options (pick one at end-of-grilling):**
 
-Present the user with the following two-part choice, one part at a
-time.
+- **Standalone file** — write
+  `IMPLEMENTATION-<spec-identifier>.md` at the repo root, with a
+  `Scope Binding` section linking it to the source spec and the
+  Decision Ledger.
+- **Ledger appendix** — append a "Consolidated Implementation Plan"
+  section to the Decision Ledger file itself, listing the same
+  content.
 
-**Part A: Output format**
+The filename derivation (standalone option) follows the precedence
+**file path > issue tracker reference > conversation context**, per
+`references/output-selection.md` Step 7.1.
 
-**Option A: Implementation Blueprint (Recommended)**
+**Plan contents:**
 
-- **What**: A standalone blueprint file at the repo root, with a
-  `Scope Binding` section that links the blueprint to the source
-  spec and the Decision Ledger.
-- **Filename derivation**: Derive the blueprint filename from the
-  spec's identifying token by input type — file path → basename
-  without extension (e.g., `docs/prds/feature-x.md` →
-  `IMPLEMENTATION-feature-x.md`); issue tracker reference → issue
-  number (e.g., `#123` → `IMPLEMENTATION-123.md`); conversation
-  context → date prefix in `YYYY-MM-DD` form (e.g., `Conversation
-  context (2026-06-15)` → `IMPLEMENTATION-2026-06-15.md`). When
-  the spec is referenced by more than one input type, resolve the
-  filename using the strict total ordering **file path > issue
-  tracker reference > conversation context** — pick the
-  highest-precedence source present. The default location is the
-  repo root.
-- **Trade-offs**: High clarity; serves as a clean "Context Pointer"
-  for tickets; keeps the PRD focused on "What".
-- **Risks**: Temporary file overhead.
-- **Scope Binding contents**: The blueprint must include
-  `Linked Spec: <path_to_spec>`,
-  `Decision Ledger: <ledger-path>`, and a notice that the
-  blueprint is a context pointer valid ONLY for the linked spec
-  and must not be applied to other specifications without explicit
-  authorization.
-- **Ledger Binding**: Every technical statement in the blueprint
-  body that satisfies a functional requirement must reference the
-  `Dxxx` (or earlier `Txxx`) record it satisfies in square
-  brackets, inline (e.g., *"The store [D012] will use Redis with
-  per-tab key namespaces, so a failed write to one tab does not
-  corrupt siblings [D014]."*). The blueprint must also include a
-  `## Ledger Reference` section listing every `Dxxx` and `Txxx`
-  record the blueprint cites, so a reader can audit the binding
-  in one pass.
+- **Per-file sections** — every file that any Address item touches,
+  grouped by file path. Within each section, list each change with
+  the `Txxx` (or `Dxxx`) record that drives it in
+  `filename#<Dxxx|Txxx>` format.
+- **## Ledger Reference** — every `Dxxx` and `Txxx` record the plan
+  cites, so a reader can audit the binding in one pass.
+- **Scope binding** (standalone only) —
+  `Linked Spec: <path_to_spec>`, `Decision Ledger: <ledger-path>`,
+  and a notice that the plan is a context pointer valid ONLY for
+  the linked spec.
 
-**Option B: PRD Augmentation**
+The consolidated plan replaces the prior per-branch Implementation
+Blueprints. Branches do not emit their own blueprints during the
+grilling; they only contribute `Dxxx`/`Txxx` records, and the plan
+collects all of them at the endpoint.
 
-- **What**: Appending a "Technical Implementation" section to the
-  existing spec/PRD.
-- **Trade-offs**: Single source of truth; no fragmented files.
-- **Risks**: Can clutter high-level requirements with low-level
-  technical noise.
-- **Ledger Binding (Option B)**: The appended Technical
-  Implementation section must inline-cite the `Dxxx`/`Txxx`
-  records that justify each technical choice, and must open with a
-  `Decision Ledger: <ledger-path>` pointer so readers can audit
-  the binding.
+## References
 
-**Part B: Downstream consumer**
+The skill consumes the following references. The **default** load
+policy for a new reference is **no-load**; a contributor must opt
+in by listing the reference here with an explicit `eager` or
+`lazy (trigger: ...)` policy.
 
-- **Ticket consumer**: hand off to a workflow that auto-decomposes
-  the spec and blueprint into a dependency graph of implementation
-  tickets.
-- **Issue tracker**: hand off to a workflow that files the spec and
-  blueprint as issues in the issue tracker.
-- **Manual handoff**: no automated decomposition; the user takes
-  the artifacts from here.
+### Parent grilling references (`../grilling/references/*`)
 
-**Step 6.1: Filename confirmation (Option A only)**
+- **`../grilling/references/decision-ledger.md`** — *eager*. Load in
+  full before the first user question. Defines the ledger file
+  layout, the per-branch record template, the `Dxxx`/`Txxx` ID
+  format, the trailing `<!-- next-id: Dxxx -->` sentinel, and the
+  real-time appending rule.
+- **`../grilling/references/options-format.md`** — *eager*. Load in
+  full before the first user question. Defines the 4-field option
+  block (What it is / Benefit / Cost / Risk) and the per-field cap
+  (20 words or 1 sentence per field).
+- **`../grilling/references/recommendation-format.md`** — *eager*.
+  Load in full before the first user question. Defines the
+  two-field recommendation block (Recommendation / Reasoning) with
+  the 1-2 sentence cap on Reasoning and the verbatim-name rule.
+- **`../grilling/references/locked-question-format.md`** — *eager*.
+  Load in full before the first user question. Defines the parent's
+  two-turn locked question sequence, the 4-element context block,
+  the Socratic elicitation question wording (D003), the locked
+  question line wording (D004), the engage and decline behaviors, the
+  options format, and the recommendation format. The local
+  `references/locked-question-format.md` extends this reference
+  with the 5-element code-impl context block (per D011) and is the
+  loadable source of truth for the 5th element.
+- **`references/locked-question-format.md`** — *eager*. Load in
+  full before the first user question. Defines the 5-element
+  code-impl context block (Goal, Prior decisions, Stakes, Scope,
+  Spec section) used on every per-decision question in Steps 4, 5,
+  and 6. Extends the parent with the 5th element (Spec section)
+  per D011. See "The 5th element — Spec section" for the citation
+  format and the requirement that the 5th element is not optional.
 
-If the user chose Option A (Implementation Blueprint), surface the
-resolved filename in a confirmation prompt (e.g., *"I'm going to
-write the blueprint to `IMPLEMENTATION-feature-x.md` at the repo
-root — OK?"*). If the user wants a different name, adjust the
-filename before writing. Skip this step entirely if the user chose
-Option B (PRD Augmentation).
+### Lazy references (load on demand)
 
-Captured: Output format = Option A | Option B; Downstream consumer
-= ticket consumer | issue tracker | manual handoff. The captured
-choices drive template selection in the Terminal Output section.
+- **`../grilling/references/tone-and-output.md`** — *lazy*. Load on
+  demand when a tone or style question arises during the session.
+- **`../grilling/references/convergence-test.md`** — *lazy*. Load
+  on demand once convergence is believed reached; do not load
+  speculatively during grilling.
 
-### Step 7: Final Alignment Check & Convergence
+### Skill-local references (`references/*`)
 
-Before declaring convergence:
-
-1. **Cross-Reference**: Compare the resolved technical
-   blueprint/section against the original PRD/Spec.
-2. **Conflict Detection**: Identify any technical choices that
-   contradict the functional requirements.
-3. **Resolution**: Resolve any contradictions with the user.
-4. **Decision Ledger Coverage**: Re-read the Decision Ledger and
-   verify (a) every Technical Decision Point resolved in Steps 3-5
-   has a corresponding `Txxx` record, (b) every blueprint body
-   statement that satisfies a functional requirement cites the
-   `Dxxx`/`Txxx` record it satisfies, and (c) the blueprint's `##
-   Ledger Reference` section (or the augmented PRD's `Decision
-   Ledger:` pointer) lists every cited record. A blueprint that
-   omits citations, or a session that ends with unreferenced
-   decisions, is not convergent — re-open the affected decision
-   or the blueprint and complete the binding before declaring.
-5. **Declaration**: Once aligned and bound, explicitly declare:
-   *"We have reached a shared implementation understanding."*
-
-## Terminal Output (Required)
-
-This block is mandatory. A workflow run that ends without emitting
-it is incomplete.
-
-At the end of the workflow, the agent emits exactly one of the
-following pre-written handoff templates. Template selection is
-keyed on the captured choices from Step 6: first select the
-template set by Output format (Option A = Implementation Blueprint,
-Option B = PRD Augmentation), then select the specific template by
-Downstream consumer. The agent substitutes `<spec-path>`,
-`<blueprint-path>` (Option A only), and `<ledger-path>` only. Do
-not add any other prose around the template.
-
-### Option A: Implementation Blueprint
-
-**Template: ticket consumer (`spec-to-tickets`)**
-
-> Run the `spec-to-tickets` skill with the spec at `<spec-path>`,
-> the blueprint at `<blueprint-path>`, and the Decision Ledger at
-> `<ledger-path>` as context. Every ticket's acceptance criteria
-> and constraints must cite a `Dxxx` or `Txxx` record from the
-> ledger.
-
-**Template: issue tracker (`to-issues`)**
-
-> Run the `to-issues` skill with the spec at `<spec-path>`, the
-> blueprint at `<blueprint-path>`, and the Decision Ledger at
-> `<ledger-path>` as context. Every issue's acceptance criteria
-> and constraints must cite a `Dxxx` or `Txxx` record from the
-> ledger.
-
-**Template: manual handoff**
-
-> Manual handoff. The spec is at `<spec-path>`, the technical
-> blueprint is at `<blueprint-path>`, and the Decision Ledger is
-> at `<ledger-path>`. Use these to drive ticket creation or
-> implementation planning in your own workflow. Every ticket's
-> acceptance criteria and constraints must cite a `Dxxx` or `Txxx`
-> record.
-
-### Option B: PRD Augmentation
-
-**Template: ticket consumer (`spec-to-tickets`)**
-
-> Run the `spec-to-tickets` skill with the spec at `<spec-path>`
-> (which now includes the Technical Implementation section) and
-> the Decision Ledger at `<ledger-path>` as context. Every
-> ticket's acceptance criteria and constraints must cite a
-> `Dxxx` or `Txxx` record from the ledger.
-
-**Template: issue tracker (`to-issues`)**
-
-> Run the `to-issues` skill with the spec at `<spec-path>` (which
-> now includes the Technical Implementation section) and the
-> Decision Ledger at `<ledger-path>` as context. Every issue's
-> acceptance criteria and constraints must cite a `Dxxx` or
-> `Txxx` record from the ledger.
-
-**Template: manual handoff**
-
-> Manual handoff. The spec is at `<spec-path>` (which now
-> includes the Technical Implementation section) and the
-> Decision Ledger at `<ledger-path>`. Use these to drive ticket
-> creation or implementation planning in your own workflow.
-> Every ticket's acceptance criteria and constraints must cite a
-> `Dxxx` or `Txxx` record.
+- **`references/recording-decisions.md`** — *eager*. Load in full
+  before the first `Txxx` append. Defines the `Txxx` record
+  template, the `Driver`/`Cites` field semantics, the
+  trailing-sentinel lookup, and the real-time appending rule for
+  technical decisions.
+- **`references/interface-and-model-branch.md`** — *lazy*. Load on
+  demand before asking the user whether they want interface
+  grilling (Step 6).
+- **`references/output-selection.md`** — *lazy*. Load on demand
+  before presenting the output format choice to the user (Step 7).
+- **`references/validation.md`** — *lazy*. Load on demand before
+  declaring convergence (Step 8).
+- **`references/terminal-output.md`** — *lazy*. Load on demand
+  before emitting the terminal handoff template (Step 8).
 
 ## Validation
 
 After completing the workflow, verify each item against the session
 transcript:
 
-- [ ] **References Loaded**: All six `grilling` reference files were
-      loaded and read in full before the first user question. If
-      any reference file was missing or unreadable, the session
+- [ ] The References section was applied: every eager reference was
+      loaded in full before the first user question; no lazy
+      reference was loaded speculatively before its trigger.
+- [ ] If any eager reference was missing or unreadable, the session
       aborted and the missing file was reported to the user.
-- [ ] **Atomic Questioning**: Did the agent ask exactly one
-      question at a time, waiting for a response before
-      proceeding?
-- [ ] **Decision Ledger Located**: Was the existing Decision
-      Ledger located, read end-to-end, and its path confirmed with
-      the user before the first question?
-- [ ] **Foundation Complete**: Were Language, Framework,
-      Dependencies, Structure, Sub-projects, and Project Type all
-      resolved?
-- [ ] **TDP Extraction**: Were all non-deferred technical gaps in
-      the spec identified and resolved?
-- [ ] **No Abbreviations**: Did the agent avoid using the
-      abbreviation "TDP" in all user-facing communication?
-- [ ] **Ledger Recording**: Was a `Txxx` record appended to the
-      Decision Ledger after every resolved decision in Steps 3, 4,
-      and 5, each with a fresh `Txxx` ID and a `Cites:` line
-      naming the `Dxxx`/`Txxx` records the answer respects?
-- [ ] **Optionality Handled**: Was the user asked about
-      Interfaces, and given the "Collaborative ticket" warning if
-      they declined?
-- [ ] **Interface Logic**: If Interfaces were resolved, were
-      separation of concerns and the source of truth determined
-      before signatures?
-- [ ] **Visible Checklist**: If Interfaces were resolved, was a
-      single-line running checklist emitted after each type
-      introduction in Phase 3?
-- [ ] **Output Choice**: Did the user choose between a Blueprint
-      and PRD augmentation after seeing trade-offs?
-- [ ] **Alignment Check**: Was a final pass performed to ensure
-      the technical "how" supports the functional "what"?
-- [ ] **Ledger Coverage**: Does every blueprint body statement
-      that satisfies a functional requirement inline-cite a
-      `Dxxx`/`Txxx` record, and does the blueprint (or augmented
-      PRD) list every cited record in a `## Ledger Reference` /
-      `Decision Ledger:` section?
-- [ ] **Scope Binding**: If the user chose Option A
-      (Implementation Blueprint), does the blueprint explicitly
-      link to the specific PRD, the Decision Ledger, and warn
-      against cross-spec application? If the user chose Option B
-      (PRD Augmentation), does the augmented spec include the
-      Scope Binding notice and the `Decision Ledger:` pointer in
-      the appended Technical Implementation section?
-- [ ] **Pass/Fail Gate**: Has the Terminal Output block been
-      emitted with the Decision Ledger path substituted into
-      `<ledger-path>`? If no, the workflow is incomplete.
+- [ ] Spec was located and Decision Ledger path was derived (or
+      located) and confirmed with the user before the first write.
+- [ ] One Decision Ledger record was appended immediately after every
+      resolved branch (no batching at session end).
+- [ ] Every record used the inline template (`Driver`, `Resolved
+      Answer`, `Normalized Requirement`, `Constraints`) and a fresh
+      `Dxxx` or `Txxx` ID read from the trailing
+      `<!-- next-id: Dxxx|Txxx -->` sentinel (with the scan-file
+      fallback when the sentinel is missing or out of sync).
+- [ ] Every record's `Driver` field captured the user's underlying
+      principle or motivation, distinct from `Resolved Answer` (the
+      what) and `Normalized Requirement` (the testable outcome).
+- [ ] Re-opened branches produced a new record with a `Supersedes:
+      Dxxx` line in `Constraints` rather than amending the prior
+      record.
+- [ ] Every branch question followed the four-part locked question
+      sequence: context block, Socratic elicitation question, locked
+      question line with explicit required framing, options and
+      recommendation.
+- [ ] Every branch question, including re-asks and follow-ups, emitted
+      the full four-part sequence across two separate agent turns:
+      a context block + Socratic elicitation question turn, and a
+      locked question line + options + recommendation turn. The agent
+      did not skip the context block or Socratic elicitation question
+      on a re-ask, and did not collapse the two turns into a single
+      turn.
+- [ ] The re-ask cycle was capped at 1 re-ask (max 2 total attempts
+      per question); the re-ask preamble explicitly stated this was
+      the final re-ask; closure without resolution produced a
+      `Dxxx`/`Txxx` record with status `closed without resolution` in
+      `Constraints`, not silence.
+- [ ] Every context block was emitted as the 5-element code-impl
+      bullet list (Goal, Prior decisions, Stakes, Scope, Spec
+      section) in that order, each element exactly one sentence, with
+      ledger citations and an inline spec citation in the 5th element.
+      The context block was not replaced with a free-form prose
+      summary, a "current state" investigation, a code reading, a
+      domain-glossary recap, or any other kind of analysis. See
+      `references/locked-question-format.md` for the 5-element
+      template.
+- [ ] Every preamble before an options block was capped at 2
+      sentences, with mandatory ID-citation of the relevant prior
+      record(s), per `references/output-selection.md` Step 7.
+- [ ] Every Socratic elicitation question used the D003 verbatim
+      phrasing: "What are you working toward in this decision? You may
+      answer, or skip and see the options as-is."
+- [ ] Every locked question line used the D004 verbatim phrasing:
+      "**For [Txxx] – [branch name]: pick an option, hybridize, or
+      provide your own answer.**"
+- [ ] Every options block was preceded by the reference-set preamble:
+      "Here are options to help you refine or confirm your answer. Pick
+      one, reject all, or hybridize."
+- [ ] Every question offered all natural options (typically 2–4) with
+      the four required fields (What it is, Benefit, Cost, Risk) at
+      one sentence per field, and each field stayed under the
+      per-field cap (20 words or 1 sentence) per
+      `../grilling/references/options-format.md`.
+- [ ] Every recommendation used the two-field breakdown
+      (`Recommendation: Option N — <name>.`, `Reasoning: ...`) with
+      the option name copied verbatim and the `Reasoning` field at
+      1-2 sentences.
+- [ ] Every recommendation's `Reasoning` field was goal-aligned (not
+      option-comparison), explaining why the recommended option serves
+      the user's stated goal.
+- [ ] The "you" and "your" inside every user-facing template (Socratic
+      elicitation question, locked question line, reference-set
+      preamble, neutral-mirroring template) referred to the **user**,
+      not the LLM. The "Convention: 'you' in this reference" headers in
+      `../grilling/references/*` make the rule explicit.
+- [ ] No sentence began with a word whose function is to praise or
+      judge the user's prior input.
+- [ ] No forbidden filler word appeared in any agent turn
+      (`basically`, `essentially`, `actually`, `just`, `simply`,
+      `in order to`, `it is important to note`, `it's worth noting`,
+      `keep in mind`, `note that`, `needless to say`,
+      `at the end of the day`, `when all is said and done`).
+- [ ] Per-item convergence ran after each Address item (4 universal
+      bullets) and end-of-grilling convergence ran after the last
+      Address item (4 universal bullets + 1 cross-record consistency
+      bullet) per `../grilling/references/convergence-test.md`.
+- [ ] Convergence was declared only when all checks for the current
+      cadence passed.
+- [ ] No diverge mode occurred (no paraphrasing the verbatim answer,
+      no skipping a branch, no bundling options, no asking multiple
+      questions in one turn, no accepting a contradictory answer
+      without a `Supersedes: Dxxx` record).
+- [ ] The Consolidated Implementation Plan was produced at the
+      endpoint of the grilling as a single plan (standalone
+      `IMPLEMENTATION-<spec-identifier>.md` file or ledger appendix),
+      grouped by file, listing every file change with its driving
+      `Dxxx`/`Txxx` record in `filename#<Dxxx|Txxx>` format and a
+      `## Ledger Reference` section. No per-branch Implementation
+      Blueprint was emitted during the grilling.
+- [ ] The chosen exit was handed off with the Decision Ledger path so
+      downstream skills can cite records as `filename#Dxxx`.
+- [ ] Every citation of a Decision Ledger record from outside the
+      ledger file used the `filename#Dxxx` format (e.g.,
+      `DECISIONS-repo-feature.md#D001`), not a bare `Dxxx` ID.

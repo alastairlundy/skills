@@ -1,0 +1,18 @@
+id: trigger-vague-process-decision
+name: Trigger on vague process or organizational decision
+description: Triggers when the user has an ambiguous process or organizational question.
+inputs:
+  prompt: |
+    Our team is growing and our current sprint planning is breaking down —
+    meetings run long, the backlog churns, and priorities shift every
+    week. I'm not sure what the right process is at our current size.
+    Help me think through it.
+expected:
+  should_trigger: true
+graders:
+  - type: trigger
+    name: should-trigger-grilling
+    config:
+      skill_path: skills/engineering/grilling
+      mode: positive
+      threshold: 0.4

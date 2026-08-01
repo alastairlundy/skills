@@ -1,0 +1,17 @@
+id: trigger-vague-product-direction
+name: Trigger on vague product direction decision
+description: Triggers when the user has an ambiguous product decision and wants help thinking it through.
+inputs:
+  prompt: |
+    I am considering adding a new feature for tracking customer behavior
+    across sessions. The product team is split on whether this is worth
+    building now. Help me think through whether to prioritize it.
+expected:
+  should_trigger: true
+graders:
+  - type: trigger
+    name: should-trigger-grilling
+    config:
+      skill_path: skills/engineering/grilling
+      mode: positive
+      threshold: 0.4

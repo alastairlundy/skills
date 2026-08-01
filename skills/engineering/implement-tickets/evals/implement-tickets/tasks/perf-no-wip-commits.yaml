@@ -1,0 +1,9 @@
+id: perf-no-wip-commits
+type: performance
+description: >-
+  The per-ticket commit is the only commit authored for the ticket; no WIP
+  commits, fixups, or squashes appear in the shared branch's history per D007.
+input: |
+  Implement the tickets in tickets/. The set has 4 tickets. The sub-agents will iterate internally before producing a final result.
+assertion: |
+  Shared branch history shows exactly 4 commits (one per ticket) plus the end-of-run report commit. No commit message contains WIP, fixup, squash, "in progress", or "address review feedback" as a stand-alone message. Sub-agent-internal iteration is contained inside the staging area and never reaches the shared branch.

@@ -14,7 +14,7 @@ npx skills@latest add alastairlundy/skills
 Pick the skills you want, and which coding agents you want to install them on. 
 
 ### Dependence on Matt Pocock's Skills 
-The skills in this repo don't depend on or require [Matt Pocock's Skills](https://github.com/mattpocock/skills/) . That being said some of this repo's skills may benefit from those also being installed or used. ``domain-grilling`` supports using the CONTEXT.md glossary system from ``grill-with-docs`` and ``setup-matt-pockock-skills``, and enables interaction with ``to-issues`` and ``to-prd``.
+The skills in this repo don't depend on or require [Matt Pocock's Skills](https://github.com/mattpocock/skills/) . That being said some of this repo's skills may benefit from those also being installed or used. ``domain-grilling`` supports using the CONTEXT.md glossary system from ``setup-matt-pockock-skills``, and enables interaction with ``to-issues`` and ``to-prd``.
 
 ## Skills
 
@@ -26,10 +26,13 @@ Domain-specific tasks for software development workflows.
 
 | Skill | Description | Notes | 
 |-------|-------------|-------|
-| [spec-to-tickets](skills/engineering/spec-to-tickets/) | Decompose specs, PRDs, or conversation context into focused implementation tickets (at most 3-4 hours each) with dependency graphs, Independent/Collaborative classification, and context pointers. Outputs to issue trackers or local markdown. | Inspired by Matt Pocock's ``to-issues`` skill. |
-| [domain-grilling](skills/engineering/domain-grilling/) | Relentless DDD-aligned interviewing skill that resolves design decisions linearly, sharpens domain terminology against CONTEXT.md, and documents architectural decisions as ADRs. | Inspired by Matt Pocock's ``grill-with-docs`` skill. |
-| [code-implementation-grilling](skills/engineering/code-implementation-grilling/) | Relentlessly resolves concrete technical implementation details (language, framework, structure) from a plan or spec before ticket creation to minimize ambiguity for the implementer. | |
-| [write-changelog](skills/engineering/write-changelog/) | Generate user-facing markdown changelogs from git history by analyzing commits, transforming messages, and categorizing changes across sub-projects. | |
+| [spec-to-tickets](skills/engineering/spec-to-tickets/) | Break specs, PRDs, or conversation context into focused tickets sized by coherence, with dependency ordering. Outputs to issue trackers or local markdown. | Inspired by Matt Pocock's ``to-issues`` skill. |
+| [grilling](skills/engineering/grilling/) | Socratic interviewing for non-code, non-domain decisions — strategy, direction, design, process. Extracts clear decisions from vague ideas. | Generic parent of ``domain-grilling`` and ``code-implementation-grilling``. |
+| [domain-grilling](skills/engineering/domain-grilling/) | Socratic interviewing for domain modeling — bounded contexts, glossary, terminology. Aligns ubiquitous language and writes decisions to ADRs. | Specializes ``grilling``; inspired by Matt Pocock's ``grill-with-docs`` skill. |
+| [code-implementation-grilling](skills/engineering/code-implementation-grilling/) | Socratic interviewing on technical choices — language, framework, dependencies, structure. Resolves implementation ambiguity once a spec exists. | Specializes ``grilling``. |
+| [write-changelog](skills/engineering/write-changelog/) | Generate user-facing changelogs from git history. Analyzes commits, groups changes by sub-project, supports tag ranges. | |
+| [dependency-review](skills/engineering/dependency-review/) | Audit dependencies for staleness, bloat, coupling, and deprecation. Produces a structured report. Default scope is code only. | Pass `scope: code,non-code` to opt in to OS, runtimes, hosted services, databases, and CI tooling. |
+| [implement-tickets](skills/engineering/implement-tickets/) | Coordinate parallel ticket implementation. Builds dependency order, dispatches tickets to sub-agents, validates against acceptance criteria, commits per ticket. | Use when a batch of tickets should be implemented with per-ticket commits and an end-of-run report. |
 
 ### Alignment Skills
 
@@ -37,8 +40,7 @@ Skills for ensuring LLMs stay aligned on expectations and behaviour whilst perfo
 
 | Skill | Description | Notes | 
 |-------|-------------|-------|
-| [anti-slop](skills/alignment/anti-slop/) | Sanitizes LLM output by removing "AI slop", redundant phrasing, and sycophancy to maximize information density and maintain a professional AI identity. | |
-| [ask-questions](skills/alignment/ask-questions/) | Guides LLMs in deciding when and how to ask the user questions via discrete-choice tools (e.g. `ask_question`), or in prose when no tool is available. Teaches a four-gate procedure (trigger, fit, construct, validate) that avoids overwhelming the user. | |
+| [ask-questions](skills/alignment/ask-questions/) | Guide agents on when and how to ask questions via discrete-choice tools or prose. Teaches a four-gate procedure to balance over-asking and under-asking. | |
 
 ### "Meta" Skills
 
@@ -46,7 +48,8 @@ Tools for creating and evaluating other skills.
 
 | Skill | Description |
 |-------|-------------|
-| [skill-architect](skills/skills-meta/skill-architect/) | Guide the design of new agent skills by translating fuzzy intents into deterministic execution patterns. Used for AI-assisted skill design. |
+| [skill-architect](skills/skills-meta/skill-architect/) | Guide the design and refinement of new agent skills. Ensures designs follow established conventions without writing files. |
+| [setup-alastairlundy-skills](skills/skills-meta/setup-alastairlundy-skills/) | Configure a repository to use the skill family. Writes agent-consumable docs and updates AGENTS.md or CLAUDE.md with skill configuration. | Use when setting up a new repo for AI agents, switching the repo's issue tracker, or re-running after a config change. |
 
 ## Repository Structure
 

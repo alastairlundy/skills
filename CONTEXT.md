@@ -4,13 +4,13 @@
 A specialized tool that operates on an existing skill directory to verify its correctness and performance. It is decoupled from the initial skill creation process.
 
 ## Ticket
-A handoff artifact scoping one session of work. Stands alone or hangs off a spec as one of its children. Contains goal, recommended workflow, acceptance criteria, context pointers, and dependency relationships. Sized for at most 3-4 hours of focused work. Can be implemented by a human or agent.
+A handoff artifact scoping a unit of work. Stands alone or hangs off a spec as one of its children. Contains goal, recommended workflow, acceptance criteria, context pointers, and dependency relationships. Sized by coherence — each ticket covers one logical concern, one reviewable unit, one mergeable change. Relative size is signaled by file count and line count, not by time or effort. Can be implemented by a human or agent.
 
 ## Recommended Workflow
 A section within a ticket that breaks implementation into ordered steps. Always present (minimum 1 step). Each step has four elements: a verb-phrase title, Where (file paths), bulleted actions, and Verify (a micro-verification). Distinct from Acceptance criteria, which are macro-verifications for the ticket as a whole. Steps can be reordered by the implementer but must respect inter-step dependencies.
 
 ## Session
-A focused work session. A ticket should be completable within at most 3-4 hours. If sessions routinely degrade before completion, tickets are too large; if sessions spend most context on setup, tickets are too small.
+A focused work period. Session duration is context-dependent and not prescribed by ticket boundaries. Suitability is judged by whether a session produces a coherent outcome, not by clock time.
 
 ## Spec
 The input document (PRD, design doc, issue tracker reference, file path, or conversation context) that gets decomposed into tickets.
@@ -102,3 +102,7 @@ A neutral-confirmation word used to begin a sentence (e.g., `Right`, `OK`, `Got 
 ## in-session signal
 
 A behaviour in which a skill detects a property of the problem during a session and surfaces that detection at a convergence point to tailor recommendations. Used by `domain-grilling` to decide whether to ask the explicit confirmation question "Is this a code/technical problem?" at convergence, before listing exits.
+
+## concrete natural option
+
+A `concrete natural option` shall satisfy all of the following: (1) **actionable** — describes a specific single-step action the user could commit to right now; (2) **phrased in the user's words** — preserves the user's own terminology and phrasing as much as possible, with the LLM paraphrasing rather than inventing; (3) **substantively or semantically different** from the other options in the set such that each could be justified as the answer on its own; (4) **not contrived** — must arise from the user's stated context, not be created for the sake of having options; (5) **contextually sensible** — must make sense given the context the user has provided; (6) **performable** — must have a basis in reality, the user can reasonably perform it; (7) **individually defensible** — each option must stand on its own merits; (8) **aim-advancing** — each option must advance the user's stated aim(s)/objective(s). The LLM shall present at most 4 concrete natural options per branch. If the scope of a branch is too broad to resolve into 2–4 options, the LLM shall ask the user to name the scope or direction to take before presenting options.

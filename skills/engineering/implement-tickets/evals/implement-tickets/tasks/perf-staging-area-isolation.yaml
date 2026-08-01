@@ -1,0 +1,9 @@
+id: perf-staging-area-isolation
+type: performance
+description: >-
+  Sub-agents do not see other in-flight staging areas; each ticket's staging
+  area is pinned to a stable pre-dispatch state per D006.
+input: |
+  Implement the tickets in tickets/. Two same-file tickets run in parallel within the same batch.
+assertion: |
+  Each sub-agent's staging area is pinned to the commit that existed when the dispatch began plus all already-applied staging areas from earlier (DAG-respecting) tickets. The sub-agent does not see the in-flight staging area of any other in-batch ticket. The staging-area path (.implement-runs/<run-id>/staging/<ticket-id>/) is unique per ticket. After both sub-agents finish, the coordinator reconciles in DAG order; the shared branch history reflects one commit per ticket.

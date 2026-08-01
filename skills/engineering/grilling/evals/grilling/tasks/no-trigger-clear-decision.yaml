@@ -1,0 +1,15 @@
+id: no-trigger-clear-decision
+name: No trigger on a clear, unambiguous question
+description: Does NOT trigger when the user has a clear factual question with no decision to make.
+inputs:
+  prompt: |
+    What is 2 + 2?
+expected:
+  should_trigger: false
+graders:
+  - type: trigger
+    name: should-not-trigger-grilling
+    config:
+      skill_path: skills/engineering/grilling
+      mode: negative
+      threshold: 0.4

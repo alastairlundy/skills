@@ -1,0 +1,17 @@
+id: trigger-vague-business-decision
+name: Trigger on vague business strategy decision
+description: Triggers when the user has a vague business strategy question and wants the agent to help think it through.
+inputs:
+  prompt: |
+    I run a small SaaS and I'm not sure whether to keep our flat $20/month
+    pricing or pivot to a per-seat model. There are trade-offs in both
+    directions. Help me think it through.
+expected:
+  should_trigger: true
+graders:
+  - type: trigger
+    name: should-trigger-grilling
+    config:
+      skill_path: skills/engineering/grilling
+      mode: positive
+      threshold: 0.4

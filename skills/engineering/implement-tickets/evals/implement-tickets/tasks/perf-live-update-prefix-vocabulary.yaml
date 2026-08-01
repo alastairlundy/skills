@@ -1,0 +1,9 @@
+id: perf-live-update-prefix-vocabulary
+type: performance
+description: >-
+  Live updates use only the four-prefix vocabulary ([OK], [ERROR], [DEVIATION],
+  [ESCALATION]) per D010; no other prefixes are introduced.
+input: |
+  Implement the tickets in tickets/. A successful run with one criteria-source fallback, one judge rejection, and one circuit-breaker escalation.
+assertion: |
+  Every line emitted during the run as a live update begins with exactly one of [OK], [ERROR], [DEVIATION], [ESCALATION]. No other bracketed prefix (e.g. [WARN], [INFO], [NOTE], [DEBUG]) appears. Each line also carries a ticket id (or "run" for run-level events) so the line is searchable. The four prefix types are used for the right events: [OK] for progress/success, [ERROR] for failures, [DEVIATION] for plan deviations (e.g. criteria-source fallback, conflict resolution), [ESCALATION] for user-facing interrupts.

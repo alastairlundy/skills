@@ -6,6 +6,20 @@ A draft skill passes compliance only if it satisfies every section below. Each s
 
 ---
 
+## Completion-signal proxies
+
+The Determinism Audit requires each workflow step to end with a specific named completion signal. The following are the canonical proxies — use them when writing or reviewing a workflow step:
+
+- **Returned value**: The step produces a specific value or data structure (e.g., "Return the merged config object").
+- **Check result**: The step performs a comparison or assertion and records the outcome (e.g., "Validate the output against the schema; record pass/fail").
+- **State change**: The step modifies a system or data state (e.g., "Append the entry to the conversion log").
+- **File produced**: The step creates or updates a file on disk (e.g., "Write the resolved template to `references/X.md`").
+- **Equivalent named artefact**: Any other concrete, named output the LLM can verify existence of — for example, a variable assignment, a document section, a decision recorded, or a summary stored in a known location.
+
+This is not a closed list ("or equivalent" is allowed). Every completion signal must be specific enough that the LLM can determine, without subjective judgement, whether the step is done.
+
+---
+
 ## 1. Required SKILL.md structure
 
 A `SKILL.md` file must contain a specific set of structural elements. This is the mandatory schema; deviations cause skills to be rejected during review.

@@ -1,6 +1,6 @@
 # Examples
 
-Seven worked examples covering the key branches of the ask-questions workflow. Examples A, D, F, and G (wrong form) include field-check annotations that verify the workflow''s hard limits (header length, label length, description length, option count). Examples B, C, and E are prose-only and have no field-check annotations.
+Nine worked examples covering the key branches of the ask-questions workflow: seven positive examples (A-G) and two anti-examples (H-I) that look correct on the surface but fail the citation requirement. Examples A, D, F, and G (wrong form) include field-check annotations that verify the workflow''s hard limits (header length, label length, description length, option count). Examples B, C, and E are prose-only and have no field-check annotations.
 
 ## Example A: Should-ask
 
@@ -230,3 +230,81 @@ Here''s my plan: refactor the imports in `src/foo.ts` to use named exports, repl
 ```
 
 The LLM proposes a default in prose, makes the work visible, and invites correction. The user can accept, revise, or replace — the same options they would have had via the tool, but with less friction and no leaky choice architecture.
+
+---
+
+## Example H: Anti-example — plausible-looking options all derived from LLM inference
+
+**Context:** the user says "I need to pick a caching strategy for my API." The user has not mentioned any specific requirements, traffic patterns, or constraints.
+
+The LLM considers asking via the tool with 3 options that all sound reasonable.
+
+**Surface check (passes):** 1 question, 3 options, alphabetical, labels ≤6 words, descriptions ≤80 chars.
+
+**Wrong (looks realistic but fails citation):**
+
+```json
+{
+  "questions": [
+    {
+      "header": "Caching strategy",
+      "question": "Which caching strategy fits your API?",
+      "options": [
+        {
+          "label": "In-memory cache",
+          "description": "Fastest reads, single-server only"
+        },
+        {
+          "label": "Redis cache",
+          "description": "Distributed, supports multi-server"
+        },
+        {
+          "label": "Response caching middleware",
+          "description": "HTTP-level, no app code changes"
+        }
+      ]
+    }
+  ]
+}
+```
+
+**Why this fails the citation requirement:** None of the three options is supported by a user-stated fact. The user said only "I need to pick a caching strategy for my API" — no mention of single-server vs multi-server, no mention of read/write ratios, no mention of infrastructure constraints. The LLM generated all three options from general knowledge. Each option may be *plausible*, but none is *grounded* in the user''s stated context. Drop all three and ask in prose (or probe for constraints first).
+
+---
+
+## Example I: Anti-example — one option lacks a user-stated basis
+
+**Context:** the user says "I''m building a React dashboard app that will be used internally by our team of 5. We need to pick a state management library. We already use Redux in our other projects." The user has stated a preference for familiarity and team consistency.
+
+The LLM constructs 3 options.
+
+**Surface check (passes):** 1 question, 3 options, alphabetical, labels ≤6 words, descriptions ≤80 chars.
+
+**Wrong (looks realistic but fails citation):**
+
+```json
+{
+  "questions": [
+    {
+      "header": "State management",
+      "question": "Which state management library should we use?",
+      "options": [
+        {
+          "label": "Jotai",
+          "description": "Atomic state, good for small teams"
+        },
+        {
+          "label": "Redux Toolkit (Recommended)",
+          "description": "Already used in other projects; team knows it"
+        },
+        {
+          "label": "Zustand",
+          "description": "Minimal boilerplate, scales well"
+        }
+      ]
+    }
+  ]
+}
+```
+
+**Why this fails the citation requirement:** Two options pass the test: "Redux Toolkit" is supported by the user-stated fact "we already use Redux in our other projects," and the LLM can defensibly recommend it. "Zustand" is unsupported — the user has said nothing about desiring minimal boilerplate or avoiding Redux''s conventions. No user-stated fact makes Zustand a realistic alternative given "we already use Redux." Drop Zustand before proceeding. (If only two options remain, that is within the 2-4 limit.)
