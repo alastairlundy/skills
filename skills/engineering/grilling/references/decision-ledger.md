@@ -162,7 +162,7 @@ interview genuinely needs more.
   `Contact` (the person messaging) and a `ClientOrganization` (the legal
   entity that invoices and pays).
 - **Constraints**: Both terms must exist in the glossary
-  (`docs/CONTEXT.md`) with the definitions recorded inline here.
+  (`docs/GLOSSARY.md`) with the definitions recorded inline here.
 
 ### [D003] — how payments are routed
 

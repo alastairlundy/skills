@@ -8,7 +8,7 @@ You are working in a repository of agent skill definitions (prompt templates). T
 - **No build, test, or lint pipeline**: There is no compilation, bundling, packaging, or deploy step
 - **No runtime dependencies**: Skills are declarative — they contain instructions, not executable code
 - **Eval tooling**: `waza run` (add `--baseline` for comparison, `--trials N` for trigger accuracy); `waza serve` for the eval UI
-- **Domain glossary**: `CONTEXT.md` at the repo root — use its vocabulary consistently; do not invent synonyms for defined terms
+- **Domain glossary**: `GLOSSARY.md` at the repo root — use its vocabulary consistently; do not invent synonyms for defined terms
 
 ## Common mistakes
 
@@ -65,4 +65,4 @@ Derived content from upstream MIT sources must include attribution in the skill'
 
 - **Issue tracker**: GitHub Issues via `gh` CLI — see `docs/agents/issue-tracker.md`
 - **Triage labels**: `needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix` — see `docs/agents/triage-labels.md`
-- **Domain docs**: single-context layout, consume `CONTEXT.md` + `docs/adr/` — see `docs/agents/domain.md`
+- **Domain docs**: single-context layout, consume `GLOSSARY.md` + `docs/adr/` — see `docs/agents/domain.md`

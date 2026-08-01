@@ -26,7 +26,7 @@ Initial stable release. 10 skills across 3 categories.
 - **skill-architect** — Guide design and refinement of new agent skills
 
 ### Infrastructure
-- `CONTEXT.md` glossary with canonical vocabulary
+- `GLOSSARY.md` glossary with canonical vocabulary
 - `docs/adr/` for Architecture Decision Records
 - `docs/decisions/` for Decision Ledgers
 - `docs/agents/` for agent-consumable docs (issue tracker, triage labels, domain, decision-ledger-audit)

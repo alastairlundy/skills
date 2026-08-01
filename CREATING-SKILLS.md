@@ -76,7 +76,7 @@ Skills must work reliably across different AI models and contexts. Prefer explic
 ### Context Awareness
 
 Skills should reference the repository's domain documentation:
-- Read `CONTEXT.md` for domain terminology
+- Read `GLOSSARY.md` for domain terminology
 - Check `docs/adr/` for architectural decisions
 - Use the glossary vocabulary consistently
 
@@ -114,5 +114,5 @@ skills/
 ## Getting Help
 
 - Review existing skills in `skills/` for examples
-- Check `CONTEXT.md` for domain terminology
+- Check `GLOSSARY.md` for domain terminology
 - Consult `docs/adr/` for architectural decisions affecting skill design

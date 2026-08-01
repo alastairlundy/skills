@@ -14,7 +14,7 @@ npx skills@latest add alastairlundy/skills
 Pick the skills you want, and which coding agents you want to install them on. 
 
 ### Dependence on Matt Pocock's Skills 
-The skills in this repo don't depend on or require [Matt Pocock's Skills](https://github.com/mattpocock/skills/) . That being said some of this repo's skills may benefit from those also being installed or used. ``domain-grilling`` supports using the CONTEXT.md glossary system from ``setup-matt-pockock-skills``, and enables interaction with ``to-issues`` and ``to-prd``.
+The skills in this repo don't depend on or require [Matt Pocock's Skills](https://github.com/mattpocock/skills/) . That being said some of this repo's skills may benefit from those also being installed or used. ``domain-grilling`` supports using the GLOSSARY.md glossary system from ``setup-matt-pockock-skills``, and enables interaction with ``to-issues`` and ``to-prd``.
 
 ## Skills
 
@@ -60,13 +60,13 @@ skills/<category>/<skill-name>/
 
 docs/
 ├── agents/           # Agent-consumable documentation
-│   ├── domain.md           # How to consume CONTEXT.md and ADRs
+│   ├── domain.md           # How to consume GLOSSARY.md and ADRs
 │   ├── issue-tracker.md    # GitHub CLI conventions
 │   └── triage-labels.md    # Standard label vocabulary
 ├── adr/              # Architecture Decision Records
 └── prds/             # Product Requirements Documents
 
-CONTEXT.md            # Domain glossary (required)
+GLOSSARY.md            # Domain glossary (required)
 AGENTS.md             # Repository conventions for agents
 tickets/              # Implementation tickets (when using local markdown output)
 ```
@@ -86,7 +86,7 @@ This repository uses specific terminology for skill workflows:
 - **Collaborative (ticket classification)** — Ticket requires discussion, decision-making, or review before or during implementation
 - **Context Pointers** — References to files, ADRs, and domain terms included in tickets
 
-See [CONTEXT.md](CONTEXT.md) for the complete glossary.
+See [GLOSSARY.md](GLOSSARY.md) for the complete glossary.
 
 ## Contributing
 

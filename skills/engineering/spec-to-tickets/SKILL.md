@@ -31,7 +31,7 @@ The ticket body schema is loaded on demand from `references/ticket-template.md`;
 
 Use a conversational tone. Provide a brief opening statement that frames the workflow (e.g., "Following the spec to tickets workflow to break down this spec, as requested"), then use transitional phrases between major sections. Avoid step-by-step narration or broadcasting internal step numbers.
 
-**Abbreviation rules** - In workflow output, avoid all abbreviations except terms previously defined in CONTEXT.md or the project glossary. When writing ticket content, prohibit abbreviations not previously agreed upon in CONTEXT.md/glossary unless they are explicitly used by the user or spec. In such cases, clarify unfamiliar abbreviations in brackets on first use (e.g., "SSO (Single Sign-On)").
+**Abbreviation rules** - In workflow output, avoid all abbreviations except terms previously defined in GLOSSARY.md or the project glossary. When writing ticket content, prohibit abbreviations not previously agreed upon in GLOSSARY.md/glossary unless they are explicitly used by the user or spec. In such cases, clarify unfamiliar abbreviations in brackets on first use (e.g., "SSO (Single Sign-On)").
 
 ### Workflow
 
@@ -67,11 +67,11 @@ Print the criteria status (one line per criterion: met / missing) as part of the
 
 #### Step 4 - Codebase Exploration
 
-On the first run, the absence of `CONTEXT.md`, `docs/adr/`, and `docs/decisions/` is informational — the skill proceeds without them; do not create them as a side effect. If any of these are absent, explicitly inform the user which ones are missing.
+On the first run, the absence of `GLOSSARY.md`, `docs/adr/`, and `docs/decisions/` is informational — the skill proceeds without them; do not create them as a side effect. If any of these are absent, explicitly inform the user which ones are missing.
 
 If not already explored in the current conversation -
 
-1. Read `CONTEXT.md` at the repo root. If `CONTEXT-MAP.md` exists instead, read it and then read each `CONTEXT.md` it references.
+1. Read `GLOSSARY.md` at the repo root. If `GLOSSARY-MAP.md` exists instead, read it and then read each `GLOSSARY.md` it references.
 2. Scan `docs/adr/` for architectural decisions relevant to the spec's area. In multi-context repos, also check `src/<context>/docs/adr/`.
 3. Scan `docs/decisions/DECISIONS-*.md` for any Decision Ledger covering this feature. If a ledger is found, read it end-to-end and treat its `Dxxx`/`Txxx` records as the source of truth for resolved decisions — every ticket's acceptance criteria and constraints will cite one or more of these IDs. If a `code-implementation-grilling` blueprint exists for the feature, the blueprint's `## Ledger Reference` section is a pre-built index; use it to confirm coverage before publishing.
 4. Identify key files and modules that the tickets will likely reference.
@@ -203,7 +203,7 @@ Before publishing, detect whether tickets already exist for this source material
 
 Apply the ticket template below to each approved ticket.
 
-**Abbreviation rule** - Do not use abbreviations in ticket content unless they are defined in CONTEXT.md, the project glossary, or explicitly used by the user/spec. When using an abbreviation that may be unfamiliar, clarify it in brackets on first use (e.g., "SSO (Single Sign-On)"). Never abbreviate "User Stories" to `US` — `US` is overloaded with "United States" in some domains, and is a common abbreviation-collision target across other domains as well.
+**Abbreviation rule** - Do not use abbreviations in ticket content unless they are defined in GLOSSARY.md, the project glossary, or explicitly used by the user/spec. When using an abbreviation that may be unfamiliar, clarify it in brackets on first use (e.g., "SSO (Single Sign-On)"). Never abbreviate "User Stories" to `US` — `US` is overloaded with "United States" in some domains, and is a common abbreviation-collision target across other domains as well.
 
 **Recommended Workflow generation** - As part of ticket creation, generate a Recommended Workflow for each ticket. The workflow is a step-by-step breakdown of how to implement the ticket. Apply these rules:
 - Always present. Minimum 1 step, even for trivial tickets. Recommended range is 2-8 steps; decide granularity based on ticket scope.
@@ -292,7 +292,7 @@ The summary should be scannable - use clear structure (headings, tables, lists) 
 - [ ] Each ticket satisfies the coherence primitive — it is a single mergeable change, a reviewable unit, and addresses a single logical concern.
 - [ ] All tickets in the set collectively work toward a shared objective.
 - [ ] The coherence validation gate was applied during proposal — any ticket failing a sub-criterion was rescoped or split before acceptance.
-- [ ] No abbreviations are used in ticket content or workflow output unless defined in CONTEXT.md/glossary or explicitly used by the user/spec. Unfamiliar abbreviations are clarified in brackets on first use. "User Stories" is never abbreviated to `US` — `US` is overloaded with "United States" in some domains, and is a common abbreviation-collision target across other domains as well.
+- [ ] No abbreviations are used in ticket content or workflow output unless defined in GLOSSARY.md/glossary or explicitly used by the user/spec. Unfamiliar abbreviations are clarified in brackets on first use. "User Stories" is never abbreviated to `US` — `US` is overloaded with "United States" in some domains, and is a common abbreviation-collision target across other domains as well.
 - [ ] Decomposition pattern choice includes a recommendation with parenthetical definition, the rejected alternatives with one-line reasons, and a custom-pattern validation gate when the user proposes a non-standard pattern.
 - [ ] Ticket proposal includes decomposition rationale for non-obvious decisions.
 - [ ] Closing questions use explicit multi-part format (not binary approval). Format: a preamble paragraph, a blank line, the line `A few things to check:`, and three questions on separate lines (no numbering, no inline list markers). The three questions are: (1) "Which tickets, if any, would you combine, split, or rescope?" (2) "Are there any spec requirements not yet covered by a ticket, or any ticket that doesn't trace back to a requirement?" (3) "Are there any tickets where the `Blocked by` chain or Independent/Collaborative classification feels off?" The agent shall wait for an explicit response or a clear pass before proceeding; partial answers are accepted. This format follows the [Multi-part Prose Pattern](../alignment/ask-questions/references/multi-part-pattern.md) from ask-questions; load that reference before constructing the closing prompt.
@@ -308,7 +308,7 @@ The summary should be scannable - use clear structure (headings, tables, lists) 
 - [ ] The all-four-missing branch in Step 3 routes to grilling or domain-grilling rather than aborting.
 - [ ] The no-ledger branch in Step 3 routes per the DDD-alignment rule (domain-grilling if DDD-critical, otherwise grilling).
 - [ ] The first use of `ledger record` in the skill carries its inline definition (a `Dxxx` or `Txxx` entry in a Decision Ledger).
-- [ ] Step 4 explicitly informs the user about missing conventions (CONTEXT.md, docs/adr/, docs/decisions/) rather than silently falling through.
+- [ ] Step 4 explicitly informs the user about missing conventions (GLOSSARY.md, docs/adr/, docs/decisions/) rather than silently falling through.
 - [ ] The parent-field summary rule is explicit: the 1-3 sentence summary is required only for the conversation-context input type.
 - [ ] The YAML-breaking-characters check is a write-time rule in Step 8 with explicit escape guidance.
 - [ ] The abbreviation rule for "User Stories" is universal and unconditional (no scoping or opt-in).

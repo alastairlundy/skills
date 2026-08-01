@@ -42,7 +42,7 @@ Run `git status` and `git log --oneline -10` in the host repo to confirm a clean
 
 - `git remote -v` and `.git/config` — is this a GitHub, GitLab, Gitea, Codeberg, or other-host repo? Which one?
 - `AGENTS.md` and `CLAUDE.md` at the repo root — does either exist? Is there already an `## Agent skills` section in either?
-- `GLOSSARY.md` and `GLOSSARY-MAP.md` at the repo root (the new naming; `CONTEXT.md` is the legacy name from before the rename).
+- `GLOSSARY.md` and `GLOSSARY-MAP.md` at the repo root.
 - `docs/adr/` and any `src/*/docs/adr/` directories.
 - `docs/agents/` — does this skill's prior output already exist?
 - `.scratch/` — sign that a local-markdown issue tracker convention is already in use.
@@ -91,9 +91,9 @@ Invoke the `ask-questions` skill to ask the user to pick the domain-docs layout:
 - **Single-context** — one `GLOSSARY.md` at the repo root. Most repos are this.
 - **Multi-context** — `GLOSSARY.md` (system-wide) + `GLOSSARY-MAP.md` at the root, pointing to per-context `GLOSSARY.md` files (typically a monorepo).
 
-Load `references/domain.md` and fill in the chosen layout. The consumer rules in `docs/agents/domain.md` reference `GLOSSARY.md` (and `GLOSSARY-MAP.md` for multi-context), not the legacy `CONTEXT.md` name. Present the proposed `docs/agents/domain.md`.
+Load `references/domain.md` and fill in the chosen layout. The consumer rules in `docs/agents/domain.md` reference `GLOSSARY.md` (and `GLOSSARY-MAP.md` for multi-context). Present the proposed `docs/agents/domain.md`.
 
-Completion criterion: a `docs/agents/domain.md` candidate is presented to the user, with the consumer rules referencing `GLOSSARY.md` (not `CONTEXT.md`).
+Completion criterion: a `docs/agents/domain.md` candidate is presented to the user, with the consumer rules referencing `GLOSSARY.md`.
 
 ### Step 5: Present decision-ledger-audit
 
@@ -158,7 +158,7 @@ Do not mark the skill as complete until every item below passes.
 - [ ] `docs/agents/issue-tracker.md` exists and contains the expected `## Conventions` and `## When a skill says` sections for the chosen variant (Git Host, Local Markdown, or Other non git workflow).
 - [ ] For a Git Host variant, `docs/agents/issue-tracker.md` records the PR-as-issue-surface note (yes / no) in the `## Conventions` section.
 - [ ] `docs/agents/triage-labels.md` exists and has 5 rows in the label-mapping table (or the user's overridden mapping).
-- [ ] `docs/agents/domain.md` exists and references `GLOSSARY.md` (not `CONTEXT.md`) in its consumer rules; for multi-context, it also references `GLOSSARY-MAP.md`.
+- [ ] `docs/agents/domain.md` exists and references `GLOSSARY.md` in its consumer rules; for multi-context, it also references `GLOSSARY-MAP.md`.
 - [ ] `docs/agents/decision-ledger-audit.md` exists and contains the `filename#Dxxx` citation rule (bare `Dxxx` references prohibited).
 - [ ] The `## Agent skills` block in `AGENTS.md` (or `CLAUDE.md`) references all four `docs/agents/*.md` files and uses the parse-the-block in-place update (no duplicate block).
 - [ ] `git status` shows only the expected files; no surrounding user content in `AGENTS.md` / `CLAUDE.md` was overwritten.
@@ -181,4 +181,4 @@ Load each `references/*.md` file only when its load-trigger condition is met. Do
 
 ## Attribution
 
-Adapted from the `setup-matt-pocock-skills` skill in the [`mattpocock/skills`](https://github.com/mattpocock/skills) repository, licensed under MIT by Matt Pocock and Contributors. The issue-tracker, triage-labels, and domain-docs features are extended with multi-host support (Gitea, Codeberg, other Forgejo-based hosts, other Git hosts, and other non-git workflows) and a decision-ledger-audit section, per `docs/decisions/DECISIONS-skills-setup-skill-replace.md` (D001-D021). The `CONTEXT.md` → `GLOSSARY.md` rename is a project-local extension.
+Adapted from the `setup-matt-pocock-skills` skill in the [`mattpocock/skills`](https://github.com/mattpocock/skills) repository, licensed under MIT by Matt Pocock and Contributors. The issue-tracker, triage-labels, and domain-docs features are extended with multi-host support (Gitea, Codeberg, other Forgejo-based hosts, other Git hosts, and other non-git workflows) and a decision-ledger-audit section, per `docs/decisions/DECISIONS-skills-setup-skill-replace.md` (D001-D021).

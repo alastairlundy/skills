@@ -8,13 +8,13 @@ and infrastructure checks below to have been completed.
 
 Upon activation:
 
-1. **Domain state summary.** Check `CONTEXT.md` at the repo root,
+1. **Domain state summary.** Check `GLOSSARY.md` at the repo root,
    then scan for `docs/adr/` and any existing Decision Ledger files at
-   `docs/decisions/DECISIONS-*.md`. Report the `CONTEXT.md` state:
+   `docs/decisions/DECISIONS-*.md`. Report the `GLOSSARY.md` state:
    - **Missing** — no glossary file found; will be created lazily on
      first term. Suggest the `setup-matt-pocock-skills` skill to
      establish the glossary and ADR infrastructure.
-   - **Empty** — `CONTEXT.md` exists but is empty or whitespace-only;
+   - **Empty** — `GLOSSARY.md` exists but is empty or whitespace-only;
      will be populated as terms are resolved.
    - **Present with content** — read and summarize the existing terms
      to the user.
@@ -40,7 +40,7 @@ Most repos follow a single-context layout:
 
 ```
 /
-├── CONTEXT.md
+├── GLOSSARY.md
 ├── docs/
 │   └── adr/
 │       ├── 0001-event-sourced-orders.md
@@ -48,15 +48,15 @@ Most repos follow a single-context layout:
 └── src/
 ```
 
-If a `CONTEXT-MAP.md` exists at the root, the repo uses multiple
+If a `GLOSSARY-MAP.md` exists at the root, the repo uses multiple
 contexts. The map identifies the location of each.
 
 ### Documentation policy
 
 - **Lazy creation.** If the user chooses not to use the setup skill,
-  create `CONTEXT.md` or `docs/adr/` only when the first term or ADR
+  create `GLOSSARY.md` or `docs/adr/` only when the first term or ADR
   is actually resolved and ready to be written.
-- **Glossary purity.** `CONTEXT.md` must stay devoid of
+- **Glossary purity.** `GLOSSARY.md` must stay devoid of
   implementation details (e.g., no table names, class names, or API
   endpoints). If a user suggests adding implementation details,
   challenge them to find the underlying domain concept.
@@ -78,7 +78,7 @@ contexts. The map identifies the location of each.
 
 ### Challenge against the glossary
 
-When the user uses a term that conflicts with `CONTEXT.md`, present
+When the user uses a term that conflicts with `GLOSSARY.md`, present
 the conflict as a choice between the glossary definition and the
 user's apparent meaning:
 
