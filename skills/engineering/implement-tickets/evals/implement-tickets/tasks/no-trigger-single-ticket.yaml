@@ -1,6 +1,15 @@
 id: no-trigger-single-ticket
-type: trigger
+name: No trigger on single ticket
 description: Does NOT trigger when the user names one specific ticket; direct dispatch is preferred.
-input: |
-  Implement ticket TK003 from tickets/. That's the only one I need done.
-expected: no-trigger
+inputs:
+  prompt: |
+    Implement ticket TK003 from tickets/. That's the only one I need done.
+expected:
+  should_trigger: false
+graders:
+  - type: trigger
+    name: should-not-trigger-implement-tickets
+    config:
+      skill_path: skills/engineering/implement-tickets
+      mode: negative
+      threshold: 0.4

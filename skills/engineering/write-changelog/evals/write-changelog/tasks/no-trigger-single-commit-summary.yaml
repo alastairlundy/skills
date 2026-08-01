@@ -1,6 +1,15 @@
 id: no-trigger-single-commit-summary
-type: trigger
+name: No trigger on single commit summary
 description: Does NOT trigger when user asks for a summary of a single commit.
-input: |
-  Summarize what changed in commit abc1234.
-expected: no-trigger
+inputs:
+  prompt: |
+    Summarize what changed in commit abc1234.
+expected:
+  should_trigger: false
+graders:
+  - type: trigger
+    name: should-not-trigger-write-changelog
+    config:
+      skill_path: skills/engineering/write-changelog
+      mode: negative
+      threshold: 0.4

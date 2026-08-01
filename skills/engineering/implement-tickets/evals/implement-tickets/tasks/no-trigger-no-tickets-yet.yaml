@@ -1,6 +1,15 @@
 id: no-trigger-no-tickets-yet
-type: trigger
+name: No trigger when no tickets exist
 description: Does NOT trigger when only a spec exists and no tickets have been generated.
-input: |
-  Here's the spec for the new notifications module. Start implementing it.
-expected: no-trigger
+inputs:
+  prompt: |
+    Here's the spec for the new notifications module. Start implementing it.
+expected:
+  should_trigger: false
+graders:
+  - type: trigger
+    name: should-not-trigger-implement-tickets
+    config:
+      skill_path: skills/engineering/implement-tickets
+      mode: negative
+      threshold: 0.4
