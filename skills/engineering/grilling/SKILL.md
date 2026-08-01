@@ -515,7 +515,8 @@ transcript:
 - [ ] No diverge mode occurred (no paraphrasing the verbatim answer,
       no skipping a branch, no bundling options, no asking multiple
       questions in one turn, no accepting a contradictory answer
-      without a `Supersedes: Dxxx` record).
+      without a `Supersedes: Dxxx` record, no treating clarification
+      as resolution).
 - [ ] The chosen exit was handed off with the Decision Ledger path so
       downstream skills (memos, tickets, specialized grilling) can
       cite records as `filename#Dxxx`.

@@ -86,6 +86,7 @@ are the *negative* bar — explicit divergences the agent must avoid.
   contradicts a previously resolved decision, and the agent accepts it
   without flagging the conflict or creating a `Supersedes: Dxxx` record.
 
-The recovery for the first four is to revisit the affected branch and
-re-record. The recovery for the fifth is to apply the supersede rule
-(re-open gets a new `Dxxx`) and resolve the contradiction explicitly.
+The recovery for modes 1–4 and 6 is to revisit the affected branch and
+re-record. The recovery for mode 5 (accepting a contradictory
+answer) is to apply the supersede rule (re-open gets a new `Dxxx`)
+and resolve the contradiction explicitly.
