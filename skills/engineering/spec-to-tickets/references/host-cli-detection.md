@@ -17,15 +17,13 @@ The `fj` entry is intentionally tagged as community-maintained and is not part o
 
 ## Installation
 
-The skill never installs host CLIs. The user is responsible for installing the CLI required by the chosen publishing target. This rule applies in both Collaborative and Self-Contained modes and is not overridable by either mode.
+The skill never installs host CLIs. The user is responsible for installing the CLI required by the chosen publishing target. This rule is not overridable.
 
 Rationale — host-CLI installation is a sensitive prerequisite that:
 
 - Downloads and executes code from a third-party source (supply-chain risk).
 - May require elevated privileges (e.g., `sudo`, package-manager installs, system PATH changes).
-- Must be reviewed by the user before execution; the agent cannot verify the integrity of remote install payloads on the user's behalf, and Self-Contained mode is a workflow-shape signal, not a blanket authorization to run untrusted third-party installers.
-
-Self-Contained mode governs the ticket workflow (whether the agent pauses for input during decomposition and publishing); it does not extend to prerequisite setup operations like tool installation.
+- Must be reviewed by the user before execution; the agent cannot verify the integrity of remote install payloads on the user's behalf.
 
 ### Flow when a required CLI is missing
 
@@ -45,7 +43,7 @@ Self-Contained mode governs the ticket workflow (whether the agent pauses for in
 ### What the agent shall not do
 
 - Fetch remote READMEs, release pages, or install scripts to extract install commands.
-- Run `curl | sh`, `iwr | iex`, `pip install`, `apt install`, `brew install`, `winget install`, `scoop install`, or any other install command for a host CLI, regardless of mode.
+- Run `curl | sh`, `iwr | iex`, `pip install`, `apt install`, `brew install`, `winget install`, `scoop install`, or any other install command for a host CLI.
 - Present an install command sourced from remote content to the user as if it were the agent's own recommendation. The agent points to a URL; the user reads and runs the command themselves.
 
 Destructive-operation note: the tool/harness permission layer is a safety net but does not replace the no-auto-install rule — the agent does not run install commands at all, with or without a permission prompt.
