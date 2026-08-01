@@ -43,11 +43,11 @@ elicitation question, locked question line, options + recommendation
 — is defined by the parent reference and the local 5-element
 extension. The shared references (`../grilling/references/*`) define
 the parent's 4-element context block, the Socratic elicitation
-question wording (D003), the locked question line wording (D004), the
+question wording, the locked question line wording, the
 "you" convention, tone discipline, options format, and recommendation
 format. The local `references/locked-question-format.md` extends the
 parent with the code-impl 5th element (Spec section) and is the
-loadable source of truth for the 5-element context block per D011.
+loadable source of truth for the 5-element context block.
 This skill defers to the parent for the parts of the format that are
 unchanged. Re-asking a branch restarts at Turn 1 with a fresh
 context block and Socratic elicitation question — do not skip
@@ -260,18 +260,18 @@ in by listing the reference here with an explicit `eager` or
 - **`../grilling/references/locked-question-format.md`** — *eager*.
   Load in full before the first user question. Defines the parent's
   two-turn locked question sequence, the 4-element context block,
-  the Socratic elicitation question wording (D003), the locked
-  question line wording (D004), the engage and decline behaviors, the
+  the Socratic elicitation question wording, the locked
+  question line wording, the engage and decline behaviors, the
   options format, and the recommendation format. The local
   `references/locked-question-format.md` extends this reference
-  with the 5-element code-impl context block (per D011) and is the
+  with the 5-element code-impl context block and is the
   loadable source of truth for the 5th element.
 - **`references/locked-question-format.md`** — *eager*. Load in
   full before the first user question. Defines the 5-element
   code-impl context block (Goal, Prior decisions, Stakes, Scope,
   Spec section) used on every per-decision question in Steps 4, 5,
-  and 6. Extends the parent with the 5th element (Spec section)
-  per D011. See "The 5th element — Spec section" for the citation
+  and 6. Extends the parent with the 5th element (Spec section).
+  See "The 5th element — Spec section" for the citation
   format and the requirement that the 5th element is not optional.
 
 ### Lazy references (load on demand)
@@ -352,10 +352,10 @@ transcript:
 - [ ] Every preamble before an options block was capped at 2
       sentences, with mandatory ID-citation of the relevant prior
       record(s), per `references/output-selection.md` Step 7.
-- [ ] Every Socratic elicitation question used the D003 verbatim
+- [ ] Every Socratic elicitation question used the fixed verbatim
       phrasing: "What are you working toward in this decision? You may
       answer, or skip and see the options as-is."
-- [ ] Every locked question line used the D004 verbatim phrasing:
+- [ ] Every locked question line used the fixed verbatim phrasing:
       "**For [Txxx] – [branch name]: pick an option, hybridize, or
       provide your own answer.**"
 - [ ] Every options block was preceded by the reference-set preamble:

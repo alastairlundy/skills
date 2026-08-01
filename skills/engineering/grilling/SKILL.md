@@ -211,14 +211,14 @@ The two turns are:
    with the Socratic question and must not treat a no-op response
    as a missing answer.
 
-   - **Engage case (per D005).** When the user provides a direction
+   - **Engage case.** When the user provides a direction
      rather than declining, the agent uses the direction as a soft
      steering signal in Turn 2: it informs the option names, the
      "What it is" descriptions, and the recommendation's `Reasoning`
      field. The underlying choice space is unchanged; the reframing
      is a soft signal across all options, not a filter. Defensible
      options are not dropped.
-   - **Decline case (per D013).** When the user declines, the agent
+   - **Decline case.** When the user declines, the agent
      proceeds to Turn 2 with options framed on the branch context
      (Goal, Prior decisions, Stakes, Scope) without steering; the
      recommendation's `Reasoning` field is based on the branch
@@ -453,7 +453,7 @@ transcript:
       block was not replaced with a free-form prose summary, a "current
       state" investigation, a code reading, a domain-glossary recap,
       or any other kind of analysis.
-- [ ] Every Socratic elicitation question used the D003 verbatim
+- [ ] Every Socratic elicitation question used the fixed verbatim
       phrasing: "What are you working toward in this decision? You may
       answer, or skip and see the options as-is."
 - [ ] Every Socratic elicitation question was presented as optional.
@@ -467,7 +467,7 @@ transcript:
       informing the option names, the "What it is" descriptions, and
       the recommendation's `Reasoning` field — without dropping
       defensible options. The underlying choice space was unchanged.
-- [ ] Every locked question line used the D004 verbatim phrasing:
+- [ ] Every locked question line used the fixed verbatim phrasing:
       "**For [Dxxx] – [branch name]: pick an option, hybridize, or
       provide your own answer.**"
 - [ ] Every locked question line presented all three response types

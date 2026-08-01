@@ -9,7 +9,7 @@ locked question line. The 5-element context block is defined in
 `references/locked-question-format.md`; the first four elements
 (Goal, Prior decisions, Stakes, Scope) are the parent grilling
 skill's 4-element block unchanged, and the 5th element (Spec
-section) is the code-impl addition per D011. See
+section) is the code-impl addition. See
 `references/locked-question-format.md` for the full template, the
 citation format, and the requirement that the 5th element is not
 optional. The context block is not a free-form prose summary, a

@@ -11,8 +11,8 @@ or functional requirement the branch addresses.
 
 The 2-turn sequence (Turn 1 = context block + optional Socratic
 elicitation question; Turn 2 = locked question line + options +
-recommendation), the Socratic question wording (D003), the locked
-question line wording (D004), the engage and decline behaviors, the
+recommendation), the Socratic question wording, the locked
+question line wording, the engage and decline behaviors, the
 options format, the recommendation format, the tone discipline, and
 the convergence test are all inherited from the parent grilling
 skill. See `../grilling/references/locked-question-format.md` for the
@@ -109,12 +109,12 @@ and stops — is inherited from the parent grilling skill unchanged.
 The two turns are mandatory and the agent must not collapse them
 into a single turn, even on a re-ask or a follow-up.
 
-The Socratic elicitation question wording (D003) and the locked
-question line wording (D004) are inherited from the parent verbatim;
+The Socratic elicitation question wording and the locked
+question line wording are inherited from the parent verbatim;
 the agent emits them exactly as specified in
 `../grilling/references/locked-question-format.md` and waits for the
-user's response before proceeding. The engage case (D005) and the
-decline case (D013) also apply unchanged.
+user's response before proceeding. The engage case and the
+decline case also apply unchanged.
 
 ## Rules
 
