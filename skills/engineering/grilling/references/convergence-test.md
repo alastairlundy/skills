@@ -85,8 +85,16 @@ are the *negative* bar — explicit divergences the agent must avoid.
 - **Accepting a contradictory answer.** The user gives an answer that
   contradicts a previously resolved decision, and the agent accepts it
   without flagging the conflict or creating a `Supersedes: Dxxx` record.
+- **Treating clarification as resolution.** The user corrects the
+  agent's understanding of an option's mechanics or meaning — e.g.,
+  "Option B just adds a Start method; it doesn't encode a lifecycle" —
+  and the agent treats the correction as a selection of that option.
+  A clarification of what an option *is* is not a choice of which
+  option to take. The agent must mirror the clarification and either
+  continue probing remaining concerns or explicitly re-ask the locked
+  question.
 
-The recovery for modes 1–4 and 6 is to revisit the affected branch and
-re-record. The recovery for mode 5 (accepting a contradictory
+The recovery for modes 1–5 is to revisit the affected branch and
+re-record. The recovery for mode 6 (accepting a contradictory
 answer) is to apply the supersede rule (re-open gets a new `Dxxx`)
 and resolve the contradiction explicitly.
