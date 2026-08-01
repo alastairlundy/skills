@@ -52,16 +52,16 @@ records (e.g., a `Dxxx` constraint) are relevant, they belong in the
 reasoning *alongside* the goal-alignment phrasing, not as a
 substitute for it.
 
-**Anti-pattern**: `Reasoning: D005's per-stream rule and D004's
+**Anti-pattern**: `Reasoning: the per-stream rule and the
 per-stream cancellation rule both map cleanly onto two method-shaped
 entry points, and two methods is the shape .NET developers reach for
 first when two independent async streams exist.` — this reasoning
-cites ledger rules and developer ergonomics but never names the
+cites rules and developer ergonomics but never names the
 user's goal. The user cannot tell whether the recommendation serves
 their intent.
 
 **Correct**: `Reasoning: Option 1 aligns with your goal of exposing
-both streams independently — D005's per-stream rule and D004's
+both streams independently — the per-stream rule and the
 per-stream cancellation rule both map cleanly onto two method-shaped
 entry points.` — the goal is named first, then the supporting
 evidence follows.

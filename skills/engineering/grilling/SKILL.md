@@ -211,14 +211,14 @@ The two turns are:
    with the Socratic question and must not treat a no-op response
    as a missing answer.
 
-   - **Engage case (per D005).** When the user provides a direction
+   - **Engage case.** When the user provides a direction
      rather than declining, the agent uses the direction as a soft
      steering signal in Turn 2: it informs the option names, the
      "What it is" descriptions, and the recommendation's `Reasoning`
      field. The underlying choice space is unchanged; the reframing
      is a soft signal across all options, not a filter. Defensible
      options are not dropped.
-   - **Decline case (per D013).** When the user declines, the agent
+   - **Decline case.** When the user declines, the agent
      proceeds to Turn 2 with options framed on the branch context
      (Goal, Prior decisions, Stakes, Scope) without steering; the
      recommendation's `Reasoning` field is based on the branch
@@ -272,8 +272,30 @@ collapse the two turns into one.
 
 ### Step 5: Record and continue
 
-After the user resolves a branch, run the post-pick step. The
-post-pick step is a **gated step**: the next branch must not open
+After the user resolves a branch, run the post-pick step. Before
+entering the post-pick step, confirm the user's response is a
+resolution, not a clarification. The following signals indicate
+**clarification**, not resolution:
+
+- The user corrects the agent's understanding of an option's
+  mechanics, meaning, or scope (e.g., "Option B doesn't encode a
+  lifecycle — it just adds a Start method").
+- The user explains what an option is without selecting it.
+- The user pushes back on the agent's characterization of an option.
+
+When clarification is detected, do not enter the post-pick step.
+Instead: mirror the clarification, surface any remaining concerns,
+and re-ask the locked question. The branch remains open.
+
+The following signals indicate **resolution**:
+
+- The user picks an option by name or number.
+- The user provides their own answer.
+- The user hybridizes options.
+- The user explicitly confirms a choice after clarification (e.g.,
+  "Yes, Option B").
+
+The post-pick step is a **gated step**: the next branch must not open
 until both the write and the read-back have succeeded. The step has
 five actions in a fixed order; actions 3 and 4 are load-bearing and
 are not optional.
@@ -453,7 +475,7 @@ transcript:
       block was not replaced with a free-form prose summary, a "current
       state" investigation, a code reading, a domain-glossary recap,
       or any other kind of analysis.
-- [ ] Every Socratic elicitation question used the D003 verbatim
+- [ ] Every Socratic elicitation question used the fixed verbatim
       phrasing: "What are you working toward in this decision? You may
       answer, or skip and see the options as-is."
 - [ ] Every Socratic elicitation question was presented as optional.
@@ -467,7 +489,7 @@ transcript:
       informing the option names, the "What it is" descriptions, and
       the recommendation's `Reasoning` field — without dropping
       defensible options. The underlying choice space was unchanged.
-- [ ] Every locked question line used the D004 verbatim phrasing:
+- [ ] Every locked question line used the fixed verbatim phrasing:
       "**For [Dxxx] – [branch name]: pick an option, hybridize, or
       provide your own answer.**"
 - [ ] Every locked question line presented all three response types
@@ -515,7 +537,8 @@ transcript:
 - [ ] No diverge mode occurred (no paraphrasing the verbatim answer,
       no skipping a branch, no bundling options, no asking multiple
       questions in one turn, no accepting a contradictory answer
-      without a `Supersedes: Dxxx` record).
+      without a `Supersedes: Dxxx` record, no treating clarification
+      as resolution).
 - [ ] The chosen exit was handed off with the Decision Ledger path so
       downstream skills (memos, tickets, specialized grilling) can
       cite records as `filename#Dxxx`.
