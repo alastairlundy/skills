@@ -23,7 +23,7 @@ For skills that compete for the same trigger space, the discriminator lives in t
 - **Encode cross-skill deferral by naming the alternative**: *"Defer to `domain-grilling` for vague ideas, domain modeling, or terminology alignment."* A positive pointer the trigger model can use as a tie-breaker.
 - **Mirror the YAML's negative clause in the body's `When Not to Use`**, per ADR 0001's no-contradiction rule. The two surfaces stay textually close to limit drift.
 - **Add `evals.json` trigger tests** covering both directions: 3 `trigger` cases (spec file path referenced; substantive conversational spec; explicit invocation) and 3 `no-trigger` cases (vague "I have a plan"; non-code idea; domain modeling question). The Skill Evaluator is what makes the wording change a verified fix rather than a hypothesis.
-- **Add a glossary term** ("Code implementation plan") to `CONTEXT.md` so the discriminator has a canonical noun and a clear boundary against "general plan," "domain model," and "spec/PRD."
+- **Add a glossary term** ("Code implementation plan") to `GLOSSARY.md` so the discriminator has a canonical noun and a clear boundary against "general plan," "domain model," and "spec/PRD."
 
 A follow-up task is queued to sharpen `domain-grilling`'s YAML in a coordinated way — explicitly claiming the fuzzy-idea / domain-modeling territory and deferring code-implementation work back to `code-implementation-grilling`. The current change is intentionally scoped to one skill to avoid co-editing without that skill owner's review.
 

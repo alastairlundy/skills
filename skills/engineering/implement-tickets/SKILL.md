@@ -162,7 +162,7 @@ inside the dispatch unit runs in ticket order within the group.
    - **Subject-quality gate** (run before the commit invocation): the coordinator inspects the subject against the following rules; any failure rejects the subject. These are the canonical home for the negative rules — the subject-format description above does not restate them.
      - No ledger IDs in the subject: subject does not match the regex `\bD\d{3}\b` or `\bT\d{3}\b` outside the ticket-id bracket.
      - No other-ticket IDs in the subject: subject does not match `TK\d{3}` for any ticket id other than the one in the bracket prefix.
-     - No host-tool acronyms in the subject: the subject must not contain host-tool acronyms that the repo glossary in `CONTEXT.md` does not recognise as universal (e.g. `MTP`, `VSTest`, `CPM`, `TFM`, `AOT`).
+     - No host-tool acronyms in the subject: the subject must not contain host-tool acronyms that the repo glossary in `GLOSSARY.md` does not recognise as universal (e.g. `MTP`, `VSTest`, `CPM`, `TFM`, `AOT`).
      - Plain-language: subject contains at least one verb or noun phrase that names the user-visible effect of the change.
      - On rejection: the coordinator increments the strike counter for this ticket and re-dispatches the sub-agent with the gate's feedback (mirroring the `reject-with-feedback` re-dispatch path). A second rejection on the same ticket escalates to the user via the circuit breaker.
    - One commit per ticket. No WIP commits, no merge commits inside a ticket's staging area, no squash — the per-ticket commit is the source of truth.

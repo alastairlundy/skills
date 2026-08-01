@@ -19,13 +19,13 @@ User prompt (matches `tasks/trigger-vague-idea-domain-modeling.yaml`):
 Before the first question, the agent should:
 
 1. **Load the reference file.** Read `references/initialization-and-domain-awareness.md` and complete the infrastructure check.
-2. **Summarize domain state.** State explicitly that `CONTEXT.md` and `docs/adr/` are not present in the workspace, and offer the `setup-matt-pocock-skills` skill as a one-line suggestion (per the Lazy Creation rule, do not create them yet).
+2. **Summarize domain state.** State explicitly that `GLOSSARY.md` and `docs/adr/` are not present in the workspace, and offer the `setup-matt-pocock-skills` skill as a one-line suggestion (per the Lazy Creation rule, do not create them yet).
 
 A compliant opener:
 
-> No prior domain state — `CONTEXT.md` and `docs/adr/` are absent. If you want
+> No prior domain state — `GLOSSARY.md` and `docs/adr/` are absent. If you want
 > the glossary/ADR infrastructure scaffolded now, load `setup-matt-pocock-skills`.
-> Otherwise, I'll create `CONTEXT.md` lazily on the first resolved term.
+> Otherwise, I'll create `GLOSSARY.md` lazily on the first resolved term.
 
 ## Branch A — Who is the buyer of the freelancer's work?
 
@@ -53,7 +53,7 @@ A compliant opener:
 After the user picks Option 2, the agent should immediately:
 
 1. Propose the new terms — `Contact`, `Client Organization` — to the user with their working definitions.
-2. On acceptance, write them to `CONTEXT.md` (creating the file lazily if it does not exist, per the Lazy Creation rule).
+2. On acceptance, write them to `GLOSSARY.md` (creating the file lazily if it does not exist, per the Lazy Creation rule).
 3. Cite the file path so the user can see the write.
 
 A compliant continuation:
@@ -64,13 +64,13 @@ A compliant continuation:
 >
 > Two new glossary terms to write: **Contact** — the person messaging
 > the freelancer; **Client Organization** — the legal entity that
-> invoices and pays. Confirm both before I write to `CONTEXT.md`.
+> invoices and pays. Confirm both before I write to `GLOSSARY.md`.
 
 **Quality expectations this turn satisfies:**
 
 - No evaluative opener on the branch transition (uses `Resolved:` and `Understood. You're saying…` per the structural rules).
 - Term proposed before write, per the Term Resolution step.
-- Contact/Client Organization written to `CONTEXT.md` only after the user confirms.
+- Contact/Client Organization written to `GLOSSARY.md` only after the user confirms.
 
 ## Convergence Declaration
 
@@ -99,7 +99,7 @@ output:
 - [ ] Every recommendation used the two-field breakdown with the option name copied verbatim.
 - [ ] No sentence began with a word whose function is to praise or judge the user's prior input.
 - [ ] No forbidden filler word appeared in any agent turn.
-- [ ] Every glossary term was proposed to the user before being written to `CONTEXT.md`.
-- [ ] `CONTEXT.md` was created lazily on first write (not pre-emptively).
+- [ ] Every glossary term was proposed to the user before being written to `GLOSSARY.md`.
+- [ ] `GLOSSARY.md` was created lazily on first write (not pre-emptively).
 - [ ] Convergence was declared only after all three checks passed.
 - [ ] The exit gate question was asked (unless context made the answer unambiguous) and the answer was used to pick the recommended exit per the per-answer branching rules.

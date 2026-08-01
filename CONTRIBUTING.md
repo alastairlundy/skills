@@ -95,7 +95,7 @@ For complex skills or when you need help translating fuzzy requirements into det
 
 ### Documentation
 
-- Update CONTEXT.md if introducing new domain terms
+- Update GLOSSARY.md if introducing new domain terms
 - Create ADRs in `docs/adr/` for hard-to-reverse architectural decisions
 - Ensure all referenced files and paths are accurate
 
@@ -114,13 +114,13 @@ Before submitting a contribution:
 1. **Fork and branch** — Create a feature branch from `main`
 2. **Make changes** — Follow the guidelines above
 3. **Test locally** — Verify the skill works as expected
-4. **Update documentation** — Ensure README, CONTEXT.md, and ADRs are current
+4. **Update documentation** — Ensure README, GLOSSARY.md, and ADRs are current
 5. **Submit PR** — Provide clear description of changes and testing performed
 6. **Address feedback** — Respond to review comments promptly
 
 ## Questions?
 
 - Check existing skills in `skills/` for examples
-- Review CONTEXT.md for domain terminology
+- Review GLOSSARY.md for domain terminology
 - Consult docs/adr/ for architectural decisions
 - Open an issue for clarification or discussion

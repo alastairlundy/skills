@@ -21,7 +21,7 @@ The core grilling machinery (Decision Ledger, options/recommendation
 formats, locked question format, tone discipline, convergence test) is
 owned by the `grilling` skill. This skill adds DDD-specific
 initialization (glossary/ADR scan) and Term Resolution (writing terms
-to `CONTEXT.md`).
+to `GLOSSARY.md`).
 
 ## When to Use
 
@@ -88,10 +88,10 @@ the missing file to the user.
 
 Follow `references/ddd-initialization.md` to:
 
-1. Scan the repo for `CONTEXT.md`, `docs/adr/`, and any existing
+1. Scan the repo for `GLOSSARY.md`, `docs/adr/`, and any existing
    Decision Ledger. Summarize the current known domain state to the
    user *before* the first question.
-2. If `CONTEXT.md` is missing, suggest the
+2. If `GLOSSARY.md` is missing, suggest the
    `setup-matt-pocock-skills` skill but do not pre-emptively create
    the file.
 3. Confirm the Decision Ledger path before the first write.
@@ -186,7 +186,7 @@ Decision Ledger in real time.
 Use the DDD-specific techniques in
 `references/ddd-initialization.md` § "Session Guidelines" to:
 
-- When the user uses a term that conflicts with `CONTEXT.md`, load and
+- When the user uses a term that conflicts with `GLOSSARY.md`, load and
   apply the procedure in
   `references/ddd-initialization.md` §
   "Challenge against the glossary".
@@ -210,9 +210,9 @@ When a resolved branch introduces a new glossary term, follow
 `references/term-resolution.md`:
 
 1. Propose the term and the working definition to the user.
-2. On acceptance, write the term to `CONTEXT.md` immediately
+2. On acceptance, write the term to `GLOSSARY.md` immediately
    (creating the file lazily if needed).
-3. Update `CONTEXT.md` if the user revises the definition later.
+3. Update `GLOSSARY.md` if the user revises the definition later.
 
 ### Step 5: Convergence
 
@@ -313,8 +313,8 @@ transcript:
       `keep in mind`, `note that`, `needless to say`,
       `at the end of the day`, `when all is said and done`).
 - [ ] Every glossary term was proposed to the user before being
-      written to `CONTEXT.md`.
-- [ ] `CONTEXT.md` was created lazily on the first write if it did
+      written to `GLOSSARY.md`.
+- [ ] `GLOSSARY.md` was created lazily on the first write if it did
       not already exist.
 - [ ] Term Store Consistency verified (per `references/term-resolution.md` § Term Store Consistency).
 - [ ] Convergence was declared only when all four checks passed.
