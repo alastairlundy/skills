@@ -73,13 +73,13 @@ format across two turns:
 - **Turn 1** — the 5-element code-impl context block (per
   `references/locked-question-format.md`), followed by the optional
   Socratic elicitation
-  question using the D003 verbatim wording: *"What are you working
+   question using the Socratic elicitation question verbatim wording: *"What are you working
   toward in this decision? You may answer, or skip and see the
   options as-is."* The Socratic question is optional; the user may
   engage to steer or decline (signals: "skip", "no", "as-is", or a
   no-op response), and the agent proceeds to Turn 2 without
   re-asking. Stop and wait for the user's response.
-- **Turn 2** — the locked question line using the D004 verbatim
+- **Turn 2** — the locked question line using the locked question line verbatim
   wording: *"**For [Txxx] – [branch name]: pick an option,
   hybridize, or provide your own answer.**"*, followed by the
   reference-set preamble ("Here are options to help you refine or
