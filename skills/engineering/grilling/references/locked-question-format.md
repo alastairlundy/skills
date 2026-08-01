@@ -102,7 +102,7 @@ Wait for the user's response before proceeding. The response grounds
 the options that follow in the user's actual values rather than the
 agent's assumptions.
 
-#### Decline case (per D013)
+#### Decline case
 
 When the user declines the Socratic elicitation question — signalled
 by "skip", "no", "as-is", or a no-op response — the agent shall
@@ -113,7 +113,7 @@ context (Goal, Prior decisions, Stakes, Scope) without steering; the
 recommendation's `Reasoning` field is based on the branch context,
 not on a direction.
 
-#### Engage case (per D005)
+#### Engage case
 
 When the user engages with the Socratic elicitation question (i.e.,
 provides a direction rather than declining), the agent shall use the
