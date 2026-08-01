@@ -272,8 +272,30 @@ collapse the two turns into one.
 
 ### Step 5: Record and continue
 
-After the user resolves a branch, run the post-pick step. The
-post-pick step is a **gated step**: the next branch must not open
+After the user resolves a branch, run the post-pick step. Before
+entering the post-pick step, confirm the user's response is a
+resolution, not a clarification. The following signals indicate
+**clarification**, not resolution:
+
+- The user corrects the agent's understanding of an option's
+  mechanics, meaning, or scope (e.g., "Option B doesn't encode a
+  lifecycle — it just adds a Start method").
+- The user explains what an option is without selecting it.
+- The user pushes back on the agent's characterization of an option.
+
+When clarification is detected, do not enter the post-pick step.
+Instead: mirror the clarification, surface any remaining concerns,
+and re-ask the locked question. The branch remains open.
+
+The following signals indicate **resolution**:
+
+- The user picks an option by name or number.
+- The user provides their own answer.
+- The user hybridizes options.
+- The user explicitly confirms a choice after clarification (e.g.,
+  "Yes, Option B").
+
+The post-pick step is a **gated step**: the next branch must not open
 until both the write and the read-back have succeeded. The step has
 five actions in a fixed order; actions 3 and 4 are load-bearing and
 are not optional.
