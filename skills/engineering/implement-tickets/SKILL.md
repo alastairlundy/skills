@@ -1,13 +1,11 @@
 ---
 name: implement-tickets
 description: >-
-  Coordinate implementation of a normalized ticket set — builds the dependency
-  DAG, groups same-file tickets, dispatches each group to a sub-agent with a
-  fresh context, runs a judge LLM against acceptance criteria, and commits one
-  commit per ticket. Use when a batch of tickets should be implemented in
-  parallel/sequential order with per-ticket commits and an end-of-run report.
-  Do not use for a single ticket (implement it directly), tickets not yet
-  generated (use spec-to-tickets first), or non-ticket work.
+  Implement a batch of tickets end-to-end — one commit per ticket,
+  dependency-ordered, with a judge review and end-of-run report. Use when
+  the user says "implement the tickets", "run the ticket implementer",
+  "execute the tickets", or wants to implement a ticket set produced by
+  spec-to-tickets. Do not use for tickets not yet generated or non-ticket work.
 license: MIT
 ---
 
@@ -24,11 +22,10 @@ real time.
 
 ## When to Use
 
-- The user has a set of tickets in the normalized format and wants them implemented end-to-end
-- The user asks to "run the ticket implementer", "implement the tickets in tickets/", or "execute the spec-to-tickets output"
-- The user wants parallel work across independent tickets, with a per-ticket commit history on one branch
-- The user explicitly opts into the local `implement-tickets` skill over any globally-installed version
-- When user input would clarify the request (workspace choice, circuit-breaker threshold override, partial-ticket set selection, attribution policy), invoke ask-questions
+- The user says "implement the tickets", "run the ticket implementer", "execute the tickets", or "implement the ticket set"
+- The user has a set of tickets in the normalized format and wants them implemented
+- The user wants to run the output of `spec-to-tickets` to produce commits
+- When user input would clarify the request (workspace choice, circuit-breaker threshold, partial-ticket set, attribution policy), invoke ask-questions
 
 ## When Not to Use
 
