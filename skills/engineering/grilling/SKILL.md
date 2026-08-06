@@ -484,10 +484,11 @@ to do so. Do not loop the reminder — issue it once, at the end of the
 session, after the exit handoff. If the user has already chosen to
 defer or decline earlier in the session, do not re-issue the reminder.
 
-If the user confirms deletion, delete the file (and any companion
-artifact named in the same path family — e.g., a sibling
-`BLUEPRINT-<repo>-<feature>.md` if one was created) and confirm with a
-single sentence. Do not empty the file in place.
+If the user confirms deletion, delete the file. Name each companion
+artifact (e.g., a sibling `BLUEPRINT-<repo>-<feature>.md`) and ask
+the user explicitly whether to delete it too — do not delete a
+companion without its own confirmation. Confirm each deletion with
+a single sentence. Do not empty any file in place.
 
 ## Validation
 

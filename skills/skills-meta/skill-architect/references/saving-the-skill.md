@@ -82,18 +82,14 @@ If any item fails, fix the file and re-check before reporting completion.
 
 ### 8. Delete the design ledger
 
-After Step 7 passes, delete the design ledger at
-`<target-skill-dir>/.design-ledger.md` if it exists. The deletion is
-conditional on the file existing — do not error if it does not
-exist (the design may have been done without a design ledger, e.g.,
-a quick re-skin of an existing skill).
+After Step 7 passes, ask the user whether to delete the design ledger
+at `<target-skill-dir>/.design-ledger.md`. If the user confirms and
+the file exists, delete it. If the user declines or defers, preserve
+it as-is for the next attempt. If the file was not present, state
+that no design ledger was found. Do not amend or empty the design
+ledger in place — the lifecycle in `references/decision-ledger.md`
+calls for full deletion on materialization, not in-place emptying.
 
 The deletion happens on successful materialization only. If Step 7
-failed and the file was rolled back, the design ledger is preserved
-as-is for the next attempt.
-
-Confirm the deletion with a single sentence that names the deleted
-file. If the file was not present, state that no design ledger was
-present. Do not amend or empty the design ledger in place — the
-lifecycle in `references/decision-ledger.md` calls for full deletion
-on materialization, not in-place emptying.
+failed and the file was rolled back, preserve the design ledger for
+the next attempt.
