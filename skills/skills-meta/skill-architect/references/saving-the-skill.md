@@ -2,6 +2,13 @@
 
 Load this reference when the user has accepted a skill design and asked the LLM to write it to the file system. Do not load it during the design phase.
 
+The skill being designed may have produced a design ledger at
+`<target-skill-dir>/.design-ledger.md` during Step 1 of the
+`skill-architect` workflow (per the lifecycle in
+`references/decision-ledger.md`). Step 8 below deletes that file
+after Step 7's validation passes, on successful materialization. The
+deletion is conditional on the file existing.
+
 ## Attribution
 
 This procedure is adapted from the `create-skill` skill in the [dotnet/skills](https://github.com/dotnet/skills) repository, licensed under MIT by the .NET Foundation and Contributors. The name-validation rules, frontmatter shape, and post-write checklist below derive from that work. The directory-layout assumptions and the eval-stub step are adapted to a more general convention; the user is asked to confirm the target directory rather than assuming a repo-specific path.
@@ -72,3 +79,21 @@ Before reporting completion, verify:
 - [ ] No secrets, tokens, or internal URLs are included.
 
 If any item fails, fix the file and re-check before reporting completion.
+
+### 8. Delete the design ledger
+
+After Step 7 passes, delete the design ledger at
+`<target-skill-dir>/.design-ledger.md` if it exists. The deletion is
+conditional on the file existing — do not error if it does not
+exist (the design may have been done without a design ledger, e.g.,
+a quick re-skin of an existing skill).
+
+The deletion happens on successful materialization only. If Step 7
+failed and the file was rolled back, the design ledger is preserved
+as-is for the next attempt.
+
+Confirm the deletion with a single sentence that names the deleted
+file. If the file was not present, state that no design ledger was
+present. Do not amend or empty the design ledger in place — the
+lifecycle in `references/decision-ledger.md` calls for full deletion
+on materialization, not in-place emptying.
