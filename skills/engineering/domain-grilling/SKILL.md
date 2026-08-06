@@ -84,6 +84,23 @@ Apply the formats from those files verbatim throughout the session.
 If any file is missing or unreadable, abort the session and report
 the missing file to the user.
 
+`../grilling/references/decision-ledger.md` now documents three
+parallel record streams — `Dxxx` (formal design decisions, the
+primary output of this skill), `Txxx` (technical decisions,
+emitted only by `code-implementation-grilling`), and `Ixxx`
+(clarifying interactions with the user during the session). The
+`Ixxx` stream carries a four-field template (`Prompt`,
+`User Response`, `Resolution`, `Notes`) with a `TBD` placeholder
+pattern: a fresh `Ixxx` is appended with `Prompt` filled and the
+other three fields set to `TBD` before the question is presented
+to the user, and the same record is completed in place after the
+user answers. The reference also defines the `<!-- next-i: Ixxx -->`
+sentinel that the agent reads to find the next append point and
+bumps atomically with each write. Domain-grilling appends
+`Ixxx` records to the same Decision Ledger it writes `Dxxx`
+records to; the `Ixxx` is a parallel stream, not a replacement
+for the `Dxxx` flow described in Step 3.
+
 ### Step 2: DDD initialization
 
 Follow `references/ddd-initialization.md` to:
@@ -119,6 +136,27 @@ In the four-part sequence, "you" and "your" always refer to the
 elicitation question, the reference-set preamble, and any other
 user-facing prompt are addressed to the user. The agent emits them
 verbatim and waits for the user to respond.
+
+**Decision Ledger `Ixxx` discipline** - the Socratic elicitation
+question in Turn 1 and the locked question line in Turn 2 are the
+two user-facing prompts in the four-part sequence. Before presenting
+either one to the user, append a fresh `Ixxx` record to the
+Decision Ledger with the verbatim `Prompt` filled and the other
+three fields marked `TBD`, then bump the `<!-- next-i: Ixxx -->`
+sentinel. After the user answers, edit the same `Ixxx` record in
+place to fill `User Response`, `Resolution`, and `Notes` with the
+user's exact words and the agent's notes. Never amend `Prompt`,
+never duplicate the `Ixxx`, never move it. The `Ixxx` is anchored
+to the prompt that was actually presented — if Turn 1 and Turn 2
+are both asked for a branch, the Socratic elicitation question
+gets one `Ixxx` and the locked question line gets a separate
+`Ixxx` in the order they were presented. The two `Ixxx` records
+remain independent of the eventual `Dxxx` record for the branch
+(the `Dxxx` is appended after the user resolves the options in
+Turn 3). If the user re-opens a question in a later turn (because
+the user did not answer, asked for clarification, or because of a
+follow-up), add a fresh `Ixxx` for the re-ask with the new
+verbatim prompt; do not amend the prior record.
 
 The three turns are:
 
@@ -247,6 +285,27 @@ the Decision Ledger path so downstream skills can cite records as
 | 4 — Handoff to another agent | Yes | Yes |
 | 5 — Custom Save | No | No |
 
+### Step 7: Post-session deletion reminder
+
+Per the Lifecycle by skill group table in
+`../grilling/references/decision-ledger.md`, this skill's Decision
+Ledger is **persisted by default**. After the user accepts the
+chosen exit in Step 6 (or declares convergence in Step 5 and picks
+the `No` exit in Step 6), remind the user in a single short turn
+that the Decision Ledger at
+`docs/decisions/DECISIONS-<repo>-<feature>.md` (or whichever path
+was confirmed in Step 2) is still on disk and can be deleted once
+implementation of the resolved decisions is complete. The reminder
+is non-blocking — the user can defer or decline — and the agent
+does not auto-delete. If the user has asked the agent to keep the
+ledger indefinitely (for example, as a domain glossary source),
+the agent records that decision in a new `Dxxx` record titled
+"ledger retention" before honoring it. When the user has chosen
+an exit that hands off to `spec-to-tickets`, the deletion reminder
+is suppressed — `spec-to-tickets` will present its own
+`### Source-file cleanup` prompt after publishing, and the two
+prompts would duplicate the question.
+
 ## Validation
 
 After completing the workflow, verify each item against the session
@@ -332,3 +391,18 @@ transcript:
 - [ ] Every citation of a Decision Ledger record from outside the ledger
       file used the `filename#Dxxx` format (e.g.,
       `DECISIONS-repo-feature.md#D001`), not a bare `Dxxx` ID.
+- [ ] For every Socratic elicitation question (Turn 1) and locked
+      question line (Turn 2) presented to the user, a fresh `Ixxx`
+      record was appended to the Decision Ledger before the prompt
+      was presented, with `Prompt` filled and the other three fields
+      set to `TBD`, and the `<!-- next-i: Ixxx -->` sentinel bumped.
+      Each `Ixxx` was completed in place after the user answered;
+      `Prompt` was never amended, records were never duplicated or
+      moved, and re-asks produced a fresh `Ixxx` rather than an edit
+      to the prior record.
+- [ ] After the user accepted the chosen exit in Step 6, the
+      post-session deletion reminder in Step 7 was emitted in a
+      single short turn naming the confirmed Decision Ledger path.
+      The reminder was suppressed when the chosen exit was a hand-off
+      to `spec-to-tickets` (which presents its own deletion prompt).
+      The reminder was non-blocking and the agent did not auto-delete.
