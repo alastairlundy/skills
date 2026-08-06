@@ -7,12 +7,12 @@ satisfies.
 
 ## Context
 
-User prompt (matches 	asks/trigger-vague-idea-domain-modeling.yaml):
+User prompt (matches `tasks/trigger-vague-idea-domain-modeling.yaml`):
 
 > I have an idea for a platform that connects freelancers with clients, but
 > I'm not sure how to model the domain. Help me think through the concepts.
 
-**Trigger outcome:** 	rigger — vague idea, no spec, goal is domain modeling.
+**Trigger outcome:** `trigger` — vague idea, no spec, goal is domain modeling.
 
 ## Pre-Grilling Baseline
 
@@ -115,7 +115,7 @@ Before listing exits, ask: "Will resolving this require writing
 code?" with options Yes / No / I'm not sure.
 
 - **Yes** → recommend code-implementation-grilling.
-- **No** → recommend 	o-prd.
+- **No** → recommend `to-prd`.
 - **I'm not sure** → list all exits without a recommendation.
 
 ## Workflow Quality Checklist

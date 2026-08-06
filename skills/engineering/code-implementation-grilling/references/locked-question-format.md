@@ -2,7 +2,7 @@
 
 The code-implementation-grilling skill extends the parent grilling
 skill's 3-row context table with a 4th data row: **Spec section**.
-This makes the code-impl context block a 6-row table (1 header + 5
+This makes the code-impl context block a 5-row table (1 header + 4
 data rows) instead of the parent's 4-row table.
 
 The 1-turn wrapper order (round header, frontier statement, context
@@ -21,10 +21,10 @@ Emit them verbatim and wait for the user to respond before proceeding.
 Free-form instructions to this reference use "the LLM" or "the agent"
 to refer to the agent.
 
-## The 6-row code-impl context block
+## The 5-row code-impl context block
 
-The context block is a **6-row markdown table** with a header row and
-5 data rows in fixed order. The first 3 data rows match the parent's
+The context block is a **5-row markdown table** with a header row and
+4 data rows in fixed order. The first 3 data rows match the parent's
 context block. The 4th data row is the code-impl addition.
 
 | Element          | Content                                                                     |
@@ -55,14 +55,14 @@ file path and the actual section or requirement number.
 
 The re-ask mechanic is inherited from the parent: max 1 re-ask, fixed
 preamble, DEFERRED closure. The re-ask uses the same 1-turn wrapper
-with the 6-row context block. The re-ask must not re-introduce the
+with the 5-row context block. The re-ask must not re-introduce the
 Socratic elicitation turn.
 
 ## Worked example
 
-A foundation item (Language) presented in the 6-row code-impl format:
+A foundation item (Language) presented in the 5-row code-impl format:
 
-`md
+```md
 ### Round 1
 
 4 branches remain, 1 unblocked this round.
@@ -88,12 +88,12 @@ reject all, or hybridize.
 **Recommendation: A.**
 **Reasoning:** C# natively supports sealed class hierarchies, which
 aligns with your goal of a testable domain model (D001).
-`
+```
 
 ## Rules
 
-- **Six rows, in order, each one sentence.** The context block is the
-  6-row table above, in order, each element one sentence, each filled
+- **Five rows, in order, each one sentence.** The context block is the
+  5-row table above, in order, each element one sentence, each filled
   in from the Decision Ledger, the user's stated goal, and the spec.
 - **The Spec section is required, not optional.** Every code-impl
   per-decision context block includes Spec section.

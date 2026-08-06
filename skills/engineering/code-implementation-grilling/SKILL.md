@@ -35,13 +35,13 @@ owns the Decision Ledger, formats, tone, and convergence test).
 
 Every branch question in this skill follows the 1-turn wrapper from
 the parent `grilling` skill. The skill's per-decision context block is
-the 6-row code-impl variant (Goal, Prior decisions, Scope, Spec
+the 5-row code-impl variant (Goal, Prior decisions, Scope, Spec
 section — 4 data rows + header = 5 rows) defined in
-eferences/locked-question-format.md. The shared references
+references/locked-question-format.md. The shared references
 (../`grilling`/references/*) define the wrapper order, the 3-row
 context table, the locked question line wording, the "you" convention,
 tone discipline, options format, and recommendation format. The local
-eferences/locked-question-format.md extends the parent with the
+references/locked-question-format.md extends the parent with the
 Spec section row.
 
 ### Re-ask cycle cap
@@ -82,7 +82,7 @@ ledger paths, then stop. Do not surface TDPs, foundation items, or
 any other branch content in this turn. If no ledger exists, recommend
 running domain-`grilling` first.
 
-Load eferences/recording-decisions.md before the first `Txxx`
+Load references/recording-decisions.md before the first `Txxx`
 append.
 
 ### Step 3: Goal discovery
@@ -97,7 +97,7 @@ Decision Ledger.
 Resolve one-by-one using the 1-turn wrapper from
 ../`grilling`/`references/locked-question-format.md`. For each
 foundation item, emit the full wrapper (round header, frontier
-statement, 6-row context block, conflict callout if any, options
+statement, 5-row context block, conflict callout if any, options
 table, recommendation) in a single turn. Resolve with 2-4 options:
 
 1. **Language** — primary language?
@@ -123,21 +123,21 @@ framework, ORM, test framework, logging, etc.). Skip if not interested.
    The TDP list surfacing is a meta-step (not a branch).
 3. **Resolve**: Grill on each TDP using the 1-turn wrapper.
 
-Load eferences/interface-and-model-branch.md before asking the user
+Load references/interface-and-model-branch.md before asking the user
 whether they want interface `grilling`.
 
-Load eferences/output-selection.md before presenting the output
+Load references/output-selection.md before presenting the output
 format choice to the user.
 
 ### Step 6: Interface & Model Branch (optional)
 
-Follow eferences/interface-and-model-branch.md. Use the 1-turn
+Follow references/interface-and-model-branch.md. Use the 1-turn
 wrapper for each architectural decision, source-of-truth conflict,
 and type introduction.
 
 ### Step 7: Output Selection
 
-Follow eferences/output-selection.md. The output is **not** a
+Follow references/output-selection.md. The output is **not** a
 per-branch Implementation Blueprint; the consolidated plan is produced
 once at the endpoint of the `grilling` (see Step 8.5).
 
@@ -153,9 +153,9 @@ fails, continue `grilling` or re-open the affected branch.
 4. **Ledger coverage** — every resolved TDP has a `Txxx`.
 5. The agent may prompt for close-out; the user decides.
 
-Load eferences/validation.md before convergence.
+Load references/validation.md before convergence.
 
-Load eferences/terminal-output.md before emitting the terminal
+Load references/terminal-output.md before emitting the terminal
 handoff template.
 
 ### Step 8.5: Consolidated Implementation Plan
@@ -211,22 +211,22 @@ The skill consumes the following references.
   Defines the 2-line lean recommendation block.
 - **../`grilling`/`references/locked-question-format.md`** — *eager*.
   Defines the 1-turn wrapper order and the 3-row context table. The
-  local eferences/locked-question-format.md extends this with the
+  local references/locked-question-format.md extends this with the
   Spec section row.
 
-### Skill-local references (eferences/*)
+### Skill-local references (references/*)
 
-- **eferences/locked-question-format.md** — *eager*. Defines the
-  6-row code-impl context table (parent 3 rows + Spec section).
-- **eferences/recording-decisions.md** — *eager*. Defines the `Txxx`
+- **references/locked-question-format.md** — *eager*. Defines the
+  5-row code-impl context table (parent 3 rows + Spec section).
+- **references/recording-decisions.md** — *eager*. Defines the `Txxx`
   record template.
-- **eferences/interface-and-model-branch.md** — *lazy*. Load on
+- **references/interface-and-model-branch.md** — *lazy*. Load on
   demand before Step 6.
-- **eferences/output-selection.md** — *lazy*. Load on demand
+- **references/output-selection.md** — *lazy*. Load on demand
   before Step 7.
-- **eferences/validation.md** — *lazy*. Load on demand before
+- **references/validation.md** — *lazy*. Load on demand before
   convergence.
-- **eferences/terminal-output.md** — *lazy*. Load on demand
+- **references/terminal-output.md** — *lazy*. Load on demand
   before Step 8.
 
 ## Validation
@@ -243,12 +243,12 @@ transcript:
       were written in one tool call.
 - [ ] Every record used the inline template and a fresh `Dxxx`/`Txxx` ID.
 - [ ] Every branch question followed the 1-turn wrapper: round header,
-      frontier statement, 6-row context block (Goal, Prior decisions,
+      frontier statement, 5-row context block (Goal, Prior decisions,
       Scope, Spec section), conflict callout (if any), options table,
       recommendation. No Socratic elicitation question was emitted.
 - [ ] The re-ask cycle was capped at 1 re-ask; closure without
       resolution produced a DEFERRED record.
-- [ ] Every context block was the 6-row table with the required Spec
+- [ ] Every context block was the 5-row table with the required Spec
       section row and inline citation.
 - [ ] Every options block used the 5-column table format.
 - [ ] Every recommendation used the 2-line format (letter + period,

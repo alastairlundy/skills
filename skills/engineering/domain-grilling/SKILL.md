@@ -75,9 +75,9 @@ Before the first user question, load and read in full:
 - ../`grilling`/references/locked-question-format.md
 - ../`grilling`/references/tone-and-output.md
 - ../`grilling`/references/convergence-test.md
-- eferences/ddd-initialization.md
-- eferences/term-resolution.md
-- eferences/ADR-FORMAT.md
+- references/ddd-initialization.md
+- references/term-resolution.md
+- references/ADR-FORMAT.md
 
 Apply the formats from those files verbatim throughout the session.
 If any file is missing or unreadable, abort the session and report
@@ -85,7 +85,8 @@ the missing file to the user.
 
 ### Step 2: DDD initialization
 
-Follow eferences/ddd-initialization.md to:
+Follow 
+references/ddd-initialization.md to:
 
 1. Scan the repo for `GLOSSARY.md`, `docs/adr/`, and any existing
    Decision Ledger. Summarize the current known domain state to the
@@ -117,28 +118,36 @@ context block (3-row table: Goal, Prior decisions, Scope), conflict
 callout (if any), options table, recommendation.
 
 Use the DDD-specific techniques in
-eferences/ddd-initialization.md § "Session Guidelines" to:
+
+references/ddd-initialization.md § "Session Guidelines" to:
 
 - When the user uses a term that conflicts with `GLOSSARY.md`, load
-  and apply the procedure in eferences/ddd-initialization.md §
+  and apply the procedure in 
+references/ddd-initialization.md §
   "Challenge against the glossary".
 - When the user uses an overloaded term, load and apply the procedure
-  in eferences/ddd-initialization.md § "Sharpen fuzzy language".
+  in 
+references/ddd-initialization.md § "Sharpen fuzzy language".
 - When the user discusses concrete scenarios that test boundaries
   between concepts, load and apply the procedure in
-  eferences/ddd-initialization.md § "Discuss concrete scenarios".
+  
+references/ddd-initialization.md § "Discuss concrete scenarios".
 - When the user states how something works, load and apply the
-  procedure in eferences/ddd-initialization.md §
+  procedure in 
+references/ddd-initialization.md §
   "Cross-reference with code".
-- When all three criteria in eferences/ADR-FORMAT.md hold, load
-  and apply the procedure in eferences/ddd-initialization.md §
+- When all three criteria in 
+references/ADR-FORMAT.md hold, load
+  and apply the procedure in 
+references/ddd-initialization.md §
   "Offer ADRs sparingly".
 
 ### Step 4: Post-pick and Term Resolution
 
 After the user resolves a branch, run the post-pick step (write `Dxxx`,
 read-back, complete `Ixxx`). Then, if the resolved branch introduces a
-new glossary term, follow eferences/term-resolution.md:
+new glossary term, follow 
+references/term-resolution.md:
 
 1. Propose the term and the working definition to the user.
 2. On acceptance, write the term to `GLOSSARY.md` immediately

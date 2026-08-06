@@ -64,12 +64,12 @@ for the core.
 Before loading or reading, walk this list in order. For each entry,
 confirm the file exists and is readable on disk:
 
-1. eferences/decision-ledger.md
-2. eferences/options-format.md
-3. eferences/recommendation-format.md
-4. eferences/locked-question-format.md
-5. eferences/tone-and-output.md
-6. eferences/convergence-test.md
+1. references/decision-ledger.md
+2. references/options-format.md
+3. references/recommendation-format.md
+4. references/locked-question-format.md
+5. references/tone-and-output.md
+6. references/convergence-test.md
 
 If any entry is missing or unreadable, stop, collect every missing path
 into a single list, abort the session, and report the list to the user.
@@ -80,24 +80,24 @@ Do not load any reference until the pre-flight passes for all six.
 After the pre-flight passes, load and read each of the six references
 in full before the first user question:
 
-- eferences/decision-ledger.md — Decision Ledger path derivation,
+- references/decision-ledger.md — Decision Ledger path derivation,
   parallel `Dxxx` and `Ixxx` ID streams with sentinel comments, the
   `Dxxx` record format, the `Ixxx` record format, goal record, lazy
   creation, soft cap, re-opens, lifecycle by skill group, storage
   conventions, conflict resolution mechanics (static/dynamic), and
   DEFERRED re-ask closure.
-- eferences/options-format.md — the reference-set preamble and the
+- references/options-format.md — the reference-set preamble and the
   5-column options table (Option | What it is | Benefit | Cost | Risk)
   with cell caps.
-- eferences/recommendation-format.md — the 2-line lean recommendation
+- references/recommendation-format.md — the 2-line lean recommendation
   block with goal-aligned reasoning.
-- eferences/locked-question-format.md — the 1-turn wrapper order:
+- references/locked-question-format.md — the 1-turn wrapper order:
   round header, frontier statement, context block (3-row table),
   conflict/contradiction callout (conditional), options table,
   recommendation.
-- eferences/tone-and-output.md — tone discipline, forbidden filler
+- references/tone-and-output.md — tone discipline, forbidden filler
   words, branch transitions, neutral mirroring.
-- eferences/convergence-test.md — the per-round 5-check convergence
+- references/convergence-test.md — the per-round 5-check convergence
   test and the diverge modes to avoid.
 
 Apply the formats from those files verbatim throughout the session. Do
@@ -109,7 +109,7 @@ to the user.
 
 Detect any existing Decision Ledger at runtime before deriving a path:
 
-- Test whether `docs/decisions/ exists in the working repo
+- Test whether `docs/decisions/` exists in the working repo
   (`Test-Path docs/decisions`).
 - If the directory exists, scan it for every DECISIONS-*.md file — do
   not limit the search to a feature-specific match.
@@ -129,10 +129,10 @@ Branch on the detection result:
   same three points (highest `Dxxx`, contradictions, branches covered)
   before the first append.
 - **No existing ledger**: derive the path
-  `docs/decisions/DECISIONS-<repo>-<feature>.md (where <repo> is the
-  directory name of the working repository and <feature> is a short
+  `docs/decisions/DECISIONS-<repo>-<feature>.md` (where `<repo>` is the
+  directory name of the working repository and `<feature>` is a short
   kebab-case slug of the topic), default the parent directory to
-  `docs/decisions/, and confirm the path with the user before the
+  `docs/decisions/`, and confirm the path with the user before the
   first append.
 
 **Stop and wait for the user to confirm or change the path before
@@ -161,9 +161,11 @@ provide multiple goals when they have one.
 **Stop and wait for the user's response.** Do not proceed to Step 4
 or open any branch question until the user has answered. Record the
 response as the foundational goal record (`D001`) in the Decision Ledger
-using the goal record template from eferences/decision-ledger.md.
+using the goal record template from 
+references/decision-ledger.md.
 Append the record immediately. Subsequent context blocks (per
-eferences/locked-question-format.md) and recommendation reasoning
+
+references/locked-question-format.md) and recommendation reasoning
 reference this record.
 
 ### Step 4: Open branches in rounds
@@ -171,7 +173,8 @@ reference this record.
 The session is a sequence of rounds. Each round surfaces at most 3
 unblocked branches, FIFO by ledger ID. Each branch resolves in a
 single agent turn using the 1-turn wrapper from
-eferences/locked-question-format.md.
+
+references/locked-question-format.md.
 
 #### 4.0 Branch discovery and frontier
 
@@ -209,7 +212,8 @@ Before any branch resolves, run both conflict checks:
   record. Re-ask the branch.
 
 Conflict callouts use fixed wording from
-eferences/locked-question-format.md. They do not re-introduce the
+
+references/locked-question-format.md. They do not re-introduce the
 Socratic elicitation turn.
 
 #### 4.3 Emit the wrapper
@@ -220,8 +224,10 @@ Emit the full wrapper for the branch in a single turn:
 2. Frontier statement
 3. Context block (3-row table: Goal, Prior decisions, Scope)
 4. Conflict/contradiction callout (if any)
-5. Options table (5-column, per eferences/options-format.md)
-6. Recommendation (2-line, per eferences/recommendation-format.md)
+5. Options table (5-column, per 
+references/options-format.md)
+6. Recommendation (2-line, per 
+references/recommendation-format.md)
 
 **Stop and wait for the user's response.** Do not emit multiple
 branches in one turn.
@@ -262,7 +268,8 @@ until the write and read-back have succeeded.
 If the write or read-back fails, abort the branch transition, report
 the failure, and offer recovery options.
 
-Apply the tone discipline from eferences/tone-and-output.md on every
+Apply the tone discipline from 
+references/tone-and-output.md on every
 branch transition.
 
 **Open follow-up**: a branch left intentionally unresolved at session
@@ -275,7 +282,8 @@ write a record. Do not run the convergence test.
 ### Step 6: Per-round convergence
 
 After the last branch in a round, run the 5-check convergence test
-from eferences/convergence-test.md. If any check fails, continue
+from 
+references/convergence-test.md. If any check fails, continue
 grilling (or re-open the affected branch). When all five pass, the
 agent may prompt for close-out: "All checks pass. Ready to close out,
 or shall we open the next round?" The user decides whether to stop.
@@ -317,7 +325,7 @@ environment provides.
 
 | Generic name            | Resolves to                                       | Fallback when unavailable                       |
 |-------------------------|---------------------------------------------------|--------------------------------------------------|
-| Document the decision   | 	o-prd (decision memo / PRD tool)               | Local memo file in `docs/decisions/             |
+| Document the decision   | `to-prd` (decision memo / PRD tool)               | Local memo file in `docs/decisions/`             |
 | Specialize to DDD       | `domain-grilling` skill                           | Stay in grilling; do not spawn specialization    |
 | Specialize to code      | `code-implementation-grilling` skill              | Stay in grilling; do not spawn specialization    |
 | Decompose               | `spec-to-tickets`                                  | Hand-roll a checklist file with ledger citations |
