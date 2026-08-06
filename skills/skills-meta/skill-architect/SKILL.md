@@ -84,14 +84,6 @@ The agent must collect four explicit elements:
 - (c) the **trigger context** (when this skill should and should not fire),
 - (d) **one concrete example of the desired behaviour OR a description of the desired output's shape**.
 
-Before collecting the four explicit elements, append a fresh `Dxxx`
-record to the design ledger using the goal record template from
-`references/decision-ledger.md` (Driver / Resolved Answer / Normalized
-Requirement / Constraints). Bump the `<!-- next-d: Dxxx -->` sentinel
-atomically with the append. The `Dxxx` is the foundational goal
-record for the design session. Subsequent structural decisions in
-Steps 2–4 reference this record.
-
 Each clarifying question the agent asks while collecting the four
 elements (the goal-clarification question, the trigger-context
 question, the example-or-output-shape question) is itself a
@@ -106,6 +98,8 @@ Do not amend the `Prompt` field. Do not create a second `Ixxx` for the
 same interaction. Do not move the `Ixxx` in the file.
 
 A fifth element, the **value proposition**, shall be inferred by the agent from the goal and audience. The value prop is a design input that shapes the description, the When to Use scenarios, and the When Not to Use scenarios of the designed skill. The agent shall ask the user about it only if the inference is unclear or ambiguous. If the agent does ask, the question is a clarifying interaction and is recorded as an `Ixxx` per the same append/complete pattern.
+
+Once all four elements (plus the inferred value proposition) are captured, append the foundational `Dxxx` record (`D001`) to the design ledger using the goal record template from `references/decision-ledger.md` (Driver / Resolved Answer / Normalized Requirement / Constraints). Populate the fields from the collected elements. Bump the `<!-- next-d: Dxxx -->` sentinel atomically with the append. This is the foundational goal record for the design session; subsequent structural decisions in Steps 2-4 reference it.
 
 The completion criterion is: all four explicit elements are captured; the workflow advances only when the user has provided an example or a description of the desired output's shape. An anti-example (what the skill should NOT do) is not a substitute for either.
 
