@@ -34,7 +34,7 @@ record to the ledger using this template:
   next question. See
   `../grilling/references/decision-ledger.md` for the rule.
 - The next available `Txxx` ID is read from the trailing
-  `<!-- next-id: Txxx -->` sentinel at the end of the ledger file.
+  `<!-- next-t: Txxx -->` sentinel at the end of the ledger file.
   The sentinel is documented in
   `../grilling/references/decision-ledger.md` (Sentinel comment
   for next append ID); the agent uses the sentinel for
