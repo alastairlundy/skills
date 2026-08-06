@@ -77,6 +77,23 @@ declared trigger.
 Apply the loaded formats verbatim. Do not paraphrase, abbreviate, or
 modify the formats.
 
+`../grilling/references/decision-ledger.md` now documents three
+parallel record streams — `Dxxx` (formal design decisions, written
+by `grilling` / `domain-grilling`), `Txxx` (technical decisions,
+the primary output of this skill), and `Ixxx` (clarifying
+interactions with the user during the session). The `Ixxx` stream
+carries a four-field template (`Prompt`, `User Response`,
+`Resolution`, `Notes`) with a `TBD` placeholder pattern: a fresh
+`Ixxx` is appended with `Prompt` filled and the other three fields
+set to `TBD` before the question is presented to the user, and the
+same record is completed in place after the user answers. The
+reference also defines the `<!-- next-i: Ixxx -->` sentinel that
+the agent reads to find the next append point and bumps atomically
+with each write. Code-implementation-grilling appends `Ixxx`
+records to the same Decision Ledger it writes `Txxx` records to;
+the `Ixxx` is a parallel stream, not a replacement for the
+`Txxx` flow described in Steps 4, 5, and 6.
+
 ### Step 2: Spec and Decision Ledger resolution
 
 Follow grilling's Step 2 (Decision Ledger state summary) with the
@@ -124,6 +141,29 @@ separate agent turns. Resolve with 2-4 options:
 4. **Project Structure** — layout (layered, vertical slices, etc.)?
 5. **Sub-projects** — scope and purpose of each?
 6. **Project Type** — CLI, library, desktop GUI, etc.?
+
+**Decision Ledger `Ixxx` discipline (Steps 4, 5, and 6)** - the
+Socratic elicitation question and the locked question line in every
+two-turn branch are the two user-facing prompts. Before presenting
+either one to the user in Step 4 (foundation items), Step 5 (TDP
+resolution), or Step 6 (interface and model decisions), append a
+fresh `Ixxx` record to the Decision Ledger with the verbatim
+`Prompt` filled and the other three fields marked `TBD`, then bump
+the `<!-- next-i: Ixxx -->` sentinel. After the user answers, edit
+the same `Ixxx` record in place to fill `User Response`,
+`Resolution`, and `Notes`. Never amend `Prompt`, never duplicate
+the `Ixxx`, never move it. Each branch produces two `Ixxx` records
+(one for the Socratic elicitation turn, one for the locked question
+turn), and the eventual `Txxx` (or `Dxxx`) record is appended after
+the user resolves the options — the `Ixxx` records remain
+independent of the `Txxx`/`Dxxx` flow. If the user re-opens a
+question in a later turn (because the user did not answer, asked
+for clarification, or because of a follow-up), add a fresh `Ixxx`
+for the re-ask with the new verbatim prompt; do not amend the prior
+record. The re-ask cycle cap (1 re-ask max, per the
+**Re-ask cycle cap** above) still applies — the `Ixxx` append fires
+once per turn, not per attempt, so a re-ask produces a single
+additional `Ixxx` (not two).
 
 ### Step 4.1: Foundational Preferences (optional)
 
@@ -235,6 +275,32 @@ Blueprints. Branches do not emit their own blueprints during the
 grilling; they only contribute `Dxxx`/`Txxx` records, and the plan
 collects all of them at the endpoint.
 
+### Step 9: Post-session deletion reminder
+
+Per the Lifecycle by skill group table in
+`../grilling/references/decision-ledger.md`, this skill's Decision
+Ledger is **persisted by default**. After the Consolidated
+Implementation Plan in Step 8.5 is complete and convergence is
+declared in Step 8, remind the user in a single short turn that
+the Decision Ledger at
+`docs/decisions/DECISIONS-<repo>-<feature>.md` (or whichever path
+was confirmed in Step 2) is still on disk and can be deleted once
+implementation of the resolved technical decisions is complete. The
+reminder is non-blocking — the user can defer or decline — and the
+agent does not auto-delete. If the user has asked the agent to keep
+the ledger indefinitely (for example, as an audit trail of tech
+decisions), the agent records that decision in a new `Txxx` record
+titled "ledger retention" before honoring it. When the chosen
+output in Step 7 is the standalone `IMPLEMENTATION-<spec-identifier>.md`
+file, the reminder also names the plan file as a candidate for
+deletion after implementation lands (the plan is a context pointer
+valid only for the linked spec). When the Consolidated
+Implementation Plan is consumed by `spec-to-tickets` (which writes
+`Spec section` citations into the tickets), the deletion reminder
+is suppressed — `spec-to-tickets` will present its own
+`### Source-file cleanup` prompt after publishing, and the two
+prompts would duplicate the question.
+
 ## References
 
 The skill consumes the following references. The **default** load
@@ -246,9 +312,10 @@ in by listing the reference here with an explicit `eager` or
 
 - **`../grilling/references/decision-ledger.md`** — *eager*. Load in
   full before the first user question. Defines the ledger file
-  layout, the per-branch record template, the `Dxxx`/`Txxx` ID
-  format, the trailing `<!-- next-id: Dxxx -->` sentinel, and the
-  real-time appending rule.
+  layout, the per-branch record templates, the `Dxxx`/`Txxx`/`Ixxx`
+  ID format, the trailing `<!-- next-d: Dxxx -->`,
+  `<!-- next-t: Txxx -->`, and `<!-- next-i: Ixxx -->` sentinels, and
+  the real-time appending rule.
 - **`../grilling/references/options-format.md`** — *eager*. Load in
   full before the first user question. Defines the 4-field option
   block (What it is / Benefit / Cost / Risk) and the per-field cap
@@ -316,8 +383,9 @@ transcript:
 - [ ] Every record used the inline template (`Driver`, `Resolved
       Answer`, `Normalized Requirement`, `Constraints`) and a fresh
       `Dxxx` or `Txxx` ID read from the trailing
-      `<!-- next-id: Dxxx|Txxx -->` sentinel (with the scan-file
-      fallback when the sentinel is missing or out of sync).
+      `<!-- next-d: Dxxx -->` or `<!-- next-t: Txxx -->` sentinel
+      (with the scan-file fallback when the sentinel is missing or
+      out of sync).
 - [ ] Every record's `Driver` field captured the user's underlying
       principle or motivation, distinct from `Resolved Answer` (the
       what) and `Normalized Requirement` (the testable outcome).
@@ -407,3 +475,22 @@ transcript:
 - [ ] Every citation of a Decision Ledger record from outside the
       ledger file used the `filename#Dxxx` format (e.g.,
       `DECISIONS-repo-feature.md#D001`), not a bare `Dxxx` ID.
+- [ ] For every Socratic elicitation question and locked question
+      line presented in Steps 4, 5, and 6, a fresh `Ixxx` record was
+      appended to the Decision Ledger before the prompt was
+      presented, with `Prompt` filled and the other three fields set
+      to `TBD`, and the `<!-- next-i: Ixxx -->` sentinel bumped. Each
+      `Ixxx` was completed in place after the user answered;
+      `Prompt` was never amended, records were never duplicated or
+      moved, and re-asks produced a fresh `Ixxx` rather than an edit
+      to the prior record. The re-ask cycle cap (1 re-ask max) still
+      applied — the `Ixxx` append fired once per turn, not per
+      attempt.
+- [ ] After convergence was declared in Step 8, the post-session
+      deletion reminder in Step 9 was emitted in a single short
+      turn naming the confirmed Decision Ledger path (and the
+      standalone `IMPLEMENTATION-<spec-identifier>.md` plan file
+      when Step 7 chose the standalone output). The reminder was
+      suppressed when the plan was handed off to `spec-to-tickets`
+      (which presents its own deletion prompt). The reminder was
+      non-blocking and the agent did not auto-delete.
