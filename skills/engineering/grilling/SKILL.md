@@ -220,16 +220,19 @@ The two turns are:
    Before emitting the Socratic elicitation question, append a fresh
    `Ixxx` record to the Decision Ledger using the Ixxx record
    template from `references/decision-ledger.md`. The `Prompt` field
-   is the verbatim Socratic elicitation question text (or, when the
-   user has already engaged with prior Socratic questions and the
-   branch does not need another one, the verbatim locked-question
-   line that will be emitted in Turn 2). The other three fields
-   (`User Response`, `Resolution`, `Notes`) are set to the literal
-   string `TBD`. The `<!-- next-i: Ixxx -->` sentinel is bumped
-   atomically with the append. The `Ixxx` is recorded regardless of
-   whether the Socratic question is offered or skipped — every
-   branch produces exactly one `Ixxx`, and the `Ixxx` is anchored to
-   the prompt that was actually presented to the user.
+   is the verbatim Socratic elicitation question text. The other three
+   fields (`User Response`, `Resolution`, `Notes`) are set to the
+   literal string `TBD`. The `<!-- next-i: Ixxx -->` sentinel is
+   bumped atomically with the append.
+
+   The `Ixxx` is anchored to the prompt that was actually presented to
+   the user. If the Socratic question is skipped (user has already
+   engaged with prior Socratic questions), the `Ixxx` is anchored to
+   the locked-question line that will be emitted in Turn 2. When both
+   the Socratic question and the locked-question line are presented
+   (i.e., the Socratic is not skipped), append a second fresh `Ixxx`
+   immediately before the locked-question line in Turn 2 — one `Ixxx`
+   per presented prompt.
 
    The Socratic elicitation question is:
 

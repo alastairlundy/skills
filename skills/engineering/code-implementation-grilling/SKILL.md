@@ -158,12 +158,12 @@ turn), and the eventual `Txxx` (or `Dxxx`) record is appended after
 the user resolves the options — the `Ixxx` records remain
 independent of the `Txxx`/`Dxxx` flow. If the user re-opens a
 question in a later turn (because the user did not answer, asked
-for clarification, or because of a follow-up), add a fresh `Ixxx`
-for the re-ask with the new verbatim prompt; do not amend the prior
-record. The re-ask cycle cap (1 re-ask max, per the
-**Re-ask cycle cap** above) still applies — the `Ixxx` append fires
-once per turn, not per attempt, so a re-ask produces a single
-additional `Ixxx` (not two).
+for clarification, or because of a follow-up), append a fresh `Ixxx`
+for the re-ask with the new verbatim prompt before each presented
+prompt; do not amend the prior record. The re-ask cycle cap (1 re-ask
+max, per the **Re-ask cycle cap** above) still applies — each
+presented prompt produces its own `Ixxx` (so a full two-prompt re-ask
+produces two fresh `Ixxx` records, not one).
 
 ### Step 4.1: Foundational Preferences (optional)
 
