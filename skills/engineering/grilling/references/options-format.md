@@ -26,10 +26,6 @@ optional prose. The preamble must convey:
 
 The fixed preamble is:
 
-The reference-set preamble is the following user-facing template. The
-"you" inside refers to the user; emit it verbatim and wait for the user
-to respond.
-
 ```md
 Here are options to help you refine or confirm your answer. Pick one,
 reject all, or hybridize.
@@ -37,84 +33,55 @@ reject all, or hybridize.
 
 ## How many options
 
-Typically 2–4. An option is defensible if all four fields below can be
-filled with non-trivial, option-specific content. If any field would read
+Typically 2–4. An option is defensible if all five columns below can be
+filled with non-trivial, option-specific content. If any column would read
 `TBD`, `same as Option N`, or `none`, the option is not defensible —
 drop it or replace it.
 
-## The four required fields
+## The five-column table
 
-Each option is a structured block. **One sentence per field.** Write in
-Professional Minimalist style: punchy, direct, clear. No filler.
+Every option is a row in a 5-column markdown table. The columns are
+fixed and ordered. The recommended option's name is **bolded** in the
+Option column.
 
+| Option | What it is | Benefit | Cost | Risk |
+|--------|-----------|---------|------|------|
+
+- **Option** — the option number and name. The recommended option's
+  name is **bolded**. Do not use a separate "Recommended" suffix or
+  annotation; the bolded name is the signal.
 - **What it is** — one sentence describing the option.
-- **Benefit** — one sentence describing the gain if this option is chosen.
-  Answers: "What do I get?"
-- **Cost** — one sentence describing the realistic/actual sacrifice.
-  Answers: "What do I definitely give up?"
-- **Risk** — one sentence describing what might go wrong later.
-  Answers: "What could happen in the future?"
+- **Benefit** — one sentence describing the gain. Answers: "What do I
+  get?"
+- **Cost** — one sentence describing the realistic sacrifice. Answers:
+  "What do I definitely give up?"
+- **Risk** — one sentence describing what might go wrong later. Answers:
+  "What could happen in the future?"
 
-### Per-field cap (enforceable)
+### Cell-level caps (enforceable)
 
-The "one sentence per field" rule is enforced objectively rather than
-left to agent judgment. Two equivalent mechanisms are acceptable;
-pick one and apply it consistently:
+- Each cell is ≤ **90 characters** and ≤ **2 sentences**.
+- Compression preserves the field's claim — dropping a field entirely
+  is a violation.
+- If a cell would exceed the cap, the agent compresses the wording.
+  Promote additional detail into a subsequent branch or into the
+  recommendation's `Reasoning` field — never by exceeding the cap or
+  by dropping the field.
 
-- **Word cap** — at most **20 words per field**.
-- **Sentence-count check** — at most **1 sentence per field**, verified
-  by counting terminal punctuation (`.`, `?`, `!`) in the field text.
-
-The cap is applied at write time or in CI, not by reader judgment. A
-field that exceeds the cap must be trimmed or rewritten — the rule
-exists so the discriminator between options stays scannable.
-
-Complex options (a branch that would require four sub-decisions to
-disambiguate) are out of scope for this rule: promote them to
-separate branches per the format guidance above. The cap is the
-mechanism, not a new field.
-
-## Format
-
-```md
-- **Option N — <Name>.** What it is: <one sentence>. Benefit: <one
-  sentence>. Cost: <one sentence>. Risk: <one sentence>.
-```
-
-The `<Name>` is copied verbatim into the recommendation block — see
-`recommendation-format.md`.
+The cap is applied at write time or in CI, not by reader judgment.
 
 ## Worked example
 
-**For D007 – where the precondition check lives: pick an option,
-hybridize, or provide your own answer.**
-
-<user states their answer>
-
+```md
 Here are options to help you refine or confirm your answer. Pick one,
 reject all, or hybridize.
 
-- **Option 1 — Constructor check.** What it is: the precondition runs in
-  the tab container's constructor, throwing on null dependencies.
-  Benefit: failures surface synchronously at the call site, which makes
-  the bug obvious in test output. Cost: the container cannot be
-  constructed for serialization or test scaffolding without supplying
-  every dependency. Risk: a future caller may bypass the check with a
-  factory that swallows the exception.
-- **Option 2 — Static factory validation.** What it is: a `Create`
-  factory runs the precondition and returns a `Result<TabContainer>`
-  rather than throwing. Benefit: errors are values, not exceptions, and
-  can be pattern-matched in calling code. Cost: every call site grows
-  from one line to a `match` or `if let` block. Risk: a future developer
-  may unwrap the result without inspecting it, silently discarding the
-  failure.
-- **Option 3 — Post-construction validator.** What it is: the
-  container is built unconditionally and a separate `Validate` method
-  reports dependency health on demand. Benefit: construction is cheap
-  and side-effect free, which is friendly to ORMs and serializers.
-  Cost: invalid containers exist in memory until something calls
-  `Validate`. Risk: the validator is forgotten in a code path, and the
-  invalid container reaches production.
+| Option | What it is | Benefit | Cost | Risk |
+|--------|-----------|---------|------|------|
+| **A — Constructor check** | Precondition runs in the container constructor, throwing on null. | Failures surface synchronously at the call site. | Container cannot be built for serialization without all deps. | Future caller bypasses check via a swallowing factory. |
+| B — Static factory validation | A `Create` factory returns `Result<T>` instead of throwing. | Errors are values, not exceptions. | Every call site grows to a `match` block. | Developer unwraps result without inspecting it. |
+| C — Post-construction validator | Container built unconditionally; `Validate` reports health on demand. | Construction is cheap and side-effect free. | Invalid containers exist until Validate is called. | Validator forgotten; invalid container reaches production. |
+```
 
 ## Anti-patterns
 
@@ -126,5 +93,7 @@ reject all, or hybridize.
   be defensible. If the agent believes one is correct, it is the
   recommendation, not an option.
 - **"Same as Option N" fields.** Each option must stand on its own. The
-  four fields are how the user discriminates; shared fields defeat the
+  five columns are how the user discriminates; shared columns defeat the
   test.
+- **Dropping a field to fit the cap.** All five columns are mandatory
+  in every row. Compression is the mechanism, not omission.
