@@ -476,7 +476,9 @@ After the chosen exit is handed off, issue a one-sentence reminder that
 the Decision Ledger at `docs/decisions/DECISIONS-<repo>-<feature>.md`
 is **persisted by default** and that the user can delete it from
 `docs/decisions/` once implementation of the resolved decisions is
-complete (per the lifecycle in `references/decision-ledger.md`).
+complete (per the lifecycle in `references/decision-ledger.md`). If the
+exit hands off to `spec-to-tickets`, suppress this reminder --
+`spec-to-tickets` will present its own cleanup prompt.
 
 The reminder is non-blocking. The user can defer, decline, or accept
 immediately. Do not delete the file without an explicit user instruction
@@ -655,4 +657,5 @@ transcript:
       is complete. The reminder was non-blocking. The agent did not
       delete the file without an explicit user instruction to do so.
       The reminder was not re-issued if the user had already deferred
-      or declined earlier in the session.
+      or declined earlier in the session. When the exit hands off to
+      `spec-to-tickets`, the deletion reminder was suppressed.
