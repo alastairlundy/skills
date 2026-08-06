@@ -50,21 +50,21 @@ Collect the high-level goal, target audience, and any initial sketches or "vague
 
 If file creation is out of scope, follow with a one-line prompt — e.g. *"Tell me if you want the skill saved to a SKILL file after the design is resolved."*
 
-The scope declaration itself is a clarifying interaction. Before
-emitting the verbatim scope declaration, append a fresh `Ixxx` record
-to the design ledger using the Ixxx record template from
+After stating whether file creation is in scope, ask the user a
+one-line follow-up -- e.g. *"Tell me if you want the skill saved to a
+SKILL file after the design is resolved."* Record this question as a
+clarifying interaction. Before emitting it, append a fresh `Ixxx`
+record to the design ledger using the Ixxx record template from
 `references/decision-ledger.md`. The `Prompt` field captures the
-verbatim scope declaration text. The other three fields
-(`User Response`, `Resolution`, `Notes`) are set to the literal string
-`TBD`. Bump the `<!-- next-i: Ixxx -->` sentinel atomically with the
-append.
+verbatim question text. The other three fields (`User Response`,
+`Resolution`, `Notes`) are set to the literal string `TBD`. Bump the
+`<!-- next-i: Ixxx -->` sentinel atomically with the append.
 
-If file creation is out of scope, the Ixxx is still recorded — the
-follow-up prompt ("Tell me if you want the skill saved...") is
-captured as a separate clarifying interaction. If the user does not
-ask for a save at this point, the Ixxx is completed in place with
-`User Response = "no save requested"` and `Resolution = "skipped file
-creation; design remains in conversation"`.
+After the user answers, complete the `Ixxx` in place:
+- If the user declines (`User Response = "no save requested"`), set
+  `Resolution = "skipped file creation; design remains in conversation"`.
+- If the user confirms file creation (`User Response = "save requested"`
+  or equivalent), set `Resolution = "file creation in scope"`.
 
 If the target skill directory is known at this point (e.g., the user
 has already named a target path), initialize the design ledger at
