@@ -9,34 +9,62 @@ outside the ledger file, use the `filename#<Dxxx|Txxx|Ixxx>` format
 (e.g., `DECISIONS-repo-feature.md#D001`,
 `DECISIONS-repo-feature.md#I002`).
 
-The canonical reference is this file. The two children of `grilling`
-(`domain-grilling`, `code-implementation-grilling`) load it via the
-relative path `../grilling/references/decision-ledger.md`. The two other
-consumers (`skill-architect`, `spec-to-tickets`) ship their own copies
-in their own `references/` directories, with a `## When to Use` section
-listing the skill-specific triggers.
+This file is the **own copy** shipped with `spec-to-tickets`. It is
+identical to the canonical reference
+(`skills/engineering/grilling/references/decision-ledger.md`) except
+for the `## When to Use` section below, which lists the skill-specific
+triggers for consulting this reference. The two other consumers that
+ship their own copies are `skill-architect` and (for the canonical,
+loaded via relative path) the two children of `grilling`
+(`domain-grilling`, `code-implementation-grilling`).
+
+## When to Use
+
+Use this reference when the agent is operating under `spec-to-tickets`
+and needs to:
+
+- Detect a Decision Ledger at the input layer. When the input is a
+  spec or PRD that ships with an accompanying Decision Ledger (or
+  when the user passes a Decision Ledger path explicitly), load this
+  reference for the citation format (`filename#<Dxxx|Txxx>`) and
+  the record-completion patterns. The agent does not own a ledger
+  itself; it reads and writes to the ledger provided as input.
+- Record a clarifying interaction in the input ledger before
+  presenting a question to the user. When the agent asks the user a
+  clarification question during Step 3 (Input Sufficiency Check),
+  Step 4 (Codebase Exploration), or Step 6 (Ticket Decomposition),
+  append a fresh `Ixxx` record to the input ledger before the
+  question is presented, with `Prompt` filled and the other three
+  fields set to `TBD`. After the user responds, complete the `Ixxx`
+  in place. The `Ixxx` is anchored to the prompt that was actually
+  presented.
+- Prompt the user for deletion of the input ledger (and any
+  companion implementation blueprint named in the same path family)
+  after ticket creation, per the lifecycle in this reference and
+  per the Step 10 prompt below. The deletion prompt is non-blocking
+  — the user can decline.
 
 ## Path derivation
 
-For grilling and its children, the ledger lives at
-`docs/decisions/DECISIONS-<repo>-<feature>.md`:
+For `spec-to-tickets`, the ledger path is **not derived** by the
+agent — the ledger is provided as input, either explicitly (the user
+names the path) or implicitly (the spec body or accompanying
+documentation references it). The agent reads the user-supplied path
+or follows the reference in the spec to the file.
 
-- `<repo>` is the directory name of the working repository.
-- `<feature>` is a short kebab-case slug of the topic being grilled
-  (e.g., `tab-session-restore`, `pricing-pivot`, `retro-format`).
+If the input is a `domain-grilling` or `code-implementation-grilling`
+output, the ledger typically lives at
+`docs/decisions/DECISIONS-<repo>-<feature>.md` and any companion
+implementation blueprint at
+`docs/blueprints/BLUEPRINT-<repo>-<feature>.md` (or a similar
+sibling path). The agent treats the input ledger and any companion
+blueprint as the source of truth for resolved decisions and for
+ticket-coverage citations.
 
-For `skill-architect`, the ledger lives at
-`<target-skill-dir>/.design-ledger.md` — a hidden local file in the
-target skill directory, deleted on materialization.
-
-Examples:
-
-- Working in `~/code/acme-store`, topic is "tab session restore" →
-  `docs/decisions/DECISIONS-acme-store-tab-session-restore.md`.
-- Working in `~/code/acme-store`, topic is "should we pivot to per-seat
-  pricing" → `docs/decisions/DECISIONS-acme-store-pivot-per-seat.md`.
-- Designing a new skill in `skills/engineering/<new-skill>/` →
-  `skills/engineering/<new-skill>/.design-ledger.md`.
+If no Decision Ledger is detected, the agent routes per Step 3
+(DDD-alignment rule) and continues without ledger I/O. The agent
+does not create a Decision Ledger of its own — `spec-to-tickets` is
+not a ledger-owning skill.
 
 ## File format
 
@@ -55,16 +83,16 @@ Each stream is independent — `Dxxx` and `Ixxx` counters both start at
 ### Sentinel comments for next append IDs
 
 Every ledger file ends with one HTML-style sentinel comment per active
-stream. A grilling-group file that records both `Dxxx` decisions and
-`Ixxx` interactions ends with two sentinels:
+stream. For an input ledger that records `Dxxx` and `Ixxx` (or
+`Dxxx`, `Txxx`, and `Ixxx`), the sentinels are the same as in the
+canonical reference:
 
 ```md
 <!-- next-d: Dxxx -->
 <!-- next-i: Ixxx -->
 ```
 
-A `code-implementation-grilling` ledger also records `Txxx` decisions
-and ends with three sentinels:
+or, for a `code-implementation-grilling` ledger:
 
 ```md
 <!-- next-d: Dxxx -->
@@ -85,15 +113,10 @@ append on that stream.
 
 ## Lazy creation
 
-`docs/decisions/` (or the equivalent parent directory) is created only
-when the first record of any stream is about to be written. Do not
-create the directory during the initialization summary; create it on
-the first real append.
-
-For `skill-architect`, `.design-ledger.md` is created lazily — the
-target skill directory is not yet guaranteed to exist when Step 1
-begins, so the file is created when the directory exists, on the first
-real append at the latest.
+`spec-to-tickets` does not create ledgers. The agent reads the
+input ledger (when one is provided) and appends `Ixxx` records
+directly to it. The input ledger must already exist; the agent
+does not create `docs/decisions/` or any equivalent directory.
 
 ## Real-time appending
 
@@ -106,16 +129,18 @@ branch and correct it before drift compounds.
 
 For `Ixxx` records, the append fires in two steps:
 
-1. **Pre-question append.** Before presenting the Socratic elicitation
-   question or the locked question line, append an `Ixxx` record with
-   the `Prompt` field filled and the other three fields marked `TBD`,
-   then bump the `<!-- next-i: Ixxx -->` sentinel. The `TBD`
-   placeholders are placeholders, not a permanent state.
-2. **Post-response complete.** After the user answers and the branch
-   resolves, edit the same `Ixxx` record in place to fill `User
-   Response`, `Resolution`, and `Notes` with the user's exact words
-   and the agent's notes. Read-back to confirm the four fields are now
-   filled and the `Ixxx` is in its expected position in the file.
+1. **Pre-question append.** Before presenting a clarification
+   question to the user, append an `Ixxx` record to the input
+   ledger with the `Prompt` field filled and the other three
+   fields marked `TBD`, then bump the `<!-- next-i: Ixxx -->`
+   sentinel. The `TBD` placeholders are placeholders, not a
+   permanent state.
+2. **Post-response complete.** After the user answers and the
+   branch resolves, edit the same `Ixxx` record in place to fill
+   `User Response`, `Resolution`, and `Notes` with the user's exact
+   words and the agent's notes. Read-back to confirm the four
+   fields are now filled and the `Ixxx` is in its expected position
+   in the file.
 
 ## Dxxx record template
 
@@ -144,8 +169,7 @@ For `Ixxx` records, the append fires in two steps:
   implementer or verifier can act on. The "testable" bar is the same as
   a PRD acceptance criterion.
 - `Constraints` are negative requirements, edge cases, or defaults the
-  user named (e.g., "Do not collapse multiple tabs into one session",
-  "All open tabs must survive restart"). If none, write `None.`
+  user named. If none, write `None.`
 
 ## Txxx record template
 
@@ -175,23 +199,23 @@ spec links. The full template is in
   sync, fall back to scanning the file for the highest existing `Ixxx`
   and re-seeding the sentinel before the next append.
 - `Prompt` is the **verbatim** agent text that was presented to the
-  user — the Socratic elicitation question, the locked question line,
-  or a single-sentence clarification. Do not paraphrase the prompt.
+  user — the input-clarification question, the coverage-gap question,
+  the closing-question item, or any other clarifying prompt. Do not
+  paraphrase the prompt.
 - `User Response` is the **verbatim** user text that answered the
   prompt, or a close paraphrase the user has explicitly accepted. It
   is not the agent's summary. If the user answered with multiple
   sentences, capture the load-bearing sentence and put the rest in
   `Notes`.
-- `Resolution` describes what the response was used for — which option
-  it steered, which branch it opened, which constraint it surfaced. If
-  the response is a deferred or non-answer (e.g., "skip", "as-is",
-  silence), the resolution still records what the agent did in
-  response (e.g., "declined the Socratic question; proceeded to Turn 2
-  with default framing").
+- `Resolution` describes what the response was used for — which
+  coverage gap it closed, which decision-record citation it clarified,
+  which decomposition adjustment it drove. If the response is a
+  deferred or non-answer, the resolution still records what the agent
+  did in response.
 - `Notes` is for context the next reader needs that does not fit in the
   other three fields — non-load-bearing parts of the user response,
-  cross-references to a `Dxxx`/`Txxx` record the interaction drove, or
-  edge cases the user named in passing.
+  cross-references to a `Dxxx` / `Txxx` record the interaction drove,
+  or edge cases the user named in passing.
 
 ### TBD placeholder pattern
 
@@ -207,7 +231,7 @@ in the file. The `Ixxx` keeps its original position.
 
 The first `Dxxx` record in the ledger (`D001`) is the **goal record**.
 It captures the session's foundational goal as surfaced by the
-goal-discovery question. The goal record uses the same template but
+goal-discovery step. The goal record uses the same template but
 with goal-specific content:
 
 ```md
@@ -233,7 +257,7 @@ traceability.
 
 ## Soft cap
 
-If a single Decision Ledger reaches **~30 `Dxxx`/`Txxx` records**,
+If a single Decision Ledger reaches **~30 `Dxxx` / `Txxx` records**,
 consider closing it and opening a new one for the next phase of the
 interview. The cap is a trigger for reflection, not a hard limit;
 override with reasoning if the interview genuinely needs more. The cap
@@ -282,49 +306,35 @@ about ledgers when none is provided.
 ```md
 ### [D001] — session goal
 
-- **Driver**: the user wants to build a platform that correctly models
-  the payment relationship between contacts and client organizations.
-- **Resolved Answer**: "clarify the domain model for a freelancing
-  platform where contacts message on behalf of client organizations."
-- **Normalized Requirement**: The session shall produce a domain model
-  that distinguishes contacts from client organizations and defines
-  the payment flow.
+- **Driver**: the user wants to track session restore behaviour in
+  the desktop client.
+- **Resolved Answer**: "clarify the tab session restore flow."
+- **Normalized Requirement**: The session shall produce a
+  decomposition into implementation tickets that respects the
+  resolved tab-restore decisions.
 - **Constraints**: `None.`
 
-### [I001] — payment direction
+### [I001] — coverage gap on D004
 
-- **Prompt**: "What are you working toward in this decision? You may
-  answer, or skip and see the options as-is."
-- **User Response**: "I want the platform fee to be transparent and
-  deducted before the freelancer receives funds."
-- **Resolution**: drove the framing of the options for D002 toward a
-  payer-side fee model; recommended Option 1 on this basis.
-- **Notes**: the user also mentioned the freelancer's tax
-  responsibilities in passing, deferred to a later branch.
+- **Prompt**: "I notice D004 (per-tab recovery window) has no
+  covering ticket in the proposed set. Should I add a ticket for
+  it, or is it intentionally out of scope for this PR?"
+- **User Response**: "Add a ticket; per-tab window is in scope."
+- **Resolution**: drove the addition of TK003 to the proposal;
+  the new ticket cites D004 in its acceptance criteria.
+- **Notes**: `None.`
 
-### [D002] — who hires whom
+### [D002] — per-tab recovery window
 
-- **Driver**: the user wants the model to reflect real-world agency —
-  the contact acts for an organization, not for themselves.
-- **Resolved Answer**: "the contact is a person acting for a client
-  organization; the client organization is the payer."
-- **Normalized Requirement**: The platform shall distinguish between
-  a `Contact` (the person messaging) and a `ClientOrganization` (the
-  legal entity that invoices and pays).
-- **Constraints**: Both terms must exist in the glossary
-  (`docs/GLOSSARY.md`) with the definitions recorded inline here.
-
-### [D003] — how payments are routed
-
-- **Driver**: the user wants the platform fee to be transparent and
-  deducted before the freelancer receives funds.
-- **Resolved Answer**: "client organization is the payer; freelancer
-  is the payee; platform takes a percentage fee."
-- **Normalized Requirement**: Payment flow shall route funds from
-  `ClientOrganization` to `Freelancer` with a platform fee deducted
-  before the freelancer payout.
-- **Constraints**: `None.`
+- **Driver**: the user wants per-tab recovery windows so partial
+  failures do not roll back unrelated tabs.
+- **Resolved Answer**: "per-tab recovery window, 5 minutes."
+- **Normalized Requirement**: Each tab shall be wrapped in a
+  5-minute recovery window; partial failures shall not roll
+  back unrelated tabs.
+- **Constraints**: Do not collapse multiple tabs into one
+  recovery window.
 ```
 
-<!-- next-d: D004 -->
+<!-- next-d: D003 -->
 <!-- next-i: I002 -->

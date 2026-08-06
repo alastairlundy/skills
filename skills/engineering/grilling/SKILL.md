@@ -81,8 +81,12 @@ After the pre-flight passes, load and read each of the six references
 in full before the first user question:
 
 - `references/decision-ledger.md` — Decision Ledger path derivation,
-  `Dxxx` record format with Driver field, goal record, lazy creation,
-  soft cap, re-opens.
+  parallel `Dxxx` and `Ixxx` ID streams with sentinel comments, the
+  `Dxxx` record format (Driver, Resolved Answer, Normalized
+  Requirement, Constraints), the `Ixxx` record format (Prompt, User
+  Response, Resolution, Notes) with the TBD placeholder pattern, goal
+  record, lazy creation, soft cap, re-opens, lifecycle by skill group,
+  and storage conventions per skill.
 - `references/options-format.md` — the reference-set preamble and the
   four-field option block (What it is / Benefit / Cost / Risk).
 - `references/recommendation-format.md` — the three-field recommendation
@@ -167,6 +171,24 @@ Append the record immediately. Subsequent context blocks (per
 `references/locked-question-format.md`) and recommendation reasoning
 reference this record.
 
+The goal-discovery question is itself a clarifying interaction. Before
+emitting the question, append a fresh `Ixxx` record to the Decision
+Ledger using the Ixxx record template from `references/decision-ledger.md`,
+with `Prompt` set to the verbatim goal-discovery question text and the
+other three fields (`User Response`, `Resolution`, `Notes`) set to the
+literal string `TBD`. Bump the `<!-- next-i: Ixxx -->` sentinel
+atomically with the append. After the user answers, complete the
+`Ixxx` in place by filling the three `TBD` fields with the user's
+verbatim response, the resolution (the goal record D001 it drove), and
+any cross-references or non-load-bearing context. Read-back to confirm
+the `Ixxx` is in its expected position in the file and the three
+fields are now filled. Do not amend the `Prompt` field. Do not create a
+second `Ixxx` for the same interaction. If the user pre-stated a goal
+in the initial message and the agent only asked for confirmation or
+refinement, the `Ixxx` is still recorded — the `Prompt` field captures
+the verbatim confirmation-or-refinement question that was presented to
+the user.
+
 ### Step 4: Open Branch A
 
 Open the first decision branch using the locked question sequence
@@ -194,6 +216,23 @@ The two turns are:
    goal record (D001) and any prior branch records. Then ask the
    optional Socratic elicitation question verbatim. **Stop and wait
    for the user's response.**
+
+   Before emitting the Socratic elicitation question, append a fresh
+   `Ixxx` record to the Decision Ledger using the Ixxx record
+   template from `references/decision-ledger.md`. The `Prompt` field
+   is the verbatim Socratic elicitation question text. The other three
+   fields (`User Response`, `Resolution`, `Notes`) are set to the
+   literal string `TBD`. The `<!-- next-i: Ixxx -->` sentinel is
+   bumped atomically with the append.
+
+   The `Ixxx` is anchored to the prompt that was actually presented to
+   the user. If the Socratic question is skipped (user has already
+   engaged with prior Socratic questions), the `Ixxx` is anchored to
+   the locked-question line that will be emitted in Turn 2. When both
+   the Socratic question and the locked-question line are presented
+   (i.e., the Socratic is not skipped), append a second fresh `Ixxx`
+   immediately before the locked-question line in Turn 2 — one `Ixxx`
+   per presented prompt.
 
    The Socratic elicitation question is:
 
@@ -297,7 +336,7 @@ The following signals indicate **resolution**:
 
 The post-pick step is a **gated step**: the next branch must not open
 until both the write and the read-back have succeeded. The step has
-five actions in a fixed order; actions 3 and 4 are load-bearing and
+six actions in a fixed order; actions 3, 4, and 5 are load-bearing and
 are not optional.
 
 1. Confirm the pick in one sentence.
@@ -316,7 +355,27 @@ are not optional.
    until the read-back confirms the new record is last. If the
    read-back does not show the new `Dxxx` as the last record, treat
    the write as failed and apply the recovery options below.
-5. Move to the next branch.
+5. **Complete the `Ixxx` for this branch.** Edit the `Ixxx` record
+   appended in Step 4 Turn 1 in place to fill the three `TBD` fields
+   (`User Response`, `Resolution`, `Notes`) with the user's verbatim
+   response, the agent's resolution summary (which decision the
+   response drove, which option it steered, which constraint it
+   surfaced), and any cross-references or non-load-bearing context.
+   Read-back to confirm the `Ixxx` is in its original position in the
+   file and the three fields are now filled. If the user declined the
+   Socratic elicitation question, the `User Response` field still
+   records the decline signal and the `Resolution` field records how
+   the agent proceeded (e.g., "proceeded to Turn 2 with default
+   framing"). If the user answered the locked question line directly
+   without engaging the Socratic question, the `User Response` field
+   records that locked-question-line answer and the `Resolution` field
+   records how it drove the `Dxxx` resolution. Do not amend the
+   `Prompt` field. Do not create a second `Ixxx` for the same
+   interaction. Do not move the `Ixxx` in the file. If the edit fails
+   or the read-back does not show the `Ixxx` in its original position
+   with all three fields filled, treat the complete as failed and
+   apply the same recovery options as actions 3 and 4.
+6. Move to the next branch.
 
 The post-pick confirmation is one sentence. The "you can ask" reminder
 is part of the post-pick template, not optional prose. The LLM does not
@@ -414,6 +473,28 @@ the generic behaviour described in the body of each exit.
 | Handoff to another agent| User-specified target agent                       | Save the ledger path; user passes it manually    |
 | Custom save             | User-specified destination                        | n/a — by definition user-supplied                |
 
+### Step 9: Post-session deletion reminder
+
+After the chosen exit is handed off, issue a one-sentence reminder that
+the Decision Ledger at `docs/decisions/DECISIONS-<repo>-<feature>.md`
+is **persisted by default** and that the user can delete it from
+`docs/decisions/` once implementation of the resolved decisions is
+complete (per the lifecycle in `references/decision-ledger.md`). If the
+exit hands off to `spec-to-tickets`, suppress this reminder --
+`spec-to-tickets` will present its own cleanup prompt.
+
+The reminder is non-blocking. The user can defer, decline, or accept
+immediately. Do not delete the file without an explicit user instruction
+to do so. Do not loop the reminder — issue it once, at the end of the
+session, after the exit handoff. If the user has already chosen to
+defer or decline earlier in the session, do not re-issue the reminder.
+
+If the user confirms deletion, delete the file. Name each companion
+artifact (e.g., a sibling `BLUEPRINT-<repo>-<feature>.md`) and ask
+the user explicitly whether to delete it too — do not delete a
+companion without its own confirmation. Confirm each deletion with
+a single sentence. Do not empty any file in place.
+
 ## Validation
 
 After completing the workflow, verify each item against the session
@@ -510,13 +591,40 @@ transcript:
       option-comparison), explaining why the recommended option serves
       the user's stated goal.
 - [ ] The post-pick step ran as a **gated step** and did not open the
-      next branch until both the write and the read-back succeeded:
-      (1) one-sentence confirmation, (2) reminder that the user can
-      ask for the goal-aligned rejection rationale, (3) tool call to
-      append the `Dxxx` record (bound to a successful tool-call
+      next branch until both the `Dxxx` write and the `Ixxx` complete
+      succeeded: (1) one-sentence confirmation, (2) reminder that the
+      user can ask for the goal-aligned rejection rationale, (3) tool
+      call to append the `Dxxx` record (bound to a successful tool-call
       result — a narrative statement is not a write), (4) read-back
       verification confirming the new `Dxxx` is the last record in
-      the file, (5) transition to the next branch.
+      the file, (5) tool call to complete the `Ixxx` for this branch
+      in place by filling the three `TBD` fields with the user's
+      verbatim response, the resolution, and any cross-references or
+      non-load-bearing context (the `Prompt` field is not amended; the
+      `Ixxx` is not moved; no second `Ixxx` is created for the same
+      interaction), (6) read-back verification confirming the `Ixxx`
+      is in its original position with all three fields now filled,
+      and (7) transition to the next branch.
+- [ ] Every clarifying interaction produced exactly one `Ixxx` record
+      in the Decision Ledger, anchored to the verbatim agent prompt
+      that was presented to the user (Socratic elicitation question,
+      locked question line, goal-discovery question, or
+      confirmation-or-refinement question). The `Ixxx` was appended
+      before the prompt was presented to the user, with `Prompt`
+      filled and the other three fields (`User Response`,
+      `Resolution`, `Notes`) marked `TBD`. The `<!-- next-i: Ixxx -->`
+      sentinel was bumped atomically with the append.
+- [ ] Every `Ixxx` record was completed in place after the user
+      responded. The `Prompt` field was not amended, the `Ixxx` was
+      not moved in the file, and no second `Ixxx` was created for the
+      same interaction. The completed `Ixxx` is in its original
+      position in the file with all three `TBD` fields now filled.
+      When the user declined a Socratic elicitation question, the
+      `User Response` field still records the decline signal and the
+      `Resolution` field records how the agent proceeded. When the
+      user answered the locked question line directly without
+      engaging the Socratic question, the `User Response` field
+      records that locked-question-line answer.
 - [ ] When the user asked for the recommendation rationale, the agent
       provided concise goal-aligned rejection reasoning for the other
       options (not option-comparison).
@@ -545,3 +653,12 @@ transcript:
 - [ ] Every citation of a Decision Ledger record from outside the ledger
       file used the `filename#Dxxx` format (e.g.,
       `DECISIONS-repo-feature.md#D001`), not a bare `Dxxx` ID.
+- [ ] A one-sentence post-session deletion reminder was issued exactly
+      once, after the exit handoff, stating that the Decision Ledger
+      at `docs/decisions/DECISIONS-<repo>-<feature>.md` is persisted
+      by default and that the user can delete it once implementation
+      is complete. The reminder was non-blocking. The agent did not
+      delete the file without an explicit user instruction to do so.
+      The reminder was not re-issued if the user had already deferred
+      or declined earlier in the session. When the exit hands off to
+      `spec-to-tickets`, the deletion reminder was suppressed.

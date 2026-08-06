@@ -9,34 +9,60 @@ outside the ledger file, use the `filename#<Dxxx|Txxx|Ixxx>` format
 (e.g., `DECISIONS-repo-feature.md#D001`,
 `DECISIONS-repo-feature.md#I002`).
 
-The canonical reference is this file. The two children of `grilling`
-(`domain-grilling`, `code-implementation-grilling`) load it via the
-relative path `../grilling/references/decision-ledger.md`. The two other
-consumers (`skill-architect`, `spec-to-tickets`) ship their own copies
-in their own `references/` directories, with a `## When to Use` section
-listing the skill-specific triggers.
+This file is the **own copy** shipped with `skill-architect`. It is
+identical to the canonical reference
+(`skills/engineering/grilling/references/decision-ledger.md`) except
+for the `## When to Use` section below, which lists the skill-specific
+triggers for consulting this reference. The two other consumers that
+ship their own copies are `spec-to-tickets` and (for the canonical,
+loaded via relative path) the two children of `grilling`
+(`domain-grilling`, `code-implementation-grilling`).
+
+## When to Use
+
+Use this reference when the agent is operating under `skill-architect`
+and needs to:
+
+- Initialize the design ledger at `<target-skill-dir>/.design-ledger.md`
+  in Step 1 of the workflow (or lazily on the first append if the
+  target skill directory does not yet exist).
+- Append a new `Dxxx` design-decision record to the design ledger
+  when the agent records a structural design decision (e.g., a
+  deterministic-translation acceptance, a section-presence choice, an
+  Output Mode / Transitions inclusion choice, a value-proposition
+  weaving decision). The `Driver` field captures the user's underlying
+  principle or motivation.
+- Append a new `Ixxx` clarifying-interaction record before presenting
+  the verbatim review question ("Does this translation of your intent
+  into deterministic actions accurately capture what you want the
+  agent to do?"), the value-proposition clarification (when the
+  inference is unclear), the scope declaration confirmation, or any
+  other clarifying prompt to the user. The `Ixxx` is anchored to the
+  prompt that was actually presented.
+- Complete a `TBD` `Ixxx` record in place after the user responds, by
+  filling `User Response`, `Resolution`, and `Notes` while keeping
+  the `Ixxx` in its original position in the file.
+- Delete the design ledger on materialization of the `SKILL.md`,
+  per the lifecycle in this reference and `saving-the-skill.md`
+  Step 8 (delete only if the file exists; the deletion is conditional
+  on successful materialization).
 
 ## Path derivation
 
-For grilling and its children, the ledger lives at
-`docs/decisions/DECISIONS-<repo>-<feature>.md`:
-
-- `<repo>` is the directory name of the working repository.
-- `<feature>` is a short kebab-case slug of the topic being grilled
-  (e.g., `tab-session-restore`, `pricing-pivot`, `retro-format`).
-
 For `skill-architect`, the ledger lives at
 `<target-skill-dir>/.design-ledger.md` — a hidden local file in the
-target skill directory, deleted on materialization.
+target skill directory, deleted on materialization. The hidden
+filename (`.design-ledger.md`) keeps it out of casual file listings
+while still being plain markdown.
 
 Examples:
 
-- Working in `~/code/acme-store`, topic is "tab session restore" →
-  `docs/decisions/DECISIONS-acme-store-tab-session-restore.md`.
-- Working in `~/code/acme-store`, topic is "should we pivot to per-seat
-  pricing" → `docs/decisions/DECISIONS-acme-store-pivot-per-seat.md`.
 - Designing a new skill in `skills/engineering/<new-skill>/` →
   `skills/engineering/<new-skill>/.design-ledger.md`.
+- Designing a new skill in `skills/alignment/<new-skill>/` →
+  `skills/alignment/<new-skill>/.design-ledger.md`.
+- Designing a new skill in `skills/skills-meta/<new-skill>/` →
+  `skills/skills-meta/<new-skill>/.design-ledger.md`.
 
 ## File format
 
@@ -55,20 +81,10 @@ Each stream is independent — `Dxxx` and `Ixxx` counters both start at
 ### Sentinel comments for next append IDs
 
 Every ledger file ends with one HTML-style sentinel comment per active
-stream. A grilling-group file that records both `Dxxx` decisions and
-`Ixxx` interactions ends with two sentinels:
+stream. For `skill-architect`, both `Dxxx` and `Ixxx` are active:
 
 ```md
 <!-- next-d: Dxxx -->
-<!-- next-i: Ixxx -->
-```
-
-A `code-implementation-grilling` ledger also records `Txxx` decisions
-and ends with three sentinels:
-
-```md
-<!-- next-d: Dxxx -->
-<!-- next-t: Txxx -->
 <!-- next-i: Ixxx -->
 ```
 
@@ -80,20 +96,19 @@ sentinel to the next available ID.
 
 If a sentinel is missing or out of sync with the highest existing ID
 in its stream, fall back to scanning the file for the highest existing
-`Dxxx` / `Txxx` / `Ixxx` and re-seeding the sentinel before the next
-append on that stream.
+`Dxxx` / `Ixxx` and re-seeding the sentinel before the next append on
+that stream.
 
 ## Lazy creation
-
-`docs/decisions/` (or the equivalent parent directory) is created only
-when the first record of any stream is about to be written. Do not
-create the directory during the initialization summary; create it on
-the first real append.
 
 For `skill-architect`, `.design-ledger.md` is created lazily — the
 target skill directory is not yet guaranteed to exist when Step 1
 begins, so the file is created when the directory exists, on the first
-real append at the latest.
+real append at the latest. The directory is created by
+`saving-the-skill.md` Step 3, before any `SKILL.md` is written. If the
+agent has not yet reached Step 3, the agent attempts to create the
+ledger but tolerates a "directory does not exist" failure and defers
+the first append until the directory exists.
 
 ## Real-time appending
 
@@ -106,9 +121,10 @@ branch and correct it before drift compounds.
 
 For `Ixxx` records, the append fires in two steps:
 
-1. **Pre-question append.** Before presenting the Socratic elicitation
-   question or the locked question line, append an `Ixxx` record with
-   the `Prompt` field filled and the other three fields marked `TBD`,
+1. **Pre-question append.** Before presenting the verbatim review
+   question, the value-proposition clarification, or any other
+   clarifying prompt to the user, append an `Ixxx` record with the
+   `Prompt` field filled and the other three fields marked `TBD`,
    then bump the `<!-- next-i: Ixxx -->` sentinel. The `TBD`
    placeholders are placeholders, not a permanent state.
 2. **Post-response complete.** After the user answers and the branch
@@ -149,9 +165,8 @@ For `Ixxx` records, the append fires in two steps:
 
 ## Txxx record template
 
-`Txxx` records are emitted by `code-implementation-grilling` and use
-the same four fields as `Dxxx`, plus an optional `Cites` field for
-spec links. The full template is in
+`Txxx` records are emitted by `code-implementation-grilling` and are
+not used by `skill-architect`. The full template is in
 `code-implementation-grilling/references/recording-decisions.md`.
 
 ## Ixxx record template
@@ -175,23 +190,25 @@ spec links. The full template is in
   sync, fall back to scanning the file for the highest existing `Ixxx`
   and re-seeding the sentinel before the next append.
 - `Prompt` is the **verbatim** agent text that was presented to the
-  user — the Socratic elicitation question, the locked question line,
-  or a single-sentence clarification. Do not paraphrase the prompt.
+  user — the verbatim review question, the value-proposition
+  clarification, the scope-declaration confirmation, or any other
+  clarifying prompt. Do not paraphrase the prompt.
 - `User Response` is the **verbatim** user text that answered the
   prompt, or a close paraphrase the user has explicitly accepted. It
   is not the agent's summary. If the user answered with multiple
   sentences, capture the load-bearing sentence and put the rest in
-  `Notes`.
-- `Resolution` describes what the response was used for — which option
-  it steered, which branch it opened, which constraint it surfaced. If
-  the response is a deferred or non-answer (e.g., "skip", "as-is",
-  silence), the resolution still records what the agent did in
-  response (e.g., "declined the Socratic question; proceeded to Turn 2
-  with default framing").
+  `Notes`. The three fixed response types in Step 3
+  ("Accept AS IS" / "Requires Modifications" / "Reject") are recorded
+  verbatim here.
+- `Resolution` describes what the response was used for — which
+  branch it accepted, which modification it requested, which
+  constraint it surfaced. If the response is a deferred or non-answer
+  (e.g., "skip", "as-is", silence), the resolution still records what
+  the agent did in response.
 - `Notes` is for context the next reader needs that does not fit in the
   other three fields — non-load-bearing parts of the user response,
-  cross-references to a `Dxxx`/`Txxx` record the interaction drove, or
-  edge cases the user named in passing.
+  cross-references to a `Dxxx` record the interaction drove, or edge
+  cases the user named in passing.
 
 ### TBD placeholder pattern
 
@@ -207,7 +224,7 @@ in the file. The `Ixxx` keeps its original position.
 
 The first `Dxxx` record in the ledger (`D001`) is the **goal record**.
 It captures the session's foundational goal as surfaced by the
-goal-discovery question. The goal record uses the same template but
+goal-discovery step. The goal record uses the same template but
 with goal-specific content:
 
 ```md
@@ -233,11 +250,11 @@ traceability.
 
 ## Soft cap
 
-If a single Decision Ledger reaches **~30 `Dxxx`/`Txxx` records**,
-consider closing it and opening a new one for the next phase of the
-interview. The cap is a trigger for reflection, not a hard limit;
-override with reasoning if the interview genuinely needs more. The cap
-does not apply to `Ixxx` records — interaction records are typically
+If a single Decision Ledger reaches **~30 `Dxxx` records**, consider
+closing it and opening a new one for the next phase of the interview.
+The cap is a trigger for reflection, not a hard limit; override with
+reasoning if the interview genuinely needs more. The cap does not
+apply to `Ixxx` records — interaction records are typically
 short-lived and the count can grow without the same reflection
 trigger.
 
@@ -282,49 +299,40 @@ about ledgers when none is provided.
 ```md
 ### [D001] — session goal
 
-- **Driver**: the user wants to build a platform that correctly models
-  the payment relationship between contacts and client organizations.
-- **Resolved Answer**: "clarify the domain model for a freelancing
-  platform where contacts message on behalf of client organizations."
-- **Normalized Requirement**: The session shall produce a domain model
-  that distinguishes contacts from client organizations and defines
-  the payment flow.
+- **Driver**: the user wants to design a new skill for the
+  organization of daily retro notes.
+- **Resolved Answer**: "design a skill that turns a brainstormed
+  list of what-went-well / what-didnt / actions into a structured
+  retro document."
+- **Normalized Requirement**: The session shall produce a
+  `SKILL.md` for a retro-formatting skill that accepts a freeform
+  list and emits a structured retro document.
 - **Constraints**: `None.`
 
-### [I001] — payment direction
+### [I001] — output shape
 
-- **Prompt**: "What are you working toward in this decision? You may
-  answer, or skip and see the options as-is."
-- **User Response**: "I want the platform fee to be transparent and
-  deducted before the freelancer receives funds."
-- **Resolution**: drove the framing of the options for D002 toward a
-  payer-side fee model; recommended Option 1 on this basis.
-- **Notes**: the user also mentioned the freelancer's tax
-  responsibilities in passing, deferred to a later branch.
+- **Prompt**: "What does the desired output's shape look like? You
+  can describe it in prose or show an example."
+- **User Response**: "a markdown file with three sections: What
+  Went Well, What Did Not, Action Items. Each section is a list."
+- **Resolution**: drove the Output Mode decision in D002 toward
+  producing a structured markdown document; informed the
+  Always-present sections list.
+- **Notes**: user mentioned the file should be under 200 lines and
+  live at `docs/retros/<date>.md`.
 
-### [D002] — who hires whom
+### [D002] — output structure
 
-- **Driver**: the user wants the model to reflect real-world agency —
-  the contact acts for an organization, not for themselves.
-- **Resolved Answer**: "the contact is a person acting for a client
-  organization; the client organization is the payer."
-- **Normalized Requirement**: The platform shall distinguish between
-  a `Contact` (the person messaging) and a `ClientOrganization` (the
-  legal entity that invoices and pays).
-- **Constraints**: Both terms must exist in the glossary
-  (`docs/GLOSSARY.md`) with the definitions recorded inline here.
-
-### [D003] — how payments are routed
-
-- **Driver**: the user wants the platform fee to be transparent and
-  deducted before the freelancer receives funds.
-- **Resolved Answer**: "client organization is the payer; freelancer
-  is the payee; platform takes a percentage fee."
-- **Normalized Requirement**: Payment flow shall route funds from
-  `ClientOrganization` to `Freelancer` with a platform fee deducted
-  before the freelancer payout.
+- **Driver**: the user wants the output to be readable in a
+  single screen and easy to copy into a wiki.
+- **Resolved Answer**: "always-present sections, no conditional
+  sections, three sections in fixed order."
+- **Normalized Requirement**: The `SKILL.md` shall list three
+  Always-present sections (`What Went Well`, `What Did Not`,
+  `Action Items`) in fixed order; no conditional sections are
+  required.
 - **Constraints**: `None.`
 ```
 
-<!-- next-d: D004 -->
+<!-- next-d: D003 -->
 <!-- next-i: I002 -->

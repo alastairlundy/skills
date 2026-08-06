@@ -27,6 +27,20 @@ By default, this skill operates entirely within the conversation. You must draft
 
 ## Workflow
 
+### Step 0: Load the design-ledger reference
+
+Before the first user question, load `references/decision-ledger.md` in
+full. This file is the own copy of the Decision Ledger standard for
+`skill-architect`; it documents the `Dxxx` and `Ixxx` record formats,
+the sentinel-bump mechanics, the TBD placeholder pattern, and the
+`<target-skill-dir>/.design-ledger.md` lifecycle. The file ships with
+uninitialized sentinels (`next-d: D001`, `next-i: I001`) so each new
+skill design is self-bootstrapping. Apply the formats from this file
+verbatim throughout the session.
+
+If `references/decision-ledger.md` is missing or unreadable, abort the
+session and report the missing file to the user.
+
 ### Step 1: Intent Intake
 Collect the high-level goal, target audience, and any initial sketches or "vague" requirements. Before beginning, announce the output mode as a two-part opener:
 
@@ -36,31 +50,86 @@ Collect the high-level goal, target audience, and any initial sketches or "vague
 
 If file creation is out of scope, follow with a one-line prompt — e.g. *"Tell me if you want the skill saved to a SKILL file after the design is resolved."*
 
+After stating whether file creation is in scope, ask the user a
+one-line follow-up -- e.g. *"Tell me if you want the skill saved to a
+SKILL file after the design is resolved."* Record this question as a
+clarifying interaction. Before emitting it, append a fresh `Ixxx`
+record to the design ledger using the Ixxx record template from
+`references/decision-ledger.md`. The `Prompt` field captures the
+verbatim question text. The other three fields (`User Response`,
+`Resolution`, `Notes`) are set to the literal string `TBD`. Bump the
+`<!-- next-i: Ixxx -->` sentinel atomically with the append.
+
+After the user answers, complete the `Ixxx` in place:
+- If the user declines (`User Response = "no save requested"`), set
+  `Resolution = "skipped file creation; design remains in conversation"`.
+- If the user confirms file creation (`User Response = "save requested"`
+  or equivalent), set `Resolution = "file creation in scope"`.
+
+If the target skill directory is known at this point (e.g., the user
+has already named a target path), initialize the design ledger at
+`<target-skill-dir>/.design-ledger.md` with the file-format header
+(Dxxx record template, Ixxx record template, lifecycle/storage notes,
+and the two trailing sentinels `next-d: D001` and `next-i: I001`).
+The directory may not yet exist — defer the file creation until the
+directory exists, on the first real append at the latest. The hidden
+filename (`.design-ledger.md`) keeps the file out of casual listings
+during the design phase; it is deleted on materialization per the
+lifecycle in `references/decision-ledger.md` and per
+`saving-the-skill.md` Step 8.
+
 The agent must collect four explicit elements:
 - (a) the **goal**,
 - (b) the **target audience**,
 - (c) the **trigger context** (when this skill should and should not fire),
 - (d) **one concrete example of the desired behaviour OR a description of the desired output's shape**.
 
-A fifth element, the **value proposition**, shall be inferred by the agent from the goal and audience. The value prop is a design input that shapes the description, the When to Use scenarios, and the When Not to Use scenarios of the designed skill. The agent shall ask the user about it only if the inference is unclear or ambiguous.
+Each clarifying question the agent asks while collecting the four
+elements (the goal-clarification question, the trigger-context
+question, the example-or-output-shape question) is itself a
+clarifying interaction. Before emitting each question, append a fresh
+`Ixxx` record with `Prompt` set to the verbatim question text and the
+other three fields set to `TBD`. After the user answers, complete the
+`Ixxx` in place by filling the three `TBD` fields with the user's
+verbatim response, the resolution, and any cross-references or
+non-load-bearing context. Read-back to confirm the `Ixxx` is in its
+expected position in the file and the three fields are now filled.
+Do not amend the `Prompt` field. Do not create a second `Ixxx` for the
+same interaction. Do not move the `Ixxx` in the file.
+
+A fifth element, the **value proposition**, shall be inferred by the agent from the goal and audience. The value prop is a design input that shapes the description, the When to Use scenarios, and the When Not to Use scenarios of the designed skill. The agent shall ask the user about it only if the inference is unclear or ambiguous. If the agent does ask, the question is a clarifying interaction and is recorded as an `Ixxx` per the same append/complete pattern.
+
+Once all four elements (plus the inferred value proposition) are captured, append the foundational `Dxxx` record (`D001`) to the design ledger using the goal record template from `references/decision-ledger.md` (Driver / Resolved Answer / Normalized Requirement / Constraints). Populate the fields from the collected elements. Bump the `<!-- next-d: Dxxx -->` sentinel atomically with the append. This is the foundational goal record for the design session; subsequent structural decisions in Steps 2-4 reference it.
 
 The completion criterion is: all four explicit elements are captured; the workflow advances only when the user has provided an example or a description of the desired output's shape. An anti-example (what the skill should NOT do) is not a substitute for either.
 
 ### Step 2: Domain Analysis
 Break down the goal into logical "branches" or decision trees. Use a Mermaid diagram to visualize the branches and intended flow when the skill has three or more branches, two or more decision points, or any non-linear flow. For simpler skills, prose decomposition is sufficient. Map the prerequisites and the intended end state. Determine what "success" looks like for this skill.
 
+Each structural branch decision in Step 2 (e.g., "this skill has
+three branches", "the prerequisite is X", "success is the agent
+emitting a structured markdown file") is recorded as a `Dxxx` record
+in the design ledger using the Dxxx record template from
+`references/decision-ledger.md`. Bump the
+`<!-- next-d: Dxxx -->` sentinel atomically with each append. If the
+agent asks the user a clarifying question to disambiguate a branch
+shape (e.g., "is this skill one-shot or looped?"), record the question
+as an `Ixxx` per the same append/complete pattern as Step 1.
+
 ### Step 3: Collaborative Deterministic Translation Loop
 For each branch identified in Step 2, translate the intent into a deterministic execution pattern.
 
 1. **Map Intent**: Propose a specific, actionable translation. Replace ambiguous phrases (e.g., "be smart about errors") with concrete logic (e.g., "implement a try-catch-verify loop with a 3-retry limit").
-2. **Collaborative Review**: Ask the user, verbatim: *"Does this translation of your intent into deterministic actions accurately capture what you want the agent to do?"* The user must respond with one of three values, verbatim: *"Accept AS IS"*, *"Requires Modifications"*, or *"Reject"*.
-   - On **Accept AS IS**: proceed to the next branch.
-   - On **Requires Modifications**: ask the user what modifications they want made, apply them, and re-ask the verbatim question for the same branch.
-   - On **Reject**: ask the user to choose: (i) start the design over with different skill-design constraints or notes recorded for the next attempt, or (ii) exit the workflow with no further action or artefact.
+2. **Collaborative Review**: Ask the user, verbatim: *"Does this translation of your intent into deterministic actions accurately capture what you want the agent to do?"* The verbatim review question is a clarifying interaction. Before emitting it, append a fresh `Ixxx` record to the design ledger with `Prompt` set to the verbatim question text and the other three fields set to `TBD`. The user must respond with one of three values, verbatim: *"Accept AS IS"*, *"Requires Modifications"*, or *"Reject"*.
+   - On **Accept AS IS**: complete the `Ixxx` in place with `User Response = "Accept AS IS"`, the resolution (which branch the acceptance confirmed), and any non-load-bearing context. Append a fresh `Dxxx` record to the design ledger using the Dxxx record template (`Driver` = the underlying principle that motivated the translation, `Resolved Answer` = the verbatim "Accept AS IS" response, `Normalized Requirement` = the deterministic translation that was accepted, `Constraints` = any scope boundaries the user named). Bump the `<!-- next-d: Dxxx -->` sentinel atomically. Proceed to the next branch.
+   - On **Requires Modifications**: complete the `Ixxx` in place with `User Response = "Requires Modifications"`, the verbatim modification request, and the resolution (the agent will re-ask the verbatim question after applying the modifications). After applying the modifications, append a fresh `Ixxx` record for the re-ask with `Prompt` set to the verbatim re-ask question and the other three fields set to `TBD`. The accepted final response produces a `Dxxx` record on Accept AS IS, not before.
+   - On **Reject**: complete the `Ixxx` in place with `User Response = "Reject"`, the user's rejection reasoning, and the resolution (the next-step choice the agent will surface). Append a `Dxxx` record only if the rejection resolved to a concrete decision (e.g., "exit the workflow with no further action"); otherwise the Ixxx itself is the durable record.
 3. **Iterative Resolution**: Resolve one intent/branch per turn to maintain precision and avoid batching errors.
 
 ### Step 4: Compliance Mapping
 Before performing compliance checks, load `references/skill-standards.md` to obtain the authoritative standards target.
+
+Each compliance-mapping decision (which always-present sections to include, which conditional sections to include, what character limits to enforce, what value-proposition wording to weave in) is recorded as a `Dxxx` record in the design ledger using the Dxxx record template from `references/decision-ledger.md`. Bump the `<!-- next-d: Dxxx -->` sentinel atomically with each append. If the agent asks the user a clarifying question during compliance mapping (e.g., "do you want an Output Mode section?"), record the question as an `Ixxx` per the same append/complete pattern as Step 1.
 
 Organize the resolved deterministic logic into the mandatory skill schema. Five sections are always present; two sections are conditional — include them only when the design needs them:
 
@@ -83,7 +152,7 @@ Present the final markdown content for the `SKILL.md` file as a single, clean Ma
 - **Compliant**: All mandatory sections are present and formatted correctly.
 - **Aligned**: The final design accurately reflects the validated user intent.
 
-Once the checks pass, ask the user: *"Have we reached a deterministic design?"* If the user answers "no" or equivalent, re-open the appropriate earlier step — Step 2 for a domain-analysis issue, Step 3 for a translation issue, or Step 4 for a schema or compliance issue — and continue from there.
+Once the checks pass, ask the user: *"Have we reached a deterministic design?"* The verbatim convergence question is a clarifying interaction. Before emitting it, append a fresh `Ixxx` record to the design ledger with `Prompt` set to the verbatim question text and the other three fields set to `TBD`. After the user answers, complete the `Ixxx` in place with `User Response` (the verbatim yes/no equivalent), `Resolution` (the step the agent will re-open, or "convergence declared"), and any non-load-bearing context. If the user answers "no" or equivalent, re-open the appropriate earlier step — Step 2 for a domain-analysis issue, Step 3 for a translation issue, or Step 4 for a schema or compliance issue — and continue from there. The convergence `Ixxx` is not closed until the user answers "yes" or equivalent.
 
 ## Transitions
 
@@ -102,3 +171,6 @@ To ensure the quality and determinism of the resulting skill, the agent must ver
 - [ ] **Collaborative Alignment**: Was every translation of vague intent explicitly presented to the user, confirmed via the verbatim review question with Accept AS IS / Requires Modifications / Reject, and resolved through the appropriate follow-up flow?
 - [ ] **Constraint Adherence**: Did the agent refrain from saving the design to file by default? If the user indicated intent to save, did the agent follow the save procedure? Did the agent announce the output mode at the start of Step 1?
 - [ ] **Validation Utility**: Does every item in the generated Validation section name a specific pass/fail condition (yes/no) that an agent can determine from the design alone? This check covers per-validation-item verifiability only; per-step verifiability is the scope of the Determinism Audit above.
+- [ ] **Design ledger initialized**: Was `references/decision-ledger.md` loaded in full before the first user question, and was `<target-skill-dir>/.design-ledger.md` initialized with the file-format header and the two trailing sentinels `next-d: D001` and `next-i: I001` (or lazily on the first real append if the target skill directory did not yet exist)?
+- [ ] **Dxxx records appended at structural decisions**: Was every structural design decision (Step 1 goal record, Step 2 branch shapes, Step 3 accepted translations, Step 4 schema-presence choices, any re-opens with `Supersedes: Dxxx` lines) recorded as a fresh `Dxxx` record in the design ledger, with a verbatim `Resolved Answer`, a `Driver` field capturing the user's underlying principle, a testable `Normalized Requirement`, and any `Constraints` the user named? Each append bumped the `<!-- next-d: Dxxx -->` sentinel atomically.
+- [ ] **Ixxx records appended at clarifying interactions**: Was every clarifying interaction (the scope declaration, each of the four explicit elements in Step 1, the value-proposition clarification when asked, the verbatim review question in Step 3, the re-ask when Requires Modifications, the Step 5 convergence question, any clarifying questions in Steps 2 and 4) recorded as a fresh `Ixxx` record before the prompt was presented, with `Prompt` filled and the other three fields (`User Response`, `Resolution`, `Notes`) set to `TBD`? Each append bumped the `<!-- next-i: Ixxx -->` sentinel atomically. After the user responded, the `Ixxx` was completed in place by filling the three `TBD` fields. No `Ixxx` was amended in `Prompt`, moved in the file, or duplicated for the same interaction.
