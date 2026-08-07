@@ -62,12 +62,12 @@ is conditional on conflict detection.
 The context block is a **4-row markdown table** with a header row and
 3 data rows in fixed order. Each data row's Content is exactly one
 sentence drawn from the Decision Ledger and the user's stated goal.
-Cite `Dxxx` IDs in the Goal and Prior decisions rows.
+Cite path-qualified `filename#Dxxx` IDs in the Goal and Prior decisions rows.
 
 | Element         | Content                                                                     |
 |-----------------|-----------------------------------------------------------------------------|
-| **Goal**        | <one sentence — the goal of the overall decision, citing D001>             |
-| **Prior decisions** | <one sentence — the prior decisions affecting this branch, with citations> |
+| **Goal**        | <one sentence — the goal of the overall decision, citing the goal record as `filename#Dxxx`>             |
+| **Prior decisions** | <one sentence — the prior decisions affecting this branch, with path-qualified `filename#Dxxx` citations> |
 | **Scope**       | <one sentence — what is in and out of scope for this branch>               |
 
 The context block is **not** a free-form prose summary, a "current
@@ -90,8 +90,8 @@ table.
 Requirements):
 
 ```md
-> **Conflict detected.** [Dxxx] and [Dyyy] have contradictory
-> Normalized Requirements: "<quote from Dxxx>" vs. "<quote from Dyyy>".
+> **Conflict detected.** [filename#Dxxx] and [Dyyy] have contradictory
+> Normalized Requirements: "<quote from filename#Dxxx>" vs. "<quote from Dyyy>".
 > Which resolution stands?
 ```
 
@@ -99,7 +99,7 @@ Requirements):
 resolution):
 
 ```md
-> **Contradiction detected.** Your answer contradicts [Dxxx]
+> **Contradiction detected.** Your answer contradicts [filename#Dxxx]
 > ("<brief quote of Resolved Answer>"). Would you like to confirm
 > your new answer, revise it, or re-open the prior branch?
 ```
@@ -141,7 +141,7 @@ Each branch may be re-asked at most once. The re-ask uses the same
 
 The preamble is emitted before the context block. After 1 re-ask with
 no clear answer, the branch closes with `Resolved Answer = "DEFERRED"`
-and a `Constraints` line noting why. The same `Dxxx` record is
+and a `Constraints` line noting why. The same `filename#Dxxx` record is
 updated; no new record is created for the re-ask itself.
 
 The re-ask must not re-introduce the Socratic elicitation turn. It
@@ -149,7 +149,7 @@ uses the identical wrapper format as the initial branch emission.
 
 ## Rules
 
-- **Use the same `Dxxx` and name verbatim in every question for that
+- **Use the same `filename#Dxxx` and name verbatim in every question for that
   branch.** Do not rephrase, abbreviate, or rename mid-session.
 - **One turn per branch — hard stop.** Emit the full wrapper
   (round header through recommendation), then stop and wait for
