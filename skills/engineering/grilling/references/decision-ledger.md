@@ -153,9 +153,9 @@ callout naming the prior record and the new resolution, and re-asks
 the branch with the new context. The user confirms, revises, or opens
 a goal-change flow.
 
-Once the user confirms the new resolution, the earlier record gains a
-Supersedes: Dxxx line in Constraints pointing to the record it
-replaces. The new record carries the updated resolution.
+Once the user confirms the new resolution, the new record gains a
+Supersedes: Dxxx line in Constraints pointing to the earlier record it
+replaces.
 
 ### DEFERRED re-ask closure
 
