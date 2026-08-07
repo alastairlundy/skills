@@ -94,11 +94,13 @@ Decision Ledger.
 
 ### Step 4: Foundation Establishment (mandatory)
 
-Resolve one-by-one using the 1-turn wrapper from
-../`grilling`/`references/locked-question-format.md`. For each
-foundation item, emit the full wrapper (round header, frontier
-statement, 5-row context block, conflict callout if any, options
-table, recommendation) in a single turn. Resolve with 2-4 options:
+Resolve in rounds of up to 3 foundation items using the 1-turn wrapper
+from ../`grilling`/`references/locked-question-format.md`. Each round
+is a single agent turn: emit the round header, frontier statement,
+then for each unblocked foundation item emit the full wrapper (5-row
+context block, conflict callout if any, options table, recommendation).
+No inter-turn wait between items within a round. Resolve with 2-4
+options:
 
 1. **Language** — primary language?
 2. **Framework/Runtime** — primary framework?

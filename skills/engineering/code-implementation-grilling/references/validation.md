@@ -7,13 +7,14 @@ transcript:
       loaded and read in full before the first user question. If
       any reference file was missing or unreadable, the session
       aborted and the missing file was reported to the user.
-- [ ] **1-turn wrapper**: Did every branch question — including
+- [ ] **1-turn wrapper per round**: Did every round — including
       foundation items, TDP branches, and any re-ask or follow-up —
       emit the full 1-turn wrapper in a single agent turn: round
       header, frontier statement, 5-row context block (Goal, Prior
       decisions, Scope, Spec section), conflict callout (if any),
-      options table, recommendation. No Socratic elicitation question
-      was emitted. See
+      options table, recommendation. Up to 3 unblocked branches may
+      appear in a single round. No Socratic elicitation question was
+      emitted. See
       `../grilling/references/locked-question-format.md`.
 - [ ] **Context block (5-row)**: Every code-impl per-decision context
       block was emitted as the 5-row markdown table (header + 4 data

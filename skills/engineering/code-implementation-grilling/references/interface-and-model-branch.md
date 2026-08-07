@@ -4,8 +4,8 @@
 
 Every per-decision question in this file (architectural decisions in
 Phase 1, source-of-truth conflicts in Phase 2, type introductions in
-Phase 3) emits a 5-row code-impl context block using the 1-turn wrapper.
-The 5-row context block is defined in
+Phase 3) is emitted using the 1-turn wrapper, grouped in rounds of up
+to 3 unblocked decisions. The 5-row context block is defined in
 `references/locked-question-format.md`; the first 3 data rows
 (Goal, Prior decisions, Scope) match the parent grilling
 skill's context block, and the 4th data row (Spec
@@ -80,7 +80,8 @@ per-decision questions in this file are:
   branch and the individual branch)
 
 For each per-decision question, the agent emits the 1-turn wrapper
-in a single agent turn:
+in a single agent turn, grouped in rounds of up to 3 unblocked
+decisions:
 
 - The full wrapper: round header, frontier statement, 5-row context
   block (Goal, Prior decisions, Scope, Spec section), conflict callout
@@ -157,7 +158,10 @@ Interface, Contract, DTO, and Model definitions now?"*
 - **If Yes**: Walk through three sequenced phases. The phases are
   sequential, not nested — once a phase transitions, do not
   interleave its decisions back into a later phase. Each phase uses
-  1-decision-per-turn discipline.
+  up-to-3-per-round discipline — unblocked decisions within a phase
+  are grouped into rounds of at most 3, each round emitted in a
+  single agent turn using the 1-turn wrapper from the parent
+  `grilling` skill's `references/locked-question-format.md`.
 
   #### Phase 1: Architectural Separation
 
@@ -165,7 +169,7 @@ Interface, Contract, DTO, and Model definitions now?"*
   want to resolve? (0-3)"*. Use the chosen count N; walk the first
   N items from the typical list below, in order. If N=0, skip
   directly to the Phase 1 transition prompt. Resolve 1-3
-  architectural decisions one at a time, each with its own gate.
+  architectural decisions in rounds of up to 3, each with its own gate.
   Typical decisions:
   - **Layer boundaries**: Where does one layer end and the next
     begin?
@@ -177,7 +181,7 @@ Interface, Contract, DTO, and Model definitions now?"*
   in the "Format" section above: emit the full wrapper (round header,
   frontier statement, 5-row context block, options table, recommendation)
   in a single turn. Wait
-  for the user's response before presenting the next decision.
+  for the user's response before the next round.
 
   When all architectural decisions are resolved, ask: *"Ready to
   move to Source of Truth?"* The user confirms or revises before
@@ -188,12 +192,11 @@ Interface, Contract, DTO, and Model definitions now?"*
   Identify any conflicts where two plausible sources claim authority
   for the same functionality or data. If 0 conflicts exist, skip
   directly to the transition prompt. If 1-3 conflicts exist
-  (typical: 0-2), resolve each one at a time, each with its own
+  (typical: 0-2), resolve in rounds of up to 3, each with its own
   gate. For each conflict, use the 1-turn wrapper described
   in the "Format" section above: emit the full wrapper (round header,
   frontier statement, 5-row context block, options table, recommendation)
-  in a single turn. Wait for the user's response before presenting the
-  next conflict.
+  in a single turn. Wait for the user's response before the next round.
 
   When all conflicts are resolved (or none were found), ask: *"Ready
   to move to the type loop?"* The user confirms or revises before
@@ -201,7 +204,7 @@ Interface, Contract, DTO, and Model definitions now?"*
 
   #### Phase 3: Detailed Definition (Type Loop)
 
-  Introduce exactly one named type per turn. For each type, use the
+  Introduce types in rounds of up to 3 per turn. For each type, use the
   1-turn wrapper described in the "Format" section above:
   emit the full wrapper (round header, frontier statement, 5-row context
   block, options table, recommendation) in a single turn. Present the
@@ -220,8 +223,8 @@ Interface, Contract, DTO, and Model definitions now?"*
         *"Would you like to expand any of these variants? If so,
         which ones?"*. Do not pre-emptively enumerate every variant's
         fields and properties.
-      - **Individual branch**: introduce one type per turn with no
-        carve-out.
+      - **Individual branch**: introduce types in rounds of up to 3
+        per turn with no carve-out.
       - The carve-out does not apply to languages whose type systems
         lack closed sum types or sealed class hierarchies (for
         example, Go, Haskell, OCaml).
@@ -235,7 +238,7 @@ Interface, Contract, DTO, and Model definitions now?"*
       previously introduced family, or close the loop. The agent
       does not decide when the type list is complete.
 
-  The type loop is 1-decision-per-turn as the general rule. The
+  The type loop uses up-to-3-per-round discipline as the general rule. The
   family carve-out is an exception that applies only when the target
   language's type system supports closed sum types or sealed class
   hierarchies (for example, C#, TypeScript, Rust). Languages without

@@ -112,10 +112,12 @@ ask the goal-discovery question:
 Record the response as the goal record in the Decision Ledger.
 
 Then open branches in rounds using the 1-turn wrapper from
-../`grilling`/references/locked-question-format.md. Each branch
-resolves in a single agent turn: round header, frontier statement,
-context block (3-row table: Goal, Prior decisions, Scope), conflict
-callout (if any), options table, recommendation.
+../`grilling`/references/locked-question-format.md. Each round is a
+single agent turn: emit the round header, frontier statement, then for
+each selected branch emit the full wrapper (context block (3-row table:
+Goal, Prior decisions, Scope), conflict callout (if any), options table,
+recommendation). Up to 3 unblocked branches may appear in a single
+round. No inter-turn wait between branches within a round.
 
 Use the DDD-specific techniques in
 
@@ -215,10 +217,12 @@ transcript:
       every resolved branch (no batching). In multi-pick rounds,
       all records were written in one tool call.
 - [ ] Every record used the inline template and a fresh `Dxxx` ID.
-- [ ] Every branch question followed the 1-turn wrapper: round
-      header, frontier statement, context block (3-row table),
-      conflict callout (if any), options table, recommendation.
-      No Socratic elicitation question was emitted.
+- [ ] Every round followed the 1-turn wrapper: round header,
+      frontier statement, then for each unblocked branch within the
+      round the context block (3-row table), conflict callout (if any),
+      options table, recommendation — all in a single agent turn.
+      Up to 3 unblocked branches per round. No Socratic elicitation
+      question was emitted.
 - [ ] Every context block was the 3-row table (Goal, Prior decisions,
       Scope), each element one sentence.
 - [ ] Conflict detection ran before each branch resolution.

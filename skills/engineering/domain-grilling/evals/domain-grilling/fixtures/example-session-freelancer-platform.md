@@ -125,7 +125,7 @@ output:
 
 - [ ] Reference files loaded before the first question.
 - [ ] Domain state summary given before the first question.
-- [ ] Every question used the 1-turn wrapper: round header, frontier statement, context block (3-row table), options table, recommendation. No Socratic elicitation question.
+- [ ] Every round used the 1-turn wrapper: round header, frontier statement, context block (3-row table), options table, recommendation. Up to 3 unblocked branches per round. No Socratic elicitation question.
 - [ ] Every context block was the 3-row table (Goal, Prior decisions, Scope).
 - [ ] Every options block was the 5-column table format.
 - [ ] Every recommendation used the 2-line format.
