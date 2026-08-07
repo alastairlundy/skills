@@ -109,8 +109,10 @@ agent reads the current ledger and writes all new `Dxxx` records in
 **one tool call** within the same turn as the resolution. Read-back
 verification still applies — the agent confirms the new records are
 last in the file before opening the next round. If a concurrent append
-lands between the read and the write, the write may overwrite it;
-read-back verification must catch this. The trailing
+lands between the read and the write, the write may overwrite it.
+Read-back detects this (the concurrent append is missing). On detection,
+the agent re-reads the ledger, appends both the concurrent record and
+its own records in a new single tool call, and verifies again. The trailing
 `<!-- next-d: Dxxx -->` sentinel is the single source of truth for
 the next ID.
 
