@@ -1,8 +1,9 @@
 ---
 name: grilling
 description: >-
-  Relentless Socratic interviewing to extract clear decisions from vague ideas.
-  Use when the user wants to think through an ambiguous decision that is neither
+  Structured decision elicitation that surfaces clear decisions from vague ideas.
+  Use when the user wants to think through an ambiguous
+  decision that is neither
   code/tech nor domain modeling or terminology alignment — business strategy,
   product direction, design choices, process, organizational decisions, and
   similar non-implementation decisions. Do not use for code/technical
@@ -14,12 +15,13 @@ license: MIT
 
 # Grilling
 
-A relentless Socratic interviewing skill. The user has a vague decision;
+A structured decision-elicitation skill. The user has a vague decision;
 the agent facilitates — the user owns each decision. The agent walks the
-decision down a tree of branches, presents options as a reference set,
-and records the resolved answer in a Decision Ledger. The session is a
-sequence of rounds, each surfacing at most 3 branches, and each branch
-resolving in a single agent turn.
+decision down a tree of branches, presents
+options as a reference set, gives a goal-aligned recommendation, and records
+the resolved answer in a Decision Ledger. The session is a sequence of
+rounds, each surfacing at most 3 branches, and each branch resolving in a
+single agent turn.
 
 This skill is the **generic parent** of `domain-grilling` and
 `code-implementation-grilling`. It owns the core machinery — the Decision

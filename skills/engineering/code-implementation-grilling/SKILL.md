@@ -1,7 +1,7 @@
 ---
 name: code-implementation-grilling
 description: >-
-  Relentless Socratic interviewing on technical implementation choices —
+  Structured decision elicitation on technical implementation choices —
   language, framework, dependencies, project structure — once a spec/PRD
   exists. Use when implementation is the question. When non-code/tech
   decisions, use `grilling`. When terminology, use `domain-grilling`.
@@ -10,7 +10,7 @@ license: MIT
 
 # Code Implementation `grilling`
 
-A Socratic interviewing skill that resolves technical implementation
+A structured decision-elicitation skill that resolves technical implementation
 choices once a functional spec/PRD exists. Adds spec reading, Foundation
 checklist, Technical Decision Point extraction, optional Interface/Model
 branch, and code-specific handoff templates on top of `grilling` (which

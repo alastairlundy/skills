@@ -1,7 +1,7 @@
 ---
 name: domain-grilling
 description: >-
-  Relentless Socratic interviewing focused on Domain-Driven Design (DDD)
+  Structured decision elicitation focused on Domain-Driven Design (DDD)
   alignment — bounded contexts, ubiquitous language, glossary, terminology.
   Use when the user has a vague idea and conceptual/terminology alignment
   is the goal. When non-DDD decisions, use `grilling`. When code/tech
@@ -11,7 +11,7 @@ license: MIT
 
 # Domain `grilling`
 
-A relentless Socratic interviewing skill, focused on Domain-Driven
+A structured decision-elicitation skill, focused on Domain-Driven
 Design (DDD) alignment. This skill specializes `grilling` for the case
 where the user is establishing the *vocabulary* of a domain — its
 bounded contexts, ubiquitous language, and the boundary between
