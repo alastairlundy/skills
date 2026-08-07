@@ -111,7 +111,7 @@ verification still applies — the agent confirms the new records are
 last in the file before opening the next round. If a concurrent append
 lands between the read and the write, the write may overwrite it;
 read-back verification must catch this. The trailing
-`<!-- next-id: Dxxx -->` sentinel is the single source of truth for
+`<!-- next-d: Dxxx -->` sentinel is the single source of truth for
 the next ID.
 
 For `Ixxx` records, the append fires in two steps:
