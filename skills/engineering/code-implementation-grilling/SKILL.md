@@ -1,10 +1,10 @@
 ---
-name: code-implementation-`grilling`
+name: code-implementation-grilling
 description: >-
   Relentless Socratic interviewing on technical implementation choices —
   language, framework, dependencies, project structure — once a spec/PRD
   exists. Use when implementation is the question. When non-code/tech
-  decisions, use `grilling`. When terminology, use domain-`grilling`.
+  decisions, use `grilling`. When terminology, use `domain-grilling`.
 license: MIT
 ---
 

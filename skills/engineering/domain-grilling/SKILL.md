@@ -1,11 +1,11 @@
 ---
-name: domain-`grilling`
+name: domain-grilling
 description: >-
   Relentless Socratic interviewing focused on Domain-Driven Design (DDD)
   alignment — bounded contexts, ubiquitous language, glossary, terminology.
   Use when the user has a vague idea and conceptual/terminology alignment
   is the goal. When non-DDD decisions, use `grilling`. When code/tech
-  with a spec, use code-implementation-`grilling`.
+  with a spec, use `code-implementation-grilling`.
 license: MIT
 ---
 
