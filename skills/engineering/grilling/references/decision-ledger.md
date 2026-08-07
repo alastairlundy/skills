@@ -162,8 +162,11 @@ replaces.
 Each branch may be re-asked at most once. After 1 re-ask with no
 clear answer, the branch closes with Resolved Answer = "DEFERRED"
 and a Constraints line noting why (e.g., "User did not provide a
-clear answer after final re-ask"). The same Dxxx record is updated;
-no new record is created for the re-ask itself.
+clear answer after final re-ask"). If a Dxxx record already exists
+for this branch, update it in place. If no Dxxx record exists yet
+(e.g., the user never provided a clear initial answer), create a
+new DEFERRED Dxxx record with the branch name and the constraints
+line. No separate record is created for the re-ask itself.
 
 The re-ask preamble is fixed and cited in locked-question-format.md.
 The re-ask must not re-introduce the Socratic elicitation turn.
