@@ -16,10 +16,10 @@ license: MIT
 
 A relentless Socratic interviewing skill. The user has a vague decision;
 the agent facilitates — the user owns each decision. The agent walks the
-decision down a tree of branches, asks Socratic questions to surface the
-user's values, presents options as a reference set, and records the
-resolved answer in a Decision Ledger. The session ends when a shared
-understanding is reached and the user picks an exit path.
+decision down a tree of branches, presents options as a reference set,
+and records the resolved answer in a Decision Ledger. The session is a
+sequence of rounds, each surfacing at most 3 branches, and each branch
+resolving in a single agent turn.
 
 This skill is the **generic parent** of `domain-grilling` and
 `code-implementation-grilling`. It owns the core machinery — the Decision
@@ -64,12 +64,12 @@ for the core.
 Before loading or reading, walk this list in order. For each entry,
 confirm the file exists and is readable on disk:
 
-1. `references/decision-ledger.md`
-2. `references/options-format.md`
-3. `references/recommendation-format.md`
-4. `references/locked-question-format.md`
-5. `references/tone-and-output.md`
-6. `references/convergence-test.md`
+1. references/decision-ledger.md
+2. references/options-format.md
+3. references/recommendation-format.md
+4. references/locked-question-format.md
+5. references/tone-and-output.md
+6. references/convergence-test.md
 
 If any entry is missing or unreadable, stop, collect every missing path
 into a single list, abort the session, and report the list to the user.
@@ -80,25 +80,25 @@ Do not load any reference until the pre-flight passes for all six.
 After the pre-flight passes, load and read each of the six references
 in full before the first user question:
 
-- `references/decision-ledger.md` — Decision Ledger path derivation,
+- references/decision-ledger.md — Decision Ledger path derivation,
   parallel `Dxxx` and `Ixxx` ID streams with sentinel comments, the
-  `Dxxx` record format (Driver, Resolved Answer, Normalized
-  Requirement, Constraints), the `Ixxx` record format (Prompt, User
-  Response, Resolution, Notes) with the TBD placeholder pattern, goal
-  record, lazy creation, soft cap, re-opens, lifecycle by skill group,
-  and storage conventions per skill.
-- `references/options-format.md` — the reference-set preamble and the
-  four-field option block (What it is / Benefit / Cost / Risk).
-- `references/recommendation-format.md` — the three-field recommendation
-  breakdown with goal-aligned reasoning, the verbatim-name rule, and the
-  recommendation-rationale-on-request mechanism.
-- `references/locked-question-format.md` — the four-part locked question
-  sequence: context block, Socratic elicitation question, locked question
-  line with explicit required framing, options and recommendation.
-- `references/tone-and-output.md` — tone discipline, forbidden filler
+  `Dxxx` record format, the `Ixxx` record format, goal record, lazy
+  creation, soft cap, re-opens, lifecycle by skill group, storage
+  conventions, conflict resolution mechanics (static/dynamic), and
+  DEFERRED re-ask closure.
+- references/options-format.md — the reference-set preamble and the
+  5-column options table (Option | What it is | Benefit | Cost | Risk)
+  with cell caps.
+- references/recommendation-format.md — the 2-line lean recommendation
+  block with goal-aligned reasoning.
+- references/locked-question-format.md — the 1-turn wrapper order:
+  round header, frontier statement, context block (3-row table),
+  conflict/contradiction callout (conditional), options table,
+  recommendation.
+- references/tone-and-output.md — tone discipline, forbidden filler
   words, branch transitions, neutral mirroring.
-- `references/convergence-test.md` — the four-check convergence test and
-  the diverge modes to avoid.
+- references/convergence-test.md — the per-round 5-check convergence
+  test and the diverge modes to avoid.
 
 Apply the formats from those files verbatim throughout the session. Do
 not paraphrase, abbreviate, or modify the formats. If any of those files
@@ -111,14 +111,14 @@ Detect any existing Decision Ledger at runtime before deriving a path:
 
 - Test whether `docs/decisions/` exists in the working repo
   (`Test-Path docs/decisions`).
-- If the directory exists, scan it for every `DECISIONS-*.md` file — do
+- If the directory exists, scan it for every DECISIONS-*.md file — do
   not limit the search to a feature-specific match.
 
 Branch on the detection result:
 
 - **One existing ledger**: use it. Read it end-to-end and report to the
   user:
-  - The highest existing `Dxxx` number — the next record is `Dxxx + 1`.
+  - The highest existing `Dxxx` number — the next record is `Dxxx` + 1.
   - Any unresolved contradictions between existing records.
   - The branches already covered, so the user can see what is in scope
     for the current session.
@@ -136,20 +136,15 @@ Branch on the detection result:
   first append.
 
 **Stop and wait for the user to confirm or change the path before
-proceeding.** The path confirmation in Step 2, the goal discovery in
-Step 3, and the first branch in Step 4 are three separate turns. Do
-not emit the goal-discovery question or the first branch question in
+proceeding.** The path confirmation in Step 2 and the goal discovery in
+Step 3 are separate turns. Do not emit the goal-discovery question in
 the same turn as the path confirmation.
 
 ### Step 3: Goal discovery
 
 The first turn after the user has confirmed the ledger path in Step 2
-is an open Socratic question to surface the goal of the session. This
-is step zero of the grilling — it happens before any branch is opened.
-The goal-discovery turn, the locked-question turn, and the
-options/recommendation turn for the first branch are all separate
-turns — do not collapse any of them into the path-confirmation turn
-or into each other.
+is an open question to surface the goal of the session. This happens
+before any branch is opened.
 
 If the user has pre-stated a goal in the initial message, acknowledge it
 and ask for confirmation or refinement. If the user has not stated a
@@ -164,248 +159,138 @@ one goal or multiple goals. The LLM does not pressure the user to
 provide multiple goals when they have one.
 
 **Stop and wait for the user's response.** Do not proceed to Step 4
-or open any branch question until the user has answered. Record the
-response as the foundational goal record (D001) in the Decision Ledger
-using the goal record template from `references/decision-ledger.md`.
+or open any branch question until the user has answered. Allocate the
+next available `Dxxx` ID — `D001` for a new ledger, or `max(existing) + 1`
+for an existing one (read from the `<!-- next-d: Dxxx -->` sentinel or
+by scanning). Record the response as the goal record in the Decision
+Ledger using the goal record template from
+references/decision-ledger.md.
 Append the record immediately. Subsequent context blocks (per
-`references/locked-question-format.md`) and recommendation reasoning
+
+references/locked-question-format.md) and recommendation reasoning
 reference this record.
 
-The goal-discovery question is itself a clarifying interaction. Before
-emitting the question, append a fresh `Ixxx` record to the Decision
-Ledger using the Ixxx record template from `references/decision-ledger.md`,
-with `Prompt` set to the verbatim goal-discovery question text and the
-other three fields (`User Response`, `Resolution`, `Notes`) set to the
-literal string `TBD`. Bump the `<!-- next-i: Ixxx -->` sentinel
-atomically with the append. After the user answers, complete the
-`Ixxx` in place by filling the three `TBD` fields with the user's
-verbatim response, the resolution (the goal record D001 it drove), and
-any cross-references or non-load-bearing context. Read-back to confirm
-the `Ixxx` is in its expected position in the file and the three
-fields are now filled. Do not amend the `Prompt` field. Do not create a
-second `Ixxx` for the same interaction. If the user pre-stated a goal
-in the initial message and the agent only asked for confirmation or
-refinement, the `Ixxx` is still recorded — the `Prompt` field captures
-the verbatim confirmation-or-refinement question that was presented to
-the user.
+### Step 4: Open branches in rounds
 
-### Step 4: Open Branch A
+The session is a sequence of rounds. Each round surfaces at most 3
+unblocked branches, FIFO by ledger ID. Each branch resolves in a
+single agent turn using the 1-turn wrapper from
 
-Open the first decision branch using the locked question sequence
-from `references/locked-question-format.md`. The four parts (context
-block, Socratic elicitation question, locked question line, options
-plus recommendation) are emitted across **two separate agent turns**
-with a mandatory wait between them. The agent must not collapse the
-two turns into a single turn and must not skip the context block or
-the optional Socratic elicitation question, even on a re-ask or a
-follow-up after the user has answered earlier parts. The locked
-question line, the options, and the recommendation are emitted
-together in Turn 2 — they are not split into separate turns.
+references/locked-question-format.md.
 
-In the locked question sequence, "you" and "your" always refer to the
-**user**, not the LLM. The optional Socratic elicitation question,
-the locked question line, the reference-set preamble, and any other
-user-facing prompt are addressed to the user. The agent emits them
-verbatim and waits for the user to respond.
+#### 4.0 Branch discovery and frontier
 
-The two turns are:
+Before each round, identify all unblocked branches (branches whose
+dependencies are resolved or have no dependencies). Order them by
+ledger ID (FIFO). Surface the first 3 in this round. Overflow branches
+wait for the next round.
 
-1. **Turn 1 — Context block (Part 1) + optional Socratic elicitation
-   question (Part 2).** Present the fixed context block (Goal, Prior
-   decisions, Stakes, Scope), each element one sentence, citing the
-   goal record (D001) and any prior branch records. Then ask the
-   optional Socratic elicitation question verbatim. **Stop and wait
-   for the user's response.**
+The frontier statement reports: "N branches remain, M unblocked this
+round."
 
-   Before emitting the Socratic elicitation question, append a fresh
-   `Ixxx` record to the Decision Ledger using the Ixxx record
-   template from `references/decision-ledger.md`. The `Prompt` field
-   is the verbatim Socratic elicitation question text. The other three
-   fields (`User Response`, `Resolution`, `Notes`) are set to the
-   literal string `TBD`. The `<!-- next-i: Ixxx -->` sentinel is
-   bumped atomically with the append.
+#### 4.1 Brief exploration (subagent delegation)
 
-   The `Ixxx` is anchored to the prompt that was actually presented to
-   the user. If the Socratic question is skipped (user has already
-   engaged with prior Socratic questions), the `Ixxx` is anchored to
-   the locked-question line that will be emitted in Turn 2. When both
-   the Socratic question and the locked-question line are presented
-   (i.e., the Socratic is not skipped), append a second fresh `Ixxx`
-   immediately before the locked-question line in Turn 2 — one `Ixxx`
-   per presented prompt.
+Before each locked question, delegate the brief exploration to a
+subagent. The primary agent does not read source files directly.
 
-   The Socratic elicitation question is:
+- Per decision branch, file reads (named files + 1 grep per option)
+  are dispatched to a subagent. The subagent investigates and reports
+  back to the primary agent.
+- If the question surfaces no file concerns, the primary agent spawns
+  two subagents: (1) a `GLOSSARY.md` subagent that reads `GLOSSARY.md`
+  for relevant terms; (2) a repo-state subagent that explores tests +
+  source code and produces a summary.
+- Subagent reports are summarized into the locked-question context.
 
-   ```
-   What are you working toward in this decision? You may answer, or
-   skip and see the options as-is.
-   ```
+#### 4.2 Conflict detection
 
-   The Socratic elicitation question is **optional**. The user may
-   engage to steer the direction of the options, or decline. The
-   agent recognizes decline signals — "skip", "no", "as-is", or a
-   no-op response — and proceeds to Turn 2 in the next user turn
-   without re-asking and without attempting to extract direction
-   from a "skip". The agent must not pressure the user to engage
-   with the Socratic question and must not treat a no-op response
-   as a missing answer.
+Before any branch resolves, run both conflict checks:
 
-   - **Engage case.** When the user provides a direction
-     rather than declining, the agent uses the direction as a soft
-     steering signal in Turn 2: it informs the option names, the
-     "What it is" descriptions, and the recommendation's `Reasoning`
-     field. The underlying choice space is unchanged; the reframing
-     is a soft signal across all options, not a filter. Defensible
-     options are not dropped.
-   - **Decline case.** When the user declines, the agent
-     proceeds to Turn 2 with options framed on the branch context
-     (Goal, Prior decisions, Stakes, Scope) without steering; the
-     recommendation's `Reasoning` field is based on the branch
-     context, not on a direction.
+- **Static conflict**: two records with mutually-exclusive
+  Normalized Requirements. Surface "Conflict detected" callout naming
+  both records. User owns resolution.
+- **Dynamic conflict**: new resolution contradicts a prior
+  resolution. Surface "Contradiction detected" callout naming the prior
+  record. Re-ask the branch.
 
-2. **Turn 2 — Locked question line (Part 3) + options and
-   recommendation (Part 4).** Present the locked question line
-   verbatim, then the options block (preceded by the reference-set
-   preamble from `references/options-format.md`) and the
-   recommendation (with goal-aligned reasoning from
-   `references/recommendation-format.md`). **Stop and wait for the
-   user's response.**
+Conflict callouts use fixed wording from
 
-   The locked question line is:
+references/locked-question-format.md. They do not re-introduce the
+Socratic elicitation turn.
 
-   ```
-   **For [Dxxx] – [branch name]: pick an option, hybridize, or
-   provide your own answer.**
-   ```
+#### 4.3 Emit the wrapper
 
-   The `[Dxxx]` is `max(existing Dxxx) + 1`. The `[branch name]` is a
-   short, descriptive, stable name for the branch (do not embed the
-   full question in it). The "you" and "your" inside the template
-   refer to the user.
+Emit the full wrapper for the branch in a single turn:
 
-   All three response types are **equally valid**: pick an option,
-   hybridize, or provide your own answer. The agent must not default
-   to a closed-ended "pick one" framing, and must not treat the
-   locked question line as demanding a specific answer format.
+1. Round header
+2. Frontier statement
+3. Context block (3-row table: Goal, Prior decisions, Scope)
+4. Conflict/contradiction callout (if any)
+5. Options table (5-column, per 
+references/options-format.md)
+6. Recommendation (2-line, per 
+references/recommendation-format.md)
 
-   The reference-set preamble is:
+**Stop and wait for the user's response.** Do not emit multiple
+branches in one turn.
 
-   ```
-   Here are options to help you refine or confirm your answer. Pick
-   one, reject all, or hybridize.
-   ```
+#### 4.4 User response
 
-   Again, the "you" and "your" inside the preamble refer to the user.
+The user may:
+- Pick an option by name or number
+- Provide their own answer
+- Hybridize options
+- Clarify (correct the agent's understanding without selecting)
 
-The user may engage with the Socratic question to steer the options,
-decline and let the agent proceed with the default framing, confirm
-an answer, revise it in light of the options, or hybridize. The
-user's own answer is the anchor; the options are a reference set.
+When clarification is detected, mirror the clarification and re-ask.
+The branch remains open.
 
-Walk the user through one branch at a time. For every branch, the
-two turns above are mandatory. Re-asking a branch (because the user
-did not answer, asked for clarification, or because of a follow-up)
-restarts at Turn 1 with a fresh context block and optional Socratic
-elicitation question — do not skip straight to Turn 2, and do not
-collapse the two turns into one.
+When resolution is detected, proceed to Step 5.
 
 ### Step 5: Record and continue
 
 After the user resolves a branch, run the post-pick step. Before
 entering the post-pick step, confirm the user's response is a
-resolution, not a clarification. The following signals indicate
-**clarification**, not resolution:
-
-- The user corrects the agent's understanding of an option's
-  mechanics, meaning, or scope (e.g., "Option B doesn't encode a
-  lifecycle — it just adds a Start method").
-- The user explains what an option is without selecting it.
-- The user pushes back on the agent's characterization of an option.
-
-When clarification is detected, do not enter the post-pick step.
-Instead: mirror the clarification, surface any remaining concerns,
-and re-ask the locked question. The branch remains open.
-
-The following signals indicate **resolution**:
-
-- The user picks an option by name or number.
-- The user provides their own answer.
-- The user hybridizes options.
-- The user explicitly confirms a choice after clarification (e.g.,
-  "Yes, Option B").
+resolution, not a clarification.
 
 The post-pick step is a **gated step**: the next branch must not open
-until both the write and the read-back have succeeded. The step has
-six actions in a fixed order; actions 3, 4, and 5 are load-bearing and
-are not optional.
+until the write and read-back have succeeded.
 
 1. Confirm the pick in one sentence.
 2. Remind the user they can ask for the goal-aligned rejection rationale
    for the other options.
-3. Issue a tool call to append the new `Dxxx` record to the Decision
-   Ledger using the template in `references/decision-ledger.md`
-   (including the `Driver` field). The write is **bound to a
-   successful tool-call result** — a narrative statement that the
-   file was updated is not a write. Do not batch writes; append
-   after each resolution, before opening the next branch.
-4. **Read-back verification.** After the tool call returns success,
-   re-read the ledger file and confirm the new `Dxxx` line is the
-   last record in the file (tolerating benign differences such as
-   trailing newlines and byte-order). The next branch must not open
-   until the read-back confirms the new record is last. If the
-   read-back does not show the new `Dxxx` as the last record, treat
-   the write as failed and apply the recovery options below.
-5. **Complete the `Ixxx` for this branch.** Edit the `Ixxx` record
-   appended in Step 4 Turn 1 in place to fill the three `TBD` fields
-   (`User Response`, `Resolution`, `Notes`) with the user's verbatim
-   response, the agent's resolution summary (which decision the
-   response drove, which option it steered, which constraint it
-   surfaced), and any cross-references or non-load-bearing context.
-   Read-back to confirm the `Ixxx` is in its original position in the
-   file and the three fields are now filled. If the user declined the
-   Socratic elicitation question, the `User Response` field still
-   records the decline signal and the `Resolution` field records how
-   the agent proceeded (e.g., "proceeded to Turn 2 with default
-   framing"). If the user answered the locked question line directly
-   without engaging the Socratic question, the `User Response` field
-   records that locked-question-line answer and the `Resolution` field
-   records how it drove the `Dxxx` resolution. Do not amend the
-   `Prompt` field. Do not create a second `Ixxx` for the same
-   interaction. Do not move the `Ixxx` in the file. If the edit fails
-   or the read-back does not show the `Ixxx` in its original position
-   with all three fields filled, treat the complete as failed and
-   apply the same recovery options as actions 3 and 4.
-6. Move to the next branch.
+3. Write the `Dxxx` record(s) to the Decision Ledger. In a multi-pick
+   round, write all records in one tool call. The write is bound to a
+   successful tool-call result.
+4. **Read-back verification.** Re-read the ledger and confirm the new
+   `Dxxx` line is the last record.
+5. Complete the `Ixxx` for this branch (fill the three TBD fields).
+6. Move to the next branch or round.
 
-The post-pick confirmation is one sentence. The "you can ask" reminder
-is part of the post-pick template, not optional prose. The LLM does not
-volunteer analysis the user did not ask for.
+If the write or read-back fails, abort the branch transition, report
+the failure, and offer recovery options.
 
-If the write or read-back fails — permissions error, race with
-another process, parent directory does not exist, or the read-back
-does not show the new `Dxxx` as the last record — abort the branch
-transition, report the failure to the user (with the failure mode and
-the affected ledger path), and offer three recovery options: retry
-the write, skip the append and continue, or save the record locally
-for later back-fill. Do not proceed to the next branch until the
-user picks a recovery option.
+Apply the tone discipline from 
+references/tone-and-output.md on every
+branch transition.
 
-Apply the tone discipline from `references/tone-and-output.md` on every
-branch transition: no evaluative openers, neutral mirroring, structural
-transitions.
-
-**Open follow-up** (source-of-truth definition): a branch left
-intentionally unresolved at session end, captured in the ledger with
-`Resolved Answer = "DEFERRED"` and a `Constraints` line noting why.
-Child skills (e.g., `domain-grilling`) may reference but not redefine
-this term.
+**Open follow-up**: a branch left intentionally unresolved at session
+end, captured in the ledger with Resolved Answer = "DEFERRED" and a
+Constraints line noting why.
 
 **Abort rule**: if the user aborts the session, stop grilling. Do not
-write a record. Do not run the convergence test. The partial ledger
-state is preserved as-is until the user decides to delete or continue
-it.
+write a record. Do not run the convergence test.
 
-### Step 6: Goal-change handling
+### Step 6: Per-round convergence
+
+After the last branch in a round, run the 5-check convergence test
+from 
+references/convergence-test.md. If any check fails, continue
+grilling (or re-open the affected branch). When all five pass, the
+agent may prompt for close-out: "All checks pass. Ready to close out,
+or shall we open the next round?" The user decides whether to stop.
+
+### Step 7: Goal-change handling
 
 The goal-change handling workflow supports two paths:
 
@@ -413,56 +298,32 @@ The goal-change handling workflow supports two paths:
 changed. The LLM confirms the change with the user, then:
 
 1. Documents the change as a new goal record in the Decision Ledger
-   (with a fresh `Dxxx` ID, a Driver field, and a `Supersedes: Dxxx`
+   (with a fresh `Dxxx` ID, a Driver field, and a Supersedes: `Dxxx`
    line in Constraints linking to the prior goal record).
 2. Re-asks all open branches with the updated context.
-3. Asks the user whether closed branches need revisiting. The LLM does
-   not decide unilaterally.
+3. Asks the user whether closed branches need revisiting.
 
 **LLM-flagged potential shift.** The LLM notices the user's answers may
 reflect a shift in goals. The LLM flags the potential shift as a
 question, not a determination. The user decides whether the goal has
 changed. If the user confirms, the same three steps apply.
 
-The goal change or clarification is documented as its own record (with
-its own Driver field), not amended into the prior goal record.
-
-### Step 7: Convergence
-
-Before declaring convergence, run the four-check convergence test from
-`references/convergence-test.md`. If any check fails, continue grilling
-(or re-open the affected branch). When all four pass, declare: "We have
-reached a shared understanding."
-
 ### Step 8: Exit paths
 
 Once convergence is declared, offer the user the exit paths appropriate
 to the type of decision reached. Every exit that drives downstream
 action must include the Decision Ledger path so downstream skills can
-cite records as `filename#Dxxx`.
+cite records as ilename#`Dxxx`.
 
-- **Document the decision** — write a decision memo or notes file that
-  cites the ledger records as `filename#Dxxx`. Suitable when the outcome is
-  a decision the user will act on later, not a body of work to be implemented.
-- **Specialize to DDD** — if the discussion surfaced DDD concerns
-  (bounded contexts, ubiquitous language, glossary) that need a deeper
-  domain pass. The new skill inherits the existing ledger and continues
-  with `Dxxx` records.
-- **Specialize to code** — if the discussion surfaced implementation
-  choices (language, framework, dependencies) and a spec/PRD exists or
-  can be created. The new skill inherits the ledger and continues with
-  `Txxx` records.
-- **Decompose** — if the decision has produced discrete action items.
-  Use a tree-shape decomposer (with the ledger) or a flat-shape
-  decomposer for simpler flat decomposition.
-- **Handoff to another agent** — pass the Decision Ledger path as the
-  source of truth.
-- **Custom save** — save the shared understanding in another way,
-  citing records as `filename#Dxxx` so citations survive file relocation.
+- **Document the decision** — write a decision memo or notes file.
+- **Specialize to DDD** — if DDD concerns surfaced.
+- **Specialize to code** — if implementation choices surfaced.
+- **Decompose** — if discrete action items were produced.
+- **Handoff to another agent** — pass the Decision Ledger path.
+- **Custom save** — save the shared understanding another way.
 
 **Tool mapping** — each generic verb resolves to the tool the calling
-environment provides. If the named tool is not available, fall back to
-the generic behaviour described in the body of each exit.
+environment provides.
 
 | Generic name            | Resolves to                                       | Fallback when unavailable                       |
 |-------------------------|---------------------------------------------------|--------------------------------------------------|
@@ -476,24 +337,12 @@ the generic behaviour described in the body of each exit.
 ### Step 9: Post-session deletion reminder
 
 After the chosen exit is handed off, issue a one-sentence reminder that
-the Decision Ledger at `docs/decisions/DECISIONS-<repo>-<feature>.md`
-is **persisted by default** and that the user can delete it from
-`docs/decisions/` once implementation of the resolved decisions is
-complete (per the lifecycle in `references/decision-ledger.md`). If the
-exit hands off to `spec-to-tickets`, suppress this reminder --
-`spec-to-tickets` will present its own cleanup prompt.
+the Decision Ledger is persisted by default and that the user can delete
+it once implementation is complete. If the exit hands off to
+`spec-to-tickets`, suppress this reminder.
 
-The reminder is non-blocking. The user can defer, decline, or accept
-immediately. Do not delete the file without an explicit user instruction
-to do so. Do not loop the reminder — issue it once, at the end of the
-session, after the exit handoff. If the user has already chosen to
-defer or decline earlier in the session, do not re-issue the reminder.
-
-If the user confirms deletion, delete the file. Name each companion
-artifact (e.g., a sibling `BLUEPRINT-<repo>-<feature>.md`) and ask
-the user explicitly whether to delete it too — do not delete a
-companion without its own confirmation. Confirm each deletion with
-a single sentence. Do not empty any file in place.
+The reminder is non-blocking. Do not delete the file without explicit
+user instruction.
 
 ## Validation
 
@@ -505,160 +354,38 @@ transcript:
 - [ ] All six reference files were loaded and read in full before the
       first user question.
 - [ ] If any reference file was missing or unreadable, the session
-      aborted and the missing file was reported to the user.
+      aborted and the missing file was reported.
 - [ ] Decision Ledger path was derived (or located) and confirmed with
       the user before the first write.
 
 ### Output checks
 
-- [ ] Existing Decision Ledger state was summarized to the user before
-      the first question.
-- [ ] **Must pass — verify in transcript.** The goal-discovery question
-      ("What are your goals for this idea?") was asked as Step 3, and
-      the user's response was recorded as D001 (the goal record) in the
-      Decision Ledger.
-- [ ] **Must pass — verify in ledger file.** One Decision Ledger record
-      was appended immediately after every resolved branch (no
-      batching at session end). Inspect the ledger file's last record
-      to confirm it matches the user's most recent resolution: the
-      record must be the last `Dxxx` block in the file (tolerating
-      benign differences such as trailing newlines and byte-order).
-      The ledger file is the single source of truth for post-pick
-      correctness; transcript evidence alone is not sufficient.
-- [ ] Every record used the inline template (`Driver`, `Resolved Answer`,
-      `Normalized Requirement`, `Constraints`) and a fresh `Dxxx` ID
-      incremented from the highest existing one.
-- [ ] Every record's field headers matched the reference template
-      verbatim (`Driver` / `Resolved Answer` / `Normalized Requirement` /
-      `Constraints`).
-- [ ] Every record's `Driver` field captured the user's underlying
-      principle or motivation, distinct from `Resolved Answer` (the
-      what) and `Normalized Requirement` (the testable outcome).
-- [ ] Re-opened branches produced a new record with a `Supersedes: Dxxx`
-      line in `Constraints` rather than amending the prior record.
-- [ ] Every branch question followed the four-part locked question
-      sequence: context block, Socratic elicitation question, locked
-      question line, options and recommendation. The four parts were
-      emitted across **two separate agent turns** (Turn 1: context
-      block plus optional Socratic elicitation question; Turn 2:
-      locked question line, options, and recommendation together).
-- [ ] Every branch question, including re-asks and follow-ups, emitted
-      the full two-turn sequence: a context block + Socratic
-      elicitation question turn, and a locked question line + options
-      + recommendation turn. The agent did not skip the context block
-      or the optional Socratic elicitation question on a re-ask, and
-      did not collapse the two turns into a single turn. The locked
-      question line, the options, and the recommendation were emitted
-      together in Turn 2 — they were not split into separate turns.
-- [ ] Every context block was emitted as the four-element bullet list
-      (Goal, Prior decisions, Stakes, Scope) in that order, each
-      element exactly one sentence, with ledger citations. The context
-      block was not replaced with a free-form prose summary, a "current
-      state" investigation, a code reading, a domain-glossary recap,
-      or any other kind of analysis.
-- [ ] Every Socratic elicitation question used the fixed verbatim
-      phrasing: "What are you working toward in this decision? You may
-      answer, or skip and see the options as-is."
-- [ ] Every Socratic elicitation question was presented as optional.
-      When the user declined (signals: "skip", "no", "as-is", or a
-      no-op response), the agent recognized the decline and proceeded
-      to Turn 2 without re-asking and without attempting to extract
-      direction from a "skip". The agent did not pressure the user to
-      engage with the Socratic question.
-- [ ] When the user engaged with the Socratic question, the agent
-      used the direction as a soft steering signal in Turn 2 —
-      informing the option names, the "What it is" descriptions, and
-      the recommendation's `Reasoning` field — without dropping
-      defensible options. The underlying choice space was unchanged.
-- [ ] Every locked question line used the fixed verbatim phrasing:
-      "**For [Dxxx] – [branch name]: pick an option, hybridize, or
-      provide your own answer.**"
-- [ ] Every locked question line presented all three response types
-      (pick an option, hybridize, provide your own answer) as equally
-      valid. The agent did not default to a closed-ended "pick one"
-      framing, and did not treat the locked question line as demanding
-      a specific answer format.
-- [ ] Every options block was preceded by the reference-set preamble:
-      "Here are options to help you refine or confirm your answer. Pick
-      one, reject all, or hybridize."
-- [ ] Every question offered all natural options (typically 2–4) with
-      the four required fields (What it is, Benefit, Cost, Risk) at one
-      sentence per field.
-- [ ] Every recommendation used the three-field breakdown
-      (`Recommendation: Option N — <name>.`, `Reasoning: ...`,
-      `Forward risk: ...`) with the option name copied verbatim.
-- [ ] Every recommendation's `Reasoning` field was goal-aligned (not
-      option-comparison), explaining why the recommended option serves
-      the user's stated goal.
-- [ ] The post-pick step ran as a **gated step** and did not open the
-      next branch until both the `Dxxx` write and the `Ixxx` complete
-      succeeded: (1) one-sentence confirmation, (2) reminder that the
-      user can ask for the goal-aligned rejection rationale, (3) tool
-      call to append the `Dxxx` record (bound to a successful tool-call
-      result — a narrative statement is not a write), (4) read-back
-      verification confirming the new `Dxxx` is the last record in
-      the file, (5) tool call to complete the `Ixxx` for this branch
-      in place by filling the three `TBD` fields with the user's
-      verbatim response, the resolution, and any cross-references or
-      non-load-bearing context (the `Prompt` field is not amended; the
-      `Ixxx` is not moved; no second `Ixxx` is created for the same
-      interaction), (6) read-back verification confirming the `Ixxx`
-      is in its original position with all three fields now filled,
-      and (7) transition to the next branch.
-- [ ] Every clarifying interaction produced exactly one `Ixxx` record
-      in the Decision Ledger, anchored to the verbatim agent prompt
-      that was presented to the user (Socratic elicitation question,
-      locked question line, goal-discovery question, or
-      confirmation-or-refinement question). The `Ixxx` was appended
-      before the prompt was presented to the user, with `Prompt`
-      filled and the other three fields (`User Response`,
-      `Resolution`, `Notes`) marked `TBD`. The `<!-- next-i: Ixxx -->`
-      sentinel was bumped atomically with the append.
-- [ ] Every `Ixxx` record was completed in place after the user
-      responded. The `Prompt` field was not amended, the `Ixxx` was
-      not moved in the file, and no second `Ixxx` was created for the
-      same interaction. The completed `Ixxx` is in its original
-      position in the file with all three `TBD` fields now filled.
-      When the user declined a Socratic elicitation question, the
-      `User Response` field still records the decline signal and the
-      `Resolution` field records how the agent proceeded. When the
-      user answered the locked question line directly without
-      engaging the Socratic question, the `User Response` field
-      records that locked-question-line answer.
-- [ ] When the user asked for the recommendation rationale, the agent
-      provided concise goal-aligned rejection reasoning for the other
-      options (not option-comparison).
-- [ ] When the user's goal changed mid-session, the change was documented
-      as a new goal record with a `Supersedes: Dxxx` line linking to the
-      prior goal record, open branches were re-asked, and the user was
-      asked whether closed branches need revisiting.
-- [ ] No sentence began with a word whose function is to praise or
-      judge the user's prior input.
-- [ ] No forbidden filler word appeared in any agent turn
-      (`basically`, `essentially`, `actually`, `just`, `simply`,
-      `in order to`, `it is important to note`, `it's worth noting`,
-      `keep in mind`, `note that`, `needless to say`,
-      `at the end of the day`, `when all is said and done`).
-- [ ] Convergence was declared only when all four checks
-      (all branches resolved, no contradictions, no new question in
-      the last three turns, Decision Ledger complete) passed.
-- [ ] No diverge mode occurred (no paraphrasing the verbatim answer,
-      no skipping a branch, no bundling options, no asking multiple
-      questions in one turn, no accepting a contradictory answer
-      without a `Supersedes: Dxxx` record, no treating clarification
-      as resolution).
-- [ ] The chosen exit was handed off with the Decision Ledger path so
-      downstream skills (memos, tickets, specialized grilling) can
-      cite records as `filename#Dxxx`.
-- [ ] Every citation of a Decision Ledger record from outside the ledger
-      file used the `filename#Dxxx` format (e.g.,
-      `DECISIONS-repo-feature.md#D001`), not a bare `Dxxx` ID.
-- [ ] A one-sentence post-session deletion reminder was issued exactly
-      once, after the exit handoff, stating that the Decision Ledger
-      at `docs/decisions/DECISIONS-<repo>-<feature>.md` is persisted
-      by default and that the user can delete it once implementation
-      is complete. The reminder was non-blocking. The agent did not
-      delete the file without an explicit user instruction to do so.
-      The reminder was not re-issued if the user had already deferred
-      or declined earlier in the session. When the exit hands off to
-      `spec-to-tickets`, the deletion reminder was suppressed.
+- [ ] Existing Decision Ledger state was summarized to the user.
+- [ ] The goal-discovery question was asked as Step 3, and the user's
+      response was recorded as the goal record (the first `Dxxx` in a
+      new ledger, or the next available `Dxxx` in an existing one).
+- [ ] One Decision Ledger record was appended immediately after every
+      resolved branch (no batching at session end). In multi-pick
+      rounds, all records were written in one tool call.
+- [ ] Every record used the inline template (Driver, Resolved Answer,
+      Normalized Requirement, Constraints) and a fresh `Dxxx` ID.
+- [ ] Every branch question followed the 1-turn wrapper from
+      locked-question-format.md: round header, frontier statement,
+      context block (3-row table), conflict callout (if any), options
+      table, recommendation. No Socratic elicitation question was
+      emitted.
+- [ ] Every context block was emitted as the 3-row table (Goal, Prior
+      decisions, Scope) in that order, each element one sentence.
+- [ ] Every options block used the 5-column table format (Option, What
+      it is, Benefit, Cost, Risk).
+- [ ] Every recommendation used the 2-line format (Recommendation
+      letter + period, Reasoning sentence).
+- [ ] Conflict detection ran before each branch resolution. Static and
+      dynamic conflicts were surfaced with fixed callout wording.
+- [ ] The post-pick step ran as a gated step with write and read-back.
+- [ ] Convergence was declared as a per-round check; the agent offered
+      close-out but the user decided.
+- [ ] No diverge mode occurred.
+- [ ] The chosen exit was handed off with the Decision Ledger path.
+- [ ] Every citation of a Decision Ledger record used the
+      filename#`Dxxx` format.

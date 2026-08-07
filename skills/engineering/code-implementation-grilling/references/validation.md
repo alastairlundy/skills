@@ -7,36 +7,31 @@ transcript:
       loaded and read in full before the first user question. If
       any reference file was missing or unreadable, the session
       aborted and the missing file was reported to the user.
-- [ ] **Two-turn procedure**: Did every branch question — including
+- [ ] **1-turn wrapper per round**: Did every round — including
       foundation items, TDP branches, and any re-ask or follow-up —
-      emit the full four-part locked question sequence across two
-      separate agent turns: a context block + Socratic elicitation
-      question turn, and a locked question line + options +
-      recommendation turn? The agent did not skip the context block or
-      Socratic elicitation question on a re-ask, and did not collapse
-      the two turns into a single turn. See
+      emit the full 1-turn wrapper in a single agent turn: round
+      header, frontier statement, 5-row context block (Goal, Prior
+      decisions, Scope, Spec section), conflict callout (if any),
+      options table, recommendation. Up to 3 unblocked branches may
+      appear in a single round. No Socratic elicitation question was
+      emitted. See
       `../grilling/references/locked-question-format.md`.
-- [ ] **Context block (parent 4-element)**: Every context block was
-      emitted as the four-element bullet list (Goal, Prior decisions,
-      Stakes, Scope) in that order, each element exactly one sentence,
-      with ledger citations. The context block was not replaced with a
-      free-form prose summary, a 'current state' investigation, a code
-      reading, a domain-glossary recap, or any other kind of analysis.
-      See `../grilling/references/locked-question-format.md` for the
-      parent 4-element definition. Code-impl per-decision context
-      blocks extend this with the 5th element (Spec section) per
-      `references/locked-question-format.md`.
-- [ ] **Context block (5th element, Spec section)**: Every code-impl
-      per-decision context block included the 5th element ('Spec
-      section') as a single sentence naming the spec file path and the
-      specific section or functional requirement the branch addresses,
-      with an inline citation such as `specs/feature-x.md §3.2`. The
-      5th element is required, not optional, and the citation format
-      is fixed. See `references/locked-question-format.md` for the
-      5-element template and the citation format.
-- [ ] **Atomic Questioning**: Did the agent ask exactly one
-      question at a time, waiting for a response before
-      proceeding?
+- [ ] **Context block (5-row)**: Every code-impl per-decision context
+      block was emitted as the 5-row markdown table (header + 4 data
+      rows: Goal, Prior decisions, Scope, Spec section) in that order,
+      each element exactly one sentence, with ledger citations. The
+      context block was not replaced with a free-form prose summary,
+      a 'current state' investigation, a code reading, a domain-glossary
+      recap, or any other kind of analysis.
+      See `references/locked-question-format.md` for the template and
+      the citation format.
+- [ ] **Spec section required**: Every code-impl per-decision context
+      block included the Spec section row as a single sentence naming
+      the spec file path and the specific section or functional
+      requirement the branch addresses, with an inline citation such
+      as `specs/feature-x.md §3.2`. The Spec section row is required,
+      not optional, and the citation format is fixed.
+      See `references/locked-question-format.md`.
 - [ ] **Decision Ledger Located**: Was the existing Decision
       Ledger located, read end-to-end, and its path confirmed with
       the user before the first question?
@@ -66,7 +61,7 @@ transcript:
       the technical "how" supports the functional "what"?
 - [ ] **Goal-aligned reasoning**: Does every recommendation's
       `Reasoning` field explicitly tie to the session-level goal
-      (D001 or current goal record) using phrasing like "aligns
+      (the current goal record) using phrasing like "aligns
       with your goal of X" or "serves your goal of X"? Citing
       ledger records without naming the user's goal is insufficient —
       the goal must be surfaced explicitly. See

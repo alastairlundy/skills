@@ -104,10 +104,21 @@ agent a persistent, up-to-date record to reference in later branches,
 and they let the user spot a missing or weakened entry at the next
 branch and correct it before drift compounds.
 
+In a multi-pick round (up to 3 branches resolved in one turn), the
+agent reads the current ledger and writes all new `Dxxx` records in
+**one tool call** within the same turn as the resolution. Read-back
+verification still applies — the agent confirms the new records are
+last in the file before opening the next round. If a concurrent append
+lands between the read and the write, the write may overwrite it.
+Read-back detects this (the concurrent append is missing). On detection,
+the agent re-reads the ledger, appends both the concurrent record and
+its own records in a new single tool call, and verifies again. The trailing
+`<!-- next-d: Dxxx -->` sentinel is the single source of truth for
+the next ID.
+
 For `Ixxx` records, the append fires in two steps:
 
-1. **Pre-question append.** Before presenting the Socratic elicitation
-   question or the locked question line, append an `Ixxx` record with
+1. **Pre-question append.** Before presenting the locked question line, append an `Ixxx` record with
    the `Prompt` field filled and the other three fields marked `TBD`,
    then bump the `<!-- next-i: Ixxx -->` sentinel. The `TBD`
    placeholders are placeholders, not a permanent state.
@@ -116,6 +127,49 @@ For `Ixxx` records, the append fires in two steps:
    Response`, `Resolution`, and `Notes` with the user's exact words
    and the agent's notes. Read-back to confirm the four fields are now
    filled and the `Ixxx` is in its expected position in the file.
+
+
+## Conflict resolution mechanics
+
+### Static conflict (record vs. record)
+
+When two resolved Dxxx records have mutually-exclusive Normalized
+Requirements, the agent detects the conflict before the newer branch
+can resolve. The agent pauses, surfaces a fixed "Conflict detected"
+callout naming both records and the contradictory Normalized
+Requirements, and asks the user which resolution stands. The user owns
+the resolution; the agent does not auto-resolve.
+
+Once the user picks, the superseded record gains a
+Superseded by: Dxxx line in Constraints pointing to the winning
+record. The winning record is unchanged.
+
+### Dynamic conflict (drift)
+
+When a new resolution contradicts a prior resolution (the user changes
+their mind), the agent detects the drift before the new branch can
+resolve. The agent pauses, surfaces a fixed "Contradiction detected"
+callout naming the prior record and the new resolution, and re-asks
+the branch with the new context. The user confirms, revises, or opens
+a goal-change flow.
+
+Once the user confirms the new resolution, the new record gains a
+Supersedes: Dxxx line in Constraints pointing to the earlier record it
+replaces.
+
+### DEFERRED re-ask closure
+
+Each branch may be re-asked at most once. After 1 re-ask with no
+clear answer, the branch closes with Resolved Answer = "DEFERRED"
+and a Constraints line noting why (e.g., "User did not provide a
+clear answer after final re-ask"). If a Dxxx record already exists
+for this branch, update it in place. If no Dxxx record exists yet
+(e.g., the user never provided a clear initial answer), create a
+new DEFERRED Dxxx record with the branch name and the constraints
+line. No separate record is created for the re-ask itself.
+
+The re-ask preamble is fixed and cited in locked-question-format.md.
+The re-ask must not re-introduce the Socratic elicitation turn.
 
 ## Dxxx record template
 
@@ -205,13 +259,14 @@ in the file. The `Ixxx` keeps its original position.
 
 ## Goal record
 
-The first `Dxxx` record in the ledger (`D001`) is the **goal record**.
+The first `Dxxx` record appended during the session is the **goal record**.
 It captures the session's foundational goal as surfaced by the
-goal-discovery question. The goal record uses the same template but
-with goal-specific content:
+goal-discovery question. For a new ledger this is `D001`; for an existing
+ledger use the next available `Dxxx` ID from the sentinel. The goal record
+uses the same template but with goal-specific content:
 
 ```md
-### [D001] — session goal
+### [Dxxx] — session goal
 
 - **Driver**: <the user's underlying motivation for the session>
 - **Resolved Answer**: <the user's stated goal or goals>
