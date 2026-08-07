@@ -206,10 +206,10 @@ subagent. The primary agent does not read source files directly.
 
 Before any branch resolves, run both conflict checks:
 
-- **Static conflict** (D006): two records with mutually-exclusive
+- **Static conflict**: two records with mutually-exclusive
   Normalized Requirements. Surface "Conflict detected" callout naming
   both records. User owns resolution.
-- **Dynamic conflict** (D007): new resolution contradicts a prior
+- **Dynamic conflict**: new resolution contradicts a prior
   resolution. Surface "Contradiction detected" callout naming the prior
   record. Re-ask the branch.
 

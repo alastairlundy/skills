@@ -37,7 +37,7 @@ The fixed order is:
 Components that are empty are omitted (not left blank). The round
 header, frontier statement, context block, options table, and
 recommendation are always present. The conflict/contradiction callout
-is conditional on conflict detection (D006/D007).
+is conditional on conflict detection.
 
 ### Component 1 — Round header
 
@@ -82,7 +82,7 @@ in place of the table.
 
 ### Component 4 — Conflict/contradiction callout (conditional)
 
-Only emitted when conflict detection (D004) fires before the branch
+Only emitted when conflict detection fires before the branch
 resolves. The callout appears between the context block and the options
 table.
 
@@ -105,7 +105,7 @@ resolution):
 ```
 
 The callout does not re-introduce the Socratic elicitation turn
-(D002). It is a fixed-format notification, not an open-ended question.
+It is a fixed-format notification, not an open-ended question.
 
 ### Component 5 — Options table
 

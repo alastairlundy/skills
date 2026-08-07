@@ -109,7 +109,7 @@ ask the goal-discovery question:
 
 > **What are your goals for this idea?**
 
-Record the response as `D001` in the Decision Ledger.
+Record the response as the goal record in the Decision Ledger.
 
 Then open branches in rounds using the 1-turn wrapper from
 ../`grilling`/references/locked-question-format.md. Each branch

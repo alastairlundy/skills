@@ -60,7 +60,7 @@ transcript:
       the technical "how" supports the functional "what"?
 - [ ] **Goal-aligned reasoning**: Does every recommendation's
       `Reasoning` field explicitly tie to the session-level goal
-      (D001 or current goal record) using phrasing like "aligns
+      (the current goal record) using phrasing like "aligns
       with your goal of X" or "serves your goal of X"? Citing
       ledger records without naming the user's goal is insufficient —
       the goal must be surfaced explicitly. See

@@ -32,7 +32,7 @@ is not enforceable. Restate it as a checkable rule or relax it.
 Does the new D-record preserve every Constraint of every cited
 prior record? Nothing in the new D-record may contradict a cited
 `Dxxx`. If a contradiction appears, the agent surfaces a fixed
-"Contradiction detected" callout (per D004/D007) and the branch
+"Contradiction detected" callout and the branch
 is re-opened with a Supersedes: `Dxxx` line in `Constraints`.
 The user owns the resolution.
 
@@ -51,7 +51,7 @@ first four checks verify each record against the records it cites. The
 cross-record check verifies the **set** against itself: every
 implied consequence of any D-record holds across the whole ledger. If
 two non-citing records imply mutually exclusive facts, the agent
-surfaces a "Conflict detected" callout (per D006) and re-opens the
+surfaces a "Conflict detected" callout and re-opens the
 later record with a Supersedes: `Dxxx` line.
 
 ## Declaration
@@ -80,7 +80,7 @@ are the *negative* bar — explicit divergences the agent must avoid.
   questions instead of a single focused prompt.
 - **Accepting a contradictory answer.** The user gives an answer that
   contradicts a previously resolved decision, and the agent accepts it
-  without surfacing the "Contradiction detected" callout (D004) or
+  without surfacing the "Contradiction detected" callout or
   creating a Supersedes: `Dxxx` record.
 - **Treating clarification as resolution.** The user corrects the
   agent's understanding of an option's mechanics or meaning — e.g.,
@@ -93,6 +93,6 @@ are the *negative* bar — explicit divergences the agent must avoid.
 
 The recovery for modes 1–5 is to revisit the affected branch and
 re-record. The recovery for mode 6 (accepting a contradictory
-answer) is to apply the conflict-detection mechanic (D004): surface
+answer) is to apply the conflict-detection mechanic: surface
 the "Contradiction detected" callout, re-open with a Supersedes: `Dxxx`
 record, and resolve explicitly.

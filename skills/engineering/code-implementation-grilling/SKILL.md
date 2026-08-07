@@ -89,7 +89,7 @@ append.
 
 Follow `grilling`'s Step 3 (Goal discovery). The first turn after the
 user has confirmed the spec and ledger paths in Step 2 is an open
-question to surface the goal. Record the response as `D001` in the
+question to surface the goal. Record the response as the goal record in the
 Decision Ledger.
 
 ### Step 4: Foundation Establishment (mandatory)

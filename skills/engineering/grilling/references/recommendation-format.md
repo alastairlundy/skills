@@ -40,7 +40,7 @@ text is plain.
 The `Reasoning` field **must explicitly tie the recommended option to
 the user's stated goal**. Use phrasing like *"aligns with your goal of
 X"* or *"serves your goal of X"*, where X is the session-level goal
-recorded in D001 (or the current goal record, if a `Supersedes: Dxxx`
+recorded in the current goal record (or a new goal record, if a `Supersedes`
 has been issued). The reasoning must explain *why* this option serves
 the goal; it must not compare options against each other or
 re-justify the rejected options.
