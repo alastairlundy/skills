@@ -159,9 +159,11 @@ one goal or multiple goals. The LLM does not pressure the user to
 provide multiple goals when they have one.
 
 **Stop and wait for the user's response.** Do not proceed to Step 4
-or open any branch question until the user has answered. Record the
-response as the foundational goal record (`D001`) in the Decision Ledger
-using the goal record template from 
+or open any branch question until the user has answered. Allocate the
+next available `Dxxx` ID — `D001` for a new ledger, or `max(existing) + 1`
+for an existing one (read from the `<!-- next-d: Dxxx -->` sentinel or
+by scanning). Record the response as the goal record in the Decision
+Ledger using the goal record template from
 references/decision-ledger.md.
 Append the record immediately. Subsequent context blocks (per
 
@@ -360,7 +362,8 @@ transcript:
 
 - [ ] Existing Decision Ledger state was summarized to the user.
 - [ ] The goal-discovery question was asked as Step 3, and the user's
-      response was recorded as `D001`.
+      response was recorded as the goal record (the first `Dxxx` in a
+      new ledger, or the next available `Dxxx` in an existing one).
 - [ ] One Decision Ledger record was appended immediately after every
       resolved branch (no batching at session end). In multi-pick
       rounds, all records were written in one tool call.

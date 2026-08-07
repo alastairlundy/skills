@@ -254,13 +254,14 @@ in the file. The `Ixxx` keeps its original position.
 
 ## Goal record
 
-The first `Dxxx` record in the ledger (`D001`) is the **goal record**.
+The first `Dxxx` record appended during the session is the **goal record**.
 It captures the session's foundational goal as surfaced by the
-goal-discovery question. The goal record uses the same template but
-with goal-specific content:
+goal-discovery question. For a new ledger this is `D001`; for an existing
+ledger use the next available `Dxxx` ID from the sentinel. The goal record
+uses the same template but with goal-specific content:
 
 ```md
-### [D001] — session goal
+### [Dxxx] — session goal
 
 - **Driver**: <the user's underlying motivation for the session>
 - **Resolved Answer**: <the user's stated goal or goals>
