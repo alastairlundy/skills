@@ -26,18 +26,20 @@ The fixed order is:
 1. **Round header** — identifies the round number.
 2. **Frontier statement** — how many branches remain total, how many
    are unblocked this round.
-3. **Context block** — the 4-row table grounding the branch.
-4. **Conflict/contradiction callout** (conditional) — only when a
-   conflict or contradiction is detected.
-5. **Options table** — the 5-column reference set (per
-   `references/options-format.md`).
-6. **Recommendation** — the 2-line lean block (per
-   `references/recommendation-format.md`).
+3. **Per-branch block** (repeated 1–3 times, once per unblocked branch
+   in this round):
+   1. **Context block** — the 4-row table grounding the branch.
+   2. **Conflict/contradiction callout** (conditional) — only when a
+      conflict or contradiction is detected.
+   3. **Options table** — the 5-column reference set (per
+      `references/options-format.md`).
+   4. **Recommendation** — the 2-line lean block (per
+      `references/recommendation-format.md`).
 
 Components that are empty are omitted (not left blank). The round
-header, frontier statement, context block, options table, and
-recommendation are always present. The conflict/contradiction callout
-is conditional on conflict detection.
+header, frontier statement, and at least one per-branch block are
+always present. The conflict/contradiction callout within each
+per-branch block is conditional on conflict detection.
 
 ### Component 1 — Round header
 
@@ -151,14 +153,17 @@ uses the identical wrapper format as the initial branch emission.
 
 - **Use the same `filename#Dxxx` and name verbatim in every question for that
   branch.** Do not rephrase, abbreviate, or rename mid-session.
-- **One turn per branch — hard stop.** Emit the full wrapper
-  (round header through recommendation), then stop and wait for
-  the user's response. The agent must not split the wrapper across
-  multiple turns.
-- **One question per turn — hard stop.** Emit exactly one locked
-  question (one branch's wrapper), then stop generating. No
-  exceptions, no escape hatches, no self-check mechanisms. Asking
-  multiple questions at once confuses the user.
+- **Up to 3 branches per round.** Emit 1–3 complete branch wrappers
+  (each with context block, conflict callout if any, options table,
+  and recommendation) in a single turn, then stop and wait for the
+  user's response. Each branch wrapper is self-contained. Do not
+  emit more than 3 branches in one round. Do not mix unrelated
+  decisions in one branch emission — each branch in a round must be
+  an unblocked branch from the same decision tree.
+- **Complete wrapper per branch — hard stop.** Each branch's wrapper
+  (context block through recommendation) must be emitted in full,
+  not split across turns. The agent must not emit a context block
+  in one turn and the options table in the next.
 - **The context block is mandatory for every branch.** Do not skip it,
   even when the prior decisions are few or the scope seems obvious.
 - **All three response types in the locked question line are equally

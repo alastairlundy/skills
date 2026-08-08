@@ -222,19 +222,21 @@ Socratic elicitation turn.
 
 #### 4.3 Emit the wrapper
 
-Emit the full wrapper for the branch in a single turn:
+Emit the full wrapper for each branch in a single round turn.
+The round header and frontier statement appear once. Then for each
+unblocked branch (up to 3), emit the per-branch block:
 
-1. Round header
-2. Frontier statement
-3. Context block (3-row table: Goal, Prior decisions, Scope)
-4. Conflict/contradiction callout (if any)
-5. Options table (5-column, per 
+1. Context block (3-row table: Goal, Prior decisions, Scope)
+2. Conflict/contradiction callout (if any)
+3. Options table (5-column, per 
 references/options-format.md)
-6. Recommendation (2-line, per 
+4. Recommendation (2-line, per 
 references/recommendation-format.md)
 
-**Stop and wait for the user's response.** Do not emit multiple
-branches in one turn.
+**Emit up to 3 branch wrappers in one round turn.** Each branch
+wrapper is self-contained (context block, conflict callout if any,
+options table, recommendation). Stop generating after the last
+branch wrapper and wait for the user's response.
 
 #### 4.4 User response
 
