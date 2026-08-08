@@ -61,6 +61,18 @@ for close-out: "All checks pass. Ready to close out, or shall we
 open the next round?" The user decides whether to stop. Do not declare
 convergence based on intent or partial progress.
 
+## User sign-off (mandatory)
+
+The LLM must never declare "converged" as a statement. It must
+always present the convergence evidence as a question:
+
+"All five checks pass. [N] records are in the ledger. Ready to
+close out, or shall we open the next round?"
+
+The session remains open until the user explicitly confirms
+close-out. A silence, a new question, or a follow-up request means
+the session is not closed.
+
 ## Diverge modes
 
 The convergence test is the *positive* bar. The following failure modes
