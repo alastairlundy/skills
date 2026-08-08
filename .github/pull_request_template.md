@@ -4,6 +4,10 @@ Opening an issue first significantly increases the likelihood of acceptance.
 Did you discuss this change in an issue before opening this PR? Link it below.
 -->
 
+## Description
+
+<!-- What does this PR do and why? Keep it concise. -->
+
 ## Related Issue
 
 <!-- Link the issue this PR addresses, e.g. Closes #123 -->
