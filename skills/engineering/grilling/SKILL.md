@@ -190,6 +190,19 @@ wait for the next round.
 The frontier statement reports: "N branches remain, M unblocked this
 round."
 
+#### 4.0a Foundation and scope: user owns the determination
+
+The LLM must not declare foundation items "locked" or "already
+decided" without explicit user confirmation. When existing records
+or repo state appear to constrain options, present the constraint
+as a question: "Does [prior record / repo state] lock this item,
+or is it still open?" The user decides.
+
+When the LLM believes convergence may be reached, it presents the
+evidence (which checks pass, which records exist) and asks: "Ready
+to close out, or shall we open the next round?" The user decides.
+The LLM never declares convergence as a statement of fact.
+
 #### 4.1 Brief exploration (subagent delegation)
 
 Before each locked question, delegate the brief exploration to a
