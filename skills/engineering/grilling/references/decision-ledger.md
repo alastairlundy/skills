@@ -201,6 +201,22 @@ The re-ask must not re-introduce the Socratic elicitation turn.
   user named (e.g., "Do not collapse multiple tabs into one session",
   "All open tabs must survive restart"). If none, write `None.`
 
+## Anti-fabrication rules
+
+- **Resolved Answer must come from a user response.** Never write a
+  `Dxxx` record with a `Resolved Answer` that was not spoken by the
+  user. If the user skips a branch or declines to answer, close with
+  `DEFERRED` — do not fill the answer yourself.
+- **Never mark foundation or convergence complete without explicit user
+  confirmation.** The LLM may observe that checks pass; it must not
+  declare convergence or foundation-complete on its own authority. The
+  user must explicitly say "converged", "complete", "close out", or
+  equivalent.
+- **Never fabricate or reconstruct a ledger from partial context.** If
+  the ledger is lost or incomplete, surface the gap to the user and
+  ask how to proceed. Do not synthesize `Resolved Answer` fields from
+  memory or reasoning.
+
 ## Txxx record template
 
 `Txxx` records are emitted by `code-implementation-grilling` and use
