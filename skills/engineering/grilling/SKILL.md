@@ -193,10 +193,10 @@ round."
 #### 4.0a Foundation and scope: user owns the determination
 
 The LLM must not declare foundation items "locked" or "already
-decided" without explicit user confirmation. When existing records
-or repo state appear to constrain options, present the constraint
-as a question: "Does [prior record / repo state] lock this item,
-or is it still open?" The user decides.
+decided" without explicit user confirmation. Before treating any
+prior record or repo state as binding, ask: "Does [prior record /
+repo state] lock this item, or is it still open?" Do not use it as a
+binding constraint until the user confirms.
 
 When the LLM believes convergence may be reached, it presents the
 evidence (which checks pass, which records exist) and asks: "Ready
