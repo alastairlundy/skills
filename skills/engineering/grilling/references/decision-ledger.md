@@ -205,8 +205,10 @@ The re-ask must not re-introduce the Socratic elicitation turn.
 
 - **Resolved Answer must come from a user response.** Never write a
   `Dxxx` record with a `Resolved Answer` that was not spoken by the
-  user. If the user skips a branch or declines to answer, close with
-  `DEFERRED` — do not fill the answer yourself.
+  user. Do not fill the answer yourself. A skip or decline on the first
+  encounter triggers the single permitted re-ask (see DEFERRED re-ask
+  closure above); only after the re-ask also receives no clear answer
+  does the branch close with `DEFERRED`.
 - **Never mark foundation or convergence complete without explicit user
   confirmation.** The LLM may observe that checks pass; it must not
   declare convergence or foundation-complete on its own authority. The
@@ -215,7 +217,9 @@ The re-ask must not re-introduce the Socratic elicitation turn.
 - **Never fabricate or reconstruct a ledger from partial context.** If
   the ledger is lost or incomplete, surface the gap to the user and
   ask how to proceed. Do not synthesize `Resolved Answer` fields from
-  memory or reasoning.
+  memory or reasoning. Valid `Ixxx` records containing permitted `TBD`
+  placeholders (i.e. awaiting user response) are expected and must not
+  be treated as gaps; resume completion of those records in place.
 
 ## Txxx record template
 

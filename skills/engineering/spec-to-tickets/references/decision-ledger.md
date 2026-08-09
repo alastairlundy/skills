@@ -185,7 +185,9 @@ For `Ixxx` records, the append fires in two steps:
 - **Never fabricate or reconstruct a ledger from partial context.** If
   the ledger is lost or incomplete, surface the gap to the user and
   ask how to proceed. Do not synthesize `Resolved Answer` fields from
-  memory or reasoning.
+  memory or reasoning. Valid `Ixxx` records containing permitted `TBD`
+  placeholders (i.e. awaiting user response) are expected and must not
+  be treated as gaps; resume completion of those records in place.
 
 ## Txxx record template
 
