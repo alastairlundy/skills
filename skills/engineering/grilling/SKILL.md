@@ -198,9 +198,10 @@ prior record or repo state as binding, ask: "Does [prior record /
 repo state] lock this item, or is it still open?" Do not use it as a
 binding constraint until the user confirms.
 
-When the LLM believes convergence may be reached, it presents the
-evidence (which checks pass, which records exist) and asks: "Ready
-to close out, or shall we open the next round?" The user decides.
+After running the five-check convergence test, the LLM may prompt for
+close-out only when all five checks pass. It presents every check result
+and identifies only user-confirmed records as binding evidence. It asks:
+"Ready to close out, or shall we open the next round?" The user decides.
 The LLM never declares convergence as a statement of fact.
 
 #### 4.1 Brief exploration (subagent delegation)
