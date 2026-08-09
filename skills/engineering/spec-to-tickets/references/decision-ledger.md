@@ -174,9 +174,9 @@ For `Ixxx` records, the append fires in two steps:
 ## Anti-fabrication rules
 
 - **Resolved Answer must come from a user response.** Never write a
-  `Dxxx` record with a `Resolved Answer` that was not spoken by the
-  user. If the user skips a branch or declines to answer, close with
-  `DEFERRED` — do not fill the answer yourself.
+  `Dxxx` or `Txxx` record with a `Resolved Answer` that was not spoken
+  by the user. If the user skips a branch or declines to answer, close
+  with `DEFERRED` — do not fill the answer yourself.
 - **Never mark foundation or convergence complete without explicit user
   confirmation.** The LLM may observe that checks pass; it must not
   declare convergence or foundation-complete on its own authority. The
