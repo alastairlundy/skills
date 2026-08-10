@@ -87,9 +87,11 @@ are the *negative* bar — explicit divergences the agent must avoid.
 - **Bundling options.** A 3-option question is asked as a 5-option
   question, or a 5-option question is asked as a 3-option one. The
   user sees a different decision space than the agent's working set.
-- **Asking multiple questions in one turn.** The agent emits more than
-  one locked question before stopping. The user receives a wall of
-  questions instead of a single focused prompt.
+- **Asking more than 3 questions in one turn.** The agent emits
+  more than 3 locked questions in one round, or emits questions on
+  unrelated decisions in one turn. Up to 3 branches in a single
+  round is valid; beyond that, the user receives an overwhelming
+  wall of questions.
 - **Accepting a contradictory answer.** The user gives an answer that
   contradicts a previously resolved decision, and the agent accepts it
   without surfacing the "Contradiction detected" callout or
