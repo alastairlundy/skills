@@ -169,7 +169,6 @@ new DEFERRED Dxxx record with the branch name and the constraints
 line. No separate record is created for the re-ask itself.
 
 The re-ask preamble is fixed and cited in locked-question-format.md.
-The re-ask must not re-introduce the Socratic elicitation turn.
 
 ## Dxxx record template
 
@@ -249,7 +248,7 @@ spec links. The full template is in
   sync, fall back to scanning the file for the highest existing `Ixxx`
   and re-seeding the sentinel before the next append.
 - `Prompt` is the **verbatim** agent text that was presented to the
-  user — the Socratic elicitation question, the locked question line,
+  user — the locked question line,
   or a single-sentence clarification. Do not paraphrase the prompt.
 - `User Response` is the **verbatim** user text that answered the
   prompt, or a close paraphrase the user has explicitly accepted. It
@@ -260,8 +259,7 @@ spec links. The full template is in
   it steered, which branch it opened, which constraint it surfaced. If
   the response is a deferred or non-answer (e.g., "skip", "as-is",
   silence), the resolution still records what the agent did in
-  response (e.g., "declined the Socratic question; proceeded to Turn 2
-  with default framing").
+  response.
 - `Notes` is for context the next reader needs that does not fit in the
   other three fields — non-load-bearing parts of the user response,
   cross-references to a `Dxxx`/`Txxx` record the interaction drove, or
