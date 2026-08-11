@@ -2,13 +2,10 @@
 name: grilling
 description: >-
   Structured decision elicitation that surfaces clear decisions from vague ideas.
-  Use when the user wants to think through an ambiguous
-  decision that is neither
-  code/tech nor domain modeling or terminology alignment — business strategy,
-  product direction, design choices, process, organizational decisions, and
-  similar non-implementation decisions. Do not use for code/technical
+  Use when the user wants to think through an ambiguous or unclear
+  decision that doesn't relate to code/tech nor domain modeling or terminology alignment. Do not use for working towards code/technical 
   implementation choices — use `code-implementation-grilling` instead. Do not
-  use for domain modeling or terminology alignment — use `domain-grilling`
+  use when aligning on terminology or domain modelling — use `domain-grilling`
   instead.
 license: MIT
 ---
