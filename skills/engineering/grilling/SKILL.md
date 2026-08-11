@@ -31,8 +31,7 @@ gives a goal-aligned recommendation, and records the resolved answer in a Decisi
 
 ### Examples
 
-- Business strategy pivots, product direction, design choices, process
-  changes, organizational structure, hiring, pricing, marketing
+- Business strategy pivots, product direction, design choices, organizational structure, hiring, pricing, marketing
   positioning, partnership decisions.
 
 ## When Not to Use
