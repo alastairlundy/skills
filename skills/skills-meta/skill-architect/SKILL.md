@@ -60,17 +60,15 @@ After the user answers, complete the `Ixxx` in place:
 - If the user confirms file creation (`User Response = "save requested"`
   or equivalent), set `Resolution = "file creation in scope"`.
 
+#### Step 1a: Initialization
+
 If the target skill directory is known at this point (e.g., the user
 has already named a target path), initialize the design ledger at
 `<target-skill-dir>/.design-ledger.md` with the file-format header
 (Dxxx record template, Ixxx record template, lifecycle/storage notes,
-and the two trailing sentinels `next-d: D001` and `next-i: I001`).
-The directory may not yet exist — defer the file creation until the
-directory exists, on the first real append at the latest. The hidden
-filename (`.design-ledger.md`) keeps the file out of casual listings
-during the design phase; it is deleted on materialization per the
-lifecycle in `references/decision-ledger.md` and per
-`saving-the-skill.md` Step 8.
+and the two trailing sentinels `next-d: D001` and `next-i: I001`). If the target skill directory is unknown ask the user for the file path where they would like to store the design ledger.
+
+The directory may not yet exist — create the directory if required in order to create the design ledger. If directory creation fails, abort the skill and inform the user why you cannot proceed along with any error message you encounter.
 
 The agent must collect four explicit elements:
 - (a) the **goal**,
@@ -98,7 +96,7 @@ Once all four elements (plus the inferred value proposition) are captured, appen
 The completion criterion is: all four explicit elements are captured; the workflow advances only when the user has provided an example or a description of the desired output's shape. An anti-example (what the skill should NOT do) is not a substitute for either.
 
 ### Step 2: Domain Analysis
-Break down the goal into logical "branches" or decision trees. Use a Mermaid diagram to visualize the branches and intended flow when the skill has three or more branches, two or more decision points, or any non-linear flow. For simpler skills, prose decomposition is sufficient. Map the prerequisites and the intended end state. Determine what "success" looks like for this skill.
+Break down the goal into logical "branches" or decision trees. Use a Mermaid diagram to visualize the branches and intended flow when the skill has three or more branches, or any non-linear flow. For simpler skills, prose decomposition is sufficient. Map the prerequisites and the intended end state. Determine what "success" looks like for this skill.
 
 Each structural branch decision in Step 2 (e.g., "this skill has
 three branches", "the prerequisite is X", "success is the agent
