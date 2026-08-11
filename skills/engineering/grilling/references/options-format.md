@@ -27,16 +27,15 @@ optional prose. The preamble must convey:
 The fixed preamble is:
 
 ```md
-Here are options to help you refine or confirm your answer. Pick one,
-reject all, or hybridize.
+Here are options to help you refine or confirm your answer. Pick one, hybridize, or
+reject all.
 ```
 
 ## How many options
 
-Typically 2–4. An option is defensible if all five columns below can be
-filled with non-trivial, option-specific content. If any column would read
-`TBD`, `same as Option N`, or `none`, the option is not defensible —
-drop it or replace it.
+Typically 2–4. Do not present more than 5 options or less than 1 option. An option is defensible if all five columns below can be
+filled with non-trivial, option-specific content, and if the option genuinely makes sense given the decision - an option that is a strawman is not defensible. If any column would read
+`TBD`, `same as Option N`, `none`, or as if it is a strawman then the option is not defensible — replace it.
 
 ## The five-column table
 
@@ -61,8 +60,7 @@ Option column.
 ### Cell-level caps (enforceable)
 
 - Each cell is ≤ **90 characters** and ≤ **2 sentences**.
-- Compression preserves the field's claim — dropping a field entirely
-  is a violation.
+- Dropping a field entirely is a violation.
 - If a cell would exceed the cap, the agent compresses the wording.
   Promote additional detail into a subsequent branch or into the
   recommendation's `Reasoning` field — never by exceeding the cap or
@@ -96,4 +94,4 @@ reject all, or hybridize.
   five columns are how the user discriminates; shared columns defeat the
   test.
 - **Dropping a field to fit the cap.** All five columns are mandatory
-  in every row. Compression is the mechanism, not omission.
+  in every row.
