@@ -149,7 +149,6 @@ by scanning). Record the response as the goal record in the Decision
 Ledger using the goal record template from
 references/decision-ledger.md.
 Append the record immediately. Subsequent context blocks (per
-
 references/locked-question-format.md) and recommendation reasoning
 reference this record.
 
