@@ -19,14 +19,12 @@ The block is exactly two **separate lines** (a line break between them,
 not a paragraph break):
 
 ```md
-**Recommendation: <N>.**
+**Recommendation: Option <N> - <One short sentence of what Option N is>.**
 **Reasoning:** <one goal-aligned sentence, non-bold, on the same line as the label>
 ```
-
-- **Line 1:** `**Recommendation: <N>.**` — `<N>` is the option letter
-  (e.g., `A`, `B`). The trailing period after `<N>` is **mandatory**;
-  omitting it (e.g., `Recommendation: A`) is a violation. No option
-  name, no em-dash, no extra fields. All bolded.
+- **Line 1:** `**Recommendation: Option <N> - <One short sentence of what Option N is>.**` — `<N>` is the option letter
+  (e.g., `A`, `B`). The dash and sentence stating what the option is followed by the trailing period is **mandatory**;
+  omitting it (e.g., `Recommendation: Option A`) is a violation. 
 - **Line 2:** `**Reasoning:** <one sentence>` — the label `Reasoning:`
   is bolded; the reasoning text itself is non-bold. One goal-aligned
   sentence on the same line as the label. No third line. No
@@ -50,18 +48,6 @@ the user's goal is insufficient. The agent must always surface the
 goal-alignment explicitly so the user can verify the recommendation
 serves their actual intent, not the agent's assumptions.
 
-## No-recommendation case
-
-When the agent follows up on a prior branch (e.g., re-asking after
-clarification) and does not recommend a new option, the
-`Recommendation:` line names the user's prior pick and the `Reasoning:`
-line states why the branch is open. Example:
-
-```md
-**Recommendation: A.**
-**Reasoning:** This branch is open because the prior answer needs clarification on the transition timeline.
-```
-
 ## Informational turns
 
 When the turn is purely informational (no recommendation to give —
@@ -71,7 +57,7 @@ block entirely.
 ## Worked example
 
 ```md
-**Recommendation: A.**
+**Recommendation: Option B - Per seat pricing.**
 **Reasoning:** Per-seat pricing aligns with your goal of growth-friendly revenue — adoption drives cost, which is the signal you need.
 ```
 
@@ -80,22 +66,15 @@ block entirely.
 **Violation.** The agent qualifies the recommendation with an extension
 clause or adds a third line:
 
-> **Recommendation: A — Constructor check, with a "spirit-of-the-rule"
-> extension clause for test scaffolding.**
+> **Recommendation: Option A — Constructor check, with a "spirit-of-the-rule" extension for test scaffolding.**
 > **Reasoning:** ... catches failures early.
 > **Forward risk:** a future factory bypasses the check.
 
 **Correction.** Drop the clause and the third line:
 
-> **Recommendation: A.**
-> **Reasoning:** Synchronous failure at construction aligns with your
-> goal of catching precondition failures early.
+> **Recommendation: Option A -Constructor check,  with a "spirit-of-the-rule" extension for test scaffolding.**
+> **Reasoning:** Synchronous failure at construction aligns with your goal of catching precondition failures early.
 
 ## Why the lean format
-
-The recommendation line is the agent's compact, falsifiable claim:
-"this is the option." The old multi-field block (Recommendation with
-name, Reasoning, Forward risk) duplicated the option table and
-added friction. The 2-line format keeps the recommendation a pure
-pointer; nuance belongs in the option table's Cost and Risk columns
+The 2-line format keeps the recommendation a pure pointer; nuance belongs in the option table's Cost and Risk columns
 or in the Reasoning sentence.
