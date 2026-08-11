@@ -26,7 +26,7 @@ You must draft the skill's design and present it as markdown text — do not sav
 ### Step 0: Load the design-ledger reference
 
 Before the first user question, load `references/decision-ledger.md` in
-full. This file is the own copy of the Decision Ledger standard for
+full. This file is the skill's copy of the Decision Ledger standard for
 `skill-architect`; it documents the `Dxxx` and `Ixxx` record formats,
 the sentinel-bump mechanics, the TBD placeholder pattern, and the
 `<target-skill-dir>/.design-ledger.md` lifecycle. The file ships with
