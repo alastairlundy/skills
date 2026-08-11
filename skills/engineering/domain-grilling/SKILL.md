@@ -4,8 +4,7 @@ description: >-
   Structured decision elicitation focused on Domain-Driven Design (DDD)
   alignment — bounded contexts, ubiquitous language, glossary, terminology.
   Use when the user has a vague idea and conceptual/terminology alignment
-  is the goal. When non-DDD decisions, use `grilling`. When code/tech
-  with a spec, use `code-implementation-grilling`.
+  is a goal. Do not use when non-DDD decisions or code/tech with a spec.
 license: MIT
 ---
 
@@ -182,15 +181,14 @@ question if the problem type is unambiguous from context.
 
 Every exit that drives downstream implementation work must include
 the Decision Ledger path so downstream skills can cite records as
-ilename#`Dxxx`:
+filename#`Dxxx`:
 
 | Path | Drives downstream work? | Ledger path required? |
 |------|------------------------|------------------------|
-| 1 — Create a plan/PRD document | Yes | Yes |
-| 2 — Hand off to code-implementation-`grilling` | Yes | Yes |
-| 3 — Break into tickets (`spec-to-tickets`) | Yes | Yes |
-| 4 — Handoff to another agent | Yes | Yes |
-| 5 — Custom Save | No | No |
+| 1 — Hand off to code-implementation-`grilling` | Yes | Yes |
+| 2 — Break into tickets (`spec-to-tickets`) | Yes | Yes |
+| 3 — Handoff to another agent | Yes | Yes |
+| 4 — Custom Save | No | No |
 
 ### Step 7: Post-session deletion reminder
 
@@ -221,8 +219,7 @@ transcript:
       frontier statement, then for each unblocked branch within the
       round the context block (3-row table), conflict callout (if any),
       options table, recommendation — all in a single agent turn.
-      Up to 3 unblocked branches per round. No Socratic elicitation
-      question was emitted.
+      Up to 3 unblocked branches per round.
 - [ ] Every context block was the 3-row table (Goal, Prior decisions,
       Scope), each element one sentence.
 - [ ] Conflict detection ran before each branch resolution.

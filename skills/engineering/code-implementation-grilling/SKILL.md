@@ -3,8 +3,7 @@ name: code-implementation-grilling
 description: >-
   Structured decision elicitation on technical implementation choices —
   language, framework, dependencies, project structure — once a spec/PRD
-  exists. Use when implementation is the question. When non-code/tech
-  decisions, use `grilling`. When terminology, use `domain-grilling`.
+  exists. Use when implementation is the question.
 license: MIT
 ---
 
@@ -18,9 +17,8 @@ owns the Decision Ledger, formats, tone, and convergence test).
 
 ## When to Use
 
-- A spec/PRD is referenced (file, attachment, or conversation) and the
+- A spec or PRD is referenced (file, attachment, or conversation) and the
   goal is a code implementation plan.
-- When user input would clarify the request, invoke ask-questions.
 
 ## When Not to Use
 
@@ -28,8 +26,8 @@ owns the Decision Ledger, formats, tone, and convergence test).
 - Vague ideas, domain modeling, or terminology alignment (use
   domain-`grilling` instead).
 - Questions that require back-and-forth clarification — use the
-  sk-questions skill instead.
-- Creating a spec/PRD itself.
+  ask-questions skill instead.
+- Creating a spec or PRD itself.
 
 ## Workflow
 
@@ -37,11 +35,13 @@ Every branch question in this skill follows the 1-turn wrapper from
 the parent `grilling` skill. The skill's per-decision context block is
 the 5-row code-impl variant (Goal, Prior decisions, Scope, Spec
 section — 4 data rows + header = 5 rows) defined in
-references/locked-question-format.md. The shared references
+
+references/locked-question-format.md. The shared references
 (../`grilling`/references/*) define the wrapper order, the 3-row
 context table, the locked question line wording, the "you" convention,
 tone discipline, options format, and recommendation format. The local
-references/locked-question-format.md extends the parent with the
+
+references/locked-question-format.md extends the parent with the
 Spec section row.
 
 ### Re-ask cycle cap
@@ -82,7 +82,8 @@ ledger paths, then stop. Do not surface TDPs, foundation items, or
 any other branch content in this turn. If no ledger exists, recommend
 running domain-`grilling` first.
 
-Load references/recording-decisions.md before the first `Txxx`
+Load 
+references/recording-decisions.md before the first `Txxx`
 append.
 
 ### Step 3: Goal discovery
@@ -125,21 +126,25 @@ framework, ORM, test framework, logging, etc.). Skip if not interested.
    The TDP list surfacing is a meta-step (not a branch).
 3. **Resolve**: Grill on each TDP using the 1-turn wrapper.
 
-Load references/interface-and-model-branch.md before asking the user
+Load 
+references/interface-and-model-branch.md before asking the user
 whether they want interface `grilling`.
 
-Load references/output-selection.md before presenting the output
+Load 
+references/output-selection.md before presenting the output
 format choice to the user.
 
 ### Step 6: Interface & Model Branch (optional)
 
-Follow references/interface-and-model-branch.md. Use the 1-turn
+Follow 
+references/interface-and-model-branch.md. Use the 1-turn
 wrapper for each architectural decision, source-of-truth conflict,
 and type introduction.
 
 ### Step 7: Output Selection
 
-Follow references/output-selection.md. The output is **not** a
+Follow 
+references/output-selection.md. The output is **not** a
 per-branch Implementation Blueprint; the consolidated plan is produced
 once at the endpoint of the `grilling` (see Step 8.5).
 
@@ -155,9 +160,11 @@ fails, continue `grilling` or re-open the affected branch.
 4. **Ledger coverage** — every resolved TDP has a `Txxx`.
 5. The agent may prompt for close-out; the user decides.
 
-Load references/validation.md before convergence.
+Load 
+references/validation.md before convergence.
 
-Load references/terminal-output.md before emitting the terminal
+Load 
+references/terminal-output.md before emitting the terminal
 handoff template.
 
 ### Step 8.5: Consolidated Implementation Plan
@@ -181,7 +188,7 @@ source of truth for downstream ticket generation.
 - **Per-file sections** — every file that any Address item touches,
   grouped by file path. Within each section, list each change with
   the `Txxx` (or `Dxxx`) record that drives it in
-  ilename#<`Dxxx`|`Txxx`> format.
+  filename#<`Dxxx`|`Txxx`> format.
 - **## Ledger Reference** — every `Dxxx` and `Txxx` record the plan
   cites.
 - **Scope binding** (standalone only).
@@ -213,22 +220,30 @@ The skill consumes the following references.
   Defines the 2-line lean recommendation block.
 - **../`grilling`/`references/locked-question-format.md`** — *eager*.
   Defines the 1-turn wrapper order and the 3-row context table. The
-  local references/locked-question-format.md extends this with the
+  local 
+references/locked-question-format.md extends this with the
   Spec section row.
 
-### Skill-local references (references/*)
+### Skill-local references (
+references/*)
 
-- **references/locked-question-format.md** — *eager*. Defines the
+- **
+references/locked-question-format.md** — *eager*. Defines the
   5-row code-impl context table (parent 3 rows + Spec section).
-- **references/recording-decisions.md** — *eager*. Defines the `Txxx`
+- **
+references/recording-decisions.md** — *eager*. Defines the `Txxx`
   record template.
-- **references/interface-and-model-branch.md** — *lazy*. Load on
+- **
+references/interface-and-model-branch.md** — *lazy*. Load on
   demand before Step 6.
-- **references/output-selection.md** — *lazy*. Load on demand
+- **
+references/output-selection.md** — *lazy*. Load on demand
   before Step 7.
-- **references/validation.md** — *lazy*. Load on demand before
+- **
+references/validation.md** — *lazy*. Load on demand before
   convergence.
-- **references/terminal-output.md** — *lazy*. Load on demand
+- **
+references/terminal-output.md** — *lazy*. Load on demand
   before Step 8.
 
 ## Validation
@@ -247,7 +262,7 @@ transcript:
 - [ ] Every branch question followed the 1-turn wrapper: round header,
       frontier statement, 5-row context block (Goal, Prior decisions,
       Scope, Spec section), conflict callout (if any), options table,
-      recommendation. No Socratic elicitation question was emitted.
+      recommendation.
 - [ ] The re-ask cycle was capped at 1 re-ask; closure without
       resolution produced a DEFERRED record.
 - [ ] Every context block was the 5-row table with the required Spec
