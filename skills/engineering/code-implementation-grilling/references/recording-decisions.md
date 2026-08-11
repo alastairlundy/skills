@@ -42,3 +42,13 @@ record to the ledger using this template:
   tail. If the sentinel is missing or out of sync, fall back to
   scanning the file for the highest existing `Txxx` and re-seed
   the sentinel before the next append.
+- **Sentinel update is mandatory and atomic.** The same `edit` call
+  that appends the new `Txxx` record must also update the
+  `<!-- next-t: Txxx -->` sentinel to the *next* available ID
+  (e.g., after appending `T006`, bump the sentinel to
+  `<!-- next-t: T007 -->`). The sentinel must remain at the
+  **end** of the file — it is the trailing sentinel. Do not leave
+  the old sentinel value in place; do not place the record above
+  the sentinel. See
+  `../grilling/references/decision-ledger.md` (Sentinel update
+  is atomic with the record write) for the full rule.
