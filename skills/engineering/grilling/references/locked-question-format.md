@@ -36,8 +36,7 @@ The fixed order is:
    4. **Recommendation** — the 2-line lean block (per
       `references/recommendation-format.md`).
 
-Components that are empty are omitted (not left blank). The round
-header, frontier statement, and at least one per-branch block are
+The round header, frontier statement, and at least one per-branch block are
 always present. The conflict/contradiction callout within each
 per-branch block is conditional on conflict detection.
 
@@ -92,8 +91,8 @@ table.
 Requirements):
 
 ```md
-> **Conflict detected.** [filename#Dxxx] and [Dyyy] have contradictory
-> Normalized Requirements: "<quote from filename#Dxxx>" vs. "<quote from Dyyy>".
+> **Conflict detected.** [filename#Dxxx] and [filename#Dyyy] have contradictory
+> Normalized Requirements: "<quote from filename#Dxxx>" vs. "<quote from filename#Dyyy>".
 > Which resolution stands?
 ```
 
@@ -101,13 +100,12 @@ Requirements):
 resolution):
 
 ```md
-> **Contradiction detected.** Your answer contradicts [filename#Dxxx]
+> **Contradiction detected.** Your answer for [filename#Dxxx] contradicts [filename#Dyyy]
 > ("<brief quote of Resolved Answer>"). Would you like to confirm
 > your new answer, revise it, or re-open the prior branch?
 ```
 
-The callout does not re-introduce the Socratic elicitation turn
-It is a fixed-format notification, not an open-ended question.
+The callout is a fixed-format notification, not an open-ended question.
 
 ### Component 5 — Options table
 
@@ -115,8 +113,8 @@ Present the 5-column options table from `references/options-format.md`,
 preceded by the reference-set preamble:
 
 ```md
-Here are options to help you refine or confirm your answer. Pick one,
-reject all, or hybridize.
+Here are options to help you refine or confirm your answer. Pick one, hybridize,
+or reject all.
 ```
 
 The options table is the reference set the user picks from. See
@@ -136,7 +134,7 @@ Each branch may be re-asked at most once. The re-ask uses the same
 1-turn wrapper format with a fixed preamble:
 
 ```md
-> **Final re-ask.** This is your last chance to clarify, confirm, or
+> **Final re-ask.** No answer was provided for [branch name]. This is your last chance to clarify, confirm, or
 > revise your answer on [branch name]. If no clear answer is provided,
 > the branch will close without resolution.
 ```
@@ -146,8 +144,7 @@ no clear answer, the branch closes with `Resolved Answer = "DEFERRED"`
 and a `Constraints` line noting why. The same `filename#Dxxx` record is
 updated; no new record is created for the re-ask itself.
 
-The re-ask must not re-introduce the Socratic elicitation turn. It
-uses the identical wrapper format as the initial branch emission.
+It uses the identical wrapper format as the initial branch emission.
 
 ## Rules
 
@@ -201,8 +198,9 @@ reject all, or hybridize.
 |--------|-----------|---------|------|------|
 | **A — Per-seat** | Price scales with number of users on the account. | Revenue tracks usage; easy to justify to buyers. | Existing flat-rate customers see a price increase. | Small teams may share accounts to avoid seats. |
 | B — Flat tier | Fixed price per plan tier regardless of users. | Predictable for customers; simple billing. | Revenue does not scale with adoption. | Large teams get outsized value at flat cost. |
+| C - Usage based | Users pay for usage based billing on a Pay As You Go basis. | Easier for customers to try without committing; appeals to cost conscious buyers. | Revenue is unpredictable. | Customers ration their usage of the product to cut down on their spending.|
 
-**Recommendation: A.**
+**Recommendation: Option A - Per seat**
 **Reasoning:** Per-seat aligns with your goal of growth-friendly pricing — revenue scales with adoption, which is the mechanism you need.
 
 <user picks A>
@@ -225,7 +223,8 @@ reject all, or hybridize.
 |--------|-----------|---------|------|------|
 | **A — Immediate** | Switch all accounts to per-seat on the next billing cycle. | Clean cutover; no dual-system overhead. | Existing customers face an immediate price change. | Churn spike from sticker shock. |
 | B — 90-day grace | Give existing customers 90 days at current rate before switching. | Retention buffer; time to communicate value. | Revenue delay; dual-system billing complexity. | Customers delay migration to avoid price increase. |
+| C - New customers only | Existing customers stay on their current billing arrangement; new customers are charged using per seat billing. | Reduced churn for existing customers; New customers bring in recurring revenue.| Existing customers contribute less revenue than new customers. | New customers may see the per seat rate as unfair. |
 
-**Recommendation: A.**
+**Recommendation: Option A - Immediate.**
 **Reasoning:** Immediate switch aligns with your goal of clean growth pricing — the grace period delays the revenue signal you need.
 ```
