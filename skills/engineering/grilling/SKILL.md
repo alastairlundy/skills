@@ -12,20 +12,12 @@ license: MIT
 
 # Grilling
 
-A structured decision-elicitation skill. The user has a vague decision;
+A structured decision-elicitation skill. The user has a vague decision or idea they want to explore;
 the agent facilitates — the user owns each decision. The agent walks the
-decision down a tree of branches, presents
-options as a reference set, gives a goal-aligned recommendation, and records
-the resolved answer in a Decision Ledger. The session is a sequence of
-rounds, each surfacing at most 3 branches, and each branch resolving in a
-single agent turn.
-
-This skill is the **generic parent** of `domain-grilling` and
-`code-implementation-grilling`. It owns the core machinery — the Decision
-Ledger, the options/recommendation formats, tone discipline, convergence
-test. The two specializations add their own initialization (glossary for
-domain; spec-reading and tech foundation for code) and defer to this skill
-for the core.
+decision down a tree of branches, presents options as a reference option set, 
+gives a goal-aligned recommendation, and records the resolved answer in a Decision Ledger.
+ The session is a sequence of rounds, each surfacing at most 3 branches, and each branch
+ resolving in a single agent turn.
 
 ## When to Use
 
