@@ -46,7 +46,7 @@ for the core.
 ## When Not to Use
 
 - For code/technical implementation choices (language, framework, dependencies,
-  project structure) when a spec/PRD exists — use `code-implementation-grilling`
+  project structure) when a spec exists — use `code-implementation-grilling`
   instead.
 - For domain modeling, ubiquitous language, bounded contexts, glossary, or
   terminology alignment — use `domain-grilling` instead.
@@ -330,7 +330,6 @@ to the type of decision reached. Every exit that drives downstream
 action must include the Decision Ledger path so downstream skills can
 cite records as ilename#`Dxxx`.
 
-- **Document the decision** — write a decision memo or notes file.
 - **Specialize to DDD** — if DDD concerns surfaced.
 - **Specialize to code** — if implementation choices surfaced.
 - **Decompose** — if discrete action items were produced.
@@ -342,7 +341,6 @@ environment provides.
 
 | Generic name            | Resolves to                                       | Fallback when unavailable                       |
 |-------------------------|---------------------------------------------------|--------------------------------------------------|
-| Document the decision   | `to-prd` (decision memo / PRD tool)               | Local memo file in `docs/decisions/`             |
 | Specialize to DDD       | `domain-grilling` skill                           | Stay in grilling; do not spawn specialization    |
 | Specialize to code      | `code-implementation-grilling` skill              | Stay in grilling; do not spawn specialization    |
 | Decompose               | `spec-to-tickets`                                  | Hand-roll a checklist file with ledger citations |
