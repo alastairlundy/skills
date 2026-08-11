@@ -1,7 +1,7 @@
 # Locked Question Format (Code-Implementation Variant)
 
 The code-implementation-grilling skill extends the parent grilling
-skill's 3-row context table with a 4th data row: **Spec section**.
+skill's parent 4-row context table with a 4th data row: **Spec section**.
 This makes the code-impl context block a 5-row table (1 header + 4
 data rows) instead of the parent's 4-row table.
 

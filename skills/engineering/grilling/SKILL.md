@@ -82,7 +82,7 @@ in full before the first user question:
 - references/recommendation-format.md — the 2-line lean recommendation
   block with goal-aligned reasoning.
 - references/locked-question-format.md — the 1-turn wrapper order:
-  round header, frontier statement, context block (3-row table),
+  round header, frontier statement, context block (4-row table),
   conflict/contradiction callout (conditional), options table,
   recommendation.
 - references/tone-and-output.md — tone discipline, forbidden filler
@@ -215,7 +215,7 @@ Emit the full wrapper for each branch in a single round turn.
 The round header and frontier statement appear once. Then for each
 unblocked branch (up to 3), emit the per-branch block:
 
-1. Context block (3-row table: Goal, Prior decisions, Scope)
+1. Context block (4-row table: Goal, Prior decisions, Scope)
 2. Conflict/contradiction callout (if any)
 3. Options table (5-column, per references/options-format.md)
 4. Recommendation (2-line, per references/recommendation-format.md)
@@ -358,9 +358,9 @@ transcript:
       Normalized Requirement, Constraints) and a fresh `Dxxx` ID.
 - [ ] Every branch question followed the 1-turn wrapper from
       locked-question-format.md: round header, frontier statement,
-      context block (3-row table), conflict callout (if any), options
+      context block (4-row table), conflict callout (if any), options
       table, recommendation.
-- [ ] Every context block was emitted as the 3-row table (Goal, Prior
+- [ ] Every context block was emitted as the 4-row table (Goal, Prior
       decisions, Scope) in that order, each element one sentence.
 - [ ] Every options block used the 5-column table format (Option, What
       it is, Benefit, Cost, Risk).

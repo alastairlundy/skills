@@ -37,7 +37,7 @@ the 5-row code-impl variant (Goal, Prior decisions, Scope, Spec
 section — 4 data rows + header = 5 rows) defined in
 
 references/locked-question-format.md. The shared references
-(../`grilling`/references/*) define the wrapper order, the 3-row
+(../`grilling`/references/*) define the wrapper order, the parent's 4-row
 context table, the locked question line wording, the "you" convention,
 tone discipline, options format, and recommendation format. The local
 
@@ -219,7 +219,7 @@ The skill consumes the following references.
 - **../`grilling`/references/recommendation-format.md** — *eager*.
   Defines the 2-line lean recommendation block.
 - **../`grilling`/`references/locked-question-format.md`** — *eager*.
-  Defines the 1-turn wrapper order and the 3-row context table. The
+  Defines the 1-turn wrapper order and the parent's 4-row context table. The
   local 
 references/locked-question-format.md extends this with the
   Spec section row.
