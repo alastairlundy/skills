@@ -78,13 +78,11 @@ list. If any appears, rewrite the sentence to remove it.
 ## Conciseness
 
 Write tight. Every sentence must earn its place. Cut filler words, hedge
-words, and redundant qualifiers. Professional Minimalist style: punchy,
-direct sentences. If a sentence can be shorter without losing meaning,
+words, and redundant qualifiers. If a sentence can be shorter without losing meaning or clarity,
 shorten it.
 
 The locked question format in `locked-question-format.md` is a hard
-rule with length constraints. Everything else falls under Professional
-Minimalist style and is not subject to rigid word counts or punctuation
+rule with length constraints. Everything else is not subject to rigid word counts or punctuation
 bans — let natural professional phrasing carry the content.
 
 Patterns to apply:
