@@ -156,10 +156,8 @@ reference this record.
 ### Step 4: Open branches in rounds
 
 The session is a sequence of rounds. Each round surfaces at most 3
-unblocked branches, FIFO by ledger ID. Each branch resolves in a
-single agent turn using the 1-turn wrapper from
-
-references/locked-question-format.md.
+unblocked branches, First In First Out (FIFO) by ledger ID. Each branch resolves in a
+single agent turn using the 1-turn wrapper from references/locked-question-format.md.
 
 #### 4.0 Branch discovery and frontier
 
@@ -220,10 +218,8 @@ unblocked branch (up to 3), emit the per-branch block:
 
 1. Context block (3-row table: Goal, Prior decisions, Scope)
 2. Conflict/contradiction callout (if any)
-3. Options table (5-column, per 
-references/options-format.md)
-4. Recommendation (2-line, per 
-references/recommendation-format.md)
+3. Options table (5-column, per references/options-format.md)
+4. Recommendation (2-line, per references/recommendation-format.md)
 
 **Emit up to 3 branch wrappers in one round turn.** Each branch
 wrapper is self-contained (context block, conflict callout if any,
@@ -260,14 +256,13 @@ until the write and read-back have succeeded.
    successful tool-call result.
 4. **Read-back verification.** Re-read the ledger and confirm the new
    `Dxxx` line is the last record.
-5. Complete the `Ixxx` for this branch (fill the three TBD fields).
+5. Complete the `Ixxx` for this branch if applicable (fill the three TBD fields).
 6. Move to the next branch or round.
 
 If the write or read-back fails, abort the branch transition, report
 the failure, and offer recovery options.
 
-Apply the tone discipline from 
-references/tone-and-output.md on every
+Apply the tone discipline from references/tone-and-output.md on every
 branch transition.
 
 **Open follow-up**: a branch left intentionally unresolved at session
@@ -280,8 +275,7 @@ write a record. Do not run the convergence test.
 ### Step 6: Per-round convergence
 
 After the last branch in a round, run the 5-check convergence test
-from 
-references/convergence-test.md. If any check fails, continue
+from references/convergence-test.md. If any check fails, continue
 grilling (or re-open the affected branch). When all five pass, the
 agent may prompt for close-out: "All checks pass. Ready to close out,
 or shall we open the next round?" The user decides whether to stop.
@@ -309,7 +303,7 @@ changed. If the user confirms, the same three steps apply.
 Once convergence is declared, offer the user the exit paths appropriate
 to the type of decision reached. Every exit that drives downstream
 action must include the Decision Ledger path so downstream skills can
-cite records as ilename#`Dxxx`.
+cite records as Filename#`Dxxx`.
 
 - **Specialize to DDD** — if DDD concerns surfaced.
 - **Specialize to code** — if implementation choices surfaced.
