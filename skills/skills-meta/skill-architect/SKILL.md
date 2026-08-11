@@ -12,18 +12,14 @@ The Skill Architect is an intellectual design phase for creating agent skills. I
 ## When to Use
 - When you have a high-level goal for a new skill but no concrete workflow.
 - When you need to refine ambiguous agent behaviors into deterministic steps.
-- When you want to ensure a new skill adheres to the project's mandatory structure and standards.
-- When converting vague goals into a technical design before shifting to implementation.
-- When user input would clarify the request, invoke ask-questions
 
 ## When Not to Use
 - For trivial changes to existing skills.
-- When you already have a complete, finalized PRD or specification.
 - When the task is a simple code fix or refactor.
 
 ## Output Mode
 
-By default, this skill operates entirely within the conversation. You must draft the skill's design and present it as markdown text — do not save to disk. The user can opt in to saving by indicating any clear intent to save (e.g., "save it now", "yes write it", or equivalent). If the user opts in, complete the architectural design first, then load `references/saving-the-skill.md` and follow the save procedure there.
+You must draft the skill's design and present it as markdown text — do not save to disk unless explicitly instructed by the user. The user can opt in to saving by indicating any clear intent to save (e.g., "save it now", "yes write it", or equivalent). If the user opts in, complete the architectural design first, then load `references/saving-the-skill.md` and follow the save procedure there.
 
 ## Workflow
 
@@ -48,11 +44,9 @@ Collect the high-level goal, target audience, and any initial sketches or "vague
 
 (b) **Scope declaration (mandatory, verbatim)**: the exact sentence *"File creation is in scope."* or *"File creation is out of scope."*
 
-If file creation is out of scope, follow with a one-line prompt — e.g. *"Tell me if you want the skill saved to a SKILL file after the design is resolved."*
-
-After stating whether file creation is in scope, ask the user a
-one-line follow-up -- e.g. *"Tell me if you want the skill saved to a
-SKILL file after the design is resolved."* Record this question as a
+After stating whether file creation is in scope, if file creation is out of scope ask the user a
+one-line follow-up -- "Do you want the skill to be saved to a
+SKILL file after the design is resolved?" . Record this question as a
 clarifying interaction. Before emitting it, append a fresh `Ixxx`
 record to the design ledger using the Ixxx record template from
 `references/decision-ledger.md`. The `Prompt` field captures the
