@@ -106,14 +106,7 @@ Detect any existing Decision Ledger at runtime before deriving a path:
 
 Branch on the detection result:
 
-- **One existing ledger**: use it. Read it end-to-end and report to the
-  user:
-  - The highest existing `Dxxx` number — the next record is `Dxxx` + 1.
-  - Any unresolved contradictions between existing records.
-  - The branches already covered, so the user can see what is in scope
-    for the current session.
-  Confirm the ledger path with the user before the first append.
-- **Multiple existing ledgers**: present every match to the user. Let
+- **One or more existing ledger(s)**: present every match to the user. Let
   the user pick one to continue, or specify a new path. Do not
   auto-choose. Once the user picks, read it end-to-end and report the
   same three points (highest `Dxxx`, contradictions, branches covered)
