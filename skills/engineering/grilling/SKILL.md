@@ -366,7 +366,6 @@ transcript:
 - [ ] Every branch question followed the 1-turn wrapper from
       locked-question-format.md: round header, frontier statement,
       context block (3-row table), conflict callout (if any), options
-      table, recommendation. No Socratic elicitation question was
       table, recommendation.
 - [ ] Every context block was emitted as the 3-row table (Goal, Prior
       decisions, Scope) in that order, each element one sentence.
