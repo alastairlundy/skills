@@ -210,10 +210,7 @@ Before any branch resolves, run both conflict checks:
   resolution. Surface "Contradiction detected" callout naming the prior
   record. Re-ask the branch.
 
-Conflict callouts use fixed wording from
-
-references/locked-question-format.md. They do not re-introduce the
-Socratic elicitation turn.
+Conflict callouts use fixed wording from references/locked-question-format.md.
 
 #### 4.3 Emit the wrapper
 
@@ -370,7 +367,7 @@ transcript:
       locked-question-format.md: round header, frontier statement,
       context block (3-row table), conflict callout (if any), options
       table, recommendation. No Socratic elicitation question was
-      emitted.
+      table, recommendation.
 - [ ] Every context block was emitted as the 3-row table (Goal, Prior
       decisions, Scope) in that order, each element one sentence.
 - [ ] Every options block used the 5-column table format (Option, What
