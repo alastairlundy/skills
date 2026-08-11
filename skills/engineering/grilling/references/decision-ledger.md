@@ -95,6 +95,14 @@ target skill directory is not yet guaranteed to exist when Step 1
 begins, so the file is created when the directory exists, on the first
 real append at the latest.
 
+For the grilling group (`grilling`, `domain-grilling`,
+`code-implementation-grilling`), when the ledger file is created
+lazily on first append, it must include all ID-stream sentinels for
+the skill — 2 sentinels for `grilling`/`domain-grilling` (`next-d`,
+`next-i`), 3 sentinels for `code-implementation-grilling` (`next-d`,
+`next-t`, `next-i`) — seeded at the initial IDs (`D001`, `T001`,
+`I001`), not only the stream being appended.
+
 ## Real-time appending
 
 Append a record **immediately after the user resolves the branch or

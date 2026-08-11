@@ -80,7 +80,15 @@ following code-specific additions:
 The first turn of this step is one agent turn: confirm the spec and
 ledger paths, then stop. Do not surface TDPs, foundation items, or
 any other branch content in this turn. If no ledger exists, recommend
-running domain-`grilling` first.
+running domain-`grilling` first — but if the user proceeds directly,
+create `docs/decisions/DECISIONS-<repo>-<feature>.md` with the
+file-format header and all three trailing sentinels:
+
+```md
+<!-- next-d: D001 -->
+<!-- next-t: T001 -->
+<!-- next-i: I001 -->
+```
 
 Load 
 references/recording-decisions.md before the first `Txxx`
@@ -259,6 +267,9 @@ transcript:
       resolved branch (no batching). In multi-pick rounds, all records
       were written in one tool call.
 - [ ] Every record used the inline template and a fresh `Dxxx`/`Txxx` ID.
+- [ ] When a new Decision Ledger was created during the session, all
+      three trailing sentinels (`next-d`, `next-t`, `next-i`) were seeded
+      at initialisation.
 - [ ] Every branch question followed the 1-turn wrapper: round header,
       frontier statement, 5-row context block (Goal, Prior decisions,
       Scope, Spec section), conflict callout (if any), options table,
