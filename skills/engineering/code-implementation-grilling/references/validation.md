@@ -7,6 +7,11 @@ transcript:
       loaded and read in full before the first user question. If
       any reference file was missing or unreadable, the session
       aborted and the missing file was reported to the user.
+- [ ] **TDP round discipline**: Were TDPs grouped into
+      dependency-ordered rounds of at most 3 unblocked items before
+      resolution? Did each round emit the full 1-turn wrapper (round
+      header, frontier statement, context blocks, options tables,
+      recommendations) in a single agent turn?
 - [ ] **1-turn wrapper per round**: Did every round — including
       foundation items, TDP branches, and any re-ask or follow-up —
       emit the full 1-turn wrapper in a single agent turn: round

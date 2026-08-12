@@ -130,9 +130,20 @@ framework, ORM, test framework, logging, etc.). Skip if not interested.
    "deferred" or "out of scope". Never use the abbreviation "TDP"
    with the user.
 2. **Surface TDP list** (separate turn): After the foundation is
-   resolved, present the TDP list to the user in dependency order.
-   The TDP list surfacing is a meta-step (not a branch).
-3. **Resolve**: Grill on each TDP using the 1-turn wrapper.
+   resolved, present the TDP list to the user grouped into
+   dependency-ordered rounds of at most 3 unblocked items. Use the
+   same FIFO grouping as the parent grilling skill's Step 4.0: order
+   by dependency, surface the first 3 unblocked items this round,
+   and let blocked items wait. Emit a round header and frontier
+   statement ("N TDPs remain, M unblocked this round") before
+   surfacing each group. The TDP list surfacing is a meta-step (not
+   a branch) — it presents the items without the full 1-turn wrapper
+   yet; the wrapper is emitted during resolution.
+3. **Resolve**: Grill on each TDP using the 1-turn wrapper. Each round
+   resolves at most 3 TDPs. Run the convergence check from
+   ../`grilling`/references/convergence-test.md after the last TDP
+   in each round before opening the next round. TDPs blocked by
+   unresolved dependencies wait for a subsequent round.
 
 Load 
 references/interface-and-model-branch.md before asking the user
@@ -270,6 +281,8 @@ transcript:
 - [ ] When a new Decision Ledger was created during the session, all
       three trailing sentinels (`next-d`, `next-t`, `next-i`) were seeded
       at initialisation.
+- [ ] TDPs were grouped into rounds of at most 3 unblocked items
+      before resolution; no round surfaced more than 3 branches.
 - [ ] Every branch question followed the 1-turn wrapper: round header,
       frontier statement, 5-row context block (Goal, Prior decisions,
       Scope, Spec section), conflict callout (if any), options table,
