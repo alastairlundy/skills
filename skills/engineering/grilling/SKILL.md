@@ -1,12 +1,12 @@
 ---
 name: grilling
 description: >-
-  Structured decision elicitation that surfaces clear decisions from vague ideas.
-  Use when the user wants to think through an ambiguous or unclear
-  decision that doesn't relate to code/tech nor domain modeling or terminology alignment. Do not use for working towards code/technical 
-  implementation choices — use `code-implementation-grilling` instead. Do not
-  use when aligning on terminology or domain modelling — use `domain-grilling`
-  instead.
+  Structured decision elicitation for business, product, process, or
+  organizational decisions that are not domain-modeling and not
+  code/technical implementation. Use when the user has an ambiguous
+  non-code, non-domain question and wants the agent to help think it
+  through. Defer to `domain-grilling` for vocabulary or domain-model
+  questions; defer to `code-implementation-grilling` once a spec exists.
 license: MIT
 ---
 
@@ -36,11 +36,8 @@ gives a goal-aligned recommendation, and records the resolved answer in a Decisi
 
 ## When Not to Use
 
-- For code/technical implementation choices (language, framework, dependencies,
-  project structure) when a spec exists — use `code-implementation-grilling`
-  instead.
-- For domain modeling, ubiquitous language, bounded contexts, glossary, or
-  terminology alignment — use `domain-grilling` instead.
+- For domain modeling, ubiquitous language, bounded contexts, glossary, terminology alignment, or vocabulary work — use `domain-grilling` instead.
+- For code/technical implementation choices (language, framework, dependencies, project structure) when a spec/PRD exists — use `code-implementation-grilling` instead.
 - For trivial questions with a clear answer (no grilling needed).
 - For executing a decision that has already been made (no grilling needed).
 - For implementation, debugging, or code review (no grilling needed).

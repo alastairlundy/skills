@@ -25,11 +25,9 @@ owns the Decision Ledger, formats, tone, and convergence test).
 
 ## When Not to Use
 
-- Non-code projects (e.g., business plans, runbooks, research).
-- Vague ideas, domain modeling, or terminology alignment (use
-  domain-`grilling` instead).
-- Questions that require back-and-forth clarification — use the
-  ask-questions skill instead.
+- For vague ideas, domain modeling, ubiquitous language, glossary, bounded contexts, or terminology alignment — use `domain-grilling` instead.
+- For non-code, non-domain decisions (business, product, process, organizational) — use `grilling` instead.
+- Questions that require back-and-forth clarification — use the ask-questions skill instead.
 - Creating a spec or PRD itself.
 
 ## Workflow

@@ -1,10 +1,12 @@
 ---
 name: domain-grilling
 description: >-
-  Structured decision elicitation focused on Domain-Driven Design (DDD)
-  alignment — bounded contexts, ubiquitous language, glossary, terminology.
-  Use when the user has a vague idea and conceptual/terminology alignment
-  is a goal. Do not use when non-DDD decisions or code/tech with a spec.
+  Domain modeling and terminology alignment — bounded contexts, ubiquitous
+  language, glossary terms, shared vocabulary. Use when the user wants to
+  clarify the domain model, align terms, name a concept, define a
+  vocabulary, or nail down the language before implementation.
+  Defer to `code-implementation-grilling` once the domain model is settled
+  and the question turns to technical choices.
 license: MIT
 ---
 
@@ -43,11 +45,9 @@ to `GLOSSARY.md`).
 
 ## When Not to Use
 
-- Do not use when non-DDD decisions (business, product, process, design) that do
-  not need conceptual alignment.
-- Do not use when code/technical implementation choices when a spec/PRD exists.
-- For trivial code changes or bug fixes where the domain model is not
-  in question.
+- For non-domain-modeling decisions (business, product, process, organizational) that do not need conceptual alignment — use `grilling` instead.
+- For code/technical implementation choices (language, framework, dependencies, project structure) once a spec/PRD exists — use `code-implementation-grilling` instead.
+- For trivial code changes or bug fixes where the domain model is not in question.
 - For rapid prototypes that are known to be throwaway (spike code, demo code, time-boxed experiments).
 
 ## Convention: "you" in this skill
