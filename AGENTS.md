@@ -1,4 +1,4 @@
-# Skills Repository
+# Skills repository
 
 You are working in a repository of agent skill definitions (prompt templates). This repo contains no executable application code. The primary artifacts are `SKILL.md` files that define deterministic workflows for AI agents.
 
@@ -53,7 +53,7 @@ Full structure details: `CREATING-SKILLS.md`.
 
 Short templates (<20 lines) live inline in `SKILL.md`. Longer templates (≥20 lines) live in `references/` and are referenced with a load-trigger sentence ("Load `references/X.md` before Y"). See `skills/engineering/spec-to-tickets/references/ticket-template.md`.
 
-### Decision Ledger references
+### Decision ledger references
 
 When citing a Decision Ledger record from outside `docs/decisions/DECISIONS-*.md`, use the format `filename#Dxxx` (e.g. `DECISIONS-repo-feature.md#D001`). Bare `Dxxx`/`Txxx` references outside ledger files are prohibited. See `docs/agents/decision-ledger-audit.md`.
 

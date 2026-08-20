@@ -1,10 +1,10 @@
-# Contributing to Skills
+# Contributing to skills
 
 This guide covers how to contribute skills and improvements to this repository.
 
-## Types of Contributions
+## Types of contributions
 
-### 1. Creating New Skills
+### 1. Creating new skills
 
 **Before creating a new skill, open an issue to discuss your proposal.** This allows maintainers to:
 - Evaluate whether the skill fits the repository's scope and goals
@@ -28,7 +28,7 @@ See [CREATING-SKILLS.md](CREATING-SKILLS.md) for the complete guide on skill str
 4. Add evaluation test cases (`evals.json` or Waza eval suite)
 5. Test the skill manually before submitting
 
-### 2. Improving Existing Skills
+### 2. Improving existing skills
 
 When modifying an existing skill:
 
@@ -38,7 +38,7 @@ When modifying an existing skill:
 4. **Update or add evals** - Ensure your changes don't break existing tests; add tests for new behavior
 5. **Test thoroughly** - Run the skill through representative scenarios
 
-### 3. Evaluating Skills
+### 3. Evaluating skills
 
 Use the Waza CLI to evaluate skill performance and trigger accuracy.
 
@@ -66,7 +66,7 @@ waza serve
 
 **Important:** The evaluator diagnoses issues but does not modify skills. Apply fixes manually based on the diagnostic report.
 
-### 4. AI-Assisted Skill Creation
+### 4. AI-assisted skill creation
 
 For complex skills or when you need help translating fuzzy requirements into deterministic workflows, use the `skill-architect` skill.
 
@@ -84,9 +84,9 @@ For complex skills or when you need help translating fuzzy requirements into det
 
 **Note:** For straightforward skills with clear workflows, you can write the SKILL.md directly without using skill-architect.
 
-## Contribution Guidelines
+## Contribution guidelines
 
-### Code Style
+### Code style
 
 - Use kebab-case for skill names and file names
 - Follow the exact section structure specified in CREATING-SKILLS.md
@@ -99,7 +99,7 @@ For complex skills or when you need help translating fuzzy requirements into det
 - Create ADRs in `docs/adr/` for hard-to-reverse architectural decisions
 - Ensure all referenced files and paths are accurate
 
-### Testing Requirements
+### Testing requirements
 
 Before submitting a contribution:
 
@@ -109,7 +109,7 @@ Before submitting a contribution:
 - [ ] Manual testing confirms expected behavior
 - [ ] Documentation is accurate and complete
 
-### Pull Request Process
+### Pull request process
 
 1. **Fork and branch** - Create a feature branch from `main`
 2. **Make changes** - Follow the guidelines above

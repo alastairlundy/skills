@@ -1,8 +1,8 @@
-# Creating Skills
+# Creating skills
 
 This guide explains how to create agent skills for this repository.
 
-## Skill File Structure
+## Skill file structure
 
 Every skill must be placed in `skills/<category>/<skill-name>/SKILL.md` where:
 - `<category>` is either `engineering/` (domain tasks) or `skills-meta/` (creating/evaluating skills)
@@ -10,7 +10,7 @@ Every skill must be placed in `skills/<category>/<skill-name>/SKILL.md` where:
 
 If your skill doesn't fit into an existing category, open an issue to discuss creating a new category before submitting.
 
-## Required SKILL.md Structure
+## Required SKILL.md structure
 
 Every `SKILL.md` must start with an H1 title (`# <Skill Name>`) and contain:
 
@@ -50,7 +50,7 @@ Each step should be:
 
 Provide a checklist that allows agents to verify they have correctly followed the skill's workflow. Each item should be verifiable against the skill's output or process.
 
-## Required Files
+## Required files
 
 ### evals/
 
@@ -63,9 +63,9 @@ Run evaluations with `waza run` and serve the eval UI with `waza serve`.
 
 See the [Waza documentation](https://github.com/microsoft/waza) for format details.
 
-## Design Principles
+## Design principles
 
-### Determinism Over Flexibility
+### Determinism over flexibility
 
 Skills must work reliably across different AI models and contexts. Prefer explicit instructions over implicit assumptions.
 
@@ -73,14 +73,14 @@ Skills must work reliably across different AI models and contexts. Prefer explic
 
 **Good:** "1. Read all .ts files in src/. 2. For each file, check for unused imports. 3. Remove any import not referenced in the file body. 4. Run `npm run lint` to verify no errors."
 
-### Context Awareness
+### Context awareness
 
 Skills should reference the repository's domain documentation:
 - Read `GLOSSARY.md` for domain terminology
 - Check `docs/adr/` for architectural decisions
 - Use the glossary vocabulary consistently
 
-### Bounded Scope
+### Bounded scope
 
 Each skill should solve one specific problem. If a skill is trying to do too much, split it into multiple skills with clear boundaries.
 
@@ -88,7 +88,7 @@ Each skill should solve one specific problem. If a skill is trying to do too muc
 
 Derived content from upstream MIT sources must include attribution in the skill's documentation or comments.
 
-## Testing Your Skill
+## Testing your skill
 
 Before submitting a skill:
 
@@ -97,7 +97,7 @@ Before submitting a skill:
 3. **Eval suite** - Create a Waza Eval Suite in `evals/<skill-name>/` covering key scenarios
 4. **Peer review** - Have another developer review the skill for clarity and completeness
 
-## Example Skill Structure
+## Example skill structure
 
 ```
 skills/
@@ -111,7 +111,7 @@ skills/
         └── README.md (optional, for complex skills)
 ```
 
-## Getting Help
+## Getting help
 
 - Review existing skills in `skills/` for examples
 - Check `GLOSSARY.md` for domain terminology

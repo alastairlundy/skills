@@ -13,14 +13,14 @@ npx skills@latest add alastairlundy/skills
 
 Pick the skills you want, and which coding agents you want to install them on. 
 
-### Dependence on Matt Pocock's Skills 
+### Dependence on Matt Pocock's skills 
 The skills in this repo don't depend on or require [Matt Pocock's Skills](https://github.com/mattpocock/skills/) . That being said some of this repo's skills may benefit from those also being installed or used. ``domain-grilling`` supports using the GLOSSARY.md glossary system from ``setup-matt-pockock-skills``, and enables interaction with ``to-issues`` and ``to-prd``.
 
 ## Skills
 
 Skills are organized into two categories:
 
-### Engineering Skills
+### Engineering skills
 
 Domain-specific tasks for software development workflows.
 
@@ -34,7 +34,7 @@ Domain-specific tasks for software development workflows.
 | [dependency-review](skills/engineering/dependency-review/) | Audit dependencies for staleness, bloat, coupling, and deprecation. Produces a structured report. Default scope is code only. | Pass `scope: code,non-code` to opt in to OS, runtimes, hosted services, databases, and CI tooling. |
 | [implement-tickets](skills/engineering/implement-tickets/) | Coordinate parallel ticket implementation. Builds dependency order, dispatches tickets to sub-agents, validates against acceptance criteria, commits per ticket. | Use when a batch of tickets should be implemented with per-ticket commits and an end-of-run report. |
 
-### Alignment Skills
+### Alignment skills
 
 Skills that keep LLMs aligned on expectations and behaviour whilst performing tasks.
 
@@ -51,7 +51,7 @@ Tools for creating and evaluating other skills.
 | [skill-architect](skills/skills-meta/skill-architect/) | Guide the design and refinement of new agent skills. Ensures designs follow established conventions without writing files. |
 | [setup-alastairlundy-skills](skills/skills-meta/setup-alastairlundy-skills/) | Configure a repository to use the skill family. Writes agent-consumable docs and updates AGENTS.md or CLAUDE.md with skill configuration. | Use when setting up a new repo for AI agents, switching the repo's issue tracker, or re-running after a config change. |
 
-## Repository Structure
+## Repository structure
 
 ```
 skills/<category>/<skill-name>/
@@ -71,7 +71,7 @@ AGENTS.md             # Repository conventions for agents
 tickets/              # Implementation tickets (when using local markdown output)
 ```
 
-## Key Concepts
+## Key concepts
 
 This repository uses specific terminology for skill workflows:
 

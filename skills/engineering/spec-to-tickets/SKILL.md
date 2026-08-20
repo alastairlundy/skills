@@ -5,7 +5,7 @@ description: >-
 license: MIT
 ---
 
-# Spec to Tickets
+# Spec to tickets
 
 Break a spec, PRD, or conversation context into focused tickets with dependency graphs, optimized for implementation by agents or humans.
 
@@ -35,7 +35,7 @@ Use a conversational tone. Provide a brief opening statement that frames the wor
 
 ### Workflow
 
-#### Step 1 - Mode Declaration
+#### Step 1 - Mode declaration
 
 The skill always runs in Collaborative mode. The user is in the loop at decision points; the skill pauses for input before proceeding.
 
@@ -43,7 +43,7 @@ Note: a `Collaborative` ticket (in the ticket classification defined in Step 6.2
 
 **Recognition signal, not a skill-level gate** - phrases requesting to overwrite, replace, rewrite, or delete existing tickets involve destructive operations on existing work and are a recognition signal that the user wants to modify prior work. The skill-level safety for these operations is documented in Step 7 (Destructive-Operation Safety). The agent does not use these phrases as license to skip confirmation.
 
-#### Step 2 - Input Gathering
+#### Step 2 - Input gathering
 
 Determine the source material to decompose. Accept one of three input types.
 
@@ -53,7 +53,7 @@ Determine the source material to decompose. Accept one of three input types.
 
 **Decision Ledger detection** - alongside the three input types above, detect whether a Decision Ledger accompanies the input. A Decision Ledger is present if any of the following is true: the user explicitly names a ledger path, the spec body references a ledger (e.g., "see `docs/decisions/DECISIONS-...` for resolved decisions"), the spec is itself an output of `domain-grilling` or `code-implementation-grilling`, or an accompanying implementation blueprint names a `## Ledger Reference` section. When a Decision Ledger is detected, load `references/decision-ledger.md` in full and read the ledger end-to-end. The `decision-ledger.md` reference is the own copy of the canonical Decision Ledger standard for `spec-to-tickets`; it documents the citation format (`filename#<Dxxx|Txxx|Ixxx>`), the `Ixxx` append/complete pattern, and the post-creation deletion prompt that fires in Step 10. The agent does not own a ledger - it reads and writes to the input ledger. If `references/decision-ledger.md` is missing or unreadable, abort and report the missing file. If no Decision Ledger is detected, the agent routes per Step 3 (DDD-alignment rule) and continues without ledger I/O.
 
-#### Step 3 - Input Sufficiency Check
+#### Step 3 - Input sufficiency check
 
 Verify the input contains enough detail to produce actionable tickets. This check applies to all input types - a 2-line PRD file is as insufficient as a vague conversation.
 
@@ -69,7 +69,7 @@ Print the criteria status (one line per criterion: met / missing) as part of the
 
 **Decision Ledger `Ixxx` discipline (when a ledger is present)** - the agent does not own a Decision Ledger, but it does append `Ixxx` records to the input ledger. Before presenting any clarifying question to the user in this step (for example, the four-question walkthrough above, the all-four-missing routing question, the one-or-more-missing abort question, the DDD-alignment routing question, or any other gap surfaced in Step 3), append a fresh `Ixxx` record to the input ledger with `Prompt` filled and the other three fields marked `TBD`, then bump the `<!-- next-i: Ixxx -->` sentinel. After the user answers, edit the same `Ixxx` record in place to fill `User Response`, `Resolution`, and `Notes`. Never amend `Prompt`, never duplicate the `Ixxx`, never move it. If the user re-opens a question in a later turn, add a fresh `Ixxx` for the re-ask; do not amend the prior record. If the question is gated behind a checklist that has not yet been met (for example, the all-four-missing branch), do not append an `Ixxx` until the question is actually presented. The full Ixxx record template, TBD placeholder pattern, and sentinel-update convention are in `references/decision-ledger.md`.
 
-#### Step 4 - Codebase Exploration
+#### Step 4 - Codebase exploration
 
 On the first run, the absence of `GLOSSARY.md`, `docs/adr/`, and `docs/decisions/` is informational - the skill proceeds without them; do not create them as a side effect. If any of these are absent, explicitly inform the user which ones are missing.
 
@@ -84,7 +84,7 @@ Use the domain glossary vocabulary throughout all ticket content. Respect ADRs i
 
 **Decision Ledger `Ixxx` discipline (when a ledger is present)** - when the codebase exploration in this step surfaces a clarifying question for the user (for example, an ambiguous ADR scope, a glossary term that maps to multiple candidate terms, an apparent conflict between a `Dxxx` record and a code path, a blueprint reference that needs an owner-decision, or any other clarification needed before Step 6 can decompose confidently), append a fresh `Ixxx` record to the input ledger before presenting the question, with `Prompt` filled and the other three fields marked `TBD`, then bump the `<!-- next-i: Ixxx -->` sentinel. After the user answers, edit the same `Ixxx` record in place to fill `User Response`, `Resolution`, and `Notes`. Never amend `Prompt`, never duplicate the `Ixxx`, never move it. If the user re-opens a question in a later turn, add a fresh `Ixxx` for the re-ask; do not amend the prior record. The agent does not amend or rewrite any `Dxxx` / `Txxx` record in the input ledger; clarifications drive new `Ixxx` records, never edits to the resolved design or technical records.
 
-#### Step 5 - Output Target Resolution
+#### Step 5 - Output target resolution
 
 Determine where to publish the tickets. This must be resolved before decomposition because the output target affects ticket content (e.g., `blocked_by` uses issue numbers vs file basenames).
 
@@ -100,7 +100,7 @@ Determine the anticipated number of pull requests this ticket set will produce. 
 3. If no explicit signal is found from any source, default to 1 PR - all tickets are grouped under a single pull request.
 4. Record the resolved PR count. It is used in Step 6 to group tickets and in Step 9 to scope publishing.
 
-#### Step 6 - Ticket Decomposition Proposal
+#### Step 6 - Ticket decomposition proposal
 
 Break the source material into focused tickets in two phases - first choose the decomposition pattern, then propose the tickets. These phases are separate because the pattern choice determines the structure of the entire decomposition, and should be validated before generating tickets.
 
@@ -137,28 +137,42 @@ When the spec explicitly enumerates components or modules, note this constraint 
 
 ##### 6.2 Ticket Proposal
 
-**Classification rules** - mark each ticket as Independent or Collaborative -
+##### Classification rules
+
+Mark each ticket as Independent or Collaborative -
 - **Independent** - the ticket has sufficient context, acceptance criteria, and clear boundaries to be picked up and completed without further discussion. Can be implemented by a human or agent.
 - **Collaborative** - the ticket requires discussion, decision-making, or review that cannot be resolved from the spec alone (e.g., architectural choice between valid alternatives, design review, stakeholder approval). Needs human involvement before or during implementation.
 
 Prefer Independent over Collaborative. A ticket should only be Collaborative if there is a genuine decision or discussion that the spec does not resolve.
 
-**Coherence unit** - tickets are sized by what they coherently cover, not by time or effort. The same primitive applies to both human and AI-agent implementers, producing a single ticket shape.
+##### Coherence unit
 
-**Ticket-set coherence** - all tickets in the set collectively work toward a shared objective. Different tickets may focus on different units of work, types of work, or themes, but they must collectively advance the same goal. In a multi-PR decomposition, each PR's ticket set has its own shared objective.
+Tickets are sized by what they coherently cover, not by time or effort. The same primitive applies to both human and AI-agent implementers, producing a single ticket shape.
 
-**Per-ticket coherence** - each ticket must satisfy all three sub-criteria:
+##### Ticket-set coherence
+
+All tickets in the set collectively work toward a shared objective. Different tickets may focus on different units of work, types of work, or themes, but they must collectively advance the same goal. In a multi-PR decomposition, each PR's ticket set has its own shared objective.
+
+##### Per-ticket coherence
+
+Each ticket must satisfy all three sub-criteria:
 1. **Single mergeable change** - a set of individual changes that collectively and coherently become a single change to be made in the codebase (e.g., implementing a new feature).
 2. **Reviewable unit** - a unit of work, such as a change or set of changes, that can be logically identified as belonging together, and that collectively address an issue in a way that they individually or separately would not be able to.
 3. **Single logical concern** - an area of work that focuses on dealing with a specific domain or problem.
 
 A ticket that fails any sub-criterion is incoherent and must be split or rescoped before being accepted into the proposal. The three sub-criteria are not fully independent - a single mergeable change typically produces a reviewable unit, and a single logical concern typically produces a single mergeable change - but all three must be applied explicitly.
 
-**Coherence validation gate** - during proposal, each proposed ticket is checked against all three sub-criteria. If any sub-criterion fails, the ticket is rescoped or split before proceeding. This gate applies to every ticket before it is included in the proposal table.
+##### Coherence validation gate
 
-**Decision Ledger coverage matrix** - if a Decision Ledger is present, every `Dxxx` and `Txxx` record must be cited by at least one ticket's acceptance criteria or context pointers using `filename#<Dxxx|Txxx>` format, and every ticket must cite at least one ledger record (or, if the ticket covers work explicitly out of ledger scope, cite the absence explicitly with `No ledger record - out of scope: <reason>`). The coverage matrix is a grid where rows are ledger records, columns are tickets, and cells mark which ticket satisfies which record; build it during proposal. A record with no citing ticket is a coverage gap to surface before publishing. A ticket with no cited record is a scope gap to surface before publishing.
+During proposal, each proposed ticket is checked against all three sub-criteria. If any sub-criterion fails, the ticket is rescoped or split before proceeding. This gate applies to every ticket before it is included in the proposal table.
 
-**Decision Ledger `Ixxx` discipline (when a ledger is present)** - the agent does not own a Decision Ledger, but it does append `Ixxx` records to the input ledger. Before presenting any clarifying question to the user in this step (for example, a coverage-gap question from the matrix above, a coherence-validation rescope question, the multi-part validation question in item 4 below, a user-feedback clarification in item 5, a custom-pattern validation in section 6.1, or any other clarification needed to commit the decomposition), append a fresh `Ixxx` record to the input ledger with `Prompt` filled and the other three fields marked `TBD`, then bump the `<!-- next-i: Ixxx -->` sentinel. After the user answers, edit the same `Ixxx` record in place to fill `User Response`, `Resolution`, and `Notes`. Never amend `Prompt`, never duplicate the `Ixxx`, never move it. If the user re-opens a question in a later turn (for example, after a section 6.1 pattern shift), add a fresh `Ixxx` for the re-ask; do not amend the prior record. Coverage gaps and scope gaps drive new `Ixxx` records, never edits to the proposed ticket bodies - the body changes happen in the same turn, after the `Ixxx` is completed, and the ticket body is what the citation refers to.
+##### Decision Ledger coverage matrix
+
+If a Decision Ledger is present, every `Dxxx` and `Txxx` record must be cited by at least one ticket's acceptance criteria or context pointers using `filename#<Dxxx|Txxx>` format, and every ticket must cite at least one ledger record (or, if the ticket covers work explicitly out of ledger scope, cite the absence explicitly with `No ledger record - out of scope: <reason>`). The coverage matrix is a grid where rows are ledger records, columns are tickets, and cells mark which ticket satisfies which record; build it during proposal. A record with no citing ticket is a coverage gap to surface before publishing. A ticket with no cited record is a scope gap to surface before publishing.
+
+##### Decision Ledger `Ixxx` discipline (when a ledger is present)
+
+The agent does not own a Decision Ledger, but it does append `Ixxx` records to the input ledger. Before presenting any clarifying question to the user in this step (for example, a coverage-gap question from the matrix above, a coherence-validation rescope question, the multi-part validation question in item 4 below, a user-feedback clarification in item 5, a custom-pattern validation in section 6.1, or any other clarification needed to commit the decomposition), append a fresh `Ixxx` record to the input ledger with `Prompt` filled and the other three fields marked `TBD`, then bump the `<!-- next-i: Ixxx -->` sentinel. After the user answers, edit the same `Ixxx` record in place to fill `User Response`, `Resolution`, and `Notes`. Never amend `Prompt`, never duplicate the `Ixxx`, never move it. If the user re-opens a question in a later turn (for example, after a section 6.1 pattern shift), add a fresh `Ixxx` for the re-ask; do not amend the prior record. Coverage gaps and scope gaps drive new `Ixxx` records, never edits to the proposed ticket bodies - the body changes happen in the same turn, after the `Ixxx` is completed, and the ticket body is what the citation refers to.
 
 When the spec explicitly enumerates components or modules, use them as the basis for decomposition rather than deriving slices independently. Each component becomes a ticket, with a scaffolding/integration ticket if needed.
 
@@ -188,7 +202,7 @@ When the spec explicitly enumerates components or modules, use them as the basis
    - For pattern-level feedback (e.g., "this doesn't feel like vertical slices", "the structure is wrong"): signal the shift: "Your feedback about [specific concern] suggests the [pattern] pattern isn't the right fit. Let me propose a different approach." Return to section 6.1.
    - Repeat until the user approves the decomposition, dependencies, and classifications
 
-#### Step 7 - Existing Ticket Detection
+#### Step 7 - Existing ticket detection
 
 Before publishing, detect whether tickets already exist for this source material.
 
@@ -207,7 +221,7 @@ Before publishing, detect whether tickets already exist for this source material
 
 **Permission-rejection expectation** - if the tool/harness rejects a write to an existing ticket, the LLM shall treat the rejection as the expected response and create new tickets instead. The LLM shall not interpret a rejection as an error.
 
-#### Step 8 - Ticket Generation
+#### Step 8 - Ticket generation
 
 Apply the ticket template below to each approved ticket.
 
@@ -256,11 +270,11 @@ For tickets that involve no file additions, edits, or deletions (e.g., documenta
 - The user may override the automatic `blocked by` population if they want different ordering.
 - This rule applies regardless of implementer (human or AI agent).
 
-#### Step 9 - Ticket Publishing
+#### Step 9 - Ticket publishing
 
 Load `references/publishing-rules.md` before executing Step 9's publish step.
 
-#### Step 10 - Summary Report
+#### Step 10 - Summary report
 
 After publishing, present a summary to the user containing -
 

@@ -5,7 +5,7 @@ description: >-
 license: MIT
 ---
 
-# Write Changelog
+# Write changelog
 
 ## When to Use
 
@@ -32,7 +32,7 @@ The 5-commit threshold is a default, not a hard rule; a user may override by ign
 
 ## Workflow
 
-### Step 1: Project Discovery
+### Step 1: Project discovery
 - **Glossary**: a *Package* is a Sub-project that is BOTH a library AND distributable via a package manager (Cargo, NPM, NuGet, etc.). "Sub-projects" and "Packages" are related but not synonymous; this skill uses "Sub-projects" as the standard term.
 - **First-run probe** (always run, before naming a destination): scan for any of `CHANGELOG.md`, `HISTORY.md`, `RELEASES.md`, `docs/changelog.md`. If found, surface the path to the user and default the destination to that path; the user may override.
 - Identify sub-projects in an ecosystem-aware manner:
@@ -44,7 +44,7 @@ The 5-commit threshold is a default, not a hard rule; a user may override by ign
         - **Interactive run**: list detected directories and ask the user to define the sub-projects (via the ask-questions skill).
         - **Non-interactive run**: default to grouping by top-level directories using the same exclusion rule as step 3 (or the inline-list fallback in step 4).
 
-### Step 2: Commit Retrieval & Analysis
+### Step 2: Commit retrieval & analysis
 - Retrieve git history for the specified range.
 - **Empty-range guard**: if the retrieved commit list is empty, emit a one-line human-readable explanation ("The commit range is empty - no changelog to generate.") followed by the parseable error marker from `references/ci-integration.md` (`[CHANGELOG-MARKER] empty-range` with `prior:` and `target:` lines). Do not write a changelog. The CI wrapper translates the marker into a non-zero exit code.
 - For each commit, determine the category using a tiered analysis:
@@ -66,14 +66,14 @@ Conventional Commit prefix mapping (co-located with the tier list so the two do 
 
 **Autonomous-mode rule** (when the ask-questions skill is unavailable or the user declines): the Conventional Commit prefix mapping above is the primary signal; tier 2 (diff analysis) may be applied, but tier 3 (user prompt) is skipped and the default "Modifications" is used. The dependency-classification rule (Step 5) is the secondary signal that overrides the prefix for `chore:`-prefixed commits that touch dependency files.
 
-### Step 3: Message Transformation
+### Step 3: Message transformation
 - Rewrite commit messages to be "changelog style":
     - Convert imperative ("Add X") to descriptive ("Added X").
     - Remove technical noise (e.g., "closes #123", JIRA IDs).
     - Summarize long, rambling messages into concise, impact-focused sentences.
     - Validate the transformation against the diff to ensure no meaning is lost.
 
-### Step 4: Global Section Title Selection
+### Step 4: Global section title selection
 - Analyze the repo structure to recommend a title for the first changelog section:
     - **Global** - recommended when the repo root contains mixed content (docs, CI, scripts, config).
     - **All Packages** - recommended for monorepos with multiple sub-projects (see glossary in Step 1).
@@ -81,7 +81,7 @@ Conventional Commit prefix mapping (co-located with the tier list so the two do 
 - **Step 4.1 - User choice**: present exactly three choices - "Global", "All Packages", "All Projects" - and ask the user to pick one via the ask-questions skill. Do not offer a free-form "Other (specify)" option; the three named options are the only choices.
 - **Step 4.2 - Fallback**: if the ask-questions skill is unavailable or the user declines, default to "Global" and surface the default in the output by appending `(defaulted)` to the section header (e.g., `## Global (defaulted)`). The marker is local to the section header and must not break downstream CHANGELOG consumers (linters, release pipelines) - see `references/ci-integration.md` for the marker contract.
 
-### Step 5: Markdown Construction
+### Step 5: Markdown construction
 - Start the document with: `## Changes since [Prior Git Tag]`
 - **Emoji-to-category mapping** (table is the source of truth; the prose below uses the same mapping in the same order - update the table and the prose together to prevent drift):
 
@@ -119,7 +119,7 @@ Conventional Commit prefix mapping (co-located with the tier list so the two do 
 - **Non Source Code** = documentation, configuration, assets, and any other change that is not source code. The Keep-a-Changelog "Documentation" category is a strict subset of this. (The scope note and the category name must be updated together to prevent drift - see the table above and this prose.)
 - Use markdown bullet points for each entry.
 
-### Step 6: Output Phase
+### Step 6: Output phase
 - If a destination file is provided and does not exist, write the final markdown to that path.
 - If the destination file already exists, present a three-way choice (interactive run):
     1. **Overwrite** - replace the existing file.
@@ -145,7 +145,7 @@ Conventional Commit prefix mapping (co-located with the tier list so the two do 
 - [ ] Toggling the `Use Emojis` input flips the presence of emoji prefixes on category headings (default = emojis present).
 - [ ] Step 6's three-way choice (overwrite / append / refuse) was offered when the destination already existed; on refusal, the final markdown was output to the conversation with the one-line "write to `<path>`" offer.
 
-## Common Pitfalls
+## Common pitfalls
 
 | Pitfall | Solution |
 |---------|----------|

@@ -32,13 +32,21 @@ For tickets that involve no file changes, omit this section entirely.
 
 A step-by-step breakdown of how to implement this ticket. Always present (minimum 1 step), even for trivial tickets. Recommended range is 2-8 steps; the agent decides granularity based on ticket scope.
 
-**Derivation** - Build the workflow from three inputs in priority order: (1) the spec structure (what the spec prescribes or implies about sequencing), (2) codebase context (existing file layout, module boundaries, conventions discovered during exploration), (3) standard patterns (common implementation sequences for this type of work).
+##### Derivation
 
-**Reorder latitude** - Steps can be reordered by the implementer as needed. The recommended workflow is a suggested sequence, not a rigid prescription. Respect dependencies between steps (a step that produces an artifact consumed by another must come first).
+Build the workflow from three inputs in priority order: (1) the spec structure (what the spec prescribes or implies about sequencing), (2) codebase context (existing file layout, module boundaries, conventions discovered during exploration), (3) standard patterns (common implementation sequences for this type of work).
 
-**Verification distinction** - Per-step `Verify:` lines are micro-verifications (confirming a single step's output). Per-ticket `Acceptance criteria` are macro-verifications (confirming the ticket's overall goal is met). These are distinct levels; a step may verify without satisfying acceptance criteria, and acceptance criteria may span multiple steps.
+##### Reorder latitude
 
-**Per-step format** - Every step has all four elements. Use `N/A` as a filler when an element does not apply.
+Steps can be reordered by the implementer as needed. The recommended workflow is a suggested sequence, not a rigid prescription. Respect dependencies between steps (a step that produces an artifact consumed by another must come first).
+
+##### Verification distinction
+
+Per-step `Verify:` lines are micro-verifications (confirming a single step's output). Per-ticket `Acceptance criteria` are macro-verifications (confirming the ticket's overall goal is met). These are distinct levels; a step may verify without satisfying acceptance criteria, and acceptance criteria may span multiple steps.
+
+##### Per-step format
+
+Every step has all four elements. Use `N/A` as a filler when an element does not apply.
 
 ```
 ### Step N - <verb-phrase title>
@@ -71,10 +79,21 @@ Verify: <verification check or N/A>
 
 ## Context pointers
 
-**Files** - <key files to examine or modify, with brief notes on why they're relevant>
-**ADRs** - <relevant architectural decisions by reference>
-**Domain terms** - <terms from GLOSSARY.md that help understand this ticket's scope and boundaries - include enough to prevent confusion, but do not reproduce the glossary>
-**Ledger records** - <`Dxxx`/`Txxx` records this ticket's acceptance criteria and constraints must honour, cited as `filename#<Dxxx|Txxx>` - do not reproduce the ledger record body, only the ID and a brief note on why it is relevant>
+##### Files
+
+<key files to examine or modify, with brief notes on why they're relevant>
+
+##### ADRs
+
+<relevant architectural decisions by reference>
+
+##### Domain terms
+
+<terms from GLOSSARY.md that help understand this ticket's scope and boundaries - include enough to prevent confusion, but do not reproduce the glossary>
+
+##### Ledger records
+
+<`Dxxx`/`Txxx` records this ticket's acceptance criteria and constraints must honour, cited as `filename#<Dxxx|Txxx>` - do not reproduce the ledger record body, only the ID and a brief note on why it is relevant>
 
 ## Acceptance criteria
 

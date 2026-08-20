@@ -1,8 +1,8 @@
-# Decision Ledger Reference Audit
+# Decision ledger reference audit
 
 Bare `Dxxx`/`Txxx` references outside the Decision Ledger file itself are prohibited. Every record citation must use the `filename#Dxxx` format so references survive file relocation and remain resolvable.
 
-## The Rule
+## The rule
 
 When referencing a Decision Ledger record from any file outside `docs/decisions/DECISIONS-*.md`, wrap the record ID in the source filename:
 

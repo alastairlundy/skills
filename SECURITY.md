@@ -1,13 +1,13 @@
-# Security Policy
+# Security policy
 
-## Supported Versions
+## Supported versions
 
 | Version | Supported          |
 | ------- | ------------------ |
 | 1.x     | ✅                 |
 | < 1.0   | ❌                 |
 
-## Reporting a Vulnerability
+## Reporting a vulnerability
 
 To report a security vulnerability, use [GitHub's private vulnerability reporting](https://github.com/alastairlundy/skills/security/advisories/new).
 

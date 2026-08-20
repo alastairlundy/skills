@@ -8,11 +8,11 @@ Did you discuss this change in an issue before opening this PR? Link it below.
 
 <!-- What does this PR do and why? Keep it concise. -->
 
-## Related Issue
+## Related issue
 
 <!-- Link the issue this PR addresses, e.g. Closes #123 -->
 
-## Contribution Type
+## Contribution type
 
 <!-- Check one -->
 - [ ] New skill
@@ -21,19 +21,19 @@ Did you discuss this change in an issue before opening this PR? Link it below.
 - [ ] Documentation / ADR
 - [ ] Other
 
-## Skill Category (if applicable)
+## Skill category (if applicable)
 
 <!-- engineering/, alignment/, or skills-meta/ - see CONTRIBUTING.md -->
 
-## What Changed
+## What changed
 
 A clear and concise description of what this PR does.
 
-## Skill Path
+## Skill path
 
 <!-- e.g. skills/engineering/my-skill/SKILL.md -->
 
-## Testing Checklist
+## Testing checklist
 
 Per CONTRIBUTING.md, all of the following must pass before submitting:
 
@@ -71,6 +71,6 @@ Per CONTRIBUTING.md, all of the following must pass before submitting:
 
 <!-- Links to existing skills, ADRs, or GLOSSARY entries you referenced -->
 
-## Additional Context
+## Additional context
 
 Any other context, screenshots, or references.

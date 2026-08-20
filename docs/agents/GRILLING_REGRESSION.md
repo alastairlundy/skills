@@ -1,4 +1,4 @@
-# Grilling Skill Regressions - Mirror Plan
+# Grilling skill regressions - mirror plan
 
 This file records three regressions found in `skills/engineering/grilling/`
 during a session on 2026-07-11, the fixes applied to the parent grilling
