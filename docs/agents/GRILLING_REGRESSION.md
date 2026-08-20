@@ -1,4 +1,4 @@
-# Grilling Skill Regressions — Mirror Plan
+# Grilling Skill Regressions - Mirror Plan
 
 This file records three regressions found in `skills/engineering/grilling/`
 during a session on 2026-07-11, the fixes applied to the parent grilling
@@ -16,7 +16,7 @@ mirrored by hand.
 
 ## Regressions found
 
-### R1 — Two questions in one turn
+### R1 - Two questions in one turn
 
 The agent emitted the ledger-state summary, the path-confirmation prompt,
 and the first branch question (with options and recommendation) in the
@@ -25,7 +25,7 @@ the path *and* answer the D001 question. Violates the
 "asking multiple questions in one turn" diverge mode recorded in
 `grilling/references/convergence-test.md`.
 
-### R2 — Context block + Socratic elicitation question skipped on re-asks
+### R2 - Context block + Socratic elicitation question skipped on re-asks
 
 When the agent re-asked D001 (because the user had only confirmed the
 path, not answered D001), it emitted the locked question line, the
@@ -35,7 +35,7 @@ four-part sequence in `grilling/references/locked-question-format.md`
 and the "no skipping a branch" / "no asking multiple questions in one
 turn" diverge modes.
 
-### R3 — Context block replaced with free-form prose
+### R3 - Context block replaced with free-form prose
 
 When the user explicitly asked the agent to "apply the rules regarding
 context", the agent produced a "Current state of the type" prose
@@ -54,42 +54,42 @@ are in git history (look for the two follow-up commits after
 
 ### Workflow (SKILL.md)
 
-- **Step 2** — added a hard stop after the path confirmation. The path
+- **Step 2** - added a hard stop after the path confirmation. The path
   confirmation, the goal discovery (Step 3), and the first branch
   (Step 4) are now explicitly three separate turns.
-- **Step 3** — reworded "the first turn after the ledger state summary"
+- **Step 3** - reworded "the first turn after the ledger state summary"
   to "the first turn after the user has confirmed the ledger path in
   Step 2", and added a hard stop before opening any branch question.
-- **Step 4** — replaced the four-part list with an explicit **three-turn
+- **Step 4** - replaced the four-part list with an explicit **three-turn
   structure**: Turn 1 emits Parts 1+2 (context block + Socratic
   elicitation question) and waits; Turn 2 emits Part 3 (locked question
   line) and waits; Turn 3 emits Part 4 (options + recommendation).
-  Re-asks restart at Turn 1 — never skip to Turn 2 or Turn 3.
-- **Step 4** — added a "you = user" convention: "you" and "your" inside
+  Re-asks restart at Turn 1 - never skip to Turn 2 or Turn 3.
+- **Step 4** - added a "you = user" convention: "you" and "your" inside
   any user-facing template (Socratic question, locked question line,
   reference-set preamble) refer to the **user**, not the LLM. Each
   user-facing template is now in a fenced code block to fence it off
   from the surrounding free-form instructions.
-- **Validation** — added a checklist item for the three-turn structure
+- **Validation** - added a checklist item for the three-turn structure
   on re-asks, and strengthened the context-block check to forbid
   prose, code-reading, or "current state" substitutes.
 
 ### References
 
-- `locked-question-format.md` — added a "Convention: 'you' in this
+- `locked-question-format.md` - added a "Convention: 'you' in this
   reference" header; converted the Socratic elicitation question from a
   blockquote to a fenced code block; strengthened Part 1's description
   to forbid prose substitutes; added a "Counter-example" section showing
   the wrong form (the R3 prose reading) and the right form (the
   four-element bullet list) side by side; added a Rules bullet for the
   same anti-pattern.
-- `options-format.md` — added a "Convention: 'you' in this reference"
+- `options-format.md` - added a "Convention: 'you' in this reference"
   header; converted the reference-set preamble from a blockquote to a
   fenced code block.
-- `recommendation-format.md` — added a "Convention: 'you' in this
+- `recommendation-format.md` - added a "Convention: 'you' in this
   reference" header (the existing "your goal" usage in the Reasoning
   template is now explicitly named in the note).
-- `tone-and-output.md` — added a "Convention: 'you' in this reference"
+- `tone-and-output.md` - added a "Convention: 'you' in this reference"
   header (the existing "You're saying" usage in the neutral-mirroring
   template is now explicitly named in the note).
 
@@ -138,7 +138,7 @@ shared. The workflow-level fixes that still need to be mirrored:
 ## What to mirror into `code-implementation-grilling/`
 
 `code-implementation-grilling/SKILL.md` already has a "Core Constraint"
-at line 34 ("Ask exactly one question per turn — hard stop. Emit one
+at line 34 ("Ask exactly one question per turn - hard stop. Emit one
 locked question, then stop generating.") and references the shared
 references, so the spirit of the fix is partially there. The
 workflow-level fixes that still need to be mirrored:

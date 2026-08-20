@@ -50,7 +50,7 @@ and needs to:
 ## Path derivation
 
 For `skill-architect`, the ledger lives at
-`<target-skill-dir>/.design-ledger.md` — a hidden local file in the
+`<target-skill-dir>/.design-ledger.md` - a hidden local file in the
 target skill directory, deleted on materialization. The hidden
 filename (`.design-ledger.md`) keeps it out of casual file listings
 while still being plain markdown.
@@ -68,14 +68,14 @@ Examples:
 
 A ledger file uses three parallel ID streams:
 
-- `Dxxx` — formal design decisions. Zero-padded sequence: `D001`, `D002`,
+- `Dxxx` - formal design decisions. Zero-padded sequence: `D001`, `D002`,
   `D003`, …
-- `Txxx` — technical decisions emitted by `code-implementation-grilling`.
+- `Txxx` - technical decisions emitted by `code-implementation-grilling`.
   Zero-padded sequence: `T001`, `T002`, `T003`, …
-- `Ixxx` — clarifying interactions. Zero-padded sequence: `I001`, `I002`,
+- `Ixxx` - clarifying interactions. Zero-padded sequence: `I001`, `I002`,
   `I003`, …
 
-Each stream is independent — `Dxxx` and `Ixxx` counters both start at
+Each stream is independent - `Dxxx` and `Ixxx` counters both start at
 `001` and are bumped separately. The streams do not share ID space.
 
 ### Sentinel comments for next append IDs
@@ -90,7 +90,7 @@ stream. For `skill-architect`, both `Dxxx` and `Ixxx` are active:
 
 The agent reads each sentinel (via a targeted `read` or `grep`) to find
 the next append point for its stream, instead of re-reading the entire
-ledger tail. The sentinel update is **atomic with the record write** —
+ledger tail. The sentinel update is **atomic with the record write**  - 
 the same `edit` call that appends the new record also bumps the
 sentinel to the next available ID.
 
@@ -101,7 +101,7 @@ that stream.
 
 ## Lazy creation
 
-For `skill-architect`, `.design-ledger.md` is created lazily — the
+For `skill-architect`, `.design-ledger.md` is created lazily - the
 target skill directory is not yet guaranteed to exist when Step 1
 begins, so the file is created when the directory exists, on the first
 real append at the latest. The directory is created by
@@ -114,7 +114,7 @@ the first append until the directory exists.
 
 Append a record **immediately after the user resolves the branch or
 answers the question**, before opening the next branch. Do not batch
-the writes at session end — real-time writes give both the user and the
+the writes at session end - real-time writes give both the user and the
 agent a persistent, up-to-date record to reference in later branches,
 and they let the user spot a missing or weakened entry at the next
 branch and correct it before drift compounds.
@@ -136,7 +136,7 @@ For `Ixxx` records, the append fires in two steps:
 ## Dxxx record template
 
 ```md
-### [Dxxx] — <branch name>
+### [Dxxx] - <branch name>
 
 - **Driver**: <the user's underlying principle or motivation>
 - **Resolved Answer**: <verbatim user choice>
@@ -149,7 +149,7 @@ For `Ixxx` records, the append fires in two steps:
   sentinel. Do not reuse IDs. If the sentinel is missing or out of
   sync, fall back to scanning the file for the highest existing `Dxxx`
   and re-seeding the sentinel before the next append.
-- `Driver` captures the **why** — the user's underlying principle or
+- `Driver` captures the **why** - the user's underlying principle or
   motivation behind the decision. It is distinct from `Resolved Answer`
   (the **what**) and `Normalized Requirement` (the testable outcome).
   If the user states multiple motivations, record the primary one and
@@ -168,7 +168,7 @@ For `Ixxx` records, the append fires in two steps:
 - **Resolved Answer must come from a user response.** Never write a
   `Dxxx` record with a `Resolved Answer` that was not spoken by the
   user. If the user skips a branch or declines to answer, close with
-  `DEFERRED` — do not fill the answer yourself.
+  `DEFERRED` - do not fill the answer yourself.
 - **Never mark foundation or convergence complete without explicit user
   confirmation.** The LLM may observe that checks pass; it must not
   declare convergence or foundation-complete on its own authority. The
@@ -190,12 +190,12 @@ not used by `skill-architect`. The full template is in
 ## Ixxx record template
 
 ```md
-### [Ixxx] — <short question label>
+### [Ixxx] - <short question label>
 
 - **Prompt**: <verbatim agent prompt that was presented to the user>
 - **User Response**: <verbatim user answer, or the closest paraphrase
   the user has explicitly accepted; or TBD if awaiting the response>
-- **Resolution**: <how this response was used in the next step — what
+- **Resolution**: <how this response was used in the next step - what
   decision it drove, what option it steered toward, what constraint it
   surfaced; or TBD if awaiting the response>
 - **Notes**: <anything the agent should remember for the rest of the
@@ -208,7 +208,7 @@ not used by `skill-architect`. The full template is in
   sync, fall back to scanning the file for the highest existing `Ixxx`
   and re-seeding the sentinel before the next append.
 - `Prompt` is the **verbatim** agent text that was presented to the
-  user — the verbatim review question, the value-proposition
+  user - the verbatim review question, the value-proposition
   clarification, the scope-declaration confirmation, or any other
   clarifying prompt. Do not paraphrase the prompt.
 - `User Response` is the **verbatim** user text that answered the
@@ -218,13 +218,13 @@ not used by `skill-architect`. The full template is in
   `Notes`. The three fixed response types in Step 3
   ("Accept AS IS" / "Requires Modifications" / "Reject") are recorded
   verbatim here.
-- `Resolution` describes what the response was used for — which
+- `Resolution` describes what the response was used for - which
   branch it accepted, which modification it requested, which
   constraint it surfaced. If the response is a deferred or non-answer
   (e.g., "skip", "as-is", silence), the resolution still records what
   the agent did in response.
 - `Notes` is for context the next reader needs that does not fit in the
-  other three fields — non-load-bearing parts of the user response,
+  other three fields - non-load-bearing parts of the user response,
   cross-references to a `Dxxx` record the interaction drove, or edge
   cases the user named in passing.
 
@@ -234,7 +234,7 @@ While waiting for the user response, an `Ixxx` record is appended with
 `Prompt` filled and the other three fields marked `TBD`. The `TBD`
 marker is a literal string, not a fill-in for the agent to interpret.
 After the user answers, edit the same record in place to fill the
-three `TBD` fields — do not amend the `Prompt` field, do not create a
+three `TBD` fields - do not amend the `Prompt` field, do not create a
 new `Ixxx` record for the same interaction, and do not move the record
 in the file. The `Ixxx` keeps its original position.
 
@@ -246,7 +246,7 @@ goal-discovery step. The goal record uses the same template but
 with goal-specific content:
 
 ```md
-### [D001] — session goal
+### [D001] - session goal
 
 - **Driver**: <the user's underlying motivation for the session>
 - **Resolved Answer**: <the user's stated goal or goals>
@@ -272,7 +272,7 @@ If a single Decision Ledger reaches **~30 `Dxxx` records**, consider
 closing it and opening a new one for the next phase of the interview.
 The cap is a trigger for reflection, not a hard limit; override with
 reasoning if the interview genuinely needs more. The cap does not
-apply to `Ixxx` records — interaction records are typically
+apply to `Ixxx` records - interaction records are typically
 short-lived and the count can grow without the same reflection
 trigger.
 
@@ -280,23 +280,23 @@ trigger.
 
 The lifecycle of the ledger file differs by the skill that creates it:
 
-- **`skill-architect`** — `.design-ledger.md` is created at the start
+- **`skill-architect`** - `.design-ledger.md` is created at the start
   of Step 1 (Intent Intake), or lazily on the first append if the
   target skill directory does not yet exist. The file is **deleted on
   materialization** of the `SKILL.md` (the final step of
   `saving-the-skill.md`, after the file-validity checks pass). The
   deletion is conditional on file existence.
 - **Grilling group** (`grilling`, `domain-grilling`,
-  `code-implementation-grilling`) — `docs/decisions/DECISIONS-*.md` is
+  `code-implementation-grilling`) - `docs/decisions/DECISIONS-*.md` is
   **persisted by default**. The agent issues a **post-session
   reminder** to delete the ledger from `docs/decisions/` once
   implementation of the resolved decisions is complete. The reminder
-  is non-blocking — the user can defer or decline. The ledger is not
+  is non-blocking - the user can defer or decline. The ledger is not
   deleted automatically; the user decides.
-- **`spec-to-tickets`** — when a Decision Ledger and/or implementation
+- **`spec-to-tickets`** - when a Decision Ledger and/or implementation
   blueprint is provided as input, the agent **actively prompts** the
   user after ticket creation whether to delete the source files. The
-  prompt is non-blocking — the user can decline.
+  prompt is non-blocking - the user can decline.
 
 ## Storage conventions per skill
 
@@ -306,16 +306,16 @@ The lifecycle of the ledger file differs by the skill that creates it:
 | `domain-grilling`                  | `docs/decisions/DECISIONS-<repo>-<feature>.md` | First append        | User (post-session)    |
 | `code-implementation-grilling`     | `docs/decisions/DECISIONS-<repo>-<feature>.md` | First append        | User (post-session)    |
 | `skill-architect`                  | `<target-skill-dir>/.design-ledger.md`          | Step 1 / first append | `saving-the-skill.md` |
-| `spec-to-tickets`                  | Input ledger (read+write) or none              | n/a — consumes       | User (post-creation)   |
+| `spec-to-tickets`                  | Input ledger (read+write) or none              | n/a - consumes       | User (post-creation)   |
 
 The `spec-to-tickets` skill does not own a ledger; it reads and writes
 to the ledger provided as input (when one is provided), and is silent
 about ledgers when none is provided.
 
-## Worked example — full ledger excerpt
+## Worked example - full ledger excerpt
 
 ```md
-### [D001] — session goal
+### [D001] - session goal
 
 - **Driver**: the user wants to design a new skill for the
   organization of daily retro notes.
@@ -327,7 +327,7 @@ about ledgers when none is provided.
   list and emits a structured retro document.
 - **Constraints**: `None.`
 
-### [I001] — output shape
+### [I001] - output shape
 
 - **Prompt**: "What does the desired output's shape look like? You
   can describe it in prose or show an example."
@@ -339,7 +339,7 @@ about ledgers when none is provided.
 - **Notes**: user mentioned the file should be under 200 lines and
   live at `docs/retros/<date>.md`.
 
-### [D002] — output structure
+### [D002] - output structure
 
 - **Driver**: the user wants the output to be readable in a
   single screen and easy to copy into a wiki.

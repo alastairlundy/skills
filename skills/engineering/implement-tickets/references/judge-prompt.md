@@ -13,16 +13,16 @@ the judge may miss subtle bugs. The judge is a second pass, not a guarantee.
 
 The coordinator fills these placeholders before sending the prompt:
 
-- `<RUN_ID>` — the unique run id.
-- `<TICKET_IDS>` — comma-separated ticket ids in the dispatch unit.
-- `<NORMALIZED_TICKETS>` — the full normalized ticket body or bodies.
-- `<COMPLETION_CRITERIA>` — the resolved criteria list (Acceptance criteria or
+- `<RUN_ID>` - the unique run id.
+- `<TICKET_IDS>` - comma-separated ticket ids in the dispatch unit.
+- `<NORMALIZED_TICKETS>` - the full normalized ticket body or bodies.
+- `<COMPLETION_CRITERIA>` - the resolved criteria list (Acceptance criteria or
   Definition of Done).
-- `<SUB_AGENT_RESPONSE>` — the verbatim structured response from the sub-agent
+- `<SUB_AGENT_RESPONSE>` - the verbatim structured response from the sub-agent
   (the `status` / `files_changed` / `criteria_check` / `notes` block).
-- `<STAGING_DIFF>` — the staging area's `git diff <STARTING_COMMIT>..HEAD` for
+- `<STAGING_DIFF>` - the staging area's `git diff <STARTING_COMMIT>..HEAD` for
   the dispatch unit, verbatim.
-- `<PRIOR_FEEDBACK>` — empty on the first judge call; on re-dispatch after a
+- `<PRIOR_FEEDBACK>` - empty on the first judge call; on re-dispatch after a
   prior rejection, the verbatim prior `reject-with-feedback` verdict so the
   judge can verify the feedback was addressed.
 
@@ -65,11 +65,11 @@ For each criterion in <COMPLETION_CRITERIA>:
    actually produce it. The diff alone may not prove behaviour; use the
    ticket's test or verification step if present.
 2. Classify the criterion as one of:
-   - `met` — the diff clearly satisfies the criterion.
-   - `unmet` — the diff clearly does not satisfy the criterion.
-   - `partial` — the diff partially satisfies the criterion; note what's
+   - `met` - the diff clearly satisfies the criterion.
+   - `unmet` - the diff clearly does not satisfy the criterion.
+   - `partial` - the diff partially satisfies the criterion; note what's
      missing in your feedback.
-   - `unverifiable-from-diff` — the criterion cannot be confirmed from the
+   - `unverifiable-from-diff` - the criterion cannot be confirmed from the
      diff alone (e.g., runtime behaviour, UI output, external integration).
      Mark it `unverifiable-from-diff` and note what would be needed to verify.
 
@@ -77,14 +77,14 @@ For each criterion in <COMPLETION_CRITERIA>:
 
 Return exactly one of:
 
-- `approve` — every criterion is `met` or `unverifiable-from-diff`. The
+- `approve` - every criterion is `met` or `unverifiable-from-diff`. The
   `unverifiable-from-diff` cases are acceptable for approve; they are not
   blocking. The coordinator's run summary will list them so the user can
   verify out-of-band.
-- `reject-with-feedback` — at least one criterion is `unmet` or `partial` AND
+- `reject-with-feedback` - at least one criterion is `unmet` or `partial` AND
   the gap is concrete enough that a re-dispatch can fix it. Provide specific,
   actionable feedback that tells the sub-agent what to change.
-- `reject-with-ambiguity` — the gap is unclear from the diff and the
+- `reject-with-ambiguity` - the gap is unclear from the diff and the
   ticket (e.g., the criterion is ambiguous, the diff introduces a behaviour
   the ticket does not specify, or the sub-agent's `notes` reveal a missing
   decision). The user must resolve the ambiguity before re-dispatch.
@@ -100,16 +100,16 @@ Return a single structured response, in plain text, in this exact shape:
 verdict: approve | reject-with-feedback | reject-with-ambiguity
 tickets: <TICKET_IDS>
 criterion_results:
-  - <criterion verbatim> — met | unmet | partial | unverifiable-from-diff
+  - <criterion verbatim> - met | unmet | partial | unverifiable-from-diff
     evidence: <one-line: which file/line in the diff, or "needs runtime check">
-  - <criterion verbatim> — met | unmet | partial | unverifiable-from-diff
+  - <criterion verbatim> - met | unmet | partial | unverifiable-from-diff
     evidence: <one-line>
 feedback: <if reject-with-feedback: numbered list of concrete, actionable
            changes the sub-agent should make on re-dispatch; if
            reject-with-ambiguity: the specific question or decision the user
            must resolve; if approve: empty>
 unverifiable:
-  - <criterion verbatim> — <one-line: what would be needed to verify>
+  - <criterion verbatim> - <one-line: what would be needed to verify>
 notes: <free-form notes for the coordinator, including any deviation from
         the ticket's Recommended Workflow the sub-agent reported>
 ```

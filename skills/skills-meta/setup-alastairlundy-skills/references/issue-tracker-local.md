@@ -7,7 +7,7 @@ Issues and PRDs for this repo live as Markdown files under `.scratch/` in this r
 - **Create an issue**: Write a new Markdown file under `.scratch/<feature-or-topic>/`. The filename is the issue title (slugified); the file body is the issue description.
 - **Read an issue**: Read the Markdown file. Comments are appended as dated sections at the bottom of the same file.
 - **List issues**: `ls .scratch/` to list feature directories; `ls .scratch/<feature>/` to list issues within a feature.
-- **Comment on an issue**: Append a dated `## Comment — <date>` section to the existing Markdown file.
+- **Comment on an issue**: Append a dated `## Comment - <date>` section to the existing Markdown file.
 - **Apply / remove labels**: Add or remove a YAML front-matter `labels:` array in the issue file.
 - **Close**: Add `status: closed` to the file's YAML front-matter.
 

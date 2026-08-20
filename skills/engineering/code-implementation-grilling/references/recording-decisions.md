@@ -4,9 +4,9 @@ After every resolved decision in Steps 4, 5, and 6, append a `Txxx`
 record to the ledger using this template:
 
 ```md
-### [Txxx] — <Decision label>
+### [Txxx] - <Decision label>
 
-- **Driver**: <one to two sentences — the user's underlying principle or motivation; write `None.` if no principle is articulated>
+- **Driver**: <one to two sentences - the user's underlying principle or motivation; write `None.` if no principle is articulated>
 - **Resolved Answer**: <verbatim user choice>
 - **Normalized Requirement**: <concise, testable statement>
 - **Constraints**: <negative requirements, edge cases, or defaults>
@@ -17,9 +17,9 @@ record to the ledger using this template:
   existing `Txxx`.
 - `Driver` is **required**, not optional. The `Driver` must be
   specific to the user's stated principle, not a generic restatement
-  of the resolved answer. The `Driver` captures the **why** — the
+  of the resolved answer. The `Driver` captures the **why** - the
   user's underlying principle or motivation behind the technical
-  decision — and is distinct from `Resolved Answer` (the **what**)
+  decision - and is distinct from `Resolved Answer` (the **what**)
   and `Normalized Requirement` (the testable outcome). If the user
   states no principle, write `None.`. The `Driver` field matches the
   parent grilling skill's `Dxxx` template; see
@@ -47,7 +47,7 @@ record to the ledger using this template:
   `<!-- next-t: Txxx -->` sentinel to the *next* available ID
   (e.g., after appending `T006`, bump the sentinel to
   `<!-- next-t: T007 -->`). The sentinel must remain at the
-  **end** of the file — it is the trailing sentinel. Do not leave
+  **end** of the file - it is the trailing sentinel. Do not leave
   the old sentinel value in place; do not place the record above
   the sentinel. See
   `../grilling/references/decision-ledger.md` (Sentinel update

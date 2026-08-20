@@ -12,9 +12,9 @@ Nine worked examples covering the key branches of the ask-questions workflow: se
 **Context prose:**
 ```
 You''ll need a DI container. Three reasonable options:
-- Autofac — featureful, supports advanced scenarios like assembly scanning
-- Manual constructor injection — no library, just `new()` everywhere
-- Microsoft.Extensions.DependencyInjection — built into ASP.NET Core, no extra dependency
+- Autofac - featureful, supports advanced scenarios like assembly scanning
+- Manual constructor injection - no library, just `new()` everywhere
+- Microsoft.Extensions.DependencyInjection - built into ASP.NET Core, no extra dependency
 
 Which fits?
 ```
@@ -48,16 +48,16 @@ Which fits?
 
 **Field-check annotations:**
 
-- `header: "DI container"` — 12 chars, under the 30-char cap.
-- All 3 `label` values — noun phrases, parallel form, ≤6 words.
-- All 3 `description` values — 38, 35, 37 chars respectively; all under the 80-char cap; each discriminates (explains why pick this over the others).
-- 1 question, 3 options — within the 1 / 2-4 limits.
+- `header: "DI container"` - 12 chars, under the 30-char cap.
+- All 3 `label` values - noun phrases, parallel form, ≤6 words.
+- All 3 `description` values - 38, 35, 37 chars respectively; all under the 80-char cap; each discriminates (explains why pick this over the others).
+- 1 question, 3 options - within the 1 / 2-4 limits.
 
 ## Example B: Should-not-ask
 
 **Context:** the LLM is implementing a function and the user wrote a comment "use sensible defaults."
 
-- **Trigger:** the user has signaled "use your judgment" — opt-out mode. The LLM should proceed with sensible defaults without asking.
+- **Trigger:** the user has signaled "use your judgment" - opt-out mode. The LLM should proceed with sensible defaults without asking.
 - **Action:** do not ask. Pick defaults, document them in the response, proceed.
 
 ## Example C: Mis-appropriation avoided
@@ -77,12 +77,12 @@ Which fits?
 
 **Context prose:**
 ```
-The right answer depends on your context — is the API idempotent, and how expensive are failed requests?
+The right answer depends on your context - is the API idempotent, and how expensive are failed requests?
 
 Three honest options:
-- Exponential backoff — assume transient failures, retry up to 3 times
-- Manual retry only — let the caller decide per-request
-- No retries — surface failures fast
+- Exponential backoff - assume transient failures, retry up to 3 times
+- Manual retry only - let the caller decide per-request
+- No retries - surface failures fast
 
 Which fits your API?
 ```
@@ -116,22 +116,22 @@ Which fits your API?
 
 **Field-check annotations:**
 
-- `header: "Retry policy"` — 13 chars, under the 30-char cap.
-- All 3 `label` values — verb phrases, parallel form, ≤6 words.
-- All 3 `description` values — 42, 47, 40 chars respectively; all under the 80-char cap; each discriminates.
-- 1 question, 3 options — within the 1 / 2-4 limits.
+- `header: "Retry policy"` - 13 chars, under the 30-char cap.
+- All 3 `label` values - verb phrases, parallel form, ≤6 words.
+- All 3 `description` values - 42, 47, 40 chars respectively; all under the 80-char cap; each discriminates.
+- 1 question, 3 options - within the 1 / 2-4 limits.
 
 ## Example E: Invited mode (sequenced across turns)
 
-**Context:** the user has said "grill me — ask me everything you need to know to design this system." Invited mode.
+**Context:** the user has said "grill me - ask me everything you need to know to design this system." Invited mode.
 
 - **Trigger and fit:** the LLM has 4 independent decisions to gather. Each is a real decision with 2-3 realistic options. None depend on each other.
 - **Construct:** the LLM may ask all 4 across separate turns, one tool call per turn. No batching into a single call. Example sequence:
 
-  Turn 1 — Q1: *Where will the system run?* — Cloud-hosted, On-premises, Hybrid
-  Turn 2 — Q2: *Who is the primary user?* — End users, Internal staff, External API consumers
-  Turn 3 — Q3: *What is the read/write ratio?* — Read-heavy, Write-heavy, Balanced
-  Turn 4 — Q4: *What is the consistency requirement?* — Strong, Eventual, Best-effort
+  Turn 1 - Q1: *Where will the system run?* - Cloud-hosted, On-premises, Hybrid
+  Turn 2 - Q2: *Who is the primary user?* - End users, Internal staff, External API consumers
+  Turn 3 - Q3: *What is the read/write ratio?* - Read-heavy, Write-heavy, Balanced
+  Turn 4 - Q4: *What is the consistency requirement?* - Strong, Eventual, Best-effort
 
 The invited-mode permission justifies asking several questions across turns because the user has explicitly licensed it. Batching them into a single call would still violate the one-question-per-call rule.
 
@@ -144,7 +144,7 @@ The invited-mode permission justifies asking several questions across turns beca
 
 **Context prose:**
 ```
-For a new web service, the database choice locks in the persistence layer. For most use cases, Postgres is the right default — strong consistency, mature tooling, broad ecosystem support. Pick SQLite only for embedded/CLI tools; pick MongoDB only if you have a document-model use case that justifies the consistency tradeoffs.
+For a new web service, the database choice locks in the persistence layer. For most use cases, Postgres is the right default - strong consistency, mature tooling, broad ecosystem support. Pick SQLite only for embedded/CLI tools; pick MongoDB only if you have a document-model use case that justifies the consistency tradeoffs.
 ```
 
 **Tool call:** 1 question, 3 options, alphabetical by underlying name, with `(Recommended)` as a suffix on the Postgres label.
@@ -176,12 +176,12 @@ For a new web service, the database choice locks in the persistence layer. For m
 
 **Field-check annotations:**
 
-- `header: "Database"` — 8 chars, under the 30-char cap.
-- All 3 `label` values — sorted alphabetically by underlying name (MongoDB < Postgres < SQLite); `(Recommended)` is a suffix and does not change position.
-- All 3 `description` values — 39, 36, 41 chars respectively; all under the 80-char cap; each discriminates.
-- 1 question, 3 options — within the 1 / 2-4 limits.
+- `header: "Database"` - 8 chars, under the 30-char cap.
+- All 3 `label` values - sorted alphabetically by underlying name (MongoDB < Postgres < SQLite); `(Recommended)` is a suffix and does not change position.
+- All 3 `description` values - 39, 36, 41 chars respectively; all under the 80-char cap; each discriminates.
+- 1 question, 3 options - within the 1 / 2-4 limits.
 
-The recommendation is justified in the prose-before ("for most use cases, Postgres is the right default") and is what the LLM would commit to on the user''s behalf given the stated context (new web service). A user with a different use case can still pick MongoDB or SQLite with full information — the marker is a pointer, not a coercion.
+The recommendation is justified in the prose-before ("for most use cases, Postgres is the right default") and is what the LLM would commit to on the user''s behalf given the stated context (new web service). A user with a different use case can still pick MongoDB or SQLite with full information - the marker is a pointer, not a coercion.
 
 ## Example G: Over-asking avoided
 
@@ -219,8 +219,8 @@ The recommendation is justified in the prose-before ("for most use cases, Postgr
 
 **Field-check annotations (failure):**
 
-- 1 question, 3 options — passes Count Gate.
-- All 3 `label` values — sorted alphabetically.
+- 1 question, 3 options - passes Count Gate.
+- All 3 `label` values - sorted alphabetically.
 - **Realistic alternative test: FAILED.** None of the 3 options is a real decision the user can act on that the LLM cannot already make. "Tell me" and "Use my judgment" both mean the LLM will do something; the user has not narrowed the space. Gate 1.2 fails; the tool call should not be made.
 
 **Right (prose proposal):**
@@ -229,11 +229,11 @@ The recommendation is justified in the prose-before ("for most use cases, Postgr
 Here''s my plan: refactor the imports in `src/foo.ts` to use named exports, replace the `any` types in `processRequest` with a discriminated union on the response status, and add a `try`/`catch` around the network call that surfaces a typed error. If you want different changes, tell me what to revise.
 ```
 
-The LLM proposes a default in prose, makes the work visible, and invites correction. The user can accept, revise, or replace — the same options they would have had via the tool, but with less friction and no leaky choice architecture.
+The LLM proposes a default in prose, makes the work visible, and invites correction. The user can accept, revise, or replace - the same options they would have had via the tool, but with less friction and no leaky choice architecture.
 
 ---
 
-## Example H: Anti-example — plausible-looking options all derived from LLM inference
+## Example H: Anti-example - plausible-looking options all derived from LLM inference
 
 **Context:** the user says "I need to pick a caching strategy for my API." The user has not mentioned any specific requirements, traffic patterns, or constraints.
 
@@ -268,11 +268,11 @@ The LLM considers asking via the tool with 3 options that all sound reasonable.
 }
 ```
 
-**Why this fails the citation requirement:** None of the three options is supported by a user-stated fact. The user said only "I need to pick a caching strategy for my API" — no mention of single-server vs multi-server, no mention of read/write ratios, no mention of infrastructure constraints. The LLM generated all three options from general knowledge. Each option may be *plausible*, but none is *grounded* in the user''s stated context. Drop all three and ask in prose (or probe for constraints first).
+**Why this fails the citation requirement:** None of the three options is supported by a user-stated fact. The user said only "I need to pick a caching strategy for my API" - no mention of single-server vs multi-server, no mention of read/write ratios, no mention of infrastructure constraints. The LLM generated all three options from general knowledge. Each option may be *plausible*, but none is *grounded* in the user''s stated context. Drop all three and ask in prose (or probe for constraints first).
 
 ---
 
-## Example I: Anti-example — one option lacks a user-stated basis
+## Example I: Anti-example - one option lacks a user-stated basis
 
 **Context:** the user says "I''m building a React dashboard app that will be used internally by our team of 5. We need to pick a state management library. We already use Redux in our other projects." The user has stated a preference for familiarity and team consistency.
 
@@ -307,4 +307,4 @@ The LLM constructs 3 options.
 }
 ```
 
-**Why this fails the citation requirement:** Two options pass the test: "Redux Toolkit" is supported by the user-stated fact "we already use Redux in our other projects," and the LLM can defensibly recommend it. "Zustand" is unsupported — the user has said nothing about desiring minimal boilerplate or avoiding Redux''s conventions. No user-stated fact makes Zustand a realistic alternative given "we already use Redux." Drop Zustand before proceeding. (If only two options remain, that is within the 2-4 limit.)
+**Why this fails the citation requirement:** Two options pass the test: "Redux Toolkit" is supported by the user-stated fact "we already use Redux in our other projects," and the LLM can defensibly recommend it. "Zustand" is unsupported - the user has said nothing about desiring minimal boilerplate or avoiding Redux''s conventions. No user-stated fact makes Zustand a realistic alternative given "we already use Redux." Drop Zustand before proceeding. (If only two options remain, that is within the 2-4 limit.)

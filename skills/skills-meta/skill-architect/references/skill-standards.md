@@ -8,13 +8,13 @@ A draft skill passes compliance only if it satisfies every section below. Each s
 
 ## Completion-signal proxies
 
-The Determinism Audit requires each workflow step to end with a specific named completion signal. The following are the canonical proxies — use them when writing or reviewing a workflow step:
+The Determinism Audit requires each workflow step to end with a specific named completion signal. The following are the canonical proxies - use them when writing or reviewing a workflow step:
 
 - **Returned value**: The step produces a specific value or data structure (e.g., "Return the merged config object").
 - **Check result**: The step performs a comparison or assertion and records the outcome (e.g., "Validate the output against the schema; record pass/fail").
 - **State change**: The step modifies a system or data state (e.g., "Append the entry to the conversion log").
 - **File produced**: The step creates or updates a file on disk (e.g., "Write the resolved template to `references/X.md`").
-- **Equivalent named artefact**: Any other concrete, named output the LLM can verify existence of — for example, a variable assignment, a document section, a decision recorded, or a summary stored in a known location.
+- **Equivalent named artefact**: Any other concrete, named output the LLM can verify existence of - for example, a variable assignment, a document section, a decision recorded, or a summary stored in a known location.
 
 This is not a closed list ("or equivalent" is allowed). Every completion signal must be specific enough that the LLM can determine, without subjective judgement, whether the step is done.
 
@@ -30,9 +30,9 @@ A `SKILL.md` file must contain a specific set of structural elements. This is th
 
 - The file begins with a level-1 heading (`# <Skill Name>`) matching the `name` field in the frontmatter.
 - The file has YAML frontmatter delimited by `---` lines containing exactly these keys:
-  - `name` — short, slug-style identifier.
-  - `description` — written using YAML block-fold syntax (`>-`); describes what the skill does and when to use it.
-  - `license: MIT` — present verbatim.
+  - `name` - short, slug-style identifier.
+  - `description` - written using YAML block-fold syntax (`>-`); describes what the skill does and when to use it.
+  - `license: MIT` - present verbatim.
 - The body has these four sections in this order: **When to Use**, **When Not to Use**, **Workflow**, **Validation**.
 - The "When to Use" section is a bulleted list (not prose).
 - The "When Not to Use" section exists and lists explicit anti-scenarios.
@@ -50,12 +50,12 @@ A `SKILL.md` file must contain a specific set of structural elements. This is th
 
 Workflow steps must be concrete, actionable instructions an LLM can execute without judgement. Vague language is a defect because it forces the LLM to invent behaviour, which is exactly what skill authoring is meant to prevent.
 
-**Source:** `AGENTS.md` (Skill file conventions: "Workflow steps must be deterministic — no vague language")
+**Source:** `AGENTS.md` (Skill file conventions: "Workflow steps must be deterministic - no vague language")
 
 **Pass criteria (all must be true):**
 
 - Every workflow step names a specific action, tool, input, or output.
-- Steps are written in imperative voice ("Run X", "Compare Y to Z", "Return W") — not descriptive ("This step is about X").
+- Steps are written in imperative voice ("Run X", "Compare Y to Z", "Return W") - not descriptive ("This step is about X").
 - Steps have an unambiguous success condition (the LLM can tell when the step is complete).
 
 **Fail criteria (any one fails the check):**
@@ -89,15 +89,15 @@ Skills activate conditionally. The "When to Use" list is the contract with the L
 
 ## 4. Context budget discipline
 
-Skill content is loaded into the LLM's context window. Every token in `SKILL.md` is paid for on every activation; content in `references/` and `assets/` is paid for only when loaded. Aim for moderate detail — enough to be useful, not enough to overwhelm.
+Skill content is loaded into the LLM's context window. Every token in `SKILL.md` is paid for on every activation; content in `references/` and `assets/` is paid for only when loaded. Aim for moderate detail - enough to be useful, not enough to overwhelm.
 
-**Source:** [agentskills.io — Spending context wisely](https://agentskills.io/skill-creation/best-practices#spending-context-wisely)
+**Source:** [agentskills.io - Spending context wisely](https://agentskills.io/skill-creation/best-practices#spending-context-wisely)
 
 **Pass criteria (all must be true):**
 
 - `SKILL.md` is under 500 lines (target ~50–200 for most skills).
 - The skill adds information the agent would get wrong without it; it does not restate general LLM knowledge (e.g., explanations of what a PDF is, how HTTP works, or generic "Always be helpful" / "Think step by step" framing).
-- Detailed content — templates ≥20 lines, long examples, exhaustive reference tables — lives in `references/` or `assets/`, not inlined in `SKILL.md`.
+- Detailed content - templates ≥20 lines, long examples, exhaustive reference tables - lives in `references/` or `assets/`, not inlined in `SKILL.md`.
 - A load-trigger sentence in `SKILL.md` tells the LLM when to load each `references/` file (e.g., "Read `references/api-errors.md` if the API returns a non-200 status code"), not a generic "see references/ for details."
 - The skill is scoped to a coherent unit of work: narrowly enough to activate precisely, broadly enough that one task does not require loading several sibling skills.
 
@@ -107,7 +107,7 @@ Skill content is loaded into the LLM's context window. Every token in `SKILL.md`
 - A long template (≥20 lines) is inlined in `SKILL.md` when it could be in `references/` or `assets/`.
 - The skill restates general LLM behaviour rather than skill-specific guidance.
 - A `references/` file is referenced from `SKILL.md` without a load-trigger sentence, or with a generic "see references/" pointer that gives the LLM no condition to recognise.
-- The skill is scoped too narrowly (forces multiple skills to load for a single task) or too broadly (covers unrelated domains — e.g., querying a database AND administering it).
+- The skill is scoped too narrowly (forces multiple skills to load for a single task) or too broadly (covers unrelated domains - e.g., querying a database AND administering it).
 
 ---
 
@@ -115,11 +115,11 @@ Skill content is loaded into the LLM's context window. Every token in `SKILL.md`
 
 The level of specificity in a skill should match the fragility of the task. Match the prescriptiveness of each part to the cost of getting it wrong.
 
-**Source:** [agentskills.io — Calibrating control](https://agentskills.io/skill-creation/best-practices#calibrating-control)
+**Source:** [agentskills.io - Calibrating control](https://agentskills.io/skill-creation/best-practices#calibrating-control)
 
 **Pass criteria (all must be true):**
 
-- For flexible instructions (multiple valid approaches, task tolerates variation), the skill explains *why* rather than prescribing exact steps — an agent that understands the purpose makes better context-dependent decisions.
+- For flexible instructions (multiple valid approaches, task tolerates variation), the skill explains *why* rather than prescribing exact steps - an agent that understands the purpose makes better context-dependent decisions.
 - For fragile or destructive operations, the skill gives exact commands and forbids deviation (e.g., "Run exactly this sequence: `python scripts/migrate.py --verify --backup`. Do not modify the command or add additional flags.").
 - Steps provide a single default with alternatives mentioned briefly, not a menu of equally-weighted options.
 - The skill teaches the agent *how to approach* a class of problems (reusable method) rather than *what to produce* for one specific instance.
@@ -136,9 +136,9 @@ The level of specificity in a skill should match the fragility of the task. Matc
 
 ## 6. Patterns for effective instructions
 
-Several concrete patterns reliably improve skill quality. Use the ones that fit the task — not every skill needs all of them.
+Several concrete patterns reliably improve skill quality. Use the ones that fit the task - not every skill needs all of them.
 
-**Source:** [agentskills.io — Patterns for effective instructions](https://agentskills.io/skill-creation/best-practices#patterns-for-effective-instructions)
+**Source:** [agentskills.io - Patterns for effective instructions](https://agentskills.io/skill-creation/best-practices#patterns-for-effective-instructions)
 
 **Pass criteria (applicable patterns present):**
 
@@ -162,20 +162,20 @@ Several concrete patterns reliably improve skill quality. Use the ones that fit 
 
 When a skill moves content from `SKILL.md` into `references/`, the LLM must be told when to load that file. Without a load-trigger sentence, the file becomes orphaned context that is never read.
 
-**Source:** `AGENTS.md` (Skill conventions: Templates); agentskills.io — Spending context wisely (progressive disclosure)
+**Source:** `AGENTS.md` (Skill conventions: Templates); agentskills.io - Spending context wisely (progressive disclosure)
 
 **Pass criteria (all must be true):**
 
 - Every `references/` file referenced from `SKILL.md` has a corresponding load-trigger sentence.
 - Each load-trigger sentence has two parts: a clear condition (when to load) and the file path (what to load).
 - The load trigger follows the pattern: "Before [action], load `references/X.md`." or "When [condition], load `references/X.md`."
-- The condition is specific enough that the LLM only loads the file when its content is needed (e.g., "Read `references/api-errors.md` if the API returns a non-200 status code" — not "see references/ for details").
+- The condition is specific enough that the LLM only loads the file when its content is needed (e.g., "Read `references/api-errors.md` if the API returns a non-200 status code" - not "see references/ for details").
 
 **Fail criteria (any one fails the check):**
 
 - A `references/` file exists but is not mentioned in `SKILL.md`.
 - A load-trigger sentence has no condition (e.g., "Load the references file" with no `before/when` clause).
-- The condition is unconditional (e.g., "Always load `references/X.md`" — defeats the purpose of progressive disclosure).
+- The condition is unconditional (e.g., "Always load `references/X.md`" - defeats the purpose of progressive disclosure).
 - The file path in the trigger does not match an actual file in `references/`.
 
 ---

@@ -1,7 +1,7 @@
 ---
 name: implement-tickets
 description: >-
-  Implement a batch of tickets end-to-end — one commit per ticket,
+  Implement a batch of tickets end-to-end - one commit per ticket,
   dependency-ordered, with a judge review and end-of-run report. Use when
   the user says "implement the tickets", "run the ticket implementer",
   "execute the tickets", or wants to implement a ticket set produced by
@@ -29,10 +29,10 @@ real time.
 
 ## When Not to Use
 
-- Tickets have not been generated yet — use `spec-to-tickets` first to produce the normalized ticket set
-- The work is a single ticket — implement it directly with a single agent session; the coordination overhead is not justified
-- The user wants to implement one specific ticket by id — dispatch it directly, do not run the full skill
-- The source is an issue tracker that has not been converted to the normalized format — run the source adapter first, then invoke this skill
+- Tickets have not been generated yet - use `spec-to-tickets` first to produce the normalized ticket set
+- The work is a single ticket - implement it directly with a single agent session; the coordination overhead is not justified
+- The user wants to implement one specific ticket by id - dispatch it directly, do not run the full skill
+- The source is an issue tracker that has not been converted to the normalized format - run the source adapter first, then invoke this skill
 - The work is non-ticket work (e.g., ad-hoc refactor, exploration, single-PR change)
 
 ## Workflow
@@ -40,7 +40,7 @@ real time.
 The skill runs in six steps. Each step has explicit completion criteria;
 the next step does not start until the current one reports a stable state.
 
-### Step 1 — Mode and workspace resolution
+### Step 1 - Mode and workspace resolution
 
 1. Parse the user's natural language input for mode signals:
    - Phrases like "self-contained", "just do it", "no pausing", or "don't ask me" indicate **Self-Contained mode**.
@@ -52,7 +52,7 @@ the next step does not start until the current one reports a stable state.
 4. Capture the circuit-breaker threshold override (default = 3 strikes); if the user does not specify, the default applies.
 5. Capture the **attribution policy** ∈ {`human-only`, `human+ai-coauthor`, `ai-only`}.
    - Parse the user's input for an explicit policy signal. Accepted phrasings: "as me", "as me with the bot as co-author", "as the bot with me as co-author", "as the bot", or a literal policy name.
-   - If the policy is not stated, invoke `ask-questions` with one question and three options: `ai-only`, `human-only`, `human+ai-coauthor`. The recommended default is `human-only` (lowest surprise, matches the default shell git config in most setups). Ask even in Self-Contained mode — identity is an irreversible, audit-visible decision.
+   - If the policy is not stated, invoke `ask-questions` with one question and three options: `ai-only`, `human-only`, `human+ai-coauthor`. The recommended default is `human-only` (lowest surprise, matches the default shell git config in most setups). Ask even in Self-Contained mode - identity is an irreversible, audit-visible decision.
    - Record the chosen policy before printing the mode banner. The skill does not advance to Step 2 without a recorded policy.
 
 Before asking the user for the AI identity in sub-step 6, load `references/commit-author-policy.md` to surface canonical bot identities per host platform.
@@ -71,7 +71,7 @@ Before asking the user for the AI identity in sub-step 6, load `references/commi
 
 **Completion criterion**: mode recorded, workspace initialized and clean, breaker threshold recorded, attribution policy recorded, AI identity recorded (if policy involves AI), mode banner printed.
 
-### Step 2 — Ticket loading and dependency graph
+### Step 2 - Ticket loading and dependency graph
 
 1. Resolve the ticket source:
    - Default: load markdown files from `tickets/` matching the normalized ticket format (frontmatter with `id`, `title`, `status`, `Depends on:`, `Acceptance criteria`).
@@ -101,7 +101,7 @@ by them. Violations are contract breaches, not suggestions.
 - **REQUIRED**: The sub-agent must not see other in-flight staging areas. Each dispatch gets a clean, pinned checkout.
 - **REQUIRED**: Changes must be scoped to the ticket's acceptance criteria. No refactoring unrelated code; no reformatting untouched lines.
 
-### Step 3 — Per-dispatch-unit execution
+### Step 3 - Per-dispatch-unit execution
 
 For each dispatch unit (in batch order; units within a batch may run in parallel
 via multiple sub-agents), the following sub-steps apply. The per-ticket loop
@@ -110,25 +110,25 @@ inside the dispatch unit runs in ticket order within the group.
 1. **Extract completion criteria** from the ticket body:
    - Read the `Acceptance criteria` section.
    - If absent, read the `Definition of Done` section.
-   - If neither is present, treat the ticket's `Goal` + `What to build` sections as the criteria and surface a `[DEVIATION] ticket=<id> no explicit criteria — using Goal+What to build` line.
+   - If neither is present, treat the ticket's `Goal` + `What to build` sections as the criteria and surface a `[DEVIATION] ticket=<id> no explicit criteria - using Goal+What to build` line.
 2. **Create a per-sub-agent staging area**:
    - Default: a directory at `.implement-runs/<run-id>/staging/<ticket-id>/` reachable from the shared branch.
    - The sub-agent's working copy for this ticket is a clean checkout pinned to the commit at which the dispatch began, plus all already-applied staging areas from earlier (DAG-respecting) tickets in the same run.
    - The sub-agent does **not** see any other in-flight staging areas.
 3. **Dispatch a sub-agent with a fresh context**:
-    - **Pre-dispatch checklist** — before sending the dispatch prompt, verify every item:
+    - **Pre-dispatch checklist** - before sending the dispatch prompt, verify every item:
       - [ ] Prompt includes the no-commit rule (verbatim from the Sub-Agent Contract above).
       - [ ] Prompt includes the staging-area-only rule (verbatim from the Sub-Agent Contract above).
       - [ ] Prompt includes the structured response format (status / files_changed / criteria_check / notes).
       - [ ] Prompt includes the no-interaction rule (one prompt in, one response out).
-      - [ ] Prompt uses imperative language (REQUIRED / VIOLATION) for all constraints — not advisory language ("should", "please", "try to").
+      - [ ] Prompt uses imperative language (REQUIRED / VIOLATION) for all constraints - not advisory language ("should", "please", "try to").
       - If any item is missing, abort the dispatch and fix the prompt before sending. Do not dispatch with a partial contract.
     - Load `references/sub-agent-dispatch.md` and follow the dispatch template.
     - The sub-agent is told: ticket id, normalized ticket body, the resolved completion criteria, the list of files it owns, and the staging-area path.
     - The sub-agent accumulates all changes silently. No WIP commits appear in the shared branch's history. Sub-agents are forbidden from committing during dispatch; the coordinator owns commits.
 4. **Capture the sub-agent's diff and validate**:
     - Capture the staging area's `git status` + `git diff` once the sub-agent reports done.
-    - **Post-dispatch validation** — verify every item before proceeding to the judge loop:
+    - **Post-dispatch validation** - verify every item before proceeding to the judge loop:
       - [ ] The sub-agent did not run any commit-related command (check the staging area's `git log`; only `<STARTING_COMMIT>` should be reachable before the coordinator commits).
       - [ ] All paths in `files_changed` are within `<OWNED_FILES>`. If not, treat as `status: error` with the offending path in `notes` and increment the strike counter.
       - [ ] The sub-agent returned the structured response format (status / files_changed / criteria_check / notes). If unstructured or missing required fields, treat as `status: error` with `notes: malformed-response` and increment the strike counter.
@@ -156,13 +156,13 @@ inside the dispatch unit runs in ticket order within the group.
      - `human+ai-coauthor`: the coordinator reads `git config user.name` and `git config user.email` immediately before the commit to obtain the shell human identity, then runs `git -c user.name='<shell-human-name>' -c user.email='<shell-human-email>' commit -m '<subject>' -m '<body>' -m '<footer>' -m 'Co-authored-by: <ai-name> <<ai-email>>'`.
      - `ai-only`: `git -c user.name='<ai-name>' -c user.email='<ai-email>' commit -m '<subject>' -m '<body>' -m '<footer>'`.
      - In all three cases, the identity is supplied at commit time via the `-c` flag. The skill does not call `git config user.name` / `git config user.email` to mutate the shell's persistent git config.
-   - **Subject-quality gate** (run before the commit invocation): the coordinator inspects the subject against the following rules; any failure rejects the subject. These are the canonical home for the negative rules — the subject-format description above does not restate them.
+   - **Subject-quality gate** (run before the commit invocation): the coordinator inspects the subject against the following rules; any failure rejects the subject. These are the canonical home for the negative rules - the subject-format description above does not restate them.
      - No ledger IDs in the subject: subject does not match the regex `\bD\d{3}\b` or `\bT\d{3}\b` outside the ticket-id bracket.
      - No other-ticket IDs in the subject: subject does not match `TK\d{3}` for any ticket id other than the one in the bracket prefix.
      - No host-tool acronyms in the subject: the subject must not contain host-tool acronyms that the repo glossary in `GLOSSARY.md` does not recognise as universal (e.g. `MTP`, `VSTest`, `CPM`, `TFM`, `AOT`).
      - Plain-language: subject contains at least one verb or noun phrase that names the user-visible effect of the change.
      - On rejection: the coordinator increments the strike counter for this ticket and re-dispatches the sub-agent with the gate's feedback (mirroring the `reject-with-feedback` re-dispatch path). A second rejection on the same ticket escalates to the user via the circuit breaker.
-   - One commit per ticket. No WIP commits, no merge commits inside a ticket's staging area, no squash — the per-ticket commit is the source of truth.
+   - One commit per ticket. No WIP commits, no merge commits inside a ticket's staging area, no squash - the per-ticket commit is the source of truth.
 7. **Post-commit identity check** (run immediately after the commit, before
    reconciling the staging area):
    - **Skip rule**: if the attribution policy is `human-only`, skip this
@@ -189,9 +189,9 @@ inside the dispatch unit runs in ticket order within the group.
      `^Co-authored-by: <ai-name> <<ai-email>>\s*$` (case-insensitive on
      the name and email). On match, the post-commit check passes. On
      miss, go to the "Mismatch" branch below.
-   - **Mismatch branch**: emit exactly one line in this shape —
+   - **Mismatch branch**: emit exactly one line in this shape  - 
      `[DEVIATION] ticket=<id> author=<actual> expected=<expected>`
-     — then call the failure handler with `category=persistent`,
+     - then call the failure handler with `category=persistent`,
      `task=commit-identity-verify`, and the deviation line as the
      `signal`. The strike counter for this ticket increments. The run
      summary records the failure under `Failures`. The per-ticket loop
@@ -215,13 +215,13 @@ These are contract violations, not warnings. Each one increments the strike coun
 and routes through failure handling (Step 4). The coordinator must detect and record
 every instance.
 
-- **Sub-agent committed**: The sub-agent ran `git add`, `git commit`, or any commit-related command. Contract violation — the coordinator owns commits. Treat as `status: error` with `notes: attempted-commit`.
-- **Sub-agent wrote outside staging**: The sub-agent modified a file outside `<STAGING_PATH>` or `<OWNED_FILES>`. Contract violation — the staging area is the only writable surface. Treat as `status: error` with `notes: wrote-outside-staging`.
-- **Sub-agent returned unstructured response**: The sub-agent's response does not match the required format (status / files_changed / criteria_check / notes). Contract violation — the judge cannot evaluate an unstructured response. Treat as `status: error` with `notes: malformed-response`.
-- **Sub-agent attempted interaction**: The sub-agent asked the coordinator a question or waited for input mid-dispatch. Contract violation — one prompt in, one response out. Treat as `status: error` with `notes: attempted-interaction`.
+- **Sub-agent committed**: The sub-agent ran `git add`, `git commit`, or any commit-related command. Contract violation - the coordinator owns commits. Treat as `status: error` with `notes: attempted-commit`.
+- **Sub-agent wrote outside staging**: The sub-agent modified a file outside `<STAGING_PATH>` or `<OWNED_FILES>`. Contract violation - the staging area is the only writable surface. Treat as `status: error` with `notes: wrote-outside-staging`.
+- **Sub-agent returned unstructured response**: The sub-agent's response does not match the required format (status / files_changed / criteria_check / notes). Contract violation - the judge cannot evaluate an unstructured response. Treat as `status: error` with `notes: malformed-response`.
+- **Sub-agent attempted interaction**: The sub-agent asked the coordinator a question or waited for input mid-dispatch. Contract violation - one prompt in, one response out. Treat as `status: error` with `notes: attempted-interaction`.
 - **Sub-agent refactored out of scope**: The sub-agent changed code outside the ticket's acceptance criteria (unrelated refactors, reformatting of untouched lines). Not a hard error, but the judge should flag it; if the judge rejects, route through the normal re-dispatch path.
 
-### Step 4 — Failure handling and circuit breaker
+### Step 4 - Failure handling and circuit breaker
 
 Every failure is categorized and routed. The categorization rules live in
 `references/failure-categorization.md` (load on first failure, not before).
@@ -232,12 +232,12 @@ Every failure is categorized and routed. The categorization rules live in
    - `persistent` → auto-skip with a recorded reason; do not retry.
    - `dependency` → auto-skip and mark downstream tickets as blocked in the run summary.
    - `ambiguous` → escalate to the user (Collaborative) or auto-skip with a recorded reason (Self-Contained).
-3. **Circuit breaker**: any task (commit, file edit, sub-agent dispatch, judge call) that fails more than `N` times for the same ticket — regardless of category — escalates to the user with `[ESCALATION] ticket=<id> task=<name> strikes=<n>` (Collaborative) or aborts the run (Self-Contained). The threshold `N` is the Step 1 value (default 3).
+3. **Circuit breaker**: any task (commit, file edit, sub-agent dispatch, judge call) that fails more than `N` times for the same ticket - regardless of category - escalates to the user with `[ESCALATION] ticket=<id> task=<name> strikes=<n>` (Collaborative) or aborts the run (Self-Contained). The threshold `N` is the Step 1 value (default 3).
 4. **Visibility**: every auto-handled failure and every circuit-breaker escalation appears in the run summary (Step 6) with its category, ticket id, and one-line reason.
 
 **Completion criterion**: every failure has a recorded category, a recorded route, and either an action (retry / skip) taken or a recorded escalation. The strike counter for each ticket is consistent with the route taken.
 
-### Step 5 — Cross-dispatch conflict resolution
+### Step 5 - Cross-dispatch conflict resolution
 
 When two dispatch units within the same batch touch the same file, the rule
 below applies. Conflict-resolution rules live in
@@ -250,7 +250,7 @@ below applies. Conflict-resolution rules live in
 
 **Completion criterion**: every detected conflict has a recorded resolution, and either a follow-up commit (if LWW is re-applied) or a recorded escalation. The shared branch's history contains no unresolved overlap.
 
-### Step 6 — End-of-run report
+### Step 6 - End-of-run report
 
 1. Compose a markdown report at `tickets/.runs/<run-id>.md` with these sections:
    - **Run header**: run id, mode, workspace, breaker threshold, start/end timestamps, total wall-clock.
@@ -272,7 +272,7 @@ This skill writes a structured end-of-run markdown report to `tickets/.runs/<run
 
 ## Transitions
 
-- **`write-changelog`** — may run after this skill to summarize the per-ticket commits as user-facing release notes. The per-ticket commit subjects (`[<ticket-id(s)>] <plain-language description>`) are designed to be changelog-friendly.
+- **`write-changelog`** - may run after this skill to summarize the per-ticket commits as user-facing release notes. The per-ticket commit subjects (`[<ticket-id(s)>] <plain-language description>`) are designed to be changelog-friendly.
 
 ## Validation
 

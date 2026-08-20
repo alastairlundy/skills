@@ -20,7 +20,7 @@ shared branch), the coordinator runs the following detection:
      commit N+1 in the same region of the same file).
 3. A conflict is **content-overlap** (above) or **adjacent-hunk** (the
    hunks do not overlap but are within 3 lines of each other and touch the
-   same logical block — e.g., two functions defined back-to-back). Both are
+   same logical block - e.g., two functions defined back-to-back). Both are
    conflicts for the purposes of this rule.
 
 A file touched by two commits in different batches is **not** a conflict for
@@ -28,7 +28,7 @@ this rule, because the later batch's commits are the only commits touching the
 file in their range; the file is already on the shared branch at the start of
 the later batch and is treated as the new baseline.
 
-## Default rule — Last-Writer-Wins (LWW)
+## Default rule - Last-Writer-Wins (LWW)
 
 Until a replacement rule is authored, the default rule is **LWW by commit
 order on the shared branch**:
@@ -56,7 +56,7 @@ LWW can violate a ticket's stated acceptance criteria. The LWW rule must be
 **suspended** in the following cases:
 
 1. The dropped change is cited in any ticket's `Acceptance criteria` as a
-   required output (e.g., "exports a function `foo`" — if the earlier ticket
+   required output (e.g., "exports a function `foo`" - if the earlier ticket
    added `foo` and the later ticket removed it, LWW drops the add, breaking
    the earlier ticket's criteria).
 2. The dropped change is the **only** implementation of a public API or
@@ -85,7 +85,7 @@ this shape:
   dropped: <one-line summary of what was lost, or empty if rule kept earlier>
   escalation: <yes | no>
   ticket_criteria_at_risk:
-    - <ticket-id> — <one-line: which criterion is at risk if the rule is applied>
+    - <ticket-id> - <one-line: which criterion is at risk if the rule is applied>
 ```
 
 ## Future rule authoring

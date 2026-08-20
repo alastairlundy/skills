@@ -1,7 +1,7 @@
 ---
 name: code-implementation-grilling
 description: >-
-  Code implementation planning — language, framework, dependencies,
+  Code implementation planning - language, framework, dependencies,
   project structure, sub-projects. Use when a spec/PRD exists (referenced
   document, attachment, or substantively present in conversation) and the
   question turns to technical choices. Defer to `domain-grilling` for
@@ -25,9 +25,9 @@ owns the Decision Ledger, formats, tone, and convergence test).
 
 ## When Not to Use
 
-- For vague ideas, domain modeling, ubiquitous language, glossary, bounded contexts, or terminology alignment — use `domain-grilling` instead.
-- For non-code, non-domain decisions (business, product, process, organizational) — use `grilling` instead.
-- Questions that require back-and-forth clarification — use the ask-questions skill instead.
+- For vague ideas, domain modeling, ubiquitous language, glossary, bounded contexts, or terminology alignment - use `domain-grilling` instead.
+- For non-code, non-domain decisions (business, product, process, organizational) - use `grilling` instead.
+- Questions that require back-and-forth clarification - use the ask-questions skill instead.
 - Creating a spec or PRD itself.
 
 ## Workflow
@@ -35,7 +35,7 @@ owns the Decision Ledger, formats, tone, and convergence test).
 Every branch question in this skill follows the 1-turn wrapper from
 the parent `grilling` skill. The skill's per-decision context block is
 the 5-row code-impl variant (Goal, Prior decisions, Scope, Spec
-section — 4 data rows + header = 5 rows) defined in
+section - 4 data rows + header = 5 rows) defined in
 
 references/locked-question-format.md. The shared references
 (../`grilling`/references/*) define the wrapper order, the parent's 4-row
@@ -72,7 +72,7 @@ following code-specific additions:
    file path > issue tracker > conversation context.
 2. **Locate the ledger.** Same as `grilling`'s Step 2.
 3. **Read records.** Note the highest `Dxxx`/`Txxx` and every `Dxxx`
-   answer/constraint — the functional requirements the tech decisions
+   answer/constraint - the functional requirements the tech decisions
    must satisfy.
 4. **Confirm paths** before the first append.
 5. **Conflict pre-check.** Surface any `Dxxx`-`Dxxx` contradictions
@@ -81,7 +81,7 @@ following code-specific additions:
 The first turn of this step is one agent turn: confirm the spec and
 ledger paths, then stop. Do not surface TDPs, foundation items, or
 any other branch content in this turn. If no ledger exists, recommend
-running domain-`grilling` first — but if the user proceeds directly,
+running domain-`grilling` first - but if the user proceeds directly,
 create `docs/decisions/DECISIONS-<repo>-<feature>.md` with the
 file-format header and all three trailing sentinels:
 
@@ -112,12 +112,12 @@ context block, conflict callout if any, options table, recommendation).
 No inter-turn wait between items within a round. Resolve with 2-4
 options:
 
-1. **Language** — primary language?
-2. **Framework/Runtime** — primary framework?
-3. **Key Dependencies** — critical libraries/APIs?
-4. **Project Structure** — layout (layered, vertical slices, etc.)?
-5. **Sub-projects** — scope and purpose of each?
-6. **Project Type** — CLI, library, desktop GUI, etc.?
+1. **Language** - primary language?
+2. **Framework/Runtime** - primary framework?
+3. **Key Dependencies** - critical libraries/APIs?
+4. **Project Structure** - layout (layered, vertical slices, etc.)?
+5. **Sub-projects** - scope and purpose of each?
+6. **Project Type** - CLI, library, desktop GUI, etc.?
 
 ### Step 4.1: Foundational Preferences (optional)
 
@@ -138,7 +138,7 @@ framework, ORM, test framework, logging, etc.). Skip if not interested.
    and let blocked items wait. Emit a round header and frontier
    statement ("N TDPs remain, M unblocked this round") before
    surfacing each group. The TDP list surfacing is a meta-step (not
-   a branch) — it presents the items without the full 1-turn wrapper
+   a branch) - it presents the items without the full 1-turn wrapper
    yet; the wrapper is emitted during resolution.
 3. **Resolve**: Grill on each TDP using the 1-turn wrapper. Each round
    resolves at most 3 TDPs. Run the convergence check from
@@ -179,9 +179,9 @@ from ../`grilling`/references/convergence-test.md. If any check
 fails, continue `grilling` or re-open the affected branch.
 
 1. **Cross-reference** the technical output against the original spec.
-2. **Conflict detection** — any tech choices contradict functional reqs?
+2. **Conflict detection** - any tech choices contradict functional reqs?
 3. **Resolve** any contradictions.
-4. **Ledger coverage** — every resolved TDP has a `Txxx`.
+4. **Ledger coverage** - every resolved TDP has a `Txxx`.
 5. The agent may prompt for close-out; the user decides.
 
 Load 
@@ -193,27 +193,27 @@ handoff template.
 
 ### Step 8.5: Consolidated Implementation Plan
 
-At the natural endpoint of the `grilling` — after convergence — produce
+At the natural endpoint of the `grilling` - after convergence - produce
 a single **Consolidated Implementation Plan** that lists every file
 change across all Address items, grouped by file. The plan is the
 source of truth for downstream ticket generation.
 
 **Format options (pick one at end-of-`grilling`):**
 
-- **Standalone file** — write
+- **Standalone file** - write
   IMPLEMENTATION-<spec-identifier>.md at the repo root, with a
   Scope Binding section linking it to the source spec and the
   Decision Ledger.
-- **Ledger appendix** — append a "Consolidated Implementation Plan"
+- **Ledger appendix** - append a "Consolidated Implementation Plan"
   section to the Decision Ledger file itself.
 
 **Plan contents:**
 
-- **Per-file sections** — every file that any Address item touches,
+- **Per-file sections** - every file that any Address item touches,
   grouped by file path. Within each section, list each change with
   the `Txxx` (or `Dxxx`) record that drives it in
   filename#<`Dxxx`|`Txxx`> format.
-- **## Ledger Reference** — every `Dxxx` and `Txxx` record the plan
+- **## Ledger Reference** - every `Dxxx` and `Txxx` record the plan
   cites.
 - **Scope binding** (standalone only).
 
@@ -233,16 +233,16 @@ The skill consumes the following references.
 
 ### Parent `grilling` references (../`grilling`/references/*)
 
-- **../`grilling`/references/decision-ledger.md** — *eager*. Defines
+- **../`grilling`/references/decision-ledger.md** - *eager*. Defines
   the ledger file layout, record templates, ID format, sentinels,
   real-time appending, conflict resolution mechanics, and DEFERRED
   re-ask closure.
-- **../`grilling`/references/options-format.md** — *eager*. Defines
+- **../`grilling`/references/options-format.md** - *eager*. Defines
   the 5-column options table (Option | What it is | Benefit | Cost |
   Risk) with cell caps (90 chars, 2 sentences).
-- **../`grilling`/references/recommendation-format.md** — *eager*.
+- **../`grilling`/references/recommendation-format.md** - *eager*.
   Defines the 2-line lean recommendation block.
-- **../`grilling`/`references/locked-question-format.md`** — *eager*.
+- **../`grilling`/`references/locked-question-format.md`** - *eager*.
   Defines the 1-turn wrapper order and the parent's 4-row context table. The
   local 
 references/locked-question-format.md extends this with the
@@ -252,22 +252,22 @@ references/locked-question-format.md extends this with the
 references/*)
 
 - **
-references/locked-question-format.md** — *eager*. Defines the
+references/locked-question-format.md** - *eager*. Defines the
   5-row code-impl context table (parent 3 rows + Spec section).
 - **
-references/recording-decisions.md** — *eager*. Defines the `Txxx`
+references/recording-decisions.md** - *eager*. Defines the `Txxx`
   record template.
 - **
-references/interface-and-model-branch.md** — *lazy*. Load on
+references/interface-and-model-branch.md** - *lazy*. Load on
   demand before Step 6.
 - **
-references/output-selection.md** — *lazy*. Load on demand
+references/output-selection.md** - *lazy*. Load on demand
   before Step 7.
 - **
-references/validation.md** — *lazy*. Load on demand before
+references/validation.md** - *lazy*. Load on demand before
   convergence.
 - **
-references/terminal-output.md** — *lazy*. Load on demand
+references/terminal-output.md** - *lazy*. Load on demand
   before Step 8.
 
 ## Validation

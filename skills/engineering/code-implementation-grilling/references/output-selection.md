@@ -9,9 +9,9 @@ Each preamble the agent emits before presenting options for a branch
 question is capped at **2 sentences maximum**, with mandatory
 ID-citation of the relevant prior record(s):
 
-- **1 sentence** for simple questions — the preamble is the ID
+- **1 sentence** for simple questions - the preamble is the ID
   reference alone.
-- **2 sentences** for complex questions — the first sentence is the
+- **2 sentences** for complex questions - the first sentence is the
   ID reference, the second adds the specific constraint or
   discriminator the user is being asked to weigh.
 
@@ -38,7 +38,7 @@ required.
 - **Risk**: The blueprint drifts from the PRD over time if the
   linking discipline lapses.
 - **Filename derivation**: Derive the blueprint filename from the
-  spec's identifying token by input type — file path → basename
+  spec's identifying token by input type - file path → basename
   without extension (e.g., `docs/prds/feature-x.md` →
   `IMPLEMENTATION-feature-x.md`); issue tracker reference → issue
   number (e.g., `#123` → `IMPLEMENTATION-123.md`); conversation
@@ -46,7 +46,7 @@ required.
   context (2026-06-15)` → `IMPLEMENTATION-2026-06-15.md`). When
   the spec is referenced by more than one input type, resolve the
   filename using the strict total ordering **file path > issue
-  tracker reference > conversation context** — pick the
+  tracker reference > conversation context** - pick the
   highest-precedence source present. The default location is the
   repo root.
 - **Scope Binding contents**: The blueprint must include
@@ -102,7 +102,7 @@ presenting Part A:
    definition above.
 2. **Recommendation text**: The recommendation line below the table
    must recommend Option A, not Option B. The recommendation text and
-   the table highlight must always agree — if Option A is highlighted,
+   the table highlight must always agree - if Option A is highlighted,
    the recommendation must say Option A; if Option B is highlighted,
    the recommendation must say Option B. Never highlight one option in
    the table and recommend a different one underneath.
@@ -112,7 +112,7 @@ presenting Part A:
 If the user chose Option A (Implementation Blueprint), surface the
 resolved filename in a confirmation prompt (e.g., *"I'm going to
 write the blueprint to `IMPLEMENTATION-feature-x.md` at the repo
-root — OK?"*). If the user wants a different name, adjust the
+root - OK?"*). If the user wants a different name, adjust the
 filename before writing. Skip this step entirely if the user chose
 Option B (PRD Augmentation).
 

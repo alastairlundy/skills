@@ -6,8 +6,8 @@ Bare `Dxxx`/`Txxx` references outside the Decision Ledger file itself are prohib
 
 When referencing a Decision Ledger record from any file outside `docs/decisions/DECISIONS-*.md`, wrap the record ID in the source filename:
 
-- `DECISIONS-repo-feature.md#D001` — correct
-- `D001` — incorrect (bare reference)
+- `DECISIONS-repo-feature.md#D001` - correct
+- `D001` - incorrect (bare reference)
 
 This applies to `SKILL.md` files, reference docs, eval fixtures, and any other document in the repo.
 
@@ -17,6 +17,6 @@ To fix a violation, replace the bare `Dxxx`/`Txxx` reference with the full `file
 
 ## Scope
 
-This audit covers all files in the repo. Ledger files (`docs/decisions/DECISIONS-*.md`) are exempt — they define the records and use bare IDs in their own headings.
+This audit covers all files in the repo. Ledger files (`docs/decisions/DECISIONS-*.md`) are exempt - they define the records and use bare IDs in their own headings.
 
 Generic examples (e.g., `D001` used as a template placeholder in reference files) are also exempt, as they do not cite a specific record.

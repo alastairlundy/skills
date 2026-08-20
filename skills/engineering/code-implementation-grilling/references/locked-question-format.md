@@ -29,10 +29,10 @@ context block. The 4th data row is the code-impl addition.
 
 | Element          | Content                                                                     |
 |------------------|-----------------------------------------------------------------------------|
-| **Goal**         | <one sentence — the goal of the overall decision, citing D001>             |
-| **Prior decisions** | <one sentence — the prior decisions affecting this branch, with citations> |
-| **Scope**        | <one sentence — what is in and out of scope for this branch>               |
-| **Spec section** | <one sentence — the spec file path and the specific section or functional requirement, cited inline> |
+| **Goal**         | <one sentence - the goal of the overall decision, citing D001>             |
+| **Prior decisions** | <one sentence - the prior decisions affecting this branch, with citations> |
+| **Scope**        | <one sentence - what is in and out of scope for this branch>               |
+| **Spec section** | <one sentence - the spec file path and the specific section or functional requirement, cited inline> |
 
 Each data row's Content is exactly one sentence drawn from the
 Decision Ledger, the user's stated goal, and the spec. Cite
@@ -82,8 +82,8 @@ reject all, or hybridize.
 
 | Option | What it is | Benefit | Cost | Risk |
 |--------|-----------|---------|------|------|
-| **A — C# with .NET 8** | Platform built on C# 12 with .NET 8 LTS. | Sealed hierarchies supported natively. | Team needs .NET expertise. | Future contributor uses reflection breaking seals. |
-| B — TypeScript with Node.js 20 | Platform built on TypeScript 5 with Node.js 20 LTS. | Same language front and back end. | Structural typing needs runtime guard for sealed. | Type assertion bypasses seal at runtime. |
+| **A - C# with .NET 8** | Platform built on C# 12 with .NET 8 LTS. | Sealed hierarchies supported natively. | Team needs .NET expertise. | Future contributor uses reflection breaking seals. |
+| B - TypeScript with Node.js 20 | Platform built on TypeScript 5 with Node.js 20 LTS. | Same language front and back end. | Structural typing needs runtime guard for sealed. | Type assertion bypasses seal at runtime. |
 
 **Recommendation: A.**
 **Reasoning:** C# natively supports sealed class hierarchies, which

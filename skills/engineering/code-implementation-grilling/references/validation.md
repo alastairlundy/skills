@@ -12,8 +12,8 @@ transcript:
       resolution? Did each round emit the full 1-turn wrapper (round
       header, frontier statement, context blocks, options tables,
       recommendations) in a single agent turn?
-- [ ] **1-turn wrapper per round**: Did every round — including
-      foundation items, TDP branches, and any re-ask or follow-up —
+- [ ] **1-turn wrapper per round**: Did every round - including
+      foundation items, TDP branches, and any re-ask or follow-up  - 
       emit the full 1-turn wrapper in a single agent turn: round
       header, frontier statement, 5-row context block (Goal, Prior
       decisions, Scope, Spec section), conflict callout (if any),
@@ -68,7 +68,7 @@ transcript:
       `Reasoning` field explicitly tie to the session-level goal
       (the current goal record) using phrasing like "aligns
       with your goal of X" or "serves your goal of X"? Citing
-      ledger records without naming the user's goal is insufficient —
+      ledger records without naming the user's goal is insufficient  - 
       the goal must be surfaced explicitly. See
       `../grilling/references/recommendation-format.md` Goal-alignment
       rule.

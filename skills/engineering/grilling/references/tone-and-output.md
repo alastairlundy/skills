@@ -56,7 +56,7 @@ answer.
 
 **Violation.** The agent starts the transition with praise:
 
-> Good — Option 2 sets the precondition. Now: where does the branch get
+> Good - Option 2 sets the precondition. Now: where does the branch get
 > encoded?
 
 **Correction.** Drop the praise, mirror the user's point, then transition:
@@ -83,7 +83,7 @@ shorten it.
 
 The locked question format in `locked-question-format.md` is a hard
 rule with length constraints. Everything else is not subject to rigid word counts or punctuation
-bans — let natural professional phrasing carry the content.
+bans - let natural professional phrasing carry the content.
 
 Patterns to apply:
 

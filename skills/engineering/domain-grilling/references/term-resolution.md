@@ -12,7 +12,7 @@ glossary:
    not write to `GLOSSARY.md` until the user has accepted the term and
    its definition.
 2. **On acceptance, write the term to `GLOSSARY.md` immediately.** Do
-   not batch writes — immediate writes prevent drift and give both
+   not batch writes - immediate writes prevent drift and give both
    the user and the agent a persistent, up-to-date record to
    reference in later branches. If `GLOSSARY.md` does not exist,
    create it now (per the Lazy Creation rule in
@@ -65,8 +65,8 @@ client organization; the client organization is the payer."
 
 **Compliant agent continuation:**
 
-> Two new glossary terms to write: **Contact** — the person messaging
-> the freelancer; **Client Organization** — the legal entity that
+> Two new glossary terms to write: **Contact** - the person messaging
+> the freelancer; **Client Organization** - the legal entity that
 > invoices and pays. Confirm both before I write to `GLOSSARY.md`.
 
 **After user confirms:**
@@ -86,5 +86,5 @@ The legal entity that invoices and pays for the freelancer\'s work.
 ```
 
 The Decision Ledger record and the `GLOSSARY.md` entry have the same
-working definition. Both writes are independent — do not skip one
+working definition. Both writes are independent - do not skip one
 because the other exists.

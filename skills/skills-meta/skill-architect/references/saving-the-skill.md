@@ -42,7 +42,7 @@ Create the skill sub-directory at `<parent>/<skill-name>/`. The `SKILL.md` file 
 
 ### 4. Confirm the license with the user
 
-Ask the user, in one line, which license the new skill should be released under. Common choices include `MIT`, `Apache-2.0`, `BSD-3-Clause`, and `GPL-3.0`. The user may also defer the decision — in that case, omit the `license` field from the frontmatter and surface the open question in the completion report. Do not default to a license on the user's behalf.
+Ask the user, in one line, which license the new skill should be released under. Common choices include `MIT`, `Apache-2.0`, `BSD-3-Clause`, and `GPL-3.0`. The user may also defer the decision - in that case, omit the `license` field from the frontmatter and surface the open question in the completion report. Do not default to a license on the user's behalf.
 
 ### 5. Write SKILL.md
 
@@ -57,9 +57,9 @@ Write the file with the schema inlined in `SKILL.md` Step 4:
 
 If the skill is being saved into a repository that uses the Waza Eval Suite convention (one example: this repo, `skills/<category>/<skill-name>/`), create a stub `evals/<skill-name>/` directory with:
 
-- `eval.yaml` — evaluation configuration. Defer content to the `waza-skill-evaluator` skill if available.
-- `tasks/` — task definitions (initially empty).
-- `fixtures/` — test inputs and expected outputs (initially empty).
+- `eval.yaml` - evaluation configuration. Defer content to the `waza-skill-evaluator` skill if available.
+- `tasks/` - task definitions (initially empty).
+- `fixtures/` - test inputs and expected outputs (initially empty).
 
 If the user is not using the Waza Eval Suite, skip this step.
 
@@ -87,7 +87,7 @@ at `<target-skill-dir>/.design-ledger.md`. If the user confirms and
 the file exists, delete it. If the user declines or defers, preserve
 it as-is for the next attempt. If the file was not present, state
 that no design ledger was found. Do not amend or empty the design
-ledger in place — the lifecycle in `references/decision-ledger.md`
+ledger in place - the lifecycle in `references/decision-ledger.md`
 calls for full deletion on materialization, not in-place emptying.
 
 The deletion happens on successful materialization only. If Step 7

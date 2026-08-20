@@ -6,18 +6,18 @@ You are working in a repository of agent skill definitions (prompt templates). T
 
 - **Primary deliverable**: `SKILL.md` files (prompt templates with deterministic workflows)
 - **No build, test, or lint pipeline**: There is no compilation, bundling, packaging, or deploy step
-- **No runtime dependencies**: Skills are declarative — they contain instructions, not executable code
+- **No runtime dependencies**: Skills are declarative - they contain instructions, not executable code
 - **Eval tooling**: `waza run` (add `--baseline` for comparison, `--trials N` for trigger accuracy); `waza serve` for the eval UI
-- **Domain glossary**: `GLOSSARY.md` at the repo root — use its vocabulary consistently; do not invent synonyms for defined terms
+- **Domain glossary**: `GLOSSARY.md` at the repo root - use its vocabulary consistently; do not invent synonyms for defined terms
 
 ## Common mistakes
 
 - Do not suggest adding build pipelines, test frameworks, or application dependencies
-- Do not treat `SKILL.md` files as documentation for application code — they *are* the product
+- Do not treat `SKILL.md` files as documentation for application code - they *are* the product
 - Do not add `package.json`, `Cargo.toml`, `pyproject.toml`, or similar project manifests
-- Do not suggest adding CI/CD for building or deploying — this repo has no deployable artifact
-- Do not assume the agent is working on a downstream project that *uses* these skills — the agent is working *on the skills themselves*
-- **NEVER edit skills under `.agents/skills/`** — these are installed upstream skills (tracked via `skills-lock.json`) and are external to this repo. Edits made there will be overwritten on the next install and will not be committed. If a change is needed, propose it upstream or mirror the skill into `skills/<category>/<skill-name>/`
+- Do not suggest adding CI/CD for building or deploying - this repo has no deployable artifact
+- Do not assume the agent is working on a downstream project that *uses* these skills - the agent is working *on the skills themselves*
+- **NEVER edit skills under `.agents/skills/`** - these are installed upstream skills (tracked via `skills-lock.json`) and are external to this repo. Edits made there will be overwritten on the next install and will not be committed. If a change is needed, propose it upstream or mirror the skill into `skills/<category>/<skill-name>/`
 
 ## Repo layout
 
@@ -43,9 +43,9 @@ Every `SKILL.md` must have:
 - Required sections: **When to Use**, **When Not to Use**, **Workflow**, **Validation**
 - Conditional sections: **Output Mode** (non-default output behaviour), **Transitions** (depends on downstream tool/skill)
 - "When to Use" must be a bulleted list of specific trigger scenarios
-- Workflow steps must be deterministic — no vague language ("be smart", "as appropriate")
+- Workflow steps must be deterministic - no vague language ("be smart", "as appropriate")
 - Skills needing user clarification must include a "When to Use" bullet invoking the `ask-questions` skill
-- **Triggers are conditional** — unconditional triggers ("applies by default") are not permitted
+- **Triggers are conditional** - unconditional triggers ("applies by default") are not permitted
 
 Full structure details: `CREATING-SKILLS.md`.
 
@@ -63,6 +63,6 @@ Derived content from upstream MIT sources must include attribution in the skill'
 
 ## Agent skills
 
-- **Issue tracker**: GitHub Issues via `gh` CLI — see `docs/agents/issue-tracker.md`
-- **Triage labels**: `needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix` — see `docs/agents/triage-labels.md`
-- **Domain docs**: single-context layout, consume `GLOSSARY.md` + `docs/adr/` — see `docs/agents/domain.md`
+- **Issue tracker**: GitHub Issues via `gh` CLI - see `docs/agents/issue-tracker.md`
+- **Triage labels**: `needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix` - see `docs/agents/triage-labels.md`
+- **Domain docs**: single-context layout, consume `GLOSSARY.md` + `docs/adr/` - see `docs/agents/domain.md`

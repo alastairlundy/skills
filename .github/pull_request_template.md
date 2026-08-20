@@ -23,7 +23,7 @@ Did you discuss this change in an issue before opening this PR? Link it below.
 
 ## Skill Category (if applicable)
 
-<!-- engineering/, alignment/, or skills-meta/ — see CONTRIBUTING.md -->
+<!-- engineering/, alignment/, or skills-meta/ - see CONTRIBUTING.md -->
 
 ## What Changed
 

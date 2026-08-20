@@ -4,7 +4,7 @@ A first-class concept in the ask-questions workflow. Use when a single prose tur
 
 ## Definition
 
-A **Multi-part Prose Pattern** is a single prose turn containing two or more related sub-questions that are binary or scoping checks (yes/no or "which of these apply?") rather than discrete choices. Each sub-question is independently skippable — the user may answer some, pass on others, or answer in a single reply that covers multiple sub-questions.
+A **Multi-part Prose Pattern** is a single prose turn containing two or more related sub-questions that are binary or scoping checks (yes/no or "which of these apply?") rather than discrete choices. Each sub-question is independently skippable - the user may answer some, pass on others, or answer in a single reply that covers multiple sub-questions.
 
 ## Rules
 
@@ -14,9 +14,9 @@ A **Multi-part Prose Pattern** is a single prose turn containing two or more rel
 
 ## When not to use
 
-- Do not use for genuine discrete choices — those go to the Tool Call Path.
+- Do not use for genuine discrete choices - those go to the Tool Call Path.
 - Do not use for open-ended exploration questions (use a single prose question instead).
-- Do not use when the sub-questions are unrelated — group only related checks.
+- Do not use when the sub-questions are unrelated - group only related checks.
 
 ## Worked example
 

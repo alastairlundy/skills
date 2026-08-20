@@ -107,10 +107,10 @@ Per `DECISIONS-skills-ticket-implementer.md#D009`:
 
 | Category    | Route                                                                                                            | Strike cap before circuit breaker? |
 |-------------|------------------------------------------------------------------------------------------------------------------|------------------------------------|
-| transient   | Auto-retry. Up to 3 retries with exponential backoff (1s, 4s, 16s). On the 4th attempt, treat as persistent.     | Yes — 3 retries.                   |
-| persistent  | Auto-skip. Record the failure in the run summary under `Failures` with the category and one-line reason.         | No — single attempt.               |
-| dependency  | Auto-skip the failing ticket; mark every ticket in the DAG that depends on it as `blocked` in the run summary.   | No — single attempt.               |
-| ambiguous   | Escalate to the user (Collaborative) or auto-skip with a recorded reason (Self-Contained).                       | No — single attempt.               |
+| transient   | Auto-retry. Up to 3 retries with exponential backoff (1s, 4s, 16s). On the 4th attempt, treat as persistent.     | Yes - 3 retries.                   |
+| persistent  | Auto-skip. Record the failure in the run summary under `Failures` with the category and one-line reason.         | No - single attempt.               |
+| dependency  | Auto-skip the failing ticket; mark every ticket in the DAG that depends on it as `blocked` in the run summary.   | No - single attempt.               |
+| ambiguous   | Escalate to the user (Collaborative) or auto-skip with a recorded reason (Self-Contained).                       | No - single attempt.               |
 
 The strike cap is per-ticket per-task. The circuit breaker (Phase 3.3) tracks
 strikes across categories; once any task on a ticket exceeds `N` strikes

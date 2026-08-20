@@ -19,28 +19,28 @@ Free-form instructions to the agent in this reference use "the LLM" or
 
 Every locked question uses a fixed wrapper emitted **once per round**,
 regardless of how many branches are inside the round. The wrapper is
-a single agent turn — there is no inter-turn wait between components.
+a single agent turn - there is no inter-turn wait between components.
 
 The fixed order is:
 
-1. **Round header** — identifies the round number.
-2. **Frontier statement** — how many branches remain total, how many
+1. **Round header** - identifies the round number.
+2. **Frontier statement** - how many branches remain total, how many
    are unblocked this round.
 3. **Per-branch block** (repeated 1–3 times, once per unblocked branch
    in this round):
-   1. **Context block** — the 4-row table grounding the branch.
-   2. **Conflict/contradiction callout** (conditional) — only when a
+   1. **Context block** - the 4-row table grounding the branch.
+   2. **Conflict/contradiction callout** (conditional) - only when a
       conflict or contradiction is detected.
-   3. **Options table** — the 5-column reference set (per
+   3. **Options table** - the 5-column reference set (per
       `references/options-format.md`).
-   4. **Recommendation** — the 2-line lean block (per
+   4. **Recommendation** - the 2-line lean block (per
       `references/recommendation-format.md`).
 
 The round header, frontier statement, and at least one per-branch block are
 always present. The conflict/contradiction callout within each
 per-branch block is conditional on conflict detection.
 
-### Component 1 — Round header
+### Component 1 - Round header
 
 ```md
 ### Round [N]
@@ -48,7 +48,7 @@ per-branch block is conditional on conflict detection.
 
 `[N]` is the round number starting at 1. The header is always present.
 
-### Component 2 — Frontier statement
+### Component 2 - Frontier statement
 
 ```md
 [N] branches remain, [M] unblocked this round.
@@ -58,7 +58,7 @@ per-branch block is conditional on conflict detection.
 `[M]` is the number surfaced in this round (at most 3). If `[M]` equals
 `[N]`, the frontier statement is still emitted.
 
-### Component 3 — Context block
+### Component 3 - Context block
 
 The context block is a **4-row markdown table** with a header row and
 3 data rows in fixed order. Each data row's Content is exactly one
@@ -67,9 +67,9 @@ Cite path-qualified `filename#Dxxx` IDs in the Goal and Prior decisions rows.
 
 | Element         | Content                                                                     |
 |-----------------|-----------------------------------------------------------------------------|
-| **Goal**        | <one sentence — the goal of the overall decision, citing the goal record as `filename#Dxxx`>             |
-| **Prior decisions** | <one sentence — the prior decisions affecting this branch, with path-qualified `filename#Dxxx` citations> |
-| **Scope**       | <one sentence — what is in and out of scope for this branch>               |
+| **Goal**        | <one sentence - the goal of the overall decision, citing the goal record as `filename#Dxxx`>             |
+| **Prior decisions** | <one sentence - the prior decisions affecting this branch, with path-qualified `filename#Dxxx` citations> |
+| **Scope**       | <one sentence - what is in and out of scope for this branch>               |
 
 The context block is **not** a free-form prose summary, a "current
 state of the type" reading, a code investigation, a domain-glossary
@@ -78,10 +78,10 @@ reading or an investigation, that work belongs in the agent's
 reasoning, not in the user-facing context block. If the agent wants
 to surface that information to the user, paraphrase it into one of
 the three elements (typically **Scope**) or present it as a separate
-explicit step *before* the context block with its own heading — never
+explicit step *before* the context block with its own heading - never
 in place of the table.
 
-### Component 4 — Conflict/contradiction callout (conditional)
+### Component 4 - Conflict/contradiction callout (conditional)
 
 Only emitted when conflict detection fires before the branch
 resolves. The callout appears between the context block and the options
@@ -107,7 +107,7 @@ resolution):
 
 The callout is a fixed-format notification, not an open-ended question.
 
-### Component 5 — Options table
+### Component 5 - Options table
 
 Present the 5-column options table from `references/options-format.md`,
 preceded by the reference-set preamble:
@@ -121,7 +121,7 @@ The options table is the reference set the user picks from. See
 `references/options-format.md` for the table shape, cell caps, and
 defensible-options guidance.
 
-### Component 6 — Recommendation
+### Component 6 - Recommendation
 
 Present the 2-line lean recommendation block from
 `references/recommendation-format.md` below the options table. See
@@ -155,9 +155,9 @@ It uses the identical wrapper format as the initial branch emission.
   and recommendation) in a single turn, then stop and wait for the
   user's response. Each branch wrapper is self-contained. Do not
   emit more than 3 branches in one round. Do not mix unrelated
-  decisions in one branch emission — each branch in a round must be
+  decisions in one branch emission - each branch in a round must be
   an unblocked branch from the same decision tree.
-- **Complete wrapper per branch — hard stop.** Each branch's wrapper
+- **Complete wrapper per branch - hard stop.** Each branch's wrapper
   (context block through recommendation) must be emitted in full,
   not split across turns. The agent must not emit a context block
   in one turn and the options table in the next.
@@ -175,7 +175,7 @@ It uses the identical wrapper format as the initial branch emission.
   detected" or "Contradiction detected" wording. Do not paraphrase
   or extend the callout with open-ended questions.
 
-## Worked example — round with 2 branches
+## Worked example - round with 2 branches
 
 ```md
 ### Round 1
@@ -196,12 +196,12 @@ reject all, or hybridize.
 
 | Option | What it is | Benefit | Cost | Risk |
 |--------|-----------|---------|------|------|
-| **A — Per-seat** | Price scales with number of users on the account. | Revenue tracks usage; easy to justify to buyers. | Existing flat-rate customers see a price increase. | Small teams may share accounts to avoid seats. |
-| B — Flat tier | Fixed price per plan tier regardless of users. | Predictable for customers; simple billing. | Revenue does not scale with adoption. | Large teams get outsized value at flat cost. |
+| **A - Per-seat** | Price scales with number of users on the account. | Revenue tracks usage; easy to justify to buyers. | Existing flat-rate customers see a price increase. | Small teams may share accounts to avoid seats. |
+| B - Flat tier | Fixed price per plan tier regardless of users. | Predictable for customers; simple billing. | Revenue does not scale with adoption. | Large teams get outsized value at flat cost. |
 | C - Usage based | Users pay for usage based billing on a Pay As You Go basis. | Easier for customers to try without committing; appeals to cost conscious buyers. | Revenue is unpredictable. | Customers ration their usage of the product to cut down on their spending.|
 
 **Recommendation: Option A - Per seat**
-**Reasoning:** Per-seat aligns with your goal of growth-friendly pricing — revenue scales with adoption, which is the mechanism you need.
+**Reasoning:** Per-seat aligns with your goal of growth-friendly pricing - revenue scales with adoption, which is the mechanism you need.
 
 <user picks A>
 
@@ -221,10 +221,10 @@ reject all, or hybridize.
 
 | Option | What it is | Benefit | Cost | Risk |
 |--------|-----------|---------|------|------|
-| **A — Immediate** | Switch all accounts to per-seat on the next billing cycle. | Clean cutover; no dual-system overhead. | Existing customers face an immediate price change. | Churn spike from sticker shock. |
-| B — 90-day grace | Give existing customers 90 days at current rate before switching. | Retention buffer; time to communicate value. | Revenue delay; dual-system billing complexity. | Customers delay migration to avoid price increase. |
+| **A - Immediate** | Switch all accounts to per-seat on the next billing cycle. | Clean cutover; no dual-system overhead. | Existing customers face an immediate price change. | Churn spike from sticker shock. |
+| B - 90-day grace | Give existing customers 90 days at current rate before switching. | Retention buffer; time to communicate value. | Revenue delay; dual-system billing complexity. | Customers delay migration to avoid price increase. |
 | C - New customers only | Existing customers stay on their current billing arrangement; new customers are charged using per seat billing. | Reduced churn for existing customers; New customers bring in recurring revenue.| Existing customers contribute less revenue than new customers. | New customers may see the per seat rate as unfair. |
 
 **Recommendation: Option A - Immediate.**
-**Reasoning:** Immediate switch aligns with your goal of clean growth pricing — the grace period delays the revenue signal you need.
+**Reasoning:** Immediate switch aligns with your goal of clean growth pricing - the grace period delays the revenue signal you need.
 ```

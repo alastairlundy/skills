@@ -13,7 +13,7 @@ license: MIT
 # Grilling
 
 A structured decision-elicitation skill. The user has a vague decision or idea they want to explore;
-the agent facilitates — the user owns each decision. The agent walks the
+the agent facilitates - the user owns each decision. The agent walks the
 decision down a tree of branches, presents options as a reference option set, 
 gives a goal-aligned recommendation, and records the resolved answer in a Decision Ledger.
  The session is a sequence of rounds, each surfacing at most 3 branches, and each branch
@@ -36,8 +36,8 @@ gives a goal-aligned recommendation, and records the resolved answer in a Decisi
 
 ## When Not to Use
 
-- For domain modeling, ubiquitous language, bounded contexts, glossary, terminology alignment, or vocabulary work — use `domain-grilling` instead.
-- For code/technical implementation choices (language, framework, dependencies, project structure) when a spec/PRD exists — use `code-implementation-grilling` instead.
+- For domain modeling, ubiquitous language, bounded contexts, glossary, terminology alignment, or vocabulary work - use `domain-grilling` instead.
+- For code/technical implementation choices (language, framework, dependencies, project structure) when a spec/PRD exists - use `code-implementation-grilling` instead.
 - For trivial questions with a clear answer (no grilling needed).
 - For executing a decision that has already been made (no grilling needed).
 - For implementation, debugging, or code review (no grilling needed).
@@ -46,7 +46,7 @@ gives a goal-aligned recommendation, and records the resolved answer in a Decisi
 
 ### Step 1: Load the references
 
-#### 1.0 Pre-flight — verify all six references exist
+#### 1.0 Pre-flight - verify all six references exist
 
 Before loading or reading, walk this list in order. For each entry,
 confirm the file exists and is readable on disk:
@@ -67,24 +67,24 @@ Do not load any reference until the pre-flight passes for all six.
 After the pre-flight passes, load and read each of the six references
 in full before the first user question:
 
-- references/decision-ledger.md — Decision Ledger path derivation,
+- references/decision-ledger.md - Decision Ledger path derivation,
   parallel `Dxxx` and `Ixxx` ID streams with sentinel comments, the
   `Dxxx` record format, the `Ixxx` record format, goal record, lazy
   creation, soft cap, re-opens, lifecycle by skill group, storage
   conventions, conflict resolution mechanics (static/dynamic), and
   DEFERRED re-ask closure.
-- references/options-format.md — the reference-set preamble and the
+- references/options-format.md - the reference-set preamble and the
   5-column options table (Option | What it is | Benefit | Cost | Risk)
   with cell caps.
-- references/recommendation-format.md — the 2-line lean recommendation
+- references/recommendation-format.md - the 2-line lean recommendation
   block with goal-aligned reasoning.
-- references/locked-question-format.md — the 1-turn wrapper order:
+- references/locked-question-format.md - the 1-turn wrapper order:
   round header, frontier statement, context block (4-row table),
   conflict/contradiction callout (conditional), options table,
   recommendation.
-- references/tone-and-output.md — tone discipline, forbidden filler
+- references/tone-and-output.md - tone discipline, forbidden filler
   words, branch transitions, neutral mirroring.
-- references/convergence-test.md — the per-round 5-check convergence
+- references/convergence-test.md - the per-round 5-check convergence
   test and the diverge modes to avoid.
 
 Apply the formats from those files verbatim throughout the session. Do
@@ -98,7 +98,7 @@ Detect any existing Decision Ledger at runtime before deriving a path:
 
 - Test whether `docs/decisions/` exists in the working repo
   (`Test-Path docs/decisions`).
-- If the directory exists, scan it for every DECISIONS-*.md file — do
+- If the directory exists, scan it for every DECISIONS-*.md file - do
   not limit the search to a feature-specific match.
 
 Branch on the detection result:
@@ -140,7 +140,7 @@ provide multiple goals when they have one.
 
 **Stop and wait for the user's response.** Do not proceed to Step 4
 or open any branch question until the user has answered. Allocate the
-next available `Dxxx` ID — `D001` for a new ledger, or `max(existing) + 1`
+next available `Dxxx` ID - `D001` for a new ledger, or `max(existing) + 1`
 for an existing one (read from the `<!-- next-d: Dxxx -->` sentinel or
 by scanning). Record the response as the goal record in the Decision
 Ledger using the goal record template from
@@ -301,13 +301,13 @@ to the type of decision reached. Every exit that drives downstream
 action must include the Decision Ledger path so downstream skills can
 cite records as Filename#`Dxxx`.
 
-- **Specialize to DDD** — if DDD concerns surfaced.
-- **Specialize to code** — if implementation choices surfaced.
-- **Decompose** — if discrete action items were produced.
-- **Handoff to another agent** — pass the Decision Ledger path.
-- **Custom save** — save the shared understanding another way.
+- **Specialize to DDD** - if DDD concerns surfaced.
+- **Specialize to code** - if implementation choices surfaced.
+- **Decompose** - if discrete action items were produced.
+- **Handoff to another agent** - pass the Decision Ledger path.
+- **Custom save** - save the shared understanding another way.
 
-**Tool mapping** — each generic verb resolves to the tool the calling
+**Tool mapping** - each generic verb resolves to the tool the calling
 environment provides.
 
 | Generic name            | Resolves to                                       | Fallback when unavailable                       |
@@ -316,7 +316,7 @@ environment provides.
 | Specialize to code      | `code-implementation-grilling` skill              | Stay in grilling; do not spawn specialization    |
 | Decompose               | `spec-to-tickets`                                  | Hand-roll a checklist file with ledger citations |
 | Handoff to another agent| User-specified target agent                       | Save the ledger path; user passes it manually    |
-| Custom save             | User-specified destination                        | n/a — by definition user-supplied                |
+| Custom save             | User-specified destination                        | n/a - by definition user-supplied                |
 
 ### Step 9: Post-session deletion reminder
 

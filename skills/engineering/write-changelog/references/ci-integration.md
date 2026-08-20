@@ -7,7 +7,7 @@ license: MIT
 
 # CI Integration
 
-A skill is a prompt template, not an executable — it cannot return a process exit code. This file is the canonical home for the marker vocabulary that `write-changelog` emits to the conversation so a CI wrapper can translate structured markers into non-zero exit codes, machine-readable warnings, or deterministic fallbacks.
+A skill is a prompt template, not an executable - it cannot return a process exit code. This file is the canonical home for the marker vocabulary that `write-changelog` emits to the conversation so a CI wrapper can translate structured markers into non-zero exit codes, machine-readable warnings, or deterministic fallbacks.
 
 ## Marker contract
 
@@ -33,13 +33,13 @@ followed by a parse of the `key: value` lines.
 
 ## Markers
 
-### `empty-range` — D017
+### `empty-range` - D017
 
 Emitted in Step 2 when the retrieved commit list is empty.
 
 Prose above the marker (for the user):
 
-> The commit range is empty — no changelog to generate.
+> The commit range is empty - no changelog to generate.
 
 Marker block:
 
@@ -53,7 +53,7 @@ target: <target>
 
 Wrapper behaviour: translate to non-zero exit code. The CI run is a failure; the changelog is not produced.
 
-### `defaulted` — D001
+### `defaulted` - D001
 
 Emitted in Step 4 when the ask-questions skill is unavailable or the user declines, and the section title defaults to `Global`.
 
@@ -63,9 +63,9 @@ The marker is **inline on the section header**, not in a fenced block, so a lint
 ## Global (defaulted)
 ```
 
-Wrapper behaviour: do not exit non-zero. The default is a soft signal — surface the assumption in the changelog itself, but the run is a success. Linters and release pipelines must allow the `(defaulted)` suffix on the section header without failing.
+Wrapper behaviour: do not exit non-zero. The default is a soft signal - surface the assumption in the changelog itself, but the run is a success. Linters and release pipelines must allow the `(defaulted)` suffix on the section header without failing.
 
-### `overwrite-refused` — D003 (open follow-up)
+### `overwrite-refused` - D003 (open follow-up)
 
 Emitted in Step 6 when the user refuses to overwrite an existing destination. In interactive mode, the final markdown is output to the conversation and the user is offered a one-line "say `write to <path>`" prompt; no marker is required because a human is in the loop.
 

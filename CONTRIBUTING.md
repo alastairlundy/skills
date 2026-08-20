@@ -17,9 +17,9 @@ Drive-by PRs (unsolicited pull requests without prior discussion) are discourage
 See [CREATING-SKILLS.md](CREATING-SKILLS.md) for the complete guide on skill structure and conventions.
 
 **Skill categories:**
-- `engineering/` — domain-specific tasks for software development workflows
-- `alignment/` — skills for ensuring LLMs stay aligned on expectations and behaviour whilst performing tasks
-- `skills-meta/` — tools for creating and evaluating other skills
+- `engineering/` - domain-specific tasks for software development workflows
+- `alignment/` - skills for ensuring LLMs stay aligned on expectations and behaviour whilst performing tasks
+- `skills-meta/` - tools for creating and evaluating other skills
 
 **After discussion, quick start:**
 1. Create `skills/<category>/<skill-name>/SKILL.md`
@@ -32,11 +32,11 @@ See [CREATING-SKILLS.md](CREATING-SKILLS.md) for the complete guide on skill str
 
 When modifying an existing skill:
 
-1. **Understand the current behavior** — Read the skill and its evaluation suite
-2. **Identify the improvement** — Bug fix, missing scenario, unclear instruction, etc.
-3. **Update the skill** — Make changes following the conventions in CREATING-SKILLS.md
-4. **Update or add evals** — Ensure your changes don't break existing tests; add tests for new behavior
-5. **Test thoroughly** — Run the skill through representative scenarios
+1. **Understand the current behavior** - Read the skill and its evaluation suite
+2. **Identify the improvement** - Bug fix, missing scenario, unclear instruction, etc.
+3. **Update the skill** - Make changes following the conventions in CREATING-SKILLS.md
+4. **Update or add evals** - Ensure your changes don't break existing tests; add tests for new behavior
+5. **Test thoroughly** - Run the skill through representative scenarios
 
 ### 3. Evaluating Skills
 
@@ -60,9 +60,9 @@ waza serve
 ```
 
 **What the evaluation measures:**
-- **Performance lift** — How much better the skill performs vs. no skill
-- **Trigger accuracy** — Whether the skill triggers when it should and doesn't when it shouldn't
-- **Diagnostic insights** — Per-failure analysis with conservative and structural fix prescriptions
+- **Performance lift** - How much better the skill performs vs. no skill
+- **Trigger accuracy** - Whether the skill triggers when it should and doesn't when it shouldn't
+- **Diagnostic insights** - Per-failure analysis with conservative and structural fix prescriptions
 
 **Important:** The evaluator diagnoses issues but does not modify skills. Apply fixes manually based on the diagnostic report.
 
@@ -111,12 +111,12 @@ Before submitting a contribution:
 
 ### Pull Request Process
 
-1. **Fork and branch** — Create a feature branch from `main`
-2. **Make changes** — Follow the guidelines above
-3. **Test locally** — Verify the skill works as expected
-4. **Update documentation** — Ensure README, GLOSSARY.md, and ADRs are current
-5. **Submit PR** — Provide clear description of changes and testing performed
-6. **Address feedback** — Respond to review comments promptly
+1. **Fork and branch** - Create a feature branch from `main`
+2. **Make changes** - Follow the guidelines above
+3. **Test locally** - Verify the skill works as expected
+4. **Update documentation** - Ensure README, GLOSSARY.md, and ADRs are current
+5. **Submit PR** - Provide clear description of changes and testing performed
+6. **Address feedback** - Respond to review comments promptly
 
 ## Questions?
 

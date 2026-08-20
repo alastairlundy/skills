@@ -10,20 +10,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Initial stable release. 10 skills across 3 categories.
 
 ### Alignment
-- **ask-questions** — Discrete-choice clarification tool for agents
+- **ask-questions** - Discrete-choice clarification tool for agents
 
 ### Engineering
-- **code-implementation-grilling** — Socratic interviewing on technical implementation choices
-- **dependency-review** — Audit third-party dependencies for staleness, bloat, and deprecation
-- **domain-grilling** — Socratic interviewing on DDD alignment and bounded contexts
-- **grilling** — Socratic interviewing for non-code, non-domain decisions
-- **implement-tickets** — Coordinate parallel ticket implementation with sub-agent dispatch and judge loop
-- **spec-to-tickets** — Decompose specs into implementation tickets with dependency graphs
-- **write-changelog** — Generate user-facing changelogs from git history
+- **code-implementation-grilling** - Socratic interviewing on technical implementation choices
+- **dependency-review** - Audit third-party dependencies for staleness, bloat, and deprecation
+- **domain-grilling** - Socratic interviewing on DDD alignment and bounded contexts
+- **grilling** - Socratic interviewing for non-code, non-domain decisions
+- **implement-tickets** - Coordinate parallel ticket implementation with sub-agent dispatch and judge loop
+- **spec-to-tickets** - Decompose specs into implementation tickets with dependency graphs
+- **write-changelog** - Generate user-facing changelogs from git history
 
 ### Skills-meta
-- **setup-alastairlundy-skills** — Scaffold per-repo agent configuration docs
-- **skill-architect** — Guide design and refinement of new agent skills
+- **setup-alastairlundy-skills** - Scaffold per-repo agent configuration docs
+- **skill-architect** - Guide design and refinement of new agent skills
 
 ### Infrastructure
 - `GLOSSARY.md` glossary with canonical vocabulary

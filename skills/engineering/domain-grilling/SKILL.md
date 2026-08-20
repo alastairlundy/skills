@@ -1,7 +1,7 @@
 ---
 name: domain-grilling
 description: >-
-  Domain modeling and terminology alignment — bounded contexts, ubiquitous
+  Domain modeling and terminology alignment - bounded contexts, ubiquitous
   language, glossary terms, shared vocabulary. Use when the user wants to
   clarify the domain model, align terms, name a concept, define a
   vocabulary, or nail down the language before implementation.
@@ -14,7 +14,7 @@ license: MIT
 
 A structured decision-elicitation skill, focused on Domain-Driven
 Design (DDD) alignment. This skill specializes `grilling` for the case
-where the user is establishing the *vocabulary* of a domain — its
+where the user is establishing the *vocabulary* of a domain - its
 bounded contexts, ubiquitous language, and the boundary between
 concepts.
 
@@ -29,9 +29,9 @@ to `GLOSSARY.md`).
 ### Triggers
 
 - When the user has a vague idea and needs conceptual/terminology
-  alignment — clarifying the "what" and the shared language, not the
+  alignment - clarifying the "what" and the shared language, not the
   "how".
-- When the user explicitly wants domain-modeling work — establishing
+- When the user explicitly wants domain-modeling work - establishing
   bounded contexts, ubiquitous language, glossary terms, or
   terminology boundaries.
 - When starting a new feature or architectural change that requires
@@ -45,8 +45,8 @@ to `GLOSSARY.md`).
 
 ## When Not to Use
 
-- For non-domain-modeling decisions (business, product, process, organizational) that do not need conceptual alignment — use `grilling` instead.
-- For code/technical implementation choices (language, framework, dependencies, project structure) once a spec/PRD exists — use `code-implementation-grilling` instead.
+- For non-domain-modeling decisions (business, product, process, organizational) that do not need conceptual alignment - use `grilling` instead.
+- For code/technical implementation choices (language, framework, dependencies, project structure) once a spec/PRD exists - use `code-implementation-grilling` instead.
 - For trivial code changes or bug fixes where the domain model is not in question.
 - For rapid prototypes that are known to be throwaway (spike code, demo code, time-boxed experiments).
 
@@ -171,11 +171,11 @@ Before listing exits, ask: "Will resolving this require writing
 code?" with options Yes / No / I'm not sure. Skip the
 question if the problem type is unambiguous from context.
 
-- **Yes** — lead with the code-implementation-`grilling` exit, then
+- **Yes** - lead with the code-implementation-`grilling` exit, then
   present the other non-technical exits.
-- **No** — skip the code-implementation-`grilling` exit; lead with
+- **No** - skip the code-implementation-`grilling` exit; lead with
   "document the decision" as the recommended path.
-- **I'm not sure** — present all available exits (including
+- **I'm not sure** - present all available exits (including
   code-implementation-`grilling`) without a recommendation; do not
   ask a follow-up.
 
@@ -185,10 +185,10 @@ filename#`Dxxx`:
 
 | Path | Drives downstream work? | Ledger path required? |
 |------|------------------------|------------------------|
-| 1 — Hand off to code-implementation-`grilling` | Yes | Yes |
-| 2 — Break into tickets (`spec-to-tickets`) | Yes | Yes |
-| 3 — Handoff to another agent | Yes | Yes |
-| 4 — Custom Save | No | No |
+| 1 - Hand off to code-implementation-`grilling` | Yes | Yes |
+| 2 - Break into tickets (`spec-to-tickets`) | Yes | Yes |
+| 3 - Handoff to another agent | Yes | Yes |
+| 4 - Custom Save | No | No |
 
 ### Step 7: Post-session deletion reminder
 
@@ -218,7 +218,7 @@ transcript:
 - [ ] Every round followed the 1-turn wrapper: round header,
       frontier statement, then for each unblocked branch within the
       round the context block (3-row table), conflict callout (if any),
-      options table, recommendation — all in a single agent turn.
+      options table, recommendation - all in a single agent turn.
       Up to 3 unblocked branches per round.
 - [ ] Every context block was the 3-row table (Goal, Prior decisions,
       Scope), each element one sentence.

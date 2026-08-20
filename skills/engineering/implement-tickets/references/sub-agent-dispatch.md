@@ -3,7 +3,7 @@
 The prompt template below is sent to a fresh-context sub-agent for each
 dispatch unit. The sub-agent implements one ticket (or one same-file group of
 tickets, dispatched as a single unit) without committing to the shared branch
-— the coordinator owns commits per `DECISIONS-skills-ticket-implementer.md#D007`.
+ -  the coordinator owns commits per `DECISIONS-skills-ticket-implementer.md#D007`.
 
 The dispatch is one prompt; the sub-agent returns one structured response. The
 coordinator does not inject additional context mid-run.
@@ -12,28 +12,28 @@ coordinator does not inject additional context mid-run.
 
 The coordinator fills these placeholders before sending the prompt:
 
-- `<RUN_ID>` — the unique run id (also the staging-area namespace).
-- `<TICKET_IDS>` — comma-separated ticket ids in the dispatch unit (one for
+- `<RUN_ID>` - the unique run id (also the staging-area namespace).
+- `<TICKET_IDS>` - comma-separated ticket ids in the dispatch unit (one for
   single-ticket dispatches; multiple for same-file groups).
-- `<NORMALIZED_TICKETS>` — the full normalized ticket body or bodies, with
+- `<NORMALIZED_TICKETS>` - the full normalized ticket body or bodies, with
   frontmatter and sections (Goal, What to build, Recommended Workflow, Context
   pointers, Acceptance criteria, Dependencies) verbatim.
-- `<COMPLETION_CRITERIA>` — the resolved criteria list (Acceptance criteria or
+- `<COMPLETION_CRITERIA>` - the resolved criteria list (Acceptance criteria or
   Definition of Done, per Phase 2.1 of `SKILL.md`).
-- `<OWNED_FILES>` — the union of `Where:` lines and `Files` context pointers
+- `<OWNED_FILES>` - the union of `Where:` lines and `Files` context pointers
   across the dispatch unit's tickets, as a bullet list.
-- `<STARTING_COMMIT>` — the SHA the staging area was pinned to.
-- `<STAGING_PATH>` — absolute path to the per-dispatch-unit staging directory,
+- `<STARTING_COMMIT>` - the SHA the staging area was pinned to.
+- `<STAGING_PATH>` - absolute path to the per-dispatch-unit staging directory,
   e.g. `<repo>/.implement-runs/<RUN_ID>/staging/<TICKET_ID>/`.
-- `<SHARED_BRANCH>` — the name of the shared branch all work lands on.
-- `<JUDGE_FEEDBACK>` — empty on first dispatch; on re-dispatch, the verbatim
+- `<SHARED_BRANCH>` - the name of the shared branch all work lands on.
+- `<JUDGE_FEEDBACK>` - empty on first dispatch; on re-dispatch, the verbatim
   feedback from the judge's prior `reject-with-feedback` verdict.
 
 ## Outputs (sub-agent returns)
 
 These fields appear in the sub-agent's structured response. The coordinator consumes them after the dispatch.
 
-- `<PROPOSED_SUBJECT>` — the sub-agent's plain-language commit subject proposal, written as a public changelog entry. The coordinator reviews it against the subject-quality gate before using it.
+- `<PROPOSED_SUBJECT>` - the sub-agent's plain-language commit subject proposal, written as a public changelog entry. The coordinator reviews it against the subject-quality gate before using it.
 
 ## Prompt
 
@@ -91,7 +91,7 @@ return `blocked: <file-path>` in your response.
    switching command.
 7. Do not modify files outside <OWNED_FILES>. If a ticket's criteria require
    touching a file you do not own, return `blocked: <file-path>` and stop.
-8. Propose a commit subject in the `proposed_subject` field of your response. The subject must read as a public changelog entry — a future maintainer who has not read the ticket should understand what the change does. Do not include ledger IDs, other-ticket IDs, or host-tool acronyms in the subject. Put cross-references in `notes:` instead.
+8. Propose a commit subject in the `proposed_subject` field of your response. The subject must read as a public changelog entry - a future maintainer who has not read the ticket should understand what the change does. Do not include ledger IDs, other-ticket IDs, or host-tool acronyms in the subject. Put cross-references in `notes:` instead.
 
 ## What to return
 
@@ -102,11 +102,11 @@ status: done | blocked | error
 tickets: <TICKET_IDS>
 proposed_subject: "[<ticket-id>] <plain-language description>"
 files_changed:
-  - <path> — <one-line summary of the change>
-  - <path> — <one-line summary of the change>
+  - <path> - <one-line summary of the change>
+  - <path> - <one-line summary of the change>
 criteria_check:
-  - <criterion verbatim from <COMPLETION_CRITERIA>> — met | unmet | partial
-  - <criterion verbatim from <COMPLETION_CRITERIA>> — met | unmet | partial
+  - <criterion verbatim from <COMPLETION_CRITERIA>> - met | unmet | partial
+  - <criterion verbatim from <COMPLETION_CRITERIA>> - met | unmet | partial
 notes: <free-form notes for the judge, including anything you could not
         determine or any deviations from the ticket's Recommended Workflow>
 ```

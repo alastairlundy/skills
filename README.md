@@ -2,7 +2,7 @@
 
 My AI Agent Skills developed to solve problems when creating and maintaining software with AI.
 
-This repository contains no executable code — only structured skill definitions that AI agents can load and follow. Each skill provides deterministic workflows for specific tasks.
+This repository contains no executable code - only structured skill definitions that AI agents can load and follow. Each skill provides deterministic workflows for specific tasks.
 
 ## Quickstart
 Run the skills.sh installer:
@@ -27,9 +27,9 @@ Domain-specific tasks for software development workflows.
 | Skill | Description | Notes | 
 |-------|-------------|-------|
 | [spec-to-tickets](skills/engineering/spec-to-tickets/) | Break specs, PRDs, or conversation context into focused tickets sized by coherence, with dependency ordering. Outputs to issue trackers or local markdown. | Inspired by Matt Pocock's ``to-issues`` skill. |
-| [grilling](skills/engineering/grilling/) | Structured decision elicitation for non-code, non-domain decisions — strategy, direction, design, process. Surfaces clear decisions from vague ideas via reference-set options and a Decision Ledger. | Generic parent of ``domain-grilling`` and ``code-implementation-grilling``. |
-| [domain-grilling](skills/engineering/domain-grilling/) | Domain-modeling decision elicitation — bounded contexts, glossary, terminology. Aligns ubiquitous language and records decisions in ADRs. | Specializes ``grilling``; inspired by Matt Pocock's ``grill-with-docs`` skill. |
-| [code-implementation-grilling](skills/engineering/code-implementation-grilling/) | Technical decision elicitation — language, framework, dependencies, structure. Resolves implementation ambiguity once a spec exists. | Specializes ``grilling``. |
+| [grilling](skills/engineering/grilling/) | Structured decision elicitation for non-code, non-domain decisions - strategy, direction, design, process. Surfaces clear decisions from vague ideas via reference-set options and a Decision Ledger. | Generic parent of ``domain-grilling`` and ``code-implementation-grilling``. |
+| [domain-grilling](skills/engineering/domain-grilling/) | Domain-modeling decision elicitation - bounded contexts, glossary, terminology. Aligns ubiquitous language and records decisions in ADRs. | Specializes ``grilling``; inspired by Matt Pocock's ``grill-with-docs`` skill. |
+| [code-implementation-grilling](skills/engineering/code-implementation-grilling/) | Technical decision elicitation - language, framework, dependencies, structure. Resolves implementation ambiguity once a spec exists. | Specializes ``grilling``. |
 | [write-changelog](skills/engineering/write-changelog/) | Generate user-facing changelogs from git history. Analyzes commits, groups changes by sub-project, supports tag ranges. | |
 | [dependency-review](skills/engineering/dependency-review/) | Audit dependencies for staleness, bloat, coupling, and deprecation. Produces a structured report. Default scope is code only. | Pass `scope: code,non-code` to opt in to OS, runtimes, hosted services, databases, and CI tooling. |
 | [implement-tickets](skills/engineering/implement-tickets/) | Coordinate parallel ticket implementation. Builds dependency order, dispatches tickets to sub-agents, validates against acceptance criteria, commits per ticket. | Use when a batch of tickets should be implemented with per-ticket commits and an end-of-run report. |
@@ -75,16 +75,16 @@ tickets/              # Implementation tickets (when using local markdown output
 
 This repository uses specific terminology for skill workflows:
 
-- **Spec** — Input document (PRD, design doc, issue, or conversation) that gets decomposed into tickets
-- **Ticket** — Session-scoped work artifact with goal, acceptance criteria, context pointers, and dependencies
-- **Session** — Focused work session; a ticket should be completable within at most 3-4 hours
-- **Dependency Graph** — Structure of blocked-by relationships between tickets
-- **Vertical Slice** — Decomposition strategy where each ticket cuts end-to-end through all layers
-- **Interactive mode** — Workflow mode where the skill interacts with the user for confirmation, decisions, and validation
-- **Autonomous mode** — Workflow mode where the skill operates without user interaction, requires explicit authorization
-- **Independent (ticket classification)** — Ticket has sufficient context to proceed without further discussion, can be implemented by a human or agent
-- **Collaborative (ticket classification)** — Ticket requires discussion, decision-making, or review before or during implementation
-- **Context Pointers** — References to files, ADRs, and domain terms included in tickets
+- **Spec** - Input document (PRD, design doc, issue, or conversation) that gets decomposed into tickets
+- **Ticket** - Session-scoped work artifact with goal, acceptance criteria, context pointers, and dependencies
+- **Session** - Focused work session; a ticket should be completable within at most 3-4 hours
+- **Dependency Graph** - Structure of blocked-by relationships between tickets
+- **Vertical Slice** - Decomposition strategy where each ticket cuts end-to-end through all layers
+- **Interactive mode** - Workflow mode where the skill interacts with the user for confirmation, decisions, and validation
+- **Autonomous mode** - Workflow mode where the skill operates without user interaction, requires explicit authorization
+- **Independent (ticket classification)** - Ticket has sufficient context to proceed without further discussion, can be implemented by a human or agent
+- **Collaborative (ticket classification)** - Ticket requires discussion, decision-making, or review before or during implementation
+- **Context Pointers** - References to files, ADRs, and domain terms included in tickets
 
 See [GLOSSARY.md](GLOSSARY.md) for the complete glossary.
 

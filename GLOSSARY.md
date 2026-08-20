@@ -4,7 +4,7 @@
 A specialized tool that operates on an existing skill directory to verify its correctness and performance. It is decoupled from the initial skill creation process.
 
 ## Ticket
-A handoff artifact scoping a unit of work. Stands alone or hangs off a spec as one of its children. Contains goal, recommended workflow, acceptance criteria, context pointers, and dependency relationships. Sized by coherence — each ticket covers one logical concern, one reviewable unit, one mergeable change. Relative size is signaled by file count and line count, not by time or effort. Can be implemented by a human or agent.
+A handoff artifact scoping a unit of work. Stands alone or hangs off a spec as one of its children. Contains goal, recommended workflow, acceptance criteria, context pointers, and dependency relationships. Sized by coherence - each ticket covers one logical concern, one reviewable unit, one mergeable change. Relative size is signaled by file count and line count, not by time or effort. Can be implemented by a human or agent.
 
 ## Recommended Workflow
 A section within a ticket that breaks implementation into ordered steps. Always present (minimum 1 step). Each step has four elements: a verb-phrase title, Where (file paths), bulleted actions, and Verify (a micro-verification). Distinct from Acceptance criteria, which are macro-verifications for the ticket as a whole. Steps can be reordered by the implementer but must respect inter-step dependencies.
@@ -46,20 +46,20 @@ A ticket that requires discussion, decision-making, or review that cannot be res
 Where tickets are published - GitHub Issues, GitLab Issues, Gitea Issues, Codeberg Issues, a hosted Forgejo Instance's Issues, or local markdown files. Configurable via natural language argument.
 
 ## Slop
-AI-generated text that exhibits vague modifiers, non-committal framing, or vocabulary patterns that signal automated origin rather than substantive content. Distinguished from "bad writing" by its surface-level polish and structural emptiness — text that follows a professional template while lacking measurable claims, goal alignment, or decisive positioning. Vocabulary-clean slop (e.g., text that avoids all banned words but is still substantively empty) is the hardest variant to detect.
+AI-generated text that exhibits vague modifiers, non-committal framing, or vocabulary patterns that signal automated origin rather than substantive content. Distinguished from "bad writing" by its surface-level polish and structural emptiness - text that follows a professional template while lacking measurable claims, goal alignment, or decisive positioning. Vocabulary-clean slop (e.g., text that avoids all banned words but is still substantively empty) is the hardest variant to detect.
 
 ## Goal Constraint
 A concrete, measurable objective that grounds a response. Used to evaluate whether content advances a stated goal rather than drifting into tangential or hedged territory. Distinguished from a "goal" (which may be vague, e.g., "improve the code") by requiring specificity (e.g., "reduce cyclomatic complexity to < 10"). Vague goals must be decomposed into specific constraints before the constraint can ground the response.
 
 ## Pass/Fail Gate
-A verification step that produces a binary pass/fail signal based on mechanical criteria. Used to remove the need for self-assessment — the gate's result is the source of truth, not the agent's claim of compliance. Distinguished from a self-administered checklist by the absence of judgment: the agent cannot tick the box without the gate having fired.
+A verification step that produces a binary pass/fail signal based on mechanical criteria. Used to remove the need for self-assessment - the gate's result is the source of truth, not the agent's claim of compliance. Distinguished from a self-administered checklist by the absence of judgment: the agent cannot tick the box without the gate having fired.
 ## Code implementation plan
 
 The output artifact of `code-implementation-grilling`: a resolved set of *technical* decisions (language, framework, dependencies, project structure, sub-projects, project type, optional interfaces) derived from an existing spec or PRD. Distinct from a **general plan** (any non-code strategy, ops plan, business plan), a **domain model** (see Domain model), and a **spec/PRD** (the input document).
 
 ## Domain model
 
-The output artifact of `domain-grilling`: a resolved set of *conceptual* decisions — bounded contexts, ubiquitous language, glossary terms, and shared vocabulary — derived from a vague idea or an existing spec. Lives in `GLOSSARY.md` (terms), `docs/adr/` (ADRs for cross-cutting decisions), and the Decision Ledger (`Dxxx` records). Distinct from a **general plan** (any non-code strategy, ops plan, business plan), a **code implementation plan** (see Code implementation plan), and a **spec/PRD** (the input document, when one exists).
+The output artifact of `domain-grilling`: a resolved set of *conceptual* decisions - bounded contexts, ubiquitous language, glossary terms, and shared vocabulary - derived from a vague idea or an existing spec. Lives in `GLOSSARY.md` (terms), `docs/adr/` (ADRs for cross-cutting decisions), and the Decision Ledger (`Dxxx` records). Distinct from a **general plan** (any non-code strategy, ops plan, business plan), a **code implementation plan** (see Code implementation plan), and a **spec/PRD** (the input document, when one exists).
 
 ## code/technical problem
 
@@ -97,11 +97,11 @@ A sentence or "When to Use" bullet in a SKILL.md that tells the LLM when to load
 
 ## evaluative opener
 
-A subjective-judgement word used to begin a sentence (e.g., `Good`, `Great`, `Nice`, `Excellent`, `Perfect`, `Solid`, `Cool`, `Fair enough`, `Lovely`, `Brilliant`). Forbidden by the `domain-grilling` SKILL because an LLM has no emotions or subjective opinions to express. Distinguished from an **acknowledgement opener** — a neutral confirmation that is permitted.
+A subjective-judgement word used to begin a sentence (e.g., `Good`, `Great`, `Nice`, `Excellent`, `Perfect`, `Solid`, `Cool`, `Fair enough`, `Lovely`, `Brilliant`). Forbidden by the `domain-grilling` SKILL because an LLM has no emotions or subjective opinions to express. Distinguished from an **acknowledgement opener** - a neutral confirmation that is permitted.
 
 ## acknowledgement opener
 
-A neutral-confirmation word used to begin a sentence (e.g., `Right`, `OK`, `Got it`, `Understood`). Permitted by the `domain-grilling` SKILL. Distinguished from an **evaluative opener** — a subjective judgement that is forbidden.
+A neutral-confirmation word used to begin a sentence (e.g., `Right`, `OK`, `Got it`, `Understood`). Permitted by the `domain-grilling` SKILL. Distinguished from an **evaluative opener** - a subjective judgement that is forbidden.
 
 ## in-session signal
 
@@ -109,4 +109,4 @@ A behaviour in which a skill detects a property of the problem during a session 
 
 ## concrete natural option
 
-A `concrete natural option` shall satisfy all of the following: (1) **actionable** — describes a specific single-step action the user could commit to right now; (2) **phrased in the user's words** — preserves the user's own terminology and phrasing as much as possible, with the LLM paraphrasing rather than inventing; (3) **substantively or semantically different** from the other options in the set such that each could be justified as the answer on its own; (4) **not contrived** — must arise from the user's stated context, not be created for the sake of having options; (5) **contextually sensible** — must make sense given the context the user has provided; (6) **performable** — must have a basis in reality, the user can reasonably perform it; (7) **individually defensible** — each option must stand on its own merits; (8) **aim-advancing** — each option must advance the user's stated aim(s)/objective(s). The LLM shall present at most 4 concrete natural options per branch. If the scope of a branch is too broad to resolve into 2–4 options, the LLM shall ask the user to name the scope or direction to take before presenting options.
+A `concrete natural option` shall satisfy all of the following: (1) **actionable** - describes a specific single-step action the user could commit to right now; (2) **phrased in the user's words** - preserves the user's own terminology and phrasing as much as possible, with the LLM paraphrasing rather than inventing; (3) **substantively or semantically different** from the other options in the set such that each could be justified as the answer on its own; (4) **not contrived** - must arise from the user's stated context, not be created for the sake of having options; (5) **contextually sensible** - must make sense given the context the user has provided; (6) **performable** - must have a basis in reality, the user can reasonably perform it; (7) **individually defensible** - each option must stand on its own merits; (8) **aim-advancing** - each option must advance the user's stated aim(s)/objective(s). The LLM shall present at most 4 concrete natural options per branch. If the scope of a branch is too broad to resolve into 2–4 options, the LLM shall ask the user to name the scope or direction to take before presenting options.

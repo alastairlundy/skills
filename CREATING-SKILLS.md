@@ -25,7 +25,7 @@ license: MIT
 ---
 ```
 
-The `description` field is critical for skill discovery — it determines when the skill triggers.
+The `description` field is critical for skill discovery - it determines when the skill triggers.
 
 ### 2. When to Use
 
@@ -39,7 +39,7 @@ Define clear boundaries to prevent misuse. List scenarios where the skill should
 
 ### 4. Workflow
 
-Document the sequence of steps the agent should follow. **All steps must be deterministic** — no vague language like "be smart", "as appropriate", or "handle accordingly".
+Document the sequence of steps the agent should follow. **All steps must be deterministic** - no vague language like "be smart", "as appropriate", or "handle accordingly".
 
 Each step should be:
 - Actionable and specific
@@ -55,9 +55,9 @@ Provide a checklist that allows agents to verify they have correctly followed th
 ### evals/
 
 Every skill must include a Waza Eval Suite in `evals/<skill-name>/`:
-- `eval.yaml` — evaluation configuration
-- `tasks/` — individual task definitions
-- `fixtures/` — test inputs and expected outputs
+- `eval.yaml` - evaluation configuration
+- `tasks/` - individual task definitions
+- `fixtures/` - test inputs and expected outputs
 
 Run evaluations with `waza run` and serve the eval UI with `waza serve`.
 
@@ -92,10 +92,10 @@ Derived content from upstream MIT sources must include attribution in the skill'
 
 Before submitting a skill:
 
-1. **Manual testing** — Load the skill and run it through representative scenarios
-2. **Trigger testing** — Verify the skill triggers when it should and doesn't trigger when it shouldn't
-3. **Eval suite** — Create a Waza Eval Suite in `evals/<skill-name>/` covering key scenarios
-4. **Peer review** — Have another developer review the skill for clarity and completeness
+1. **Manual testing** - Load the skill and run it through representative scenarios
+2. **Trigger testing** - Verify the skill triggers when it should and doesn't trigger when it shouldn't
+3. **Eval suite** - Create a Waza Eval Suite in `evals/<skill-name>/` covering key scenarios
+4. **Peer review** - Have another developer review the skill for clarity and completeness
 
 ## Example Skill Structure
 

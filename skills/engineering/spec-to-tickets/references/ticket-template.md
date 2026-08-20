@@ -41,7 +41,7 @@ A step-by-step breakdown of how to implement this ticket. Always present (minimu
 **Per-step format** - Every step has all four elements. Use `N/A` as a filler when an element does not apply.
 
 ```
-### Step N — <verb-phrase title>
+### Step N - <verb-phrase title>
 
 Where: <file paths or N/A>
 
@@ -51,7 +51,7 @@ Where: <file paths or N/A>
 Verify: <verification check or N/A>
 ```
 
-### Step 1 — <verb-phrase title>
+### Step 1 - <verb-phrase title>
 
 Where: <file paths or N/A>
 
@@ -60,7 +60,7 @@ Where: <file paths or N/A>
 
 Verify: <verification check or N/A>
 
-### Step 2 — <verb-phrase title>
+### Step 2 - <verb-phrase title>
 
 Where: <file paths or N/A>
 
@@ -74,7 +74,7 @@ Verify: <verification check or N/A>
 **Files** - <key files to examine or modify, with brief notes on why they're relevant>
 **ADRs** - <relevant architectural decisions by reference>
 **Domain terms** - <terms from GLOSSARY.md that help understand this ticket's scope and boundaries - include enough to prevent confusion, but do not reproduce the glossary>
-**Ledger records** - <`Dxxx`/`Txxx` records this ticket's acceptance criteria and constraints must honour, cited as `filename#<Dxxx|Txxx>` — do not reproduce the ledger record body, only the ID and a brief note on why it is relevant>
+**Ledger records** - <`Dxxx`/`Txxx` records this ticket's acceptance criteria and constraints must honour, cited as `filename#<Dxxx|Txxx>` - do not reproduce the ledger record body, only the ID and a brief note on why it is relevant>
 
 ## Acceptance criteria
 

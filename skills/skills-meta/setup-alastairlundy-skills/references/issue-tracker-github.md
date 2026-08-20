@@ -11,11 +11,11 @@ Issues and PRDs for this repo live as GitHub issues. Use the `gh` CLI for all op
 - **Apply / remove labels**: `gh issue edit <number> --add-label "..."` / `--remove-label "..."`
 - **Close**: `gh issue close <number> --comment "..."`
 
-Infer the repo from `git remote -v` — `gh` does this automatically when run inside a clone.
+Infer the repo from `git remote -v` - `gh` does this automatically when run inside a clone.
 
 <!-- PR-as-issue-surface: insert one of the following lines into this section, or omit entirely -->
 <!-- If user answered yes:  "- **Pull requests as issue surface**: PRs in this repo are treated as an issue surface. Skills that publish to the issue tracker may open a PR instead of (or in addition to) an issue." -->
-<!-- If user answered no or skipped: no line needed — this is the default. -->
+<!-- If user answered no or skipped: no line needed - this is the default. -->
 
 ## When a skill says "publish to the issue tracker"
 

@@ -1,7 +1,7 @@
 # Recommendation Format
 
 After presenting the options, the agent names a recommendation. The
-recommendation is **exactly two separate lines** — a lean, falsifiable
+recommendation is **exactly two separate lines** - a lean, falsifiable
 pick that does not re-state the option table.
 
 ## Convention: "you" in this reference
@@ -22,10 +22,10 @@ not a paragraph break):
 **Recommendation: Option <N> - <One short sentence of what Option N is>.**
 **Reasoning:** <one goal-aligned sentence, non-bold, on the same line as the label>
 ```
-- **Line 1:** `**Recommendation: Option <N> - <One short sentence of what Option N is>.**` — `<N>` is the option letter
+- **Line 1:** `**Recommendation: Option <N> - <One short sentence of what Option N is>.**` - `<N>` is the option letter
   (e.g., `A`, `B`). The dash and sentence stating what the option is followed by the trailing period is **mandatory**;
   omitting it (e.g., `Recommendation: Option A`) is a violation. 
-- **Line 2:** `**Reasoning:** <one sentence>` — the label `Reasoning:`
+- **Line 2:** `**Reasoning:** <one sentence>` - the label `Reasoning:`
   is bolded; the reasoning text itself is non-bold. One goal-aligned
   sentence on the same line as the label. No third line. No
   `Forward risk`. Cost lives in the option table, not here.
@@ -50,7 +50,7 @@ serves their actual intent, not the agent's assumptions.
 
 ## Informational turns
 
-When the turn is purely informational (no recommendation to give —
+When the turn is purely informational (no recommendation to give  - 
 e.g., a conflict callout or a status update), omit the recommendation
 block entirely.
 
@@ -58,7 +58,7 @@ block entirely.
 
 ```md
 **Recommendation: Option B - Per seat pricing.**
-**Reasoning:** Per-seat pricing aligns with your goal of growth-friendly revenue — adoption drives cost, which is the signal you need.
+**Reasoning:** Per-seat pricing aligns with your goal of growth-friendly revenue - adoption drives cost, which is the signal you need.
 ```
 
 ## Violation and correction
@@ -66,7 +66,7 @@ block entirely.
 **Violation.** The agent qualifies the recommendation with an extension
 clause or adds a third line:
 
-> **Recommendation: Option A — Constructor check, with a "spirit-of-the-rule" extension for test scaffolding.**
+> **Recommendation: Option A - Constructor check, with a "spirit-of-the-rule" extension for test scaffolding.**
 > **Reasoning:** ... catches failures early.
 > **Forward risk:** a future factory bypasses the check.
 

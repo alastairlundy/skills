@@ -46,7 +46,7 @@ The 5-commit threshold is a default, not a hard rule; a user may override by ign
 
 ### Step 2: Commit Retrieval & Analysis
 - Retrieve git history for the specified range.
-- **Empty-range guard**: if the retrieved commit list is empty, emit a one-line human-readable explanation ("The commit range is empty — no changelog to generate.") followed by the parseable error marker from `references/ci-integration.md` (`[CHANGELOG-MARKER] empty-range` with `prior:` and `target:` lines). Do not write a changelog. The CI wrapper translates the marker into a non-zero exit code.
+- **Empty-range guard**: if the retrieved commit list is empty, emit a one-line human-readable explanation ("The commit range is empty - no changelog to generate.") followed by the parseable error marker from `references/ci-integration.md` (`[CHANGELOG-MARKER] empty-range` with `prior:` and `target:` lines). Do not write a changelog. The CI wrapper translates the marker into a non-zero exit code.
 - For each commit, determine the category using a tiered analysis:
     1. **Conventional Commit Check**: if the commit message has a Conventional Commit prefix, map it to the corresponding category using the table below.
     2. **Diff Analysis**: if the prefix is absent or the mapping is ambiguous, analyze the `git diff` for additions, removals, or modifications.
@@ -75,15 +75,15 @@ Conventional Commit prefix mapping (co-located with the tier list so the two do 
 
 ### Step 4: Global Section Title Selection
 - Analyze the repo structure to recommend a title for the first changelog section:
-    - **Global** — recommended when the repo root contains mixed content (docs, CI, scripts, config).
-    - **All Packages** — recommended for monorepos with multiple sub-projects (see glossary in Step 1).
-    - **All Projects** — recommended for solution-based repos (e.g., .NET `.sln` with multiple `.csproj`).
-- **Step 4.1 — User choice**: present exactly three choices — "Global", "All Packages", "All Projects" — and ask the user to pick one via the ask-questions skill. Do not offer a free-form "Other (specify)" option; the three named options are the only choices.
-- **Step 4.2 — Fallback**: if the ask-questions skill is unavailable or the user declines, default to "Global" and surface the default in the output by appending `(defaulted)` to the section header (e.g., `## Global (defaulted)`). The marker is local to the section header and must not break downstream CHANGELOG consumers (linters, release pipelines) — see `references/ci-integration.md` for the marker contract.
+    - **Global** - recommended when the repo root contains mixed content (docs, CI, scripts, config).
+    - **All Packages** - recommended for monorepos with multiple sub-projects (see glossary in Step 1).
+    - **All Projects** - recommended for solution-based repos (e.g., .NET `.sln` with multiple `.csproj`).
+- **Step 4.1 - User choice**: present exactly three choices - "Global", "All Packages", "All Projects" - and ask the user to pick one via the ask-questions skill. Do not offer a free-form "Other (specify)" option; the three named options are the only choices.
+- **Step 4.2 - Fallback**: if the ask-questions skill is unavailable or the user declines, default to "Global" and surface the default in the output by appending `(defaulted)` to the section header (e.g., `## Global (defaulted)`). The marker is local to the section header and must not break downstream CHANGELOG consumers (linters, release pipelines) - see `references/ci-integration.md` for the marker contract.
 
 ### Step 5: Markdown Construction
 - Start the document with: `## Changes since [Prior Git Tag]`
-- **Emoji-to-category mapping** (table is the source of truth; the prose below uses the same mapping in the same order — update the table and the prose together to prevent drift):
+- **Emoji-to-category mapping** (table is the source of truth; the prose below uses the same mapping in the same order - update the table and the prose together to prevent drift):
 
     | Emoji | Category |
     |-------|----------|
@@ -94,7 +94,7 @@ Conventional Commit prefix mapping (co-located with the tier list so the two do 
     | 🐛 | Bug Fixes |
     | 📄 | Non Source Code |
 
-    *📄 Non Source Code = documentation, configuration, assets, and any other change that is not source code. The Keep-a-Changelog "Documentation" category is a strict subset of this. (The scope note and the category name must be updated together to prevent drift — see the table above and the prose below.)*
+    *📄 Non Source Code = documentation, configuration, assets, and any other change that is not source code. The Keep-a-Changelog "Documentation" category is a strict subset of this. (The scope note and the category name must be updated together to prevent drift - see the table above and the prose below.)*
 
 - Organize the layout as follows:
     1. **Global Section** (title from Step 4): Changes at the root or in global folders. If dependency updates exist, split them into the following sub-sections (only include sub-sections that have entries):
@@ -103,7 +103,7 @@ Conventional Commit prefix mapping (co-located with the tier list so the two do 
         - **Testing Dependencies**: Test framework packages and test infrastructure updates.
     2. **Sub-project Sections**: Grouped by the sub-projects identified in Step 1.
         - **Dependency updates within a sub-project**: appear as inline `⚙️ Modifications` entries within that sub-project's section, with no Runtime/CI/Testing sub-categories.
-- **Dependency classification** (source of truth: `references/dependency-classification.md`): classify each dependency update as Runtime, CI, or Testing using the rule in the reference file. Load `references/dependency-classification.md` before classifying any commit that touches a dependency file — the inline summary below mirrors the reference and the two must be updated together.
+- **Dependency classification** (source of truth: `references/dependency-classification.md`): classify each dependency update as Runtime, CI, or Testing using the rule in the reference file. Load `references/dependency-classification.md` before classifying any commit that touches a dependency file - the inline summary below mirrors the reference and the two must be updated together.
 
     Inline summary:
 
@@ -116,15 +116,15 @@ Conventional Commit prefix mapping (co-located with the tier list so the two do 
     Tie-breaker for ambiguous cases: classify by file path, not by dependency name. Files in `.github/workflows/`, build scripts, or named `*rc*` / `*.config.*` are CI; files matching `*Tests*` / `*Spec*` / `*Test*` are Testing; everything else is Runtime.
 
 - Within each section, group changes by category. Categories follow Keep-a-Changelog order; the Security category is omitted (security-related fixes land in 🐛 Bug Fixes). Categories appear in the following order: 🆕 Additions, ⚙️ Modifications, ⚠️ Deprecations, 🗑️ Removals, 🐛 Bug Fixes, 📄 Non Source Code. When `Use Emojis: Yes` (the default), each category heading is prefixed with the emoji shown in the table above; when `Use Emojis: No`, each category is rendered as a plain bold heading with no prefix. The table and the prose below share the same mapping and must be updated together if the mapping ever changes.
-- **Non Source Code** = documentation, configuration, assets, and any other change that is not source code. The Keep-a-Changelog "Documentation" category is a strict subset of this. (The scope note and the category name must be updated together to prevent drift — see the table above and this prose.)
+- **Non Source Code** = documentation, configuration, assets, and any other change that is not source code. The Keep-a-Changelog "Documentation" category is a strict subset of this. (The scope note and the category name must be updated together to prevent drift - see the table above and this prose.)
 - Use markdown bullet points for each entry.
 
 ### Step 6: Output Phase
 - If a destination file is provided and does not exist, write the final markdown to that path.
 - If the destination file already exists, present a three-way choice (interactive run):
-    1. **Overwrite** — replace the existing file.
-    2. **Append** — append a new `## Changes since <prior>` section to the existing file.
-    3. **Refuse** — do not write to disk. Output the final markdown to the conversation and surface a one-line offer: "Say `write to <path>` to save to a new location."
+    1. **Overwrite** - replace the existing file.
+    2. **Append** - append a new `## Changes since <prior>` section to the existing file.
+    3. **Refuse** - do not write to disk. Output the final markdown to the conversation and surface a one-line offer: "Say `write to <path>` to save to a new location."
 - **Autonomous mode**: the three-way choice collapses to a deterministic default (overwrite is the safest for an unattended CI run; the follow-up branch tracked under D003's open follow-up may revise this). When the user explicitly refuses overwrite in interactive mode, no file is written.
 - When no destination is provided, output the final markdown string to the conversation. In non-interactive runs, the skill applies the Step 1, Step 2, and Step 4 fallbacks above and does not prompt the user.
 

@@ -11,12 +11,12 @@ Upon activation:
 1. **Domain state summary.** Check `GLOSSARY.md` at the repo root,
    then scan for `docs/adr/` and any existing Decision Ledger files at
    `docs/decisions/DECISIONS-*.md`. Report the `GLOSSARY.md` state:
-   - **Missing** — no glossary file found; will be created lazily on
+   - **Missing** - no glossary file found; will be created lazily on
      first term. Suggest the `setup-matt-pocock-skills` skill to
      establish the glossary and ADR infrastructure.
-   - **Empty** — `GLOSSARY.md` exists but is empty or whitespace-only;
+   - **Empty** - `GLOSSARY.md` exists but is empty or whitespace-only;
      will be populated as terms are resolved.
-   - **Present with content** — read and summarize the existing terms
+   - **Present with content** - read and summarize the existing terms
      to the user.
    Summarize the current known domain state to the user *before* asking
    the first question to establish the baseline and prevent redundant
@@ -85,14 +85,14 @@ user's apparent meaning:
 > Your glossary defines `cancellation` as X (voiding the order
 > before payment), but you seem to mean Y (refunding after payment).
 > These have different domain boundaries. Which is correct for your
-> context — or do you need both terms?
+> context - or do you need both terms?
 
 ### Sharpen fuzzy language
 
 When the user uses a vague or overloaded term, present the possible
 meanings as options with their implications:
 
-> You\'re saying `account` — this could mean the Customer (the entity
+> You\'re saying `account` - this could mean the Customer (the entity
 > that owns the subscription) or the User (the person logging in).
 > Those have different boundaries. Which fits your domain?
 
@@ -131,11 +131,11 @@ the corresponding rule:
 Only offer to create an ADR when all three criteria in
 `references/ADR-FORMAT.md` hold:
 
-1. **Hard to reverse** — the cost of changing your mind later is
+1. **Hard to reverse** - the cost of changing your mind later is
    meaningful.
-2. **Surprising without context** — a future reader will wonder
+2. **Surprising without context** - a future reader will wonder
    "why did they do it this way?"
-3. **The result of a real trade-off** — there were genuine
+3. **The result of a real trade-off** - there were genuine
    alternatives and one was picked for specific reasons.
 
 When suggesting an ADR, explicitly state which of these three

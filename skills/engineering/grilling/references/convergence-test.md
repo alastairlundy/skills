@@ -3,8 +3,8 @@
 Convergence is a per-round check. After the user resolves the last branch
 in a round, the agent runs the five checks before opening the next round.
 If all five pass, the agent may prompt for close-out rather than opening
-the next round — the user is the final authority. The test is observable
-in the recent exchange history and in the ledger file — not in the agent's
+the next round - the user is the final authority. The test is observable
+in the recent exchange history and in the ledger file - not in the agent's
 sense that things feel resolved.
 
 ## The five universal checks
@@ -17,13 +17,13 @@ checks apply at every round boundary.
 Can a new contributor apply the change from the new D-record and its
 Cites alone, without re-asking the originating user? If the answer
 requires session-specific context that the record and its Cites do
-not capture, the change is not yet implementable — re-open the branch
+not capture, the change is not yet implementable - re-open the branch
 and tighten the record.
 
 ### 2. Enforceability
 
-Are the new `Constraints` checkable by an objective mechanism — write
-time, CI, lint, or an external test — rather than relying on agent
+Are the new `Constraints` checkable by an objective mechanism - write
+time, CI, lint, or an external test - rather than relying on agent
 judgment? A constraint that is "be reasonable" or "use good judgment"
 is not enforceable. Restate it as a checkable rule or relax it.
 
@@ -76,7 +76,7 @@ the session is not closed.
 ## Diverge modes
 
 The convergence test is the *positive* bar. The following failure modes
-are the *negative* bar — explicit divergences the agent must avoid.
+are the *negative* bar - explicit divergences the agent must avoid.
 
 - **Paraphrasing the verbatim answer.** The agent rewords what the user
   said instead of recording it as the Resolved Answer. The Decision
@@ -97,8 +97,8 @@ are the *negative* bar — explicit divergences the agent must avoid.
   without surfacing the "Contradiction detected" callout or
   creating a Supersedes: `Dxxx` record.
 - **Treating clarification as resolution.** The user corrects the
-  agent's understanding of an option's mechanics or meaning — e.g.,
-  "Option B just adds a Start method; it doesn't encode a lifecycle" —
+  agent's understanding of an option's mechanics or meaning - e.g.,
+  "Option B just adds a Start method; it doesn't encode a lifecycle"  - 
   and the agent treats the correction as a selection of that option.
   A clarification of what an option *is* is not a choice of which
   option to take. The agent must mirror the clarification and either

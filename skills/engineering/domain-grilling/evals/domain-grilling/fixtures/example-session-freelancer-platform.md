@@ -12,7 +12,7 @@ User prompt (matches `tasks/trigger-vague-idea-domain-modeling.yaml`):
 > I have an idea for a platform that connects freelancers with clients, but
 > I'm not sure how to model the domain. Help me think through the concepts.
 
-**Trigger outcome:** `trigger` — vague idea, no spec, goal is domain modeling.
+**Trigger outcome:** `trigger` - vague idea, no spec, goal is domain modeling.
 
 ## Pre-Grilling Baseline
 
@@ -24,7 +24,7 @@ Before the first question, the agent should:
 
 A compliant opener:
 
-> No prior domain state — GLOSSARY.md and docs/adr/ are absent. If you want
+> No prior domain state - GLOSSARY.md and docs/adr/ are absent. If you want
 > the glossary/ADR infrastructure scaffolded now, load setup-matt-pocock-skills.
 > Otherwise, I'll create GLOSSARY.md lazily on the first resolved term.
 >
@@ -34,11 +34,11 @@ A compliant opener:
 
 > **What are your goals for this idea?**
 
-**User:** I want to establish the core domain vocabulary — who the actors are, how they relate, and what the boundaries between concepts are.
+**User:** I want to establish the core domain vocabulary - who the actors are, how they relate, and what the boundaries between concepts are.
 
 Recorded as D001 in the Decision Ledger.
 
-## Branch A — Who is the buyer of the freelancer's work?
+## Branch A - Who is the buyer of the freelancer's work?
 
 **Agent (turn 1):**
 
@@ -60,9 +60,9 @@ reject all, or hybridize.
 
 | Option | What it is | Benefit | Cost | Risk |
 |--------|-----------|---------|------|------|
-| **A — Client-as-buyer** | The client (entity paying) is the counterparty to the freelancer. | Matches common B2B invoicing flows. | Blurs client (org) and contact (person) into one term. | Tax rules distinguishing payer from contact get awkward. |
-| B — Contact-on-behalf-of-client | The contact is a person acting for a client organization; the org is the payer. | Cleanly separates invoicing target from conversational contact. | Extra term to maintain in the glossary. | Friction when UI is built around contact as user. |
-| C — Two-sided marketplace | Freelancer and client are peers, no organization layer. | Simpler model. | No place to model enterprise clients with multiple contacts. | Not viable for B2B segments. |
+| **A - Client-as-buyer** | The client (entity paying) is the counterparty to the freelancer. | Matches common B2B invoicing flows. | Blurs client (org) and contact (person) into one term. | Tax rules distinguishing payer from contact get awkward. |
+| B - Contact-on-behalf-of-client | The contact is a person acting for a client organization; the org is the payer. | Cleanly separates invoicing target from conversational contact. | Extra term to maintain in the glossary. | Friction when UI is built around contact as user. |
+| C - Two-sided marketplace | Freelancer and client are peers, no organization layer. | Simpler model. | No place to model enterprise clients with multiple contacts. | Not viable for B2B segments. |
 
 **Recommendation: B.**
 **Reasoning:** The platform description suggests both individual and organizational buyers are in scope; without the contact/client split, the model collapses under the first enterprise customer.
@@ -80,7 +80,7 @@ reject all, or hybridize.
 
 After the user picks Option B, the agent should:
 
-1. Propose the new terms — Contact, Client Organization — to the user with their working definitions.
+1. Propose the new terms - Contact, Client Organization - to the user with their working definitions.
 2. On acceptance, write them to GLOSSARY.md (creating the file lazily if it does not exist).
 3. Cite the file path so the user can see the write.
 
@@ -90,8 +90,8 @@ A compliant continuation:
 > saying the platform distinguishes the human (contact) from the org
 > that pays (client organization).
 >
-> Two new glossary terms to write: **Contact** — the person messaging
-> the freelancer; **Client Organization** — the legal entity that
+> Two new glossary terms to write: **Contact** - the person messaging
+> the freelancer; **Client Organization** - the legal entity that
 > invoices and pays. Confirm both before I write to GLOSSARY.md.
 
 **Quality expectations this turn satisfies:**

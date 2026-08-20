@@ -31,7 +31,7 @@ code-impl format:
 | **Goal**         | Define the type for the freelancing platform's contact record (D001).       |
 | **Prior decisions** | D002 established that the contact acts for a client organization; D003 established the payment flow. |
 | **Scope**        | This decision covers the `Contact` type's fields and invariants; not `ClientOrganization` or `Invoice`. |
-| **Spec section** | `specs/freelancing-platform.md §3.2 (Contact record)` — Contact must carry identity, display name, and reference to a single `ClientOrganization`. |
+| **Spec section** | `specs/freelancing-platform.md §3.2 (Contact record)` - Contact must carry identity, display name, and reference to a single `ClientOrganization`. |
 
 **For T003 – Contact type: pick an option, hybridize, or provide
 your own answer.**
@@ -41,11 +41,11 @@ reject all, or hybridize.
 
 | Option | What it is | Benefit | Cost | Risk |
 |--------|-----------|---------|------|------|
-| **A — Record type** | Contact is a C# record with value equality. | Immutable; serializable for messages. | Cannot use reference equality for identity checks. | Future developer assumes reference equality. |
-| B — Class with Identity | Contact is a class implementing `IHasIdentity`. | Reference equality; familiar pattern. | Mutable; requires `IEquatable` implementation. | Developer forgets to override `Equals`. |
+| **A - Record type** | Contact is a C# record with value equality. | Immutable; serializable for messages. | Cannot use reference equality for identity checks. | Future developer assumes reference equality. |
+| B - Class with Identity | Contact is a class implementing `IHasIdentity`. | Reference equality; familiar pattern. | Mutable; requires `IEquatable` implementation. | Developer forgets to override `Equals`. |
 
 **Recommendation: A.**
-**Reasoning:** A record type aligns with your goal of a serializable contact that carries identity — value equality is the natural fit for message passing.
+**Reasoning:** A record type aligns with your goal of a serializable contact that carries identity - value equality is the natural fit for message passing.
 ```
 
 ## Format: meta-questions vs. per-decision questions
@@ -73,10 +73,10 @@ Per-decision questions are about a specific decision and **are**
 subject to the parent grilling skill's locked question format. The
 per-decision questions in this file are:
 
-- **Phase 1** — architectural decisions (layer boundaries,
+- **Phase 1** - architectural decisions (layer boundaries,
   dependency direction, separation mechanism)
-- **Phase 2** — source-of-truth conflicts
-- **Phase 3** — type introductions (including the family carve-out
+- **Phase 2** - source-of-truth conflicts
+- **Phase 3** - type introductions (including the family carve-out
   branch and the individual branch)
 
 For each per-decision question, the agent emits the 1-turn wrapper
@@ -92,7 +92,7 @@ decisions:
 See `../grilling/references/locked-question-format.md` for the
 full wrapper format and the worked example.
 
-### Worked example — hybrid format
+### Worked example - hybrid format
 
 A Phase 1 architectural decision (layer boundaries) presented in
 the 1-turn wrapper:
@@ -107,7 +107,7 @@ the 1-turn wrapper:
 | **Goal**         | Establish the architectural shape for the freelancing platform (D001).      |
 | **Prior decisions** | D002 established the contact-vs-organization model; T001 established C# as primary language. |
 | **Scope**        | This decision covers where one layer ends and the next begins; not dependency direction or separation mechanism. |
-| **Spec section** | `specs/freelancing-platform.md §2.1 (Architecture)` — domain model must be free of infrastructure concerns. |
+| **Spec section** | `specs/freelancing-platform.md §2.1 (Architecture)` - domain model must be free of infrastructure concerns. |
 
 **For T002 – layer boundaries: pick an option, hybridize, or provide
 your own answer.**
@@ -117,11 +117,11 @@ reject all, or hybridize.
 
 | Option | What it is | Benefit | Cost | Risk |
 |--------|-----------|---------|------|------|
-| **A — Clean Architecture** | Domain layer has zero framework dependencies. | Domain tests run without infrastructure. | More boilerplate for DI wiring. | Future developer adds a framework reference to "save time." |
-| B — Hexagonal ports | Domain exposes ports; adapters implement them. | Clear boundary; easy to swap adapters. | Port definitions add abstraction overhead. | Over-engineering for simple CRUD flows. |
+| **A - Clean Architecture** | Domain layer has zero framework dependencies. | Domain tests run without infrastructure. | More boilerplate for DI wiring. | Future developer adds a framework reference to "save time." |
+| B - Hexagonal ports | Domain exposes ports; adapters implement them. | Clear boundary; easy to swap adapters. | Port definitions add abstraction overhead. | Over-engineering for simple CRUD flows. |
 
 **Recommendation: A.**
-**Reasoning:** Clean Architecture aligns with your goal of testable domain logic — the zero-dependency rule is the enforcement mechanism.
+**Reasoning:** Clean Architecture aligns with your goal of testable domain logic - the zero-dependency rule is the enforcement mechanism.
 ```
 
 <user answers or says "skip">
@@ -134,15 +134,15 @@ one, reject all, or hybridize.
 
 | Option | What it is | Benefit | Cost | Risk |
 |--------|-----------|---------|------|------|
-| **A — Domain in its own project** | Domain project has no references to infrastructure; infrastructure depends on domain. | Domain model testable without infrastructure. | Infrastructure must adapt to domain interfaces. | Future developer adds infrastructure reference to "simplify" a feature. |
-| B — Shared kernel | Shared kernel project holds types both layers consume. | Less ceremony for cross-cutting types. | Shared kernel becomes a dumping ground. | Future type in shared kernel pulls in infrastructure concerns. |
+| **A - Domain in its own project** | Domain project has no references to infrastructure; infrastructure depends on domain. | Domain model testable without infrastructure. | Infrastructure must adapt to domain interfaces. | Future developer adds infrastructure reference to "simplify" a feature. |
+| B - Shared kernel | Shared kernel project holds types both layers consume. | Less ceremony for cross-cutting types. | Shared kernel becomes a dumping ground. | Future type in shared kernel pulls in infrastructure concerns. |
 
 **Recommendation: A.**
 **Reasoning:** Keeping the domain free of infrastructure aligns with your goal of a testable domain model (D001).
 ```
 
 The meta-question that follows ("Ready to move to Source of Truth?")
-is a phase-transition meta-question and stays lightweight — no
+is a phase-transition meta-question and stays lightweight - no
 context block, no Socratic, no locked question line.
 
 ---
@@ -156,9 +156,9 @@ Interface, Contract, DTO, and Model definitions now?"*
   tickets that require human-in-the-loop intervention."* Then skip
   directly to Step 7 (Output Selection).
 - **If Yes**: Walk through three sequenced phases. The phases are
-  sequential, not nested — once a phase transitions, do not
+  sequential, not nested - once a phase transitions, do not
   interleave its decisions back into a later phase. Each phase uses
-  up-to-3-per-round discipline — unblocked decisions within a phase
+  up-to-3-per-round discipline - unblocked decisions within a phase
   are grouped into rounds of at most 3, each round emitted in a
   single agent turn using the 1-turn wrapper from the parent
   `grilling` skill's `references/locked-question-format.md`.
@@ -231,7 +231,7 @@ Interface, Contract, DTO, and Model definitions now?"*
    3. **Visible running checklist**: after introducing the type,
       show a single-line running checklist of types already
       introduced and types still to come (for example: *"Introduced:
-      A, B, C — remaining: D, E, F"*). The checklist is mandatory,
+      A, B, C - remaining: D, E, F"*). The checklist is mandatory,
       not optional.
    4. **Termination**: ask *"Any more, or ready to move on?"* The
       user decides whether to introduce the next type, expand a

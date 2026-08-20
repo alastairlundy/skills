@@ -19,7 +19,7 @@ The `fj` entry is intentionally tagged as community-maintained and is not part o
 
 The skill never installs host CLIs. The user is responsible for installing the CLI required by the chosen publishing target. This rule is not overridable.
 
-Rationale — host-CLI installation is a sensitive prerequisite that:
+Rationale - host-CLI installation is a sensitive prerequisite that:
 
 - Downloads and executes code from a third-party source (supply-chain risk).
 - May require elevated privileges (e.g., `sudo`, package-manager installs, system PATH changes).
@@ -46,4 +46,4 @@ Rationale — host-CLI installation is a sensitive prerequisite that:
 - Run `curl | sh`, `iwr | iex`, `pip install`, `apt install`, `brew install`, `winget install`, `scoop install`, or any other install command for a host CLI.
 - Present an install command sourced from remote content to the user as if it were the agent's own recommendation. The agent points to a URL; the user reads and runs the command themselves.
 
-Destructive-operation note: the tool/harness permission layer is a safety net but does not replace the no-auto-install rule — the agent does not run install commands at all, with or without a permission prompt.
+Destructive-operation note: the tool/harness permission layer is a safety net but does not replace the no-auto-install rule - the agent does not run install commands at all, with or without a permission prompt.

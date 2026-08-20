@@ -9,8 +9,8 @@ license: MIT
 
 This skill governs how the LLM uses the `ask_question` tool (and equivalent discrete-choice clarification tools) to interact with the user. It addresses two failure modes in balance:
 
-1. **Over-asking** — invoking the tool for open-ended or non-decision questions the tool cannot answer usefully, or for questions where prose (or no question at all) is the better response.
-2. **Under-asking** — having the tool but not using it when a real decision is on the table that the LLM cannot resolve from context, code, or safe inference.
+1. **Over-asking** - invoking the tool for open-ended or non-decision questions the tool cannot answer usefully, or for questions where prose (or no question at all) is the better response.
+2. **Under-asking** - having the tool but not using it when a real decision is on the table that the LLM cannot resolve from context, code, or safe inference.
 
 Both directions are weighted equally; the skill is not an instruction to ask more.
 
@@ -37,7 +37,7 @@ Glossary: see `references/glossary.md`. Worked examples: see `references/example
 
 The LLM operates in one of three modes, detected from the user''s current and recent messages. All downstream gate behavior is keyed to the active mode.
 
-The keyword lists below are a first-pass hint, not a deterministic gate. If the surrounding context clearly contradicts the detected mode, override the keyword match — treat the mode as Neutral and proceed.
+The keyword lists below are a first-pass hint, not a deterministic gate. If the surrounding context clearly contradicts the detected mode, override the keyword match - treat the mode as Neutral and proceed.
 
 ### Invited mode
 
@@ -80,8 +80,8 @@ Four gates run in order. At every gate, failure stops the workflow.
 
 Two tests; both must pass.
 
-1. **Action-changing test.** Does my action change if I knew the answer? Is there a real question whose answer would change the LLM''s next action AND that the LLM cannot resolve from context, code, or safe inference? If the LLM finds itself writing "I can probably infer X," that is not resolution — ask. In opt-out mode, the bar is stricter: ask only when the default would be visibly wrong to the user. Neutral and invited modes apply the action-changing test as written.
-2. **Real Decision precondition.** Is this a real decision — does the user have a narrowed space of 2-4 options they would actually pick? An option is *realistic* iff the user, given their stated context, would actually pick it. If the constructed options would all have the LLM do the same work, or if the user has not narrowed the space, this is not a real decision and Gate 1 fails.
+1. **Action-changing test.** Does my action change if I knew the answer? Is there a real question whose answer would change the LLM''s next action AND that the LLM cannot resolve from context, code, or safe inference? If the LLM finds itself writing "I can probably infer X," that is not resolution - ask. In opt-out mode, the bar is stricter: ask only when the default would be visibly wrong to the user. Neutral and invited modes apply the action-changing test as written.
+2. **Real Decision precondition.** Is this a real decision - does the user have a narrowed space of 2-4 options they would actually pick? An option is *realistic* iff the user, given their stated context, would actually pick it. If the constructed options would all have the LLM do the same work, or if the user has not narrowed the space, this is not a real decision and Gate 1 fails.
 
 If either test fails, do not ask. Proceed with a sensible default, document the default, and let the user correct.
 
@@ -89,9 +89,9 @@ If either test fails, do not ask. Proceed with a sensible default, document the 
 
 Two sub-checks.
 
-**Sub-check A — Realistic alternative confirmation.** For each option, name the user-stated fact (quoted or paraphrased from the user's current or recent messages) that makes the option realistic. If no such fact exists for an option, drop or replace that option before proceeding. Do not proceed with options that lack a user-stated basis.
+**Sub-check A - Realistic alternative confirmation.** For each option, name the user-stated fact (quoted or paraphrased from the user's current or recent messages) that makes the option realistic. If no such fact exists for an option, drop or replace that option before proceeding. Do not proceed with options that lack a user-stated basis.
 
-**Sub-check B — Adaptability test.** Can the question be honestly consolidated into 2-4 options? Try these adaptations, in any combination:
+**Sub-check B - Adaptability test.** Can the question be honestly consolidated into 2-4 options? Try these adaptations, in any combination:
 
 - **Raise abstraction:** consolidate by raising the level of abstraction. E.g., "Which of these 6 logging libraries?" → "Heavy framework or lightweight?" (2 options subsume the 6).
 - **Sequence:** break a branched decision into multiple independent questions, each with 2-4 options, asked one at a time across turns.
@@ -113,7 +113,7 @@ Two paths from Gate 2.
    - **1 question per call. Always.** No batching.
    - **2-4 options per question.** Each option must pass the realistic alternative test.
    - **Alphabetical order** by the option''s underlying name (the label with any `(Recommended)` suffix, leading letter or number prefix, or trailing punctuation stripped). For example, labels "MongoDB", "Postgres (Recommended)", "SQLite" sort by underlying names "MongoDB" < "Postgres" < "SQLite". The `(Recommended)` marker is a suffix and does not change sort position.
-   - **Mark the recommended option** (if the LLM has one) with `(Recommended)`. The recommendation is what the LLM would commit to on the user''s behalf given the user''s stated context — not the LLM''s preferred architecture, not the most common choice.
+   - **Mark the recommended option** (if the LLM has one) with `(Recommended)`. The recommendation is what the LLM would commit to on the user''s behalf given the user''s stated context - not the LLM''s preferred architecture, not the most common choice.
    - **Length limits** (≤6-word labels, ≤80-character descriptions, ≤30-character headers) are based on user testing with AI agents: these thresholds set a readable-text boundary before the user becomes overwhelmed.
    - **Labels:** ≤6 words, parallel grammatical form (e.g., all noun phrases or all verb phrases).
    - **Descriptions:** ≤80 characters, discriminative only. *Test:* each description must answer "why pick this over the others?" If the description teaches rather than discriminates, move it to context prose.
@@ -151,9 +151,9 @@ The final output (tool call + context prose, or prose fallback) must pass these 
 
 Mechanical verification of length limits: see `evals/ask-questions/tasks/perf-count-gate-characters.yaml`.
 
-- [ ] **Trigger-Passed Gate** — the inverted trigger passed; the Real Decision precondition passed; opt-out (if active) did not block; the LLM has a real question whose answer would change its next action.
-- [ ] **Fit Gate** — Sub-check A (realistic alternatives) passed; Sub-check B adaptations were tried before Prose Fallback.
-- [ ] **Count Gate** — 1 question per call (applies to tool calls only; prose path governed by Multi-part Prose Pattern in `references/multi-part-pattern.md`).
-- [ ] **Order Gate** — alphabetical by underlying option name; `(Recommended)` marker is a suffix and does not change position; the recommendation is what the LLM would commit to on the user''s behalf given the user''s stated context.
-- [ ] **Prose Discipline Gate** — context prose is necessary to make the choice (test: user can pick without it = too long); descriptions are discriminative (test: each answers "why pick this over the others?"); Prose Fallback (if used) is justified by failed adaptations or by the Default: Prose tie-breaker.
-- [ ] **Term Purity Gate** — no internal field names, no tool names, and no skill names the user did not name first appear in user-facing prose or option text.
+- [ ] **Trigger-Passed Gate** - the inverted trigger passed; the Real Decision precondition passed; opt-out (if active) did not block; the LLM has a real question whose answer would change its next action.
+- [ ] **Fit Gate** - Sub-check A (realistic alternatives) passed; Sub-check B adaptations were tried before Prose Fallback.
+- [ ] **Count Gate** - 1 question per call (applies to tool calls only; prose path governed by Multi-part Prose Pattern in `references/multi-part-pattern.md`).
+- [ ] **Order Gate** - alphabetical by underlying option name; `(Recommended)` marker is a suffix and does not change position; the recommendation is what the LLM would commit to on the user''s behalf given the user''s stated context.
+- [ ] **Prose Discipline Gate** - context prose is necessary to make the choice (test: user can pick without it = too long); descriptions are discriminative (test: each answers "why pick this over the others?"); Prose Fallback (if used) is justified by failed adaptations or by the Default: Prose tie-breaker.
+- [ ] **Term Purity Gate** - no internal field names, no tool names, and no skill names the user did not name first appear in user-facing prose or option text.

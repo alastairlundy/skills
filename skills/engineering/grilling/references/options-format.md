@@ -17,7 +17,7 @@ the agent.
 ## Reference-set preamble
 
 The options block is preceded by a brief preamble that frames the options
-as a reference set. The preamble is part of the options block — it is not
+as a reference set. The preamble is part of the options block - it is not
 optional prose. The preamble must convey:
 
 - The options are a reference set the user can use to confirm, revise,
@@ -35,7 +35,7 @@ reject all.
 
 Typically 2–4. Do not present more than 5 options or less than 1 option. An option is defensible if all five columns below can be
 filled with non-trivial, option-specific content, and if the option genuinely makes sense given the decision - an option that is a strawman is not defensible. If any column would read
-`TBD`, `same as Option N`, `none`, or as if it is a strawman then the option is not defensible — replace it.
+`TBD`, `same as Option N`, `none`, or as if it is a strawman then the option is not defensible - replace it.
 
 ## The five-column table
 
@@ -46,15 +46,15 @@ Option column.
 | Option | What it is | Benefit | Cost | Risk |
 |--------|-----------|---------|------|------|
 
-- **Option** — the option number and name. The recommended option's
+- **Option** - the option number and name. The recommended option's
   name is **bolded**. Do not use a separate "Recommended" suffix or
   annotation; the bolded name is the signal.
-- **What it is** — one sentence describing the option.
-- **Benefit** — one sentence describing the gain. Answers: "What do I
+- **What it is** - one sentence describing the option.
+- **Benefit** - one sentence describing the gain. Answers: "What do I
   get?"
-- **Cost** — one sentence describing the realistic sacrifice. Answers:
+- **Cost** - one sentence describing the realistic sacrifice. Answers:
   "What do I definitely give up?"
-- **Risk** — one sentence describing what might go wrong later. Answers:
+- **Risk** - one sentence describing what might go wrong later. Answers:
   "What could happen in the future?"
 
 ### Cell-level caps (enforceable)
@@ -63,7 +63,7 @@ Option column.
 - Dropping a field entirely is a violation.
 - If a cell would exceed the cap, the agent compresses the wording.
   Promote additional detail into a subsequent branch or into the
-  recommendation's `Reasoning` field — never by exceeding the cap or
+  recommendation's `Reasoning` field - never by exceeding the cap or
   by dropping the field.
 
 The cap is applied at write time or in CI, not by reader judgment.
@@ -76,15 +76,15 @@ reject all, or hybridize.
 
 | Option | What it is | Benefit | Cost | Risk |
 |--------|-----------|---------|------|------|
-| **A — Constructor check** | Precondition runs in the container constructor, throwing on null. | Failures surface synchronously at the call site. | Container cannot be built for serialization without all deps. | Future caller bypasses check via a swallowing factory. |
-| B — Static factory validation | A `Create` factory returns `Result<T>` instead of throwing. | Errors are values, not exceptions. | Every call site grows to a `match` block. | Developer unwraps result without inspecting it. |
-| C — Post-construction validator | Container built unconditionally; `Validate` reports health on demand. | Construction is cheap and side-effect free. | Invalid containers exist until Validate is called. | Validator forgotten; invalid container reaches production. |
+| **A - Constructor check** | Precondition runs in the container constructor, throwing on null. | Failures surface synchronously at the call site. | Container cannot be built for serialization without all deps. | Future caller bypasses check via a swallowing factory. |
+| B - Static factory validation | A `Create` factory returns `Result<T>` instead of throwing. | Errors are values, not exceptions. | Every call site grows to a `match` block. | Developer unwraps result without inspecting it. |
+| C - Post-construction validator | Container built unconditionally; `Validate` reports health on demand. | Construction is cheap and side-effect free. | Invalid containers exist until Validate is called. | Validator forgotten; invalid container reaches production. |
 ```
 
 ## Anti-patterns
 
 - **Fewer than two options.** A "decision" with a single option is not
-  a decision — present the choice or skip the branch.
+  a decision - present the choice or skip the branch.
 - **More than four options.** A question with five-plus options is
   usually two decisions bundled together. Split it.
 - **A "default" option that the user is steered into.** All options must

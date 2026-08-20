@@ -9,7 +9,7 @@
 | go | `go mod download` | `go build ./...` | `go test ./...` |
 | ruby | `bundle install` | `gem build *.gemspec` | `bundle exec rspec` / `rake test` |
 | dart | `dart pub get` | `dart analyze` + `dart compile exe .` if applicable | `dart test` |
-| container | — | `docker build .` (requires docker) | n/a |
+| container | - | `docker build .` (requires docker) | n/a |
 | mixed | use the primary ecosystem's column (resolved via Step 1 user assertion) | same | same |
 
-Execution: run install → build → test sequentially, 300s timeout each. On build failure only, one clean rebuild retry. Do not retry tests. Optional app smoke test only if non-interactive, side-effect-free, bounded. If the CLI is missing, record `infeasible` and stop — never fabricate a result.
+Execution: run install → build → test sequentially, 300s timeout each. On build failure only, one clean rebuild retry. Do not retry tests. Optional app smoke test only if non-interactive, side-effect-free, bounded. If the CLI is missing, record `infeasible` and stop - never fabricate a result.
