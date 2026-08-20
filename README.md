@@ -36,7 +36,7 @@ Domain-specific tasks for software development workflows.
 
 ### Alignment Skills
 
-Skills for ensuring LLMs stay aligned on expectations and behaviour whilst performing tasks.
+Skills that keep LLMs aligned on expectations and behaviour whilst performing tasks.
 
 | Skill | Description | Notes | 
 |-------|-------------|-------|

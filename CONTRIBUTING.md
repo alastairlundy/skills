@@ -18,7 +18,7 @@ See [CREATING-SKILLS.md](CREATING-SKILLS.md) for the complete guide on skill str
 
 **Skill categories:**
 - `engineering/` - domain-specific tasks for software development workflows
-- `alignment/` - skills for ensuring LLMs stay aligned on expectations and behaviour whilst performing tasks
+- `alignment/` - skills that keep LLMs aligned on expectations and behaviour whilst performing tasks
 - `skills-meta/` - tools for creating and evaluating other skills
 
 **After discussion, quick start:**

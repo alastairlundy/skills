@@ -21,7 +21,7 @@ The substitution runs once at publish, not during ticket generation.
 
 ## Issue tracker target
 
-1. Publish tickets in dependency order - blockers first, then dependents. This ensures blocking ticket issue numbers exist before they are referenced in "Blocked by" fields.
+1. Publish tickets in dependency order - blockers first, then dependents. Publish blockers first so their issue numbers exist before dependents reference them in "Blocked by" fields.
 2. For each ticket, create an issue using the host CLI. Fill in the "Blocked by" field with real issue numbers of previously published blocking tickets (substituted from target-agnostic IDs).
 3. Do NOT close or modify any parent issue.
 

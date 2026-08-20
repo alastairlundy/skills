@@ -1,13 +1,13 @@
 ---
 name: skill-architect
 description: >-
-  Guides users through the design, refinement, and deterministic translation of a new agent skill, ensuring the design follows established agent-skill conventions. Use when creating or designing a new skill. Do not use when making minor tweaks to existing skills.
+  Guides users through the design, refinement, and deterministic translation of a new agent skill. The design follows established agent-skill conventions. Use when creating or designing a new skill. Do not use when making minor tweaks to existing skills.
 license: MIT
 ---
 
 # Skill Architect
 
-The Skill Architect is an intellectual design phase for creating agent skills. It transforms "vague" user intents into deterministic execution patterns, ensuring the resulting skill is precise, compliant, and implementable by an LLM.
+The Skill Architect is an intellectual design phase for creating agent skills. It transforms "vague" user intents into deterministic execution patterns, producing deterministic execution patterns an LLM can run precisely.
 
 ## When to Use
 - When you have a high-level goal for a new skill but no concrete workflow.
@@ -68,7 +68,7 @@ has already named a target path), initialize the design ledger at
 (Dxxx record template, Ixxx record template, lifecycle/storage notes,
 and the two trailing sentinels `next-d: D001` and `next-i: I001`). If the target skill directory is unknown ask the user for the file path where they would like to store the design ledger.
 
-The directory may not yet exist - create the directory if required in order to create the design ledger. If directory creation fails, abort the skill and inform the user why you cannot proceed along with any error message you encounter.
+The directory may not yet exist - create the directory if required to create the design ledger. If directory creation fails, abort the skill and inform the user why you cannot proceed along with any error message you encounter.
 
 The agent must collect four explicit elements:
 - (a) the **goal**,

@@ -1,8 +1,8 @@
 # Options Format
 
 Every decision point the agent presents must show the user the full range
-of natural options, not just the recommended one. The user must see the
-landscape of choices to make an informed decision.
+of natural options, not just the recommended one. The user must see
+all available options to make an informed decision.
 
 ## Convention: "you" in this reference
 

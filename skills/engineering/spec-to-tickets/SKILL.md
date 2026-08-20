@@ -143,7 +143,7 @@ When the spec explicitly enumerates components or modules, note this constraint 
 
 Prefer Independent over Collaborative. A ticket should only be Collaborative if there is a genuine decision or discussion that the spec does not resolve.
 
-**Coherence primitive** - tickets are sized by what they coherently cover, not by time or effort. The same primitive applies to both human and AI-agent implementers, producing a single ticket shape.
+**Coherence unit** - tickets are sized by what they coherently cover, not by time or effort. The same primitive applies to both human and AI-agent implementers, producing a single ticket shape.
 
 **Ticket-set coherence** - all tickets in the set collectively work toward a shared objective. Different tickets may focus on different units of work, types of work, or themes, but they must collectively advance the same goal. In a multi-PR decomposition, each PR's ticket set has its own shared objective.
 

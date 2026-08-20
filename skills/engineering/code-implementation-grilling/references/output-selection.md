@@ -31,7 +31,7 @@ required.
 - **What it is**: A standalone blueprint file at the repo root, with
   a `Scope Binding` section that links the blueprint to the source
   spec and the Decision Ledger.
-- **Benefit**: High clarity; serves as a clean "Context Pointer"
+- **Benefit**: High clarity; is a clean "Context Pointer"
   for tickets, keeping the PRD focused on "What".
 - **Cost**: A temporary file overhead and an extra artifact to keep
   in sync with the PRD.
