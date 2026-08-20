@@ -92,6 +92,21 @@ required.
 - **Manual handoff**: no automated decomposition; the user takes
   the artifacts from here.
 
+#### Recommendation rule
+
+Option A (Implementation Blueprint) is the recommended option. When
+presenting Part A:
+
+1. **Table highlight**: Bold the Option A name in the table and append
+   `(Recommended)` to it, per the format already used in the option
+   definition above.
+2. **Recommendation text**: The recommendation line below the table
+   must recommend Option A, not Option B. The recommendation text and
+   the table highlight must always agree — if Option A is highlighted,
+   the recommendation must say Option A; if Option B is highlighted,
+   the recommendation must say Option B. Never highlight one option in
+   the table and recommend a different one underneath.
+
 **Step 7.1: Filename confirmation (Option A only)**
 
 If the user chose Option A (Implementation Blueprint), surface the

@@ -1,9 +1,12 @@
 ---
 name: code-implementation-grilling
 description: >-
-  Structured decision elicitation on technical implementation choices —
-  language, framework, dependencies, project structure — once a spec/PRD
-  exists. Use when implementation is the question.
+  Code implementation planning — language, framework, dependencies,
+  project structure, sub-projects. Use when a spec/PRD exists (referenced
+  document, attachment, or substantively present in conversation) and the
+  question turns to technical choices. Defer to `domain-grilling` for
+  vague ideas, domain modeling, or terminology alignment; defer to
+  `grilling` for non-code, non-domain decisions.
 license: MIT
 ---
 
@@ -163,9 +166,13 @@ and type introduction.
 ### Step 7: Output Selection
 
 Follow 
-references/output-selection.md. The output is **not** a
-per-branch Implementation Blueprint; the consolidated plan is produced
-once at the endpoint of the `grilling` (see Step 8.5).
+references/output-selection.md. The output selection question is **not**
+a branch decision and must **not** use the locked question format (no
+5-row context block, no locked question line). Use the format defined
+in output-selection.md: a brief preamble, the options table, and the
+recommendation. The output is **not** a per-branch Implementation
+Blueprint; the consolidated plan is produced once at the endpoint of
+the `grilling` (see Step 8.5).
 
 ### Step 8: Final Alignment Check & Convergence
 
