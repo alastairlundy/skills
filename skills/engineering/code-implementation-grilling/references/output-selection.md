@@ -1,7 +1,12 @@
 ### Step 7: Output Selection
 
-Present the user with the following two-part choice, one part at a
-time.
+This is a **required** step - do not skip it or defer the format
+decision to Step 8.5. Present the user with the following two-part
+choice, one part at a time. The format and consumer captured here drive
+template selection in the Terminal Output section (Step 8) and the
+production of the Consolidated Implementation Plan (Step 8.5); the
+artifact named "Implementation Blueprint" here is the standalone-file
+form of that plan.
 
 #### Preamble format cap (rule, not example)
 

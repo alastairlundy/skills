@@ -163,14 +163,17 @@ and type introduction.
 
 ### Step 7: Output Selection
 
-Follow 
-references/output-selection.md. The output selection question is **not**
-a branch decision and must **not** use the locked question format (no
-5-row context block, no locked question line). Use the format defined
-in output-selection.md: a brief preamble, the options table, and the
-recommendation. The output is **not** a per-branch Implementation
-Blueprint; the consolidated plan is produced once at the endpoint of
-the `grilling` (see Step 8.5).
+Ask the user to choose the output format and downstream consumer by
+following references/output-selection.md. This is a **required** step -
+do not skip it or roll its decision into Step 8.5. The output selection
+question is **not** a branch decision and must **not** use the locked
+question format (no 5-row context block, no locked question line); use
+the format defined in output-selection.md: a brief preamble, the options
+table, and the recommendation. Capture the selection (Implementation
+Blueprint vs PRD Augmentation, and the downstream consumer) - this
+choice drives template selection in Step 8 and the production of the
+plan in Step 8.5. Do **not** produce the plan in this step; only record
+the selection.
 
 ### Step 8: Final Alignment Check & Convergence
 
@@ -196,16 +199,19 @@ handoff template.
 At the natural endpoint of the `grilling` - after convergence - produce
 a single **Consolidated Implementation Plan** that lists every file
 change across all Address items, grouped by file. The plan is the
-source of truth for downstream ticket generation.
+source of truth for downstream ticket generation. Produce it in the
+format the user chose in Step 7 - do **not** re-ask the format choice
+here.
 
-**Format options (pick one at end-of-`grilling`):**
+**Format (selected in Step 7):**
 
-- **Standalone file** - write
+- **Implementation Blueprint** (Step 7, Option A) - write
   IMPLEMENTATION-<spec-identifier>.md at the repo root, with a
   Scope Binding section linking it to the source spec and the
   Decision Ledger.
-- **Ledger appendix** - append a "Consolidated Implementation Plan"
-  section to the Decision Ledger file itself.
+- **PRD Augmentation** (Step 7, Option B) - append a
+  "Consolidated Implementation Plan" section to the source spec/PRD,
+  with the same Scope Binding pointer to the Decision Ledger.
 
 **Plan contents:**
 
@@ -302,6 +308,9 @@ transcript:
 - [ ] Conflict detection ran before each branch resolution.
 - [ ] Convergence was a per-round check; the agent offered close-out
       but the user decided.
+- [ ] Step 7 output-selection question was asked and the output format
+      (Implementation Blueprint vs PRD Augmentation) and downstream
+      consumer were recorded before Step 8.5 produced the plan.
 - [ ] The Consolidated Implementation Plan was produced at the endpoint.
 - [ ] The chosen exit was handed off with the Decision Ledger path.
 - [ ] Every citation used the filename#`Dxxx` format.
