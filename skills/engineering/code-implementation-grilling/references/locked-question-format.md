@@ -80,10 +80,10 @@ your own answer.**
 Here are options to help you refine or confirm your answer. Pick one,
 reject all, or hybridize.
 
-| Option | What it is | Benefit | Cost | Risk |
-|--------|-----------|---------|------|------|
-| **A - C# with .NET 8** | Platform built on C# 12 with .NET 8 LTS. | Sealed hierarchies supported natively. | Team needs .NET expertise. | Future contributor uses reflection breaking seals. |
-| B - TypeScript with Node.js 20 | Platform built on TypeScript 5 with Node.js 20 LTS. | Same language front and back end. | Structural typing needs runtime guard for sealed. | Type assertion bypasses seal at runtime. |
+| Option | What it is | Benefit | Cost |
+|--------|-----------|---------|------|
+| **A - C# with .NET 8** | Platform built on C# 12 with .NET 8 LTS. | Sealed hierarchies supported natively. | Team needs .NET expertise. |
+| B - TypeScript with Node.js 20 | Platform built on TypeScript 5 with Node.js 20 LTS. | Same language front and back end. | Structural typing needs runtime guard for sealed. |
 
 **Recommendation: A.**
 **Reasoning:** C# natively supports sealed class hierarchies, which

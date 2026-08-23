@@ -39,10 +39,10 @@ your own answer.**
 Here are options to help you refine or confirm your answer. Pick one,
 reject all, or hybridize.
 
-| Option | What it is | Benefit | Cost | Risk |
-|--------|-----------|---------|------|------|
-| **A - Record type** | Contact is a C# record with value equality. | Immutable; serializable for messages. | Cannot use reference equality for identity checks. | Future developer assumes reference equality. |
-| B - Class with Identity | Contact is a class implementing `IHasIdentity`. | Reference equality; familiar pattern. | Mutable; requires `IEquatable` implementation. | Developer forgets to override `Equals`. |
+| Option | What it is | Benefit | Cost |
+|--------|-----------|---------|------|
+| **A - Record type** | Contact is a C# record with value equality. | Immutable; serializable for messages. | Cannot use reference equality for identity checks. |
+| B - Class with Identity | Contact is a class implementing `IHasIdentity`. | Reference equality; familiar pattern. | Mutable; requires `IEquatable` implementation. |
 
 **Recommendation: A.**
 **Reasoning:** A record type aligns with your goal of a serializable contact that carries identity - value equality is the natural fit for message passing.
@@ -85,7 +85,7 @@ decisions:
 
 - The full wrapper: round header, frontier statement, 5-row context
   block (Goal, Prior decisions, Scope, Spec section), conflict callout
-  (if any), options table (5-column), recommendation (2-line). No
+  (if any), options table (4-column), recommendation (2-line). No
   Socratic elicitation question is emitted. Stop and wait for the
   user's response.
 
@@ -115,10 +115,10 @@ your own answer.**
 Here are options to help you refine or confirm your answer. Pick one,
 reject all, or hybridize.
 
-| Option | What it is | Benefit | Cost | Risk |
-|--------|-----------|---------|------|------|
-| **A - Clean Architecture** | Domain layer has zero framework dependencies. | Domain tests run without infrastructure. | More boilerplate for DI wiring. | Future developer adds a framework reference to "save time." |
-| B - Hexagonal ports | Domain exposes ports; adapters implement them. | Clear boundary; easy to swap adapters. | Port definitions add abstraction overhead. | Over-engineering for simple CRUD flows. |
+| Option | What it is | Benefit | Cost |
+|--------|-----------|---------|------|
+| **A - Clean Architecture** | Domain layer has zero framework dependencies. | Domain tests run without infrastructure. | More boilerplate for DI wiring. |
+| B - Hexagonal ports | Domain exposes ports; adapters implement them. | Clear boundary; easy to swap adapters. | Port definitions add abstraction overhead. |
 
 **Recommendation: A.**
 **Reasoning:** Clean Architecture aligns with your goal of testable domain logic - the zero-dependency rule is the enforcement mechanism.
@@ -132,10 +132,10 @@ your own answer.**
 Here are options to help you refine or confirm your answer. Pick
 one, reject all, or hybridize.
 
-| Option | What it is | Benefit | Cost | Risk |
-|--------|-----------|---------|------|------|
-| **A - Domain in its own project** | Domain project has no references to infrastructure; infrastructure depends on domain. | Domain model testable without infrastructure. | Infrastructure must adapt to domain interfaces. | Future developer adds infrastructure reference to "simplify" a feature. |
-| B - Shared kernel | Shared kernel project holds types both layers consume. | Less ceremony for cross-cutting types. | Shared kernel becomes a dumping ground. | Future type in shared kernel pulls in infrastructure concerns. |
+| Option | What it is | Benefit | Cost |
+|--------|-----------|---------|------|
+| **A - Domain in its own project** | Domain project has no references to infrastructure; infrastructure depends on domain. | Domain model testable without infrastructure. | Infrastructure must adapt to domain interfaces. |
+| B - Shared kernel | Shared kernel project holds types both layers consume. | Less ceremony for cross-cutting types. | Shared kernel becomes a dumping ground. |
 
 **Recommendation: A.**
 **Reasoning:** Keeping the domain free of infrastructure aligns with your goal of a testable domain model (D001).

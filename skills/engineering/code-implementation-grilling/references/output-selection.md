@@ -26,9 +26,9 @@ first sentence must always carry the `Dxxx`/`Txxx` reference.
 
 **Part A: Output format**
 
-Each option below uses the parent grilling skill's 4-field option
-format: **What it is** / **Benefit** / **Cost** / **Risk**, in that
-order. Each field is exactly one sentence. All four fields are
+Each option below uses the parent grilling skill's 3-field option
+format: **What it is** / **Benefit** / **Cost**, in that
+order. Each field is exactly one sentence. All three fields are
 required.
 
 **Option A: Implementation Blueprint (Recommended)**
@@ -40,8 +40,6 @@ required.
   for tickets, keeping the PRD focused on "What".
 - **Cost**: A temporary file overhead and an extra artifact to keep
   in sync with the PRD.
-- **Risk**: The blueprint drifts from the PRD over time if the
-  linking discipline lapses.
 - **Filename derivation**: Derive the blueprint filename from the
   spec's identifying token by input type - file path → basename
   without extension (e.g., `docs/prds/feature-x.md` →
@@ -79,8 +77,6 @@ required.
   reconcile.
 - **Cost**: High-level requirements and low-level technical detail
   live in the same document, making each harder to scan.
-- **Risk**: Low-level technical noise clutters the requirements view
-  and may be skimmed by non-technical readers.
 - **Ledger Binding (Option B)**: The appended Technical
   Implementation section must inline-cite the `Dxxx`/`Txxx`
   records using `filename#<Dxxx|Txxx>` format, and must open with a

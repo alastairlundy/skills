@@ -58,11 +58,11 @@ your own answer.**
 Here are options to help you refine or confirm your answer. Pick one,
 reject all, or hybridize.
 
-| Option | What it is | Benefit | Cost | Risk |
-|--------|-----------|---------|------|------|
-| **A - Client-as-buyer** | The client (entity paying) is the counterparty to the freelancer. | Matches common B2B invoicing flows. | Blurs client (org) and contact (person) into one term. | Tax rules distinguishing payer from contact get awkward. |
-| B - Contact-on-behalf-of-client | The contact is a person acting for a client organization; the org is the payer. | Cleanly separates invoicing target from conversational contact. | Extra term to maintain in the glossary. | Friction when UI is built around contact as user. |
-| C - Two-sided marketplace | Freelancer and client are peers, no organization layer. | Simpler model. | No place to model enterprise clients with multiple contacts. | Not viable for B2B segments. |
+| Option | What it is | Benefit | Cost |
+|------------------|-----------|---------|------|
+| **A - Client-as-buyer** | The client (entity paying) is the counterparty to the freelancer. | Matches common B2B invoicing flows. | Blurs client (org) and contact (person) into one term. |
+| B - Contact-on-behalf-of-client | The contact is a person acting for a client organization; the org is the payer. | Cleanly separates invoicing target from conversational contact. | Extra term to maintain in the glossary. |
+| C - Two-sided marketplace | Freelancer and client are peers, no organization layer. | Simpler model. | No place to model enterprise clients with multiple contacts. |
 
 **Recommendation: B.**
 **Reasoning:** The platform description suggests both individual and organizational buyers are in scope; without the contact/client split, the model collapses under the first enterprise customer.
@@ -71,7 +71,7 @@ reject all, or hybridize.
 
 - 1-turn wrapper: round header, frontier statement, 3-row context block, options table, recommendation.
 - No Socratic elicitation question emitted.
-- Three options, each with the five required columns (What it is, Benefit, Cost, Risk).
+- Three options, each with the four required columns (What it is, Benefit, Cost).
 - Recommendation uses the 2-line format with goal-aligned reasoning.
 - No evaluative opener ("Good", "Great", "Nice", etc.).
 - No forbidden filler word.
@@ -127,7 +127,7 @@ output:
 - [ ] Domain state summary given before the first question.
 - [ ] Every round used the 1-turn wrapper: round header, frontier statement, context block (3-row table), options table, recommendation. Up to 3 unblocked branches per round. No Socratic elicitation question.
 - [ ] Every context block was the 3-row table (Goal, Prior decisions, Scope).
-- [ ] Every options block was the 5-column table format.
+- [ ] Every options block was the 4-column table format.
 - [ ] Every recommendation used the 2-line format.
 - [ ] No sentence began with a word whose function is to praise or judge the user's prior input.
 - [ ] No forbidden filler word appeared in any agent turn.

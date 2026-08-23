@@ -244,8 +244,8 @@ The skill consumes the following references.
   real-time appending, conflict resolution mechanics, and DEFERRED
   re-ask closure.
 - **../`grilling`/references/options-format.md** - *eager*. Defines
-  the 5-column options table (Option | What it is | Benefit | Cost |
-  Risk) with cell caps (90 chars, 2 sentences).
+  the 4-column options table (Option | What it is | Benefit | Cost)
+  with cell caps (90 chars, 2 sentences).
 - **../`grilling`/references/recommendation-format.md** - *eager*.
   Defines the 2-line lean recommendation block.
 - **../`grilling`/`references/locked-question-format.md`** - *eager*.
@@ -302,7 +302,7 @@ transcript:
       resolution produced a DEFERRED record.
 - [ ] Every context block was the 5-row table with the required Spec
       section row and inline citation.
-- [ ] Every options block used the 5-column table format.
+- [ ] Every options block used the 4-column table format.
 - [ ] Every recommendation used the 2-line format (letter + period,
       reasoning sentence).
 - [ ] Conflict detection ran before each branch resolution.

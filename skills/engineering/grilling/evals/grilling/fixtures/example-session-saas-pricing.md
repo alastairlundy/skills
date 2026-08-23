@@ -72,9 +72,9 @@ above a threshold.
 Here are options to help you refine or confirm your answer. Pick one,
 reject all, or hybridize.
 
-- **Option 1 - Flat subscription.** What it is: a single monthly fee per account regardless of seats. Benefit: simplest plan to explain, lowest sales friction. Cost: under-monetizes teams and creates seat-sharing workarounds. Risk: revenue ceiling per account; weak expansion story for the SaaS's growth phase.
-- **Option 2 - Per-seat pricing.** What it is: charge per active user per month, tiered by feature. Benefit: aligns price to value delivered, scales revenue with account growth. Cost: every new "user" becomes a procurement conversation; risk of seat-stuffing complaints. Risk: friction at the bottom of the market (solo buyers priced out).
-- **Option 3 - Hybrid (flat base + per-seat above threshold).** What it is: flat fee for the first N seats, per-seat beyond N. Benefit: protects the solo/SMB segment while capturing expansion. Cost: two concepts to explain in the pricing page. Risk: more configuration in the billing system; harder to forecast.
+- **Option 1 - Flat subscription.** What it is: a single monthly fee per account regardless of seats. Benefit: simplest plan to explain, lowest sales friction. Cost: under-monetizes teams and creates seat-sharing workarounds.
+- **Option 2 - Per-seat pricing.** What it is: charge per active user per month, tiered by feature. Benefit: aligns price to value delivered, scales revenue with account growth. Cost: every new "user" becomes a procurement conversation; risk of seat-stuffing complaints.
+- **Option 3 - Hybrid (flat base + per-seat above threshold).** What it is: flat fee for the first N seats, per-seat beyond N. Benefit: protects the solo/SMB segment while capturing expansion. Cost: two concepts to explain in the pricing page.
 
 `Recommendation: Option 3 - Hybrid (flat base + per-seat above threshold).`
 `Reasoning: a hybrid model aligns with your goal of capturing expansion
@@ -96,8 +96,8 @@ options.
 - Locked question line included the explicit required framing:
   `required - state your answer before the LLM presents options.`
 - Options block preceded by the reference-set preamble.
-- Three options, each with the four required fields (What it is, Benefit,
-  Cost, Risk) at one sentence per field.
+- Three options, each with the three required fields (What it is, Benefit,
+  Cost) at one sentence per field.
 - Recommendation uses the three-field breakdown with the option name
   copied verbatim and goal-aligned reasoning.
 - Post-pick reminder included: "You can ask for the goal-aligned
@@ -210,7 +210,7 @@ When reviewing any `grilling` transcript, check each item against the output:
 - [ ] Every Socratic elicitation question used the fixed phrasing: "What are you working toward in this decision?"
 - [ ] Every locked question line included the explicit required framing: `required - state your answer before the LLM presents options.`
 - [ ] Every options block was preceded by the reference-set preamble: "Here are options to help you refine or confirm your answer. Pick one, reject all, or hybridize."
-- [ ] Every question offered all natural options (typically 2–4) with the four required fields (What it is, Benefit, Cost, Risk) at one sentence per field.
+- [ ] Every question offered all natural options (typically 2–4) with the three required fields (What it is, Benefit, Cost) at one sentence per field.
 - [ ] Every recommendation used the three-field breakdown (`Recommendation: Option N - <name>.`, `Reasoning: ...`, `Forward risk: ...`) with the option name copied verbatim.
 - [ ] Every recommendation's `Reasoning` field was goal-aligned (not option-comparison), explaining why the recommended option serves the user's stated goal.
 - [ ] The post-pick step ran as a **gated step** and did not open the next branch until both the write and the read-back succeeded: (1) one-sentence confirmation, (2) reminder that the user can ask for the goal-aligned rejection rationale, (3) tool call to append the `Dxxx` record (bound to a successful tool-call result - a narrative statement is not a write), (4) read-back verification confirming the new `Dxxx` is the last record in the file (tolerating benign differences such as trailing newlines and byte-order), (5) transition to the next branch.

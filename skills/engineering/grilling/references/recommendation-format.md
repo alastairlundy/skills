@@ -76,5 +76,5 @@ clause or adds a third line:
 > **Reasoning:** Synchronous failure at construction aligns with your goal of catching precondition failures early.
 
 ## Why the lean format
-The 2-line format keeps the recommendation a pure pointer; nuance belongs in the option table's Cost and Risk columns
+The 2-line format keeps the recommendation a pure pointer; nuance belongs in the option table's Cost column
 or in the Reasoning sentence.

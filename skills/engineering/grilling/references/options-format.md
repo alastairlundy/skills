@@ -33,18 +33,18 @@ reject all.
 
 ## How many options
 
-Typically 2–4. Do not present more than 5 options or less than 1 option. An option is defensible if all five columns below can be
+Typically 2–4. Do not present more than 5 options or less than 1 option. An option is defensible if all four columns below can be
 filled with non-trivial, option-specific content, and if the option genuinely makes sense given the decision - an option that is a strawman is not defensible. If any column would read
 `TBD`, `same as Option N`, `none`, or as if it is a strawman then the option is not defensible - replace it.
 
-## The five-column table
+## The four-column table
 
-Every option is a row in a 5-column markdown table. The columns are
+Every option is a row in a 4-column markdown table. The columns are
 fixed and ordered. The recommended option's name is **bolded** in the
 Option column.
 
-| Option | What it is | Benefit | Cost | Risk |
-|--------|-----------|---------|------|------|
+| Option | What it is | Benefit | Cost |
+|--------|-----------|---------|------|
 
 - **Option** - the option number and name. The recommended option's
   name is **bolded**. Do not use a separate "Recommended" suffix or
@@ -54,8 +54,6 @@ Option column.
   get?"
 - **Cost** - one sentence describing the realistic sacrifice. Answers:
   "What do I definitely give up?"
-- **Risk** - one sentence describing what might go wrong later. Answers:
-  "What could happen in the future?"
 
 ### Cell-level caps (enforceable)
 
@@ -74,11 +72,11 @@ The cap is applied at write time or in CI, not by reader judgment.
 Here are options to help you refine or confirm your answer. Pick one,
 reject all, or hybridize.
 
-| Option | What it is | Benefit | Cost | Risk |
-|--------|-----------|---------|------|------|
-| **A - Constructor check** | Precondition runs in the container constructor, throwing on null. | Failures surface synchronously at the call site. | Container cannot be built for serialization without all deps. | Future caller bypasses check via a swallowing factory. |
-| B - Static factory validation | A `Create` factory returns `Result<T>` instead of throwing. | Errors are values, not exceptions. | Every call site grows to a `match` block. | Developer unwraps result without inspecting it. |
-| C - Post-construction validator | Container built unconditionally; `Validate` reports health on demand. | Construction is cheap and side-effect free. | Invalid containers exist until Validate is called. | Validator forgotten; invalid container reaches production. |
+| Option | What it is | Benefit | Cost |
+|--------|-----------|---------|------|
+| **A — Constructor check** | Precondition runs in the container constructor, throwing on null. | Failures surface synchronously at the call site. | Container cannot be built for serialization without all deps. |
+| B — Static factory validation | A `Create` factory returns `Result<T>` instead of throwing. | Errors are values, not exceptions. | Every call site grows to a `match` block. |
+| C — Post-construction validator | Container built unconditionally; `Validate` reports health on demand. | Construction is cheap and side-effect free. | Invalid containers exist until Validate is called. |
 ```
 
 ## Anti-patterns
@@ -91,7 +89,7 @@ reject all, or hybridize.
   be defensible. If the agent believes one is correct, it is the
   recommendation, not an option.
 - **"Same as Option N" fields.** Each option must stand on its own. The
-  five columns are how the user discriminates; shared columns defeat the
+  four columns are how the user discriminates; shared columns defeat the
   test.
-- **Dropping a field to fit the cap.** All five columns are mandatory
+- **Dropping a field to fit the cap.**   All four columns are mandatory
   in every row.

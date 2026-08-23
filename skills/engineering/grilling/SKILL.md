@@ -74,7 +74,7 @@ in full before the first user question:
   conventions, conflict resolution mechanics (static/dynamic), and
   DEFERRED re-ask closure.
 - references/options-format.md - the reference-set preamble and the
-  5-column options table (Option | What it is | Benefit | Cost | Risk)
+  4-column options table (Option | What it is | Benefit | Cost)
   with cell caps.
 - references/recommendation-format.md - the 2-line lean recommendation
   block with goal-aligned reasoning.
@@ -214,7 +214,7 @@ unblocked branch (up to 3), emit the per-branch block:
 
 1. Context block (4-row table: Goal, Prior decisions, Scope)
 2. Conflict/contradiction callout (if any)
-3. Options table (5-column, per references/options-format.md)
+3. Options table (4-column, per references/options-format.md)
 4. Recommendation (2-line, per references/recommendation-format.md)
 
 **Emit up to 3 branch wrappers in one round turn.** Each branch
@@ -359,8 +359,8 @@ transcript:
       table, recommendation.
 - [ ] Every context block was emitted as the 4-row table (Goal, Prior
       decisions, Scope) in that order, each element one sentence.
-- [ ] Every options block used the 5-column table format (Option, What
-      it is, Benefit, Cost, Risk).
+- [ ] Every options block used the 4-column table format (Option, What
+      it is, Benefit, Cost).
 - [ ] Every recommendation used the 2-line format (Recommendation
       letter + period, Reasoning sentence).
 - [ ] Conflict detection ran before each branch resolution. Static and

@@ -31,7 +31,7 @@ The fixed order is:
    1. **Context block** - the 4-row table grounding the branch.
    2. **Conflict/contradiction callout** (conditional) - only when a
       conflict or contradiction is detected.
-   3. **Options table** - the 5-column reference set (per
+   3. **Options table** - the 4-column reference set (per
       `references/options-format.md`).
    4. **Recommendation** - the 2-line lean block (per
       `references/recommendation-format.md`).
@@ -109,7 +109,7 @@ The callout is a fixed-format notification, not an open-ended question.
 
 ### Component 5 - Options table
 
-Present the 5-column options table from `references/options-format.md`,
+Present the 4-column options table from `references/options-format.md`,
 preceded by the reference-set preamble:
 
 ```md
@@ -194,11 +194,11 @@ your own answer.**
 Here are options to help you refine or confirm your answer. Pick one,
 reject all, or hybridize.
 
-| Option | What it is | Benefit | Cost | Risk |
-|--------|-----------|---------|------|------|
-| **A - Per-seat** | Price scales with number of users on the account. | Revenue tracks usage; easy to justify to buyers. | Existing flat-rate customers see a price increase. | Small teams may share accounts to avoid seats. |
-| B - Flat tier | Fixed price per plan tier regardless of users. | Predictable for customers; simple billing. | Revenue does not scale with adoption. | Large teams get outsized value at flat cost. |
-| C - Usage based | Users pay for usage based billing on a Pay As You Go basis. | Easier for customers to try without committing; appeals to cost conscious buyers. | Revenue is unpredictable. | Customers ration their usage of the product to cut down on their spending.|
+| Option | What it is | Benefit | Cost |
+|--------|-----------|---------|------|
+| **A — Per-seat** | Price scales with number of users on the account. | Revenue tracks usage; easy to justify to buyers. | Existing flat-rate customers see a price increase. |
+| B — Flat tier | Fixed price per plan tier regardless of users. | Predictable for customers; simple billing. | Revenue does not scale with adoption. |
+| C - Usage based | Users pay for usage based billing on a Pay As You Go basis. | Easier for customers to try without committing; appeals to cost conscious buyers. | Revenue is unpredictable. |
 
 **Recommendation: Option A - Per seat**
 **Reasoning:** Per-seat aligns with your goal of growth-friendly pricing - revenue scales with adoption, which is the mechanism you need.
@@ -219,11 +219,11 @@ your own answer.**
 Here are options to help you refine or confirm your answer. Pick one,
 reject all, or hybridize.
 
-| Option | What it is | Benefit | Cost | Risk |
-|--------|-----------|---------|------|------|
-| **A - Immediate** | Switch all accounts to per-seat on the next billing cycle. | Clean cutover; no dual-system overhead. | Existing customers face an immediate price change. | Churn spike from sticker shock. |
-| B - 90-day grace | Give existing customers 90 days at current rate before switching. | Retention buffer; time to communicate value. | Revenue delay; dual-system billing complexity. | Customers delay migration to avoid price increase. |
-| C - New customers only | Existing customers stay on their current billing arrangement; new customers are charged using per seat billing. | Reduced churn for existing customers; New customers bring in recurring revenue.| Existing customers contribute less revenue than new customers. | New customers may see the per seat rate as unfair. |
+| Option | What it is | Benefit | Cost |
+|--------|-----------|---------|------|
+| **A — Immediate** | Switch all accounts to per-seat on the next billing cycle. | Clean cutover; no dual-system overhead. | Existing customers face an immediate price change. |
+| B — 90-day grace | Give existing customers 90 days at current rate before switching. | Retention buffer; time to communicate value. | Revenue delay; dual-system billing complexity. |
+| C - New customers only | Existing customers stay on their current billing arrangement; new customers are charged using per seat billing. | Reduced churn for existing customers; New customers bring in recurring revenue.| Existing customers contribute less revenue than new customers. |
 
 **Recommendation: Option A - Immediate.**
 **Reasoning:** Immediate switch aligns with your goal of clean growth pricing - the grace period delays the revenue signal you need.
