@@ -1,0 +1,17 @@
+id: no-trigger-business-pricing
+name: No trigger on pure business pricing decision
+description: Does NOT trigger on a pure business/strategy decision (pricing) that should route to grilling, not domain-grilling.
+inputs:
+  prompt: |
+    I run a small SaaS and I'm not sure whether to keep our flat $20/month
+    pricing or pivot to a per-seat model. There are trade-offs in both
+    directions. Help me think it through.
+expected:
+  should_trigger: false
+graders:
+  - type: trigger
+    name: should-not-trigger-domain-grilling
+    config:
+      skill_path: skills/engineering/domain-grilling
+      mode: negative
+      threshold: 0.4

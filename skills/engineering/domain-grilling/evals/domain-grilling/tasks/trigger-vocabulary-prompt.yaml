@@ -1,0 +1,16 @@
+id: trigger-vocabulary-prompt
+name: Trigger on user-natural vocabulary prompt
+description: Triggers when the user asks to align terms or name a concept using natural language, with no DDD jargon.
+inputs:
+  prompt: |
+    We keep calling the same thing three different names in the codebase and
+    docs. Help me align on what we should call it and where the boundaries are.
+expected:
+  should_trigger: true
+graders:
+  - type: trigger
+    name: should-trigger-domain-grilling
+    config:
+      skill_path: skills/engineering/domain-grilling
+      mode: positive
+      threshold: 0.4

@@ -1,12 +1,9 @@
 ---
 name: domain-grilling
 description: >-
-  Domain modeling and terminology alignment - bounded contexts, ubiquitous
-  language, glossary terms, shared vocabulary. Use when the user wants to
-  clarify the domain model, align terms, name a concept, define a
-  vocabulary, or nail down the language before implementation.
-  Defer to `code-implementation-grilling` once the domain model is settled
-  and the question turns to technical choices.
+  Domain modeling and terminology alignment built on the full grilling
+  decision-elicitation machinery - grilling plus domain and language
+  resolution. Use when the user has an ambigious code or technical question, or wants to align on concepts, definitions, or terminology. It handles decision-elicitation grounded in specialized domain language for greater understanding. Defer to `code-implementation-grilling` if the domain model is settled and the question turns to technical choices.
 license: MIT
 ---
 
