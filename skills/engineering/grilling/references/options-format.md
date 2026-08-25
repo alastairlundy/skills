@@ -66,6 +66,26 @@ Option column.
 
 The cap is applied at write time or in CI, not by reader judgment.
 
+## Bolding discipline
+
+The Option column carries exactly **one** bold span per table: the
+recommended option's full label (letter + name). The bolded option
+must be the same option named in the `Recommendation:` line below
+the table. If the two disagree, the table is invalid and must be
+re-emitted before the recommendation is written.
+
+No other bolding is permitted in the Option column:
+
+- Technology, library, CLI, and product names inside an option label
+  render as inline code (`` `Microsoft.Data.Sqlite` ``), never as
+  bold. Bold on these terms would collide with the recommendation
+  marker and is a rendering bug.
+- Words the agent wants to emphasise inside a label (e.g. "Hybrid",
+  "Fallback") render as plain text. Bold on them is reserved for the
+  recommendation marker only.
+- Do not append `(Recommended)` or any other annotation to the
+  bolded label. The bold alone is the signal.
+
 ## Worked example
 
 ```md

@@ -33,6 +33,16 @@ not a paragraph break):
 Both labels are bolded; only the labels are bolded. The reasoning
 text is plain.
 
+## Cross-reference with the options table
+
+The bolded option in the options table and the `Recommendation:`
+line below it must name the **same** option. If you find yourself
+writing `Recommendation: Option B` while Option A's row is bolded,
+fix the table first - re-emit it with Option B bolded - before
+writing the recommendation. A mismatch is a rendering bug, not a
+stylistic choice, and the user reads the bold span in the table as
+the recommendation marker.
+
 ## Goal-alignment rule
 
 The `Reasoning` field **must explicitly tie the recommended option to

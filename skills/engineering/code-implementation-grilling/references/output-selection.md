@@ -98,9 +98,11 @@ required.
 Option A (Implementation Blueprint) is the recommended option. When
 presenting Part A:
 
-1. **Table highlight**: Bold the Option A name in the table and append
-   `(Recommended)` to it, per the format already used in the option
-   definition above.
+1. **Table highlight**: Bold the recommended option's full label in
+   the table. Do not append `(Recommended)` or any other annotation;
+   the bold alone is the signal. See
+   `grilling/references/options-format.md` for the bolding discipline
+   and inline-code rule that govern the Option column.
 2. **Recommendation text**: The recommendation line below the table
    must recommend Option A, not Option B. The recommendation text and
    the table highlight must always agree - if Option A is highlighted,
