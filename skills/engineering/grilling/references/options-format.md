@@ -49,6 +49,10 @@ Option column.
 - **Option** - the option number and name. The recommended option's
   name is **bolded**. Do not use a separate "Recommended" suffix or
   annotation; the bolded name is the signal.
+- **Cell rendering** - each Option cell is `**<letter> — <name>**`
+  (e.g., `**A — Constructor check**`). The word "Option" appears only
+  in this column header and in the Recommendation line (`Option A`);
+  never write `Option A —` inside the cell.
 - **What it is** - one sentence describing the option.
 - **Benefit** - one sentence describing the gain. Answers: "What do I
   get?"
@@ -72,7 +76,11 @@ The Option column carries exactly **one** bold span per table: the
 recommended option's full label (letter + name). The bolded option
 must be the same option named in the `Recommendation:` line below
 the table. If the two disagree, the table is invalid and must be
-re-emitted before the recommendation is written.
+  re-emitted before the recommendation is written.
+
+  Mechanical check: before emitting, confirm the bolded row letter
+  equals the `Recommendation:` letter. If they differ, correct the bold
+  (never the recommendation) before writing the recommendation line.
 
 No other bolding is permitted in the Option column:
 
