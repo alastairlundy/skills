@@ -128,8 +128,10 @@ framework, ORM, test framework, logging, etc.). Skip if not interested.
 
 1. **Identify TDPs** (internal agent step): Extract every functional
    requirement that implies a technical choice. Skip items marked
-   "deferred" or "out of scope". Never use the abbreviation "TDP"
-   with the user.
+    "deferred" or "out of scope". Never use the abbreviation "TDP"
+    with the user. Branch titles use the `Txxx` ID (e.g.,
+    `For T009 — …`); never write `For TDP-A — …` in any user-facing
+    text.
 2. **Surface TDP list** (separate turn): After the foundation is
    resolved, present the TDP list to the user grouped into
    dependency-ordered rounds of at most 3 unblocked items. Use the
@@ -294,6 +296,8 @@ transcript:
       at initialisation.
 - [ ] TDPs were grouped into rounds of at most 3 unblocked items
       before resolution; no round surfaced more than 3 branches.
+- [ ] No user-facing text (titles, context blocks, recommendations)
+      contained the token `TDP`; branch titles used the `Txxx` ID.
 - [ ] Every branch question followed the 1-turn wrapper: round header,
       frontier statement, 5-row context block (Goal, Prior decisions,
       Scope, Spec section), conflict callout (if any), options table,
@@ -305,6 +309,10 @@ transcript:
 - [ ] Every options block used the 4-column table format.
 - [ ] Every recommendation used the 2-line format (letter + period,
       reasoning sentence).
+- [ ] The single bolded option row in each options table matched the
+      option letter named in that branch's Recommendation line; exactly
+      one row was bolded (per `grilling` options-format.md Bolding
+      discipline).
 - [ ] Conflict detection ran before each branch resolution.
 - [ ] Convergence was a per-round check; the agent offered close-out
       but the user decided.
