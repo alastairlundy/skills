@@ -14,7 +14,7 @@ This guide covers how to contribute skills and improvements to this repository.
 
 Drive-by PRs (unsolicited pull requests without prior discussion) are discouraged. They may be accepted on a case-by-case basis if they clearly align with the repository's goals and follow all conventions, but opening an issue first significantly increases the likelihood of acceptance.
 
-See [CREATING-SKILLS.md](CREATING-SKILLS.md) for the complete guide on skill structure and conventions.
+See [CREATING-SKILLS.md](./docs/CREATING-SKILLS.md) for the complete guide on skill structure and conventions.
 
 **Skill categories:**
 - `engineering/` - domain-specific tasks for software development workflows
