@@ -1,6 +1,6 @@
 # Worked Example Session: Freelancer-Client Platform
 
-This fixture documents a canonical good session for the domain-grilling skill.
+This fixture documents a canonical good session for the technical-grilling skill.
 Use it as reference material when evaluating whether an agent followed the
 workflow correctly. Each step is annotated with the quality expectation it
 satisfies.
@@ -114,13 +114,13 @@ The user decides whether to stop.
 Before listing exits, ask: "Will resolving this require writing
 code?" with options Yes / No / I'm not sure.
 
-- **Yes** → recommend code-implementation-grilling.
+- **Yes** → recommend technical-grilling.
 - **No** → recommend `to-prd`.
 - **I'm not sure** → list all exits without a recommendation.
 
 ## Workflow Quality Checklist
 
-When reviewing any domain-grilling transcript, check each item against the
+When reviewing any technical-grilling transcript, check each item against the
 output:
 
 - [ ] Reference files loaded before the first question.

@@ -2,8 +2,7 @@
 name: grilling
 description: >-
   Use when the user has a vague decision in business, product, process, or
-  organizational decisions about strategy, direction, priorities, or non-technical areas, and wants the agent to help think it through. Do not use when shared domain language or terminology would help - use `domain-grilling` instead; for technical
-  implementation choices with a spec - use `code-implementation-grilling`.
+  organizational decisions about strategy, direction, priorities, or non-technical areas, and wants the agent to help think it through. Do not use when the decision is technical or code-related (domain modeling, terminology, or implementation choices) - use `technical-grilling` instead.
 license: MIT
 ---
 
@@ -33,8 +32,7 @@ gives a goal-aligned recommendation, and records the resolved answer in a Decisi
 
 ## When Not to Use
 
-- For domain modeling, ubiquitous language, bounded contexts, glossary, terminology alignment, or vocabulary work - use `domain-grilling` instead.
-- For code/technical implementation choices (language, framework, dependencies, project structure) when a spec/PRD exists - use `code-implementation-grilling` instead.
+- For technical or code-related decisions of any kind (domain modeling, terminology, or implementation choices) - use `technical-grilling` instead.
 - For trivial questions with a clear answer (no grilling needed).
 - For executing a decision that has already been made (no grilling needed).
 - For implementation, debugging, or code review (no grilling needed).
@@ -298,8 +296,7 @@ to the type of decision reached. Every exit that drives downstream
 action must include the Decision Ledger path so downstream skills can
 cite records as Filename#`Dxxx`.
 
-- **Specialize to DDD** - if DDD concerns surfaced.
-- **Specialize to code** - if implementation choices surfaced.
+- **Specialize to technical** - if the decision is technical or code-related (concept alignment or implementation choices).
 - **Decompose** - if discrete action items were produced.
 - **Handoff to another agent** - pass the Decision Ledger path.
 - **Custom save** - save the shared understanding another way.
@@ -309,8 +306,7 @@ environment provides.
 
 | Generic name            | Resolves to                                       | Fallback when unavailable                       |
 |-------------------------|---------------------------------------------------|--------------------------------------------------|
-| Specialize to DDD       | `domain-grilling` skill                           | Stay in grilling; do not spawn specialization    |
-| Specialize to code      | `code-implementation-grilling` skill              | Stay in grilling; do not spawn specialization    |
+| Specialize to technical | `technical-grilling` skill                        | Stay in grilling; do not spawn specialization    |
 | Decompose               | `spec-to-tickets`                                  | Hand-roll a checklist file with ledger citations |
 | Handoff to another agent| User-specified target agent                       | Save the ledger path; user passes it manually    |
 | Custom save             | User-specified destination                        | n/a - by definition user-supplied                |

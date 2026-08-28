@@ -1,6 +1,6 @@
 id: no-trigger-code-decision
 name: No trigger on code/tech implementation decision
-description: Does NOT trigger when the user has a code/technical implementation choice (defer to code-implementation-grilling).
+description: Does NOT trigger when the user has a code/technical implementation choice (defer to technical-grilling).
 inputs:
   prompt: |
     For the new order service, we need to decide between Postgres and

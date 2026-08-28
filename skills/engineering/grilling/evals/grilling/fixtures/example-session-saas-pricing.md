@@ -189,7 +189,7 @@ After all branches are resolved, the agent should:
 3. Offer the exit paths appropriate to the type of decision reached. For a
    resolved business decision with downstream action, the relevant exits are:
    - **Document the decision** - write a decision memo citing records as `DECISIONS-saas-pricing.md#D001`.
-   - **Hand off to `code-implementation-grilling`** - if a spec/PRD needs to be authored to drive the billing-system implementation (the Branch C risk surfaces a real code/tech decision).
+   - **Hand off to `technical-grilling`** - if a spec/PRD needs to be authored to drive the billing-system implementation (the Branch C risk surfaces a real code/tech decision).
    - **Break into tickets or issues** - via `spec-to-tickets` (with the ledger) or `to-issues` for flat decomposition.
 
 ## Workflow Quality Checklist

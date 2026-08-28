@@ -9,8 +9,8 @@ outside the ledger file, use the `filename#<Dxxx|Txxx|Ixxx>` format
 (e.g., `DECISIONS-repo-feature.md#D001`,
 `DECISIONS-repo-feature.md#I002`).
 
-The canonical reference is this file. The two children of `grilling`
-(`domain-grilling`, `code-implementation-grilling`) load it via the
+The canonical reference is this file. The child of `grilling`
+(`technical-grilling`) loads it via the
 relative path `../grilling/references/decision-ledger.md`. The two other
 consumers (`skill-architect`, `spec-to-tickets`) ship their own copies
 in their own `references/` directories, with a `## When to Use` section
@@ -44,7 +44,7 @@ A ledger file uses three parallel ID streams:
 
 - `Dxxx` - formal design decisions. Zero-padded sequence: `D001`, `D002`,
   `D003`, …
-- `Txxx` - technical decisions emitted by `code-implementation-grilling`.
+- `Txxx` - technical decisions emitted by `technical-grilling`.
   Zero-padded sequence: `T001`, `T002`, `T003`, …
 - `Ixxx` - clarifying interactions. Zero-padded sequence: `I001`, `I002`,
   `I003`, …
@@ -63,7 +63,7 @@ stream. A grilling-group file that records both `Dxxx` decisions and
 <!-- next-i: Ixxx -->
 ```
 
-A `code-implementation-grilling` ledger also records `Txxx` decisions
+A `technical-grilling` ledger also records `Txxx` decisions
 and ends with three sentinels:
 
 ```md
@@ -95,11 +95,10 @@ target skill directory is not yet guaranteed to exist when Step 1
 begins, so the file is created when the directory exists, on the first
 real append at the latest.
 
-For the grilling group (`grilling`, `domain-grilling`,
-`code-implementation-grilling`), when the ledger file is created
+For the grilling group (`grilling`, `technical-grilling`), when the ledger file is created
 lazily on first append, it must include all ID-stream sentinels for
-the skill - 2 sentinels for `grilling`/`domain-grilling` (`next-d`,
-`next-i`), 3 sentinels for `code-implementation-grilling` (`next-d`,
+the skill - 2 sentinels for `grilling` (`next-d`,
+`next-i`), 3 sentinels for `technical-grilling` (`next-d`,
 `next-t`, `next-i`) - seeded at the initial IDs (`D001`, `T001`,
 `I001`), not only the stream being appended.
 
@@ -230,10 +229,10 @@ The re-ask preamble is fixed and cited in locked-question-format.md.
 
 ## Txxx record template
 
-`Txxx` records are emitted by `code-implementation-grilling` and use
+`Txxx` records are emitted by `technical-grilling` and use
 the same four fields as `Dxxx`, plus an optional `Cites` field for
 spec links. The full template is in
-`code-implementation-grilling/references/recording-decisions.md`.
+`technical-grilling/references/recording-decisions.md`.
 
 ## Ixxx record template
 
@@ -332,8 +331,7 @@ The lifecycle of the ledger file differs by the skill that creates it:
   materialization** of the `SKILL.md` (the final step of
   `saving-the-skill.md`, after the file-validity checks pass). The
   deletion is conditional on file existence.
-- **Grilling group** (`grilling`, `domain-grilling`,
-  `code-implementation-grilling`) - `docs/decisions/DECISIONS-*.md` is
+- **Grilling group** (`grilling`, `technical-grilling`) - `docs/decisions/DECISIONS-*.md` is
   **persisted by default**. The agent issues a **post-session
   reminder** to delete the ledger from `docs/decisions/` once
   implementation of the resolved decisions is complete. The reminder
@@ -349,8 +347,7 @@ The lifecycle of the ledger file differs by the skill that creates it:
 | Skill                              | Storage location                                | Created             | Deleted by             |
 |------------------------------------|-------------------------------------------------|---------------------|------------------------|
 | `grilling`                         | `docs/decisions/DECISIONS-<repo>-<feature>.md` | First append        | User (post-session)    |
-| `domain-grilling`                  | `docs/decisions/DECISIONS-<repo>-<feature>.md` | First append        | User (post-session)    |
-| `code-implementation-grilling`     | `docs/decisions/DECISIONS-<repo>-<feature>.md` | First append        | User (post-session)    |
+| `technical-grilling`               | `docs/decisions/DECISIONS-<repo>-<feature>.md` | First append        | User (post-session)    |
 | `skill-architect`                  | `<target-skill-dir>/.design-ledger.md`          | Step 1 / first append | `saving-the-skill.md` |
 | `spec-to-tickets`                  | Input ledger (read+write) or none              | n/a - consumes       | User (post-creation)   |
 

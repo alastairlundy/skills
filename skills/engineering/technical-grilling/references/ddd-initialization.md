@@ -1,6 +1,6 @@
 # DDD Initialization and Session Guidelines
 
-Load this file when the `domain-grilling` skill activates, before the
+Load this file when the `technical-grilling` skill activates, before the
 first user question. The workflow in `SKILL.md` expects the DDD baseline
 and infrastructure checks below to have been completed.
 

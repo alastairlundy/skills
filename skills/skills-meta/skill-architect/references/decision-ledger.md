@@ -16,7 +16,7 @@ for the `## When to Use` section below, which lists the skill-specific
 triggers for consulting this reference. The two other consumers that
 ship their own copies are `spec-to-tickets` and (for the canonical,
 loaded via relative path) the two children of `grilling`
-(`domain-grilling`, `code-implementation-grilling`).
+(`technical-grilling`).
 
 ## When to Use
 
@@ -70,7 +70,7 @@ A ledger file uses three parallel ID streams:
 
 - `Dxxx` - formal design decisions. Zero-padded sequence: `D001`, `D002`,
   `D003`, …
-- `Txxx` - technical decisions emitted by `code-implementation-grilling`.
+- `Txxx` - technical decisions emitted by `technical-grilling`.
   Zero-padded sequence: `T001`, `T002`, `T003`, …
 - `Ixxx` - clarifying interactions. Zero-padded sequence: `I001`, `I002`,
   `I003`, …
@@ -183,9 +183,9 @@ For `Ixxx` records, the append fires in two steps:
 
 ## Txxx record template
 
-`Txxx` records are emitted by `code-implementation-grilling` and are
+`Txxx` records are emitted by `technical-grilling` and are
 not used by `skill-architect`. The full template is in
-`code-implementation-grilling/references/recording-decisions.md`.
+`technical-grilling/references/recording-decisions.md`.
 
 ## Ixxx record template
 
@@ -286,8 +286,7 @@ The lifecycle of the ledger file differs by the skill that creates it:
   materialization** of the `SKILL.md` (the final step of
   `saving-the-skill.md`, after the file-validity checks pass). The
   deletion is conditional on file existence.
-- **Grilling group** (`grilling`, `domain-grilling`,
-  `code-implementation-grilling`) - `docs/decisions/DECISIONS-*.md` is
+- **Grilling group** (`grilling`, `technical-grilling`) - `docs/decisions/DECISIONS-*.md` is
   **persisted by default**. The agent issues a **post-session
   reminder** to delete the ledger from `docs/decisions/` once
   implementation of the resolved decisions is complete. The reminder
@@ -303,8 +302,7 @@ The lifecycle of the ledger file differs by the skill that creates it:
 | Skill                              | Storage location                                | Created             | Deleted by             |
 |------------------------------------|-------------------------------------------------|---------------------|------------------------|
 | `grilling`                         | `docs/decisions/DECISIONS-<repo>-<feature>.md` | First append        | User (post-session)    |
-| `domain-grilling`                  | `docs/decisions/DECISIONS-<repo>-<feature>.md` | First append        | User (post-session)    |
-| `code-implementation-grilling`     | `docs/decisions/DECISIONS-<repo>-<feature>.md` | First append        | User (post-session)    |
+| `technical-grilling`               | `docs/decisions/DECISIONS-<repo>-<feature>.md` | First append        | User (post-session)    |
 | `skill-architect`                  | `<target-skill-dir>/.design-ledger.md`          | Step 1 / first append | `saving-the-skill.md` |
 | `spec-to-tickets`                  | Input ledger (read+write) or none              | n/a - consumes       | User (post-creation)   |
 

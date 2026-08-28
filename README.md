@@ -14,7 +14,7 @@ npx skills@latest add alastairlundy/skills
 Pick the skills you want, and which coding agents you want to install them on. 
 
 ### Dependence on Matt Pocock's skills 
-The skills in this repo don't depend on or require [Matt Pocock's Skills](https://github.com/mattpocock/skills/) . That being said some of this repo's skills may benefit from those also being installed or used. ``domain-grilling`` supports using the GLOSSARY.md glossary system from ``setup-matt-pockock-skills``, and enables interaction with ``to-issues`` and ``to-prd``.
+The skills in this repo don't depend on or require [Matt Pocock's Skills](https://github.com/mattpocock/skills/) . That being said some of this repo's skills may benefit from those also being installed or used. ``technical-grilling`` supports using the GLOSSARY.md glossary system from ``setup-matt-pockock-skills``, and enables interaction with ``to-issues`` and ``to-prd``.
 
 ## Skills
 
@@ -27,9 +27,8 @@ Domain-specific tasks for software development workflows.
 | Skill | Description | Notes | 
 |-------|-------------|-------|
 | [spec-to-tickets](skills/engineering/spec-to-tickets/) | Break specs, PRDs, or conversation context into focused tickets sized by coherence, with dependency ordering. Outputs to issue trackers or local markdown. | Inspired by Matt Pocock's ``to-issues`` skill. |
-| [grilling](skills/engineering/grilling/) | Structured decision elicitation for non-code, non-domain decisions - strategy, direction, design, process. Surfaces clear decisions from vague ideas via reference-set options and a Decision Ledger. | Generic parent of ``domain-grilling`` and ``code-implementation-grilling``. |
-| [domain-grilling](skills/engineering/domain-grilling/) | Domain-modeling decision elicitation - bounded contexts, glossary, terminology. Aligns ubiquitous language and records decisions in ADRs. | Specializes ``grilling``; inspired by Matt Pocock's ``grill-with-docs`` skill. |
-| [code-implementation-grilling](skills/engineering/code-implementation-grilling/) | Technical decision elicitation - language, framework, dependencies, structure. Resolves implementation ambiguity once a spec exists. | Specializes ``grilling``. |
+| [grilling](skills/engineering/grilling/) | Structured decision elicitation for non-code, non-domain decisions - strategy, direction, design, process. Surfaces clear decisions from vague ideas via reference-set options and a Decision Ledger. | Generic parent of ``technical-grilling``. |
+| [technical-grilling](skills/engineering/technical-grilling/) | Technical decision elicitation - concept/domain alignment (bounded contexts, glossary, terminology) and spec-driven implementation planning (language, framework, dependencies, structure). | Specializes ``grilling``; merges the former ``domain-grilling`` and ``code-implementation-grilling``. |
 | [write-changelog](skills/engineering/write-changelog/) | Generate user-facing changelogs from git history. Analyzes commits, groups changes by sub-project, supports tag ranges. | |
 | [dependency-review](skills/engineering/dependency-review/) | Audit dependencies for staleness, bloat, coupling, and deprecation. Produces a structured report. Default scope is code only. | Pass `scope: code,non-code` to opt in to OS, runtimes, hosted services, databases, and CI tooling. |
 | [implement-tickets](skills/engineering/implement-tickets/) | Coordinate parallel ticket implementation. Builds dependency order, dispatches tickets to sub-agents, validates against acceptance criteria, commits per ticket. | Use when a batch of tickets should be implemented with per-ticket commits and an end-of-run report. |
