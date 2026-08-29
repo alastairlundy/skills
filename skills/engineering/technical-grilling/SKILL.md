@@ -133,6 +133,15 @@ The first turn after Gate A is an open question to surface the goal
 (per `grilling` Step 3). Record the response as the goal record in the
 Decision Ledger. **Stop and wait** for the user's response.
 
+**Capture session intent.** Before any branch opens, record the intended
+track in the goal record's Constraints line as one of: `track:
+concept-only`, `track: implementation-only`, or `track:
+concept-then-implementation`. Infer it from the request when clear; if
+ambiguous, ask one clarifying question. This intent governs whether Phase 2
+runs. The default is `concept-then-implementation` whenever the request
+implies building or implementing something - in that case Phase 2 is
+mandatory and the session must not end after Phase 1.
+
 ### Phase 1: Concept / domain alignment
 
 Follow the concept-alignment workflow:
@@ -151,8 +160,13 @@ Follow the concept-alignment workflow:
    branch that introduces a glossary term, propose the term and definition,
    and on acceptance write it to `GLOSSARY.md` (lazily created if needed).
 
-Phase 1 may end here: if the user only wanted terminology/concept
-alignment, proceed to the Exit gate and offer "document the decision."
+Phase 1 ends here **only** when the captured session intent is
+`concept-only` (the user explicitly stated they wanted terminology or
+concept alignment and nothing further). In that case, proceed to the Exit
+gate and offer "document the decision." For any other intent
+(`concept-then-implementation` or `implementation-only`), Phase 1 must flow
+into Gate B and Phase 2 - do **not** stop, and do **not** present the Exit
+gate as a session end.
 
 ### Gate B: Concept-readiness (anti-skip)
 
@@ -171,6 +185,14 @@ If the user asks an implementation-shaped question ("which framework?",
 obtain explicit user confirmation (or a Phase 1 redirect) before any Phase
 2 branch. The convergence test treats "implementation branch opened
 without concept readiness" as a violation.
+
+**Forced transition into Phase 2.** Once concept readiness is confirmed
+(and the session intent is not `concept-only`), the skill proceeds
+**directly** into Phase 2 without re-asking the user whether to continue.
+Immediately open the first Phase 2 foundation branch (Language) using the
+5-row context block. Do not stop at Gate B, do not present the Exit gate,
+and do not wait for the user to request Phase 2 - continuation is
+automatic.
 
 ### Phase 2: Implementation planning
 
@@ -212,6 +234,21 @@ cite records as filename#`Dxxx`/`Txxx`:
 | Hand off to `spec-to-tickets` | Yes | Yes |
 | Handoff to another agent | Yes | Yes |
 | Custom Save | No | No |
+
+**Do not auto-execute the exit.** The agent's job ends at emitting the
+handoff template and the Decision Ledger path. It must **not** itself launch
+the downstream consumer (e.g., run `spec-to-tickets`, file issues, or spawn
+the target agent) unless the user has **explicitly requested** that the agent
+perform it in this turn. A user selecting an exit is a decision, not a signal
+to begin execution.
+
+**Prefer a fresh session for the downstream consumer.** If the current
+context is large or the grilling session has produced many branches/records,
+recommend that the user start the downstream workflow (such as
+`spec-to-tickets`) in a **new session** with the Decision Ledger path and
+spec/blueprint as the only inputs. This keeps the downstream run free of
+grilling context and avoids context bloat. State this as a one-line
+suggestion; do not start the new session yourself.
 
 ### Post-session deletion reminder
 
@@ -268,6 +305,10 @@ transcript:
       implementation branch opened without concept readiness.
 - [ ] If the user asked an implementation question with no spec and no
       concept record, the skill redirected to Phase 1.
+- [ ] Phase 2 was executed (or the session was explicitly scoped
+      `concept-only` and the user confirmed that intent). The session did
+      not end after Phase 1 alone unless `concept-only` was captured and
+      confirmed.
 
 ### Output checks
 - [ ] Decision Ledger path was confirmed before the first write.

@@ -12,6 +12,15 @@ Downstream consumer. The agent substitutes `<spec-path>`,
 `<blueprint-path>` (Option A only), and `<ledger-path>` only. Do
 not add any other prose around the template.
 
+**Emitting the template is the end of this skill's work.** The
+templates name a downstream consumer (e.g., "Run the `spec-to-tickets`
+skill…") as an instruction to the *user*, not a command for the agent to
+execute. Do **not** invoke the named downstream skill, file issues, or spawn
+the target agent unless the user has explicitly asked the agent to do so in
+this turn. When the session context is large, add a one-line suggestion that
+the user run the downstream consumer in a fresh session with the Decision
+Ledger path and spec/blueprint as the only inputs.
+
 ### Option A: Implementation Blueprint
 
 **Template: ticket consumer (`spec-to-tickets`)**
