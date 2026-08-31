@@ -32,9 +32,10 @@ The substitution runs once at publish, not during ticket generation.
 3. Determine directory structure based on ticket count:
    - **Fewer than 8 tickets** - flat structure. All files in `<tickets-dir>`.
    - **8 or more tickets** - structured subdirectories. Default to domain concept unless the user has signalled a different strategy ("group by feature area", "topological layers", etc.) in the conversation, the spec, or in plain English at this step.
-4. Name files with zero-padded sequential numbers - `001-authentication.md`, `002-user-profiles.md`.
-5. If using structured directories, place files in the group subdirectory - e.g., `<tickets-dir>/authentication/001-login-endpoint.md`.
-6. Write each ticket as a markdown file with YAML frontmatter matching the ticket template. The summary's `Output location` line shall include the resolved grouping strategy so the user can verify.
+4. Name files with zero-padded sequential numbers - `001-authentication.md`, `002-user-profiles.md`. The file sequence is **global across the ticket set**, not per-directory: ticket 1 in `llm-client` and ticket 1 in `output` would both be `001-...`, but no two tickets in the set share the same number.
+5. Directory names use the **category name only** - e.g., `llm-client`, `output`. Do **not** prefix directories with a sequence number (e.g., `04-llm-client`, `06-output` are wrong); the file sequence already provides ordering, and double-numbering (a number on both the directory and the file, like `04-llm-client/001-unified-chat-client.md`) is confusing. If the spec source uses numbered sections (e.g., "04. LLM Client"), strip the number when forming the directory name - keep the category text only.
+6. If using structured directories, place files in the group subdirectory - e.g., `<tickets-dir>/llm-client/001-unified-chat-client.md`.
+7. Write each ticket as a markdown file with YAML frontmatter matching the ticket template. The summary's `Output location` line shall include the resolved grouping strategy so the user can verify.
 
 ## Parent-issue rule
 

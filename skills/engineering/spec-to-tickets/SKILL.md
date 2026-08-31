@@ -310,6 +310,7 @@ The summary should be scannable - use clear structure (headings, tables, lists) 
 - [ ] The `Blocked by` field is target-agnostic in storage using the `TKxxx` prefix (e.g., `TK001`, `TK002`) and substituted at publish time. The `TKxxx` prefix avoids collision with Decision Ledger record IDs (`Dxxx` for functional decisions, `Txxx` for technical decisions).
 - [ ] The long Step 9 content lives in `references/publishing-rules.md`; `SKILL.md` carries only the load-trigger sentence.
 - [ ] The Step 9 trim applies to the workflow.
+- [ ] For local-markdown targets with structured subdirectories, directory names use the category name only with no leading sequence prefix (e.g., `llm-client/`, not `04-llm-client/`). The file sequence number provides ordering; double-numbering a directory and its file is a naming violation.
 - [ ] Every ticket's `Blocked by` field uses issue numbers for issue-tracker targets and basenames for local markdown.
 - [ ] The YAML-breaking-characters check is applied at write time per Step 8's rule, not as a post-hoc validation.
 - [ ] Ticket count is at least 2 (with no exception).
