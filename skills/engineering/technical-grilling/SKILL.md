@@ -332,3 +332,10 @@ transcript:
 - [ ] Every citation used filename#`Dxxx`/`Txxx` format.
 - [ ] Post-session deletion reminder emitted (suppressed for
       `spec-to-tickets` handoff).
+- [ ] For every options table emitted during the session, the bolded row
+      letter equals the `Recommendation:` letter (mechanical check passed
+      before writing the recommendation line).
+- [ ] No `**` characters appear as visible text in any option cell. The
+      Option column carries exactly one bold span - the recommended
+      option's full label - and every other cell renders as plain text
+      with zero `**` characters.

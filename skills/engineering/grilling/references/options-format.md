@@ -82,6 +82,17 @@ the table. If the two disagree, the table is invalid and must be
   equals the `Recommendation:` letter. If they differ, correct the bold
   (never the recommendation) before writing the recommendation line.
 
+**No `**` characters may appear as visible text in any option cell.**
+The bold markers are markdown syntax consumed by the renderer. If a
+`**` is visible in the rendered output - for example, a stray `**`
+appended to the end of a non-recommended option's label like
+`B — Few-shot prompting with example diversity**` - the bold span is
+malformed (an opening or closing `**` was lost or escaped) and the
+table must be re-emitted with the malformed `**` removed. Only the
+recommended option's full label (letter + name) carries the bold
+span; every other cell in the Option column renders as plain text
+with zero `**` characters - no opening, no closing, no orphan.
+
 No other bolding is permitted in the Option column:
 
 - Technology, library, CLI, and product names inside an option label
@@ -121,3 +132,15 @@ reject all, or hybridize.
   test.
 - **Dropping a field to fit the cap.**   All four columns are mandatory
   in every row.
+- **Stray `**` characters in non-recommended option cells.** A cell
+  that renders as `B — Few-shot prompting with example diversity**`
+  (note the trailing `**`) is a rendering bug. The bold span is
+  malformed - either the opening `**` was lost, or the closing `**`
+  was duplicated. Re-emit the row with no `**` characters at all;
+  only the recommended option's label uses `**`.
+- **Bolded option disagrees with the Recommendation line.** A table
+  that bolds Option A's row while `Recommendation: Option B - ...`
+  names Option B is invalid. The bold span in the Option column is
+  the recommendation marker; the recommendation line must agree.
+  Re-emit the table with the bold moved to the recommended option -
+  do not rewrite the recommendation to match the table.
