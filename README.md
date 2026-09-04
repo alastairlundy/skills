@@ -31,6 +31,7 @@ Domain-specific tasks for software development workflows.
 | [technical-grilling](skills/engineering/technical-grilling/) | Technical decision elicitation - concept/domain alignment (bounded contexts, glossary, terminology) and spec-driven implementation planning (language, framework, dependencies, structure). | Specializes ``grilling``; merges the former ``domain-grilling`` and ``code-implementation-grilling``. |
 | [write-changelog](skills/engineering/write-changelog/) | Generate user-facing changelogs from git history. Analyzes commits, groups changes by sub-project, supports tag ranges. | |
 | [dependency-review](skills/engineering/dependency-review/) | Audit dependencies for staleness, bloat, coupling, and deprecation. Produces a structured report. Default scope is code only. | Pass `scope: code,non-code` to opt in to OS, runtimes, hosted services, databases, and CI tooling. |
+| [repo-docs](skills/engineering/repo-docs/) | Maintain repository documentation consistency. Manages GLOSSARY.md and ADRs using project standards, and audits docs against the codebase. | Defines repo doc standards. |
 | [implement-tickets](skills/engineering/implement-tickets/) | Coordinate parallel ticket implementation. Builds dependency order, dispatches tickets to sub-agents, validates against acceptance criteria, commits per ticket. | Use when a batch of tickets should be implemented with per-ticket commits and an end-of-run report. |
 
 ### Alignment skills
