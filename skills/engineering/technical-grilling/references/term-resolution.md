@@ -43,7 +43,7 @@ When the user revises an existing glossary term during a later branch:
 
 1. Open a new Decision Ledger record with a fresh `Dxxx` ID and a
    `Supersedes: Dxxx` line in `Constraints` (per the re-open pattern
-   in `../../grilling/references/decision-ledger.md`).
+   in `references/decision-ledger.md`).
 2. Update the `GLOSSARY.md` entry for the term in the same turn.
 3. Run the verification step (c) below.
 

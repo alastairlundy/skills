@@ -7,8 +7,8 @@ Phase 1, source-of-truth conflicts in Phase 2, type introductions in
 Phase 3) is emitted using the 1-turn wrapper, grouped in rounds of up
 to 3 unblocked decisions. The 5-row context block is defined in
 `references/locked-question-format.md`; the first 3 data rows
-(Goal, Prior decisions, Scope) match the parent grilling
-skill's context block, and the 4th data row (Spec
+(Goal, Prior decisions, Scope) match this skill's context block,
+and the 4th data row (Spec
 section) is the code-impl addition. See
 `references/locked-question-format.md` for the full template, the
 citation format, and the requirement that the Spec section row is not
@@ -70,7 +70,7 @@ lightweight one-line form. Examples in this file:
 ### Per-decision questions (locked question format)
 
 Per-decision questions are about a specific decision and **are**
-subject to the parent grilling skill's locked question format. The
+subject to this skill's locked question format. The
 per-decision questions in this file are:
 
 - **Phase 1** - architectural decisions (layer boundaries,
@@ -89,7 +89,7 @@ decisions:
   Socratic elicitation question is emitted. Stop and wait for the
   user's response.
 
-See `../grilling/references/locked-question-format.md` for the
+See `references/locked-question-format.md` for the
 full wrapper format and the worked example.
 
 ### Worked example - hybrid format
@@ -160,8 +160,8 @@ Interface, Contract, DTO, and Model definitions now?"*
   interleave its decisions back into a later phase. Each phase uses
   up-to-3-per-round discipline - unblocked decisions within a phase
   are grouped into rounds of at most 3, each round emitted in a
-  single agent turn using the 1-turn wrapper from the parent
-  `grilling` skill's `references/locked-question-format.md`.
+  single agent turn using the 1-turn wrapper from
+  `references/locked-question-format.md`.
 
   #### Phase 1: Architectural Separation
 

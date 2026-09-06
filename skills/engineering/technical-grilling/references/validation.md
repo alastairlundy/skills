@@ -3,7 +3,7 @@
 After completing the workflow, verify each item against the session
 transcript:
 
-- [ ] **References Loaded**: All six `grilling` reference files were
+- [ ] **References Loaded**: All reference files were
       loaded and read in full before the first user question. If
       any reference file was missing or unreadable, the session
       aborted and the missing file was reported to the user.
@@ -20,7 +20,7 @@ transcript:
       options table, recommendation. Up to 3 unblocked branches may
       appear in a single round. No Socratic elicitation question was
       emitted. See
-      `../grilling/references/locked-question-format.md`.
+      `references/locked-question-format.md`.
 - [ ] **Context block (5-row)**: Every code-impl per-decision context
       block was emitted as the 5-row markdown table (header + 4 data
       rows: Goal, Prior decisions, Scope, Spec section) in that order,
@@ -70,7 +70,7 @@ transcript:
       with your goal of X" or "serves your goal of X"? Citing
       ledger records without naming the user's goal is insufficient  - 
       the goal must be surfaced explicitly. See
-      `../grilling/references/recommendation-format.md` Goal-alignment
+      `references/recommendation-format.md` Goal-alignment
       rule.
 - [ ] **Ledger Coverage**: Does every blueprint body statement
       that satisfies a functional requirement inline-cite a

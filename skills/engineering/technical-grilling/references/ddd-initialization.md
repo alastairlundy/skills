@@ -23,7 +23,7 @@ Upon activation:
    questioning.
 2. **Infrastructure check.** If `docs/decisions/` is
    missing, note that the Decision Ledger directory will be created
-   lazily on the first resolved branch (per `grilling/references/decision-ledger.md`).
+   lazily on the first resolved branch (per `references/decision-ledger.md`).
 3. **Ledger path confirmation.** When opening Branch A, derive the
    Decision Ledger path
    (`docs/decisions/DECISIONS-<repo>-<feature>.md`) and confirm it with
@@ -74,7 +74,7 @@ contexts. The map identifies the location of each.
   and what specifically needs revisiting.
 - **Convergence check.** Before declaring convergence, run the
   four-check convergence test from
-  `grilling/references/convergence-test.md`.
+  `references/convergence-test.md`.
 
 ### Challenge against the glossary
 

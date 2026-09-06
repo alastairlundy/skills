@@ -26,7 +26,7 @@ first sentence must always carry the `Dxxx`/`Txxx` reference.
 
 **Part A: Output format**
 
-Each option below uses the parent grilling skill's 3-field option
+Each option below uses this skill's 3-field option
 format: **What it is** / **Benefit** / **Cost**, in that
 order. Each field is exactly one sentence. All three fields are
 required.
@@ -101,7 +101,7 @@ presenting Part A:
 1. **Table highlight**: Bold the recommended option's full label in
    the table. Do not append `(Recommended)` or any other annotation;
    the bold alone is the signal. See
-   `grilling/references/options-format.md` for the bolding discipline
+   `references/options-format.md` for the bolding discipline
    and inline-code rule that govern the Option column.
 2. **Recommendation text**: The recommendation line below the table
    must recommend Option A, not Option B. The recommendation text and

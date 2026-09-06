@@ -1,37 +1,34 @@
 ---
 name: technical-grilling
 description: >-
-  Technical and code-related decision elicitation - both domain/concept
+  Technical and code-related decision elicitation covering domain/concept
   alignment (bounded contexts, ubiquitous language, glossary, terminology)
   and spec-driven implementation planning (language, framework,
   dependencies, project structure). Use when the user has a technical or
   code-related decision to think through - a vague idea needing concept
   alignment, a terminology question, or implementation choices with or
-  without a spec/PRD. Defer to `grilling` for non-technical decisions
-  (business, product, process, organizational).
+  without a spec/PRD.
 license: MIT
 ---
 
-# Technical `grilling`
+# Technical Grilling
 
 A structured decision-elicitation skill for technical and code-related
-decisions. It specializes `grilling` and covers the full technical track in
-one continuous session:
+decisions. It covers the full technical track in one continuous session:
 
-- **Phase 1 - Concept / domain alignment** (carried over from the former `domain-grilling` skill): establish the vocabulary, bounded contexts,
-  ubiquitous language, and glossary terms before any "how" is decided.
-- **Phase 2 - Implementation planning** (carried over from the former `code-implementation-grilling` skill): resolve language, framework,
+- **Phase 1 - Concept / domain alignment**: establish the vocabulary,
+  bounded contexts, ubiquitous language, and glossary terms before any
+  "how" is decided.
+- **Phase 2 - Implementation planning**: resolve language, framework,
   dependencies, project structure, and spec-driven technical decision
   points once the concept is settled or a spec/PRD is supplied.
 
-The core `grilling` machinery (Decision Ledger, options/recommendation
-formats, locked question format, tone discipline, convergence test) is
-owned by the `grilling` skill. This skill adds: a **spec/ledger intake
-gate** (Gate A, anti-redundancy), DDD initialization and term resolution
-(Phase 1), and the foundation checklist, TDP extraction, and implementation
-plan output (Phase 2). Two hard gates prevent the two failure modes this
-merge exists to fix: skipping concept alignment before implementation
-(Gate B), and re-grilling decisions the user already supplied (Gate A).
+This skill owns: a **spec/ledger intake gate** (Gate A, anti-redundancy),
+DDD initialization and term resolution (Phase 1), and the foundation
+checklist, TDP extraction, and implementation plan output (Phase 2). Two
+hard gates prevent the two failure modes this skill exists to fix: skipping
+concept alignment before implementation (Gate B), and re-grilling decisions
+the user already supplied (Gate A).
 
 ## When to Use
 
@@ -58,40 +55,31 @@ merge exists to fix: skipping concept alignment before implementation
 
 ## When Not to Use
 
-- For non-technical decisions (business, product, process, organizational)
-  that do not need conceptual or implementation alignment - use `grilling`
-  instead.
-- For trivial technical questions with a clear answer (no grilling needed).
-- For executing a decision that has already been made (no grilling needed).
-- For implementation, debugging, or code review (no grilling needed).
+- For trivial technical questions with a clear answer.
+- For executing a decision that has already been made.
+- For implementation, debugging, or code review.
 
 ## Convention: "you" in this skill
 
 In this skill, "you" and "your" inside a backticked template, a fenced code
 block, or a user-facing prompt **always refer to the user**, not the LLM.
-The shared references (../`grilling`/references/*) state this rule
-explicitly under their own "Convention" headers.
+The shared references (references/*) state this rule explicitly under their
+own "Convention" headers.
 
 ## Workflow
 
 ### Step 1: Load the references
 
-Before the first user question, run the pre-flight from `grilling` Step 1.0
-to confirm all required reference files exist and are readable. Then load
-and read in full:
-
-**Parent `grilling` references (../`grilling`/references/*) - eager:**
-- decision-ledger.md, options-format.md, recommendation-format.md,
-  locked-question-format.md (4-row context table), tone-and-output.md,
-  convergence-test.md.
+Before the first user question, run the pre-flight to confirm all required
+reference files exist and are readable. Then load and read in full:
 
 **Skill-local references (references/*):**
 - ddd-initialization.md - *eager*. DDD scan, glossary/ADR challenge, fuzzy
   language, scenario discussion, ADR offer.
 - term-resolution.md - *eager*. Writing resolved terms to GLOSSARY.md.
 - ADR-FORMAT.md - *eager*. ADR structure and when to offer one.
-- locked-question-format.md - *eager*. The 5-row code-impl context table
-  (parent 4 rows + Spec section).
+- locked-question-format.md - *eager*. The 5-row code-impl context
+  table.
 - recording-decisions.md - *eager*. The `Txxx` record template.
 - interface-and-model-branch.md - *lazy*. Load before Phase 2 interface
   decisions.
@@ -114,7 +102,7 @@ Detect any existing decision artifact **before** opening any branch:
    end-to-end and report: the highest `Dxxx`/`Txxx`, every resolved
    answer/constraint, and which decisions are already settled.
 3. **Mark locked via user confirmation.** For each apparently-settled
-   item, apply the `grilling` Step 4.0a rule: ask *"Does [this spec/ledger
+   item, apply the locked question format rule: ask *"Does [this spec/ledger
    record] lock this item, or is it still open?"* Do **not** treat any
    prior record or supplied spec as binding until the user confirms.
    Settled items are recorded as `Dxxx`/`Txxx` with Resolved Answer =
@@ -129,9 +117,9 @@ you may proceed past Phase 1 directly to Phase 2 after Gate B.
 
 ### Step 3: Goal discovery
 
-The first turn after Gate A is an open question to surface the goal
-(per `grilling` Step 3). Record the response as the goal record in the
-Decision Ledger. **Stop and wait** for the user's response.
+The first turn after Gate A is an open question to surface the goal.
+Record the response as the goal record in the Decision Ledger. **Stop and
+wait** for the user's response.
 
 **Capture session intent.** Before any branch opens, record the intended
 track in the goal record's Constraints line as one of: `track:
@@ -152,10 +140,10 @@ Follow the concept-alignment workflow:
    missing, suggest `setup-matt-pocock-skills` but do not create it
    pre-emptively.
 2. **Open branches in rounds** using the 1-turn wrapper from
-   ../`grilling`/references/locked-question-format.md (the 4-row table for
-   Phase 1). Apply the DDD techniques (challenge against glossary, sharpen
-   fuzzy language, discuss concrete scenarios, cross-reference with code,
-   offer ADRs sparingly).
+   references/locked-question-format.md (the 4-row table for Phase 1).
+   Apply the DDD techniques (challenge against glossary, sharpen fuzzy
+   language, discuss concrete scenarios, cross-reference with code, offer
+   ADRs sparingly).
 3. **Term Resolution** (references/term-resolution.md): after each resolved
    branch that introduces a glossary term, propose the term and definition,
    and on acceptance write it to `GLOSSARY.md` (lazily created if needed).
@@ -218,7 +206,7 @@ Follow the implementation-planning workflow:
 ### Convergence
 
 After the last branch in a round, run the 5-check convergence test from
-../`grilling`/references/convergence-test.md. If any check fails, continue
+references/convergence-test.md. If any check fails, continue
 or re-open the affected branch. When all five pass, offer close-out; the
 user decides.
 
@@ -243,11 +231,11 @@ perform it in this turn. A user selecting an exit is a decision, not a signal
 to begin execution.
 
 **Prefer a fresh session for the downstream consumer.** If the current
-context is large or the grilling session has produced many branches/records,
+context is large or the session has produced many branches/records,
 recommend that the user start the downstream workflow (such as
 `spec-to-tickets`) in a **new session** with the Decision Ledger path and
 spec/blueprint as the only inputs. This keeps the downstream run free of
-grilling context and avoids context bloat. State this as a one-line
+this session's context and avoids context bloat. State this as a one-line
 suggestion; do not start the new session yourself.
 
 ### Post-session deletion reminder
@@ -258,10 +246,6 @@ deleted once implementation is complete. Suppress the reminder when the
 exit hands off to `spec-to-tickets`.
 
 ## References
-
-### Parent `grilling` references (../`grilling`/references/*) - eager
-- decision-ledger.md, options-format.md, recommendation-format.md,
-  locked-question-format.md, tone-and-output.md, convergence-test.md.
 
 ### Skill-local references (references/*)
 - ddd-initialization.md - eager
@@ -280,9 +264,8 @@ After completing the workflow, verify each item against the session
 transcript:
 
 ### Pre-conditions
-- [ ] All reference files (base 6 + local 9) were loaded and read in full
-      before the first user question; no lazy reference was loaded
-      speculatively.
+- [ ] All reference files were loaded and read in full before the first
+      user question; no lazy reference was loaded speculatively.
 - [ ] If any reference file was missing or unreadable, the session aborted
       and the missing file was reported.
 
@@ -291,7 +274,7 @@ transcript:
       before any branch opened.
 - [ ] Settled decisions from the supplied artifact were summarized to the
       user.
-- [ ] Each settled item was confirmed locked via the Step 4.0a question;
+- [ ] Each settled item was confirmed locked via the locked question format;
       none were assumed binding.
 - [ ] Settled decisions were recorded as `Dxxx`/`Txxx` with Resolved Answer
       = "Resolved (by provided spec)" and were **not** re-grilled.

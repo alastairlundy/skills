@@ -22,8 +22,8 @@ record to the ledger using this template:
   decision - and is distinct from `Resolved Answer` (the **what**)
   and `Normalized Requirement` (the testable outcome). If the user
   states no principle, write `None.`. The `Driver` field matches the
-  parent grilling skill's `Dxxx` template; see
-  `../grilling/references/decision-ledger.md`.
+   this skill's `Dxxx` template; see
+   `references/decision-ledger.md`.
 - `Cites` lists every `Dxxx` (or earlier `Txxx`) record whose
   `Constraints` the technical answer must respect. A Technical
   Decision that ignores a cited constraint is a silent loss; do not
@@ -32,11 +32,11 @@ record to the ledger using this template:
 - The real-time appending rule still applies: append the record in
   the same turn the user resolves the decision, before asking the
   next question. See
-  `../grilling/references/decision-ledger.md` for the rule.
+   `references/decision-ledger.md` for the rule.
 - The next available `Txxx` ID is read from the trailing
   `<!-- next-t: Txxx -->` sentinel at the end of the ledger file.
   The sentinel is documented in
-  `../grilling/references/decision-ledger.md` (Sentinel comment
+   `references/decision-ledger.md` (Sentinel comment
   for next append ID); the agent uses the sentinel for
   append-point lookup rather than re-reading the full ledger
   tail. If the sentinel is missing or out of sync, fall back to
@@ -50,5 +50,5 @@ record to the ledger using this template:
   **end** of the file - it is the trailing sentinel. Do not leave
   the old sentinel value in place; do not place the record above
   the sentinel. See
-  `../grilling/references/decision-ledger.md` (Sentinel update
+   `references/decision-ledger.md` (Sentinel update
   is atomic with the record write) for the full rule.
