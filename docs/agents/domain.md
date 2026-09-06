@@ -23,7 +23,6 @@ This repo:
 ├── skills/
 │   ├── engineering/
 │   │   ├── spec-to-tickets/SKILL.md
-│   │   ├── grilling/SKILL.md
 │   │   └── ...
 │   ├── alignment/
 │   │   └── ...

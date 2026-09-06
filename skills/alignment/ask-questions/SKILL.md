@@ -143,7 +143,7 @@ Before submitting, run the mechanical checks listed in the [Validation](#validat
 
 ### End condition
 
-After three rounds of clarifying questions, the LLM should propose a default in prose or hand off to `grilling` for structured decision-making. This is a soft cap (a "should", not a "must"): more rounds are permitted if the LLM can justify that the trajectory is converging. The hand-off to `grilling` is the preferred escape hatch when the situation is a genuine multi-decision exploration.
+After three rounds of clarifying questions, the LLM should propose a default in prose. This is a soft cap (a "should", not a "must"): more rounds are permitted if the LLM can justify that the trajectory is converging.
 
 ## Validation
 

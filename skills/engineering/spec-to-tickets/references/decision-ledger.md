@@ -1,22 +1,20 @@
 # Decision Ledger
 
 The Decision Ledger is the durable record of every branch and clarifying
-interaction resolved during a grilling or design session. It is a single
+interaction resolved during a design or decision-elicitation session. It is a single
 markdown file that uses stable `Dxxx`, `Txxx`, and `Ixxx` IDs as the
 cross-reference key for every downstream consumer (memos, tickets,
-blueprints, specialized grilling sessions). When citing a record from
+blueprints, specialized decision-elicitation sessions). When citing a record from
 outside the ledger file, use the `filename#<Dxxx|Txxx|Ixxx>` format
 (e.g., `DECISIONS-repo-feature.md#D001`,
 `DECISIONS-repo-feature.md#I002`).
 
 This file is the **own copy** shipped with `spec-to-tickets`. It is
 identical to the canonical reference
-(`skills/engineering/grilling/references/decision-ledger.md`) except
+(`skills/engineering/technical-grilling/references/decision-ledger.md`) except
 for the `## When to Use` section below, which lists the skill-specific
-triggers for consulting this reference. The two other consumers that
-ship their own copies are `skill-architect` and (for the canonical,
-loaded via relative path) the child of `grilling`
-(`technical-grilling`).
+triggers for consulting this reference. The other consumer that
+ships its own copy is `skill-architect`.
 
 ## When to Use
 
@@ -293,7 +291,7 @@ The lifecycle of the ledger file differs by the skill that creates it:
   materialization** of the `SKILL.md` (the final step of
   `saving-the-skill.md`, after the file-validity checks pass). The
   deletion is conditional on file existence.
-- **Grilling group** (`grilling`, `technical-grilling`) - `docs/decisions/DECISIONS-*.md` is
+- **`technical-grilling`** - `docs/decisions/DECISIONS-*.md` is
   **persisted by default**. The agent issues a **post-session
   reminder** to delete the ledger from `docs/decisions/` once
   implementation of the resolved decisions is complete. The reminder
@@ -308,7 +306,6 @@ The lifecycle of the ledger file differs by the skill that creates it:
 
 | Skill                              | Storage location                                | Created             | Deleted by             |
 |------------------------------------|-------------------------------------------------|---------------------|------------------------|
-| `grilling`                         | `docs/decisions/DECISIONS-<repo>-<feature>.md` | First append        | User (post-session)    |
 | `technical-grilling`               | `docs/decisions/DECISIONS-<repo>-<feature>.md` | First append        | User (post-session)    |
 | `skill-architect`                  | `<target-skill-dir>/.design-ledger.md`          | Step 1 / first append | `saving-the-skill.md` |
 | `spec-to-tickets`                  | Input ledger (read+write) or none              | n/a - consumes       | User (post-creation)   |

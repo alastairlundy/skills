@@ -145,7 +145,7 @@ Completion criterion: every accepted file is written; the `## Agent skills` bloc
 Report the following four components:
 
 - (a) **Confirmation** that the four `docs/agents/*.md` files were written (or skipped, per Step 6 declines) and the `## Agent skills` block was updated.
-- (b) **Skill mapping** - a small table mapping each `docs/agents/*.md` file to the skills that read it (e.g., `issue-tracker.md` ← `triage`, `domain.md` ← `technical-grilling`, `decision-ledger-audit.md` ← `grilling` / `dependency-review`).
+- (b) **Skill mapping** - a small table mapping each `docs/agents/*.md` file to the skills that read it (e.g., `issue-tracker.md` ← `triage`, `domain.md` ← `technical-grilling`, `decision-ledger-audit.md` ← `technical-grilling` / `dependency-review`).
 - (c) **Edit-directly note** - "you can edit any of these files directly; the in-place update logic preserves your changes on re-run".
 - (d) **Re-run note** - "re-run this skill to switch issue trackers, update triage labels, or change the domain-docs layout".
 
