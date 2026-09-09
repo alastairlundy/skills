@@ -16,7 +16,9 @@ program_graders:
     description: >
       Verifies the post-pick step wrote a new Dxxx or Txxx record to the
       Decision Ledger file with a Driver field, confirmed the new record
-      is the last record in its stream, and the file has all three sentinels.
+      is the last record in its stream, the file has all three sentinels,
+      and any Ixxx records present are completed clarifying interactions
+      (no TBD, no locked-question or goal-discovery phrasing).
     config:
       command: "powershell"
       args:

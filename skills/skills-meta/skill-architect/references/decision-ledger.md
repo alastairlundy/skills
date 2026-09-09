@@ -117,7 +117,10 @@ agent a persistent, up-to-date record to reference in later branches,
 and they let the user spot a missing or weakened entry at the next
 branch and correct it before drift compounds.
 
-For `Ixxx` records, the append fires in two steps:
+For `Ixxx` records, the append fires in two steps. Both steps apply
+only to clarifying interactions as defined under *What counts as a
+clarifying interaction* in the Ixxx record template section below -
+never to a fixed elicitation prompt:
 
 1. **Pre-question append.** Before presenting the verbatim review
    question, the value-proposition clarification, or any other
@@ -125,11 +128,11 @@ For `Ixxx` records, the append fires in two steps:
    `Prompt` field filled and the other three fields marked `TBD`,
    then bump the `<!-- next-i: Ixxx -->` sentinel. The `TBD`
    placeholders are placeholders, not a permanent state.
-2. **Post-response complete.** After the user answers and the branch
-   resolves, edit the same `Ixxx` record in place to fill `User
-   Response`, `Resolution`, and `Notes` with the user's exact words
-   and the agent's notes. Read-back to confirm the four fields are now
-   filled and the `Ixxx` is in its expected position in the file.
+2. **Post-response complete.** After the user answers, edit the same
+   `Ixxx` record in place to fill `User Response`, `Resolution`, and
+   `Notes` with the user's exact words and the agent's notes. Read-back
+   to confirm the four fields are now filled and the `Ixxx` is in its
+   expected position in the file.
 
 ## Dxxx record template
 
@@ -208,7 +211,9 @@ not used by `skill-architect`. The full template is in
 - `Prompt` is the **verbatim** agent text that was presented to the
   user - the verbatim review question, the value-proposition
   clarification, the scope-declaration confirmation, or any other
-  clarifying prompt. Do not paraphrase the prompt.
+  clarifying prompt. Do not paraphrase the prompt. For a user-posed
+  clarifying interaction, prefix the verbatim user question with
+  `<user-posed>`; the agent's answer goes in `Resolution`.
 - `User Response` is the **verbatim** user text that answered the
   prompt, or a close paraphrase the user has explicitly accepted. It
   is not the agent's summary. If the user answered with multiple
@@ -225,6 +230,52 @@ not used by `skill-architect`. The full template is in
   other three fields - non-load-bearing parts of the user response,
   cross-references to a `Dxxx` record the interaction drove, or edge
   cases the user named in passing.
+
+### What counts as a clarifying interaction
+
+An `Ixxx` record is appended only for a **clarifying interaction**: a
+question that resolves an ambiguity, contradiction, or missing piece of
+information that the fixed elicitation prompts do not already elicit,
+and without which the current step cannot proceed. The interaction may
+be agent-posed (the agent asks the user) or user-posed (the user asks
+the agent mid-step).
+
+**Never append an `Ixxx` record for a fixed elicitation prompt** - a
+question the workflow asks in every session, in a fixed format, whose
+outcome is already captured elsewhere. In a `technical-grilling`
+session these are:
+
+- **The goal-discovery question** - the response is the goal record
+  (`Dxxx`).
+- **Locked branch questions** - the context block, options table, and
+  recommendation are the fixed elicitation format; the user's choice is
+  recorded as a `Dxxx`/`Txxx` record.
+- **Re-asks** - the DEFERRED re-ask closure records the outcome on the
+  branch's own record; no separate record is created for the re-ask.
+- **Gate A locked-item confirmations** - confirmed settled items are
+  recorded as `Dxxx`/`Txxx` with Resolved Answer = "Resolved (by
+  provided spec)".
+- **Gate B readiness, output selection, and the exit gate** - fixed
+  workflow prompts whose outcomes are recorded in the ledger or the
+  plan output.
+- **Term-resolution and ADR offers** - the acceptance is recorded by
+  the `GLOSSARY.md` write, the ADR, or the branch's own record.
+
+Other skills govern their own fixed elicitation prompts in their
+`SKILL.md` and `## When to Use` sections.
+
+**Clarifying interactions include** (non-exhaustive):
+
+- The user's answer to a prior prompt is ambiguous, contradictory, or
+  missing a load-bearing detail, and a single-sentence follow-up
+  resolves it before the current step proceeds.
+- The spec, codebase, or ledger surfaces a conflict or coverage gap the
+  fixed prompts cannot express, and the question is asked before the
+  affected step commits.
+- The session's scope or intent is ambiguous and the workflow permits
+  one clarifying question to pin it down.
+- The user poses a clarifying question mid-step that affects how the
+  step resolves.
 
 ### TBD placeholder pattern
 

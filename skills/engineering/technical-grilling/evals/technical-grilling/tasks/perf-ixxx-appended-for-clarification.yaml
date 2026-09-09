@@ -1,0 +1,7 @@
+id: perf-ixxx-appended-for-clarification
+type: performance
+description: A genuine clarifying interaction (ambiguous user answer) is recorded as an Ixxx record appended before the clarifying question with TBD placeholders and completed in place after the response.
+input: |
+  Spec at docs/prds/feature-x.md: build an invoicing CLI where "the contact pays the invoice". The spec never defines whether "the contact" means the person messaging or the client organization they act for; treat this as the only ambiguity. Run technical-grilling.
+assertion: |
+  When the payer ambiguity surfaced, the agent asked a clarifying question and recorded exactly one `### [Ixxx]` record for it: appended before the clarifying question was presented (Prompt filled, User Response/Resolution/Notes marked TBD), then completed in place after the user answered (no TBD remaining, Prompt not amended, record not moved or duplicated). The clarification's Resolution names the Dxxx/Txxx record it disambiguated. No Ixxx record exists for locked branch questions, the goal-discovery question, Gate A/B or exit prompts, or re-asks.

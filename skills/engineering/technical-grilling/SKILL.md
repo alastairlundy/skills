@@ -299,6 +299,11 @@ transcript:
 - [ ] One Decision Ledger record appended immediately after every resolved
       branch (no batching). Multi-pick rounds wrote all records in one call.
 - [ ] Every record used a fresh `Dxxx`/`Txxx` ID and the inline template.
+- [ ] No `Ixxx` record was appended for a fixed elicitation prompt -
+      locked branch questions, the goal-discovery question, re-asks,
+      Gate A/B or exit prompts, or term-resolution/ADR offers; `Ixxx`
+      records appear only for clarifying interactions as defined in
+      `references/decision-ledger.md`.
 - [ ] Phase 1 used the 4-row context table; Phase 2 used the 5-row context
       table (with Spec section).
 - [ ] Term Resolution ran as a post-pick step; glossary terms proposed

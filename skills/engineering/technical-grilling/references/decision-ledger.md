@@ -106,18 +106,21 @@ its own records in a new single tool call, and verifies again. The trailing
 `<!-- next-d: Dxxx -->` sentinel is the single source of truth for
 the next ID.
 
-For `Ixxx` records, the append fires in two steps:
+For `Ixxx` records, the append fires in two steps. Both steps apply
+only to clarifying interactions as defined under *What counts as a
+clarifying interaction* in the Ixxx record template section below -
+never to a fixed elicitation prompt:
 
-1. **Pre-question append.** Before presenting the locked question line, append an `Ixxx` record with
-   the `Prompt` field filled and the other three fields marked `TBD`,
-   then bump the `<!-- next-i: Ixxx -->` sentinel. The `TBD`
-   placeholders are placeholders, not a permanent state.
-2. **Post-response complete.** After the user answers and the branch
-   resolves, edit the same `Ixxx` record in place to fill `User
-   Response`, `Resolution`, and `Notes` with the user's exact words
-   and the agent's notes. Read-back to confirm the four fields are now
-   filled and the `Ixxx` is in its expected position in the file.
-
+1. **Pre-question append.** Before presenting a clarifying question,
+   append an `Ixxx` record with the `Prompt` field filled and the
+   other three fields marked `TBD`, then bump the
+   `<!-- next-i: Ixxx -->` sentinel. The `TBD` placeholders are
+   placeholders, not a permanent state.
+2. **Post-response complete.** After the user answers, edit the same
+   `Ixxx` record in place to fill `User Response`, `Resolution`, and
+   `Notes` with the user's exact words and the agent's notes. Read-back
+   to confirm the four fields are now filled and the `Ixxx` is in its
+   expected position in the file.
 
 ## Conflict resolution mechanics
 
@@ -238,8 +241,12 @@ spec links. The full template is in
   sync, fall back to scanning the file for the highest existing `Ixxx`
   and re-seeding the sentinel before the next append.
 - `Prompt` is the **verbatim** agent text that was presented to the
-  user - the locked question line,
-  or a single-sentence clarification. Do not paraphrase the prompt.
+  user - a clarifying question posed outside the fixed elicitation
+  prompts (see *What counts as a clarifying interaction* below). Do not
+  paraphrase the prompt, and never use a locked question line, options
+  table, gate prompt, or exit prompt here. For a user-posed clarifying
+  interaction, prefix the verbatim user question with `<user-posed>`;
+  the agent's answer goes in `Resolution`.
 - `User Response` is the **verbatim** user text that answered the
   prompt, or a close paraphrase the user has explicitly accepted. It
   is not the agent's summary. If the user answered with multiple
@@ -254,6 +261,52 @@ spec links. The full template is in
   other three fields - non-load-bearing parts of the user response,
   cross-references to a `Dxxx`/`Txxx` record the interaction drove, or
   edge cases the user named in passing.
+
+### What counts as a clarifying interaction
+
+An `Ixxx` record is appended only for a **clarifying interaction**: a
+question that resolves an ambiguity, contradiction, or missing piece of
+information that the fixed elicitation prompts do not already elicit,
+and without which the current step cannot proceed. The interaction may
+be agent-posed (the agent asks the user) or user-posed (the user asks
+the agent mid-step).
+
+**Never append an `Ixxx` record for a fixed elicitation prompt** - a
+question the workflow asks in every session, in a fixed format, whose
+outcome is already captured elsewhere. In a `technical-grilling`
+session these are:
+
+- **The goal-discovery question** - the response is the goal record
+  (`Dxxx`).
+- **Locked branch questions** - the context block, options table, and
+  recommendation are the fixed elicitation format; the user's choice is
+  recorded as a `Dxxx`/`Txxx` record.
+- **Re-asks** - the DEFERRED re-ask closure records the outcome on the
+  branch's own record; no separate record is created for the re-ask.
+- **Gate A locked-item confirmations** - confirmed settled items are
+  recorded as `Dxxx`/`Txxx` with Resolved Answer = "Resolved (by
+  provided spec)".
+- **Gate B readiness, output selection, and the exit gate** - fixed
+  workflow prompts whose outcomes are recorded in the ledger or the
+  plan output.
+- **Term-resolution and ADR offers** - the acceptance is recorded by
+  the `GLOSSARY.md` write, the ADR, or the branch's own record.
+
+Other skills govern their own fixed elicitation prompts in their
+`SKILL.md` and `## When to Use` sections.
+
+**Clarifying interactions include** (non-exhaustive):
+
+- The user's answer to a prior prompt is ambiguous, contradictory, or
+  missing a load-bearing detail, and a single-sentence follow-up
+  resolves it before the current step proceeds.
+- The spec, codebase, or ledger surfaces a conflict or coverage gap the
+  fixed prompts cannot express, and the question is asked before the
+  affected step commits.
+- The session's scope or intent is ambiguous and the workflow permits
+  one clarifying question to pin it down.
+- The user poses a clarifying question mid-step that affects how the
+  step resolves.
 
 ### TBD placeholder pattern
 
@@ -343,16 +396,17 @@ about ledgers when none is provided.
   the payment flow.
 - **Constraints**: `None.`
 
-### [I001] - payment direction
+### [I001] - payer ambiguity
 
-- **Prompt**: "What are you working toward in this decision? You may
-  answer, or skip and see the options as-is."
-- **User Response**: "I want the platform fee to be transparent and
-  deducted before the freelancer receives funds."
-- **Resolution**: drove the framing of the options for D002 toward a
-  payer-side fee model; recommended Option 1 on this basis.
-- **Notes**: the user also mentioned the freelancer's tax
-  responsibilities in passing, deferred to a later branch.
+- **Prompt**: "When you say the contact pays - do you mean the person
+  messaging, or the client organization they act for?"
+- **User Response**: "The client organization - and the platform fee
+  is transparent and deducted before the freelancer receives funds."
+- **Resolution**: disambiguated the payer before D002 resolved; the
+  client organization is the payer in D002's Normalized Requirement,
+  and the fee-transparency motivation is D003's Driver.
+- **Notes**: agent-posed follow-up after the user's initial answer for
+  D002 was ambiguous; the fee detail was stated in passing.
 
 ### [D002] - who hires whom
 

@@ -1,0 +1,7 @@
+id: perf-no-ixxx-for-locked-questions
+type: performance
+description: Fixed elicitation prompts (locked branch questions, goal discovery, gate/exit prompts, re-asks) produce no Ixxx records; only genuine clarifying interactions do.
+input: |
+  Spec at docs/prds/feature-x.md: build a CLI tool that watches a directory for new markdown files and indexes them into SQLite. The spec pins the language (C# with .NET 8), the storage (SQLite via Microsoft.Data.Sqlite), and the project structure (single console project). Run technical-grilling.
+assertion: |
+  The Decision Ledger contains no `### [Ixxx]` records: the locked branch questions (context block, options table, recommendation), the goal-discovery question, Gate A/B and exit prompts, and any re-asks are recorded only as Dxxx/Txxx records or the goal record. The trailing `<!-- next-i: -->` sentinel still reads I001. No Ixxx record's Prompt contains locked-question phrasing ("pick an option", "hybridize") or goal-discovery phrasing ("You may answer, or skip").
