@@ -4,4 +4,4 @@ description: Non-interactive run uses top-level-dirs grouping for Step 1 and "Gl
 input: |
   Generate a changelog for the repo between v1.0.0 and HEAD. (No user input will be provided; treat this as a non-interactive run.)
 assertion: |
-  Output groups changes by top-level directories (excluding `docs/`, `.github/`, and `tests/`), matching the Step 1 no-project-files fallback. The first section's title is "Global" (the Step 4 fallback). No user prompts were issued during the run.
+  Output groups changes by top-level directories (excluding `docs/`, `.github/`, and `tests/`), matching the Step 1 no-project-files fallback. The first sub-project section's heading is `### Global (defaulted)` (the Step 4 fallback, H3 under the version heading). No user prompts were issued during the run.

@@ -1,11 +1,13 @@
 ---
 name: write-changelog
 description: >-
-  Generates an ecosystem-aware, user-facing markdown changelog by analyzing git history, transforming commit messages, and categorizing changes into logical sub-projects. Use when the user wants to write a changelog/release notes, or wants to know what happened between two specified versions. Do not use for summarizing git commit changes.
+  Generates an ecosystem-aware, user-facing markdown changelog in the Keep a Changelog 1.1.0 format by analyzing git history, transforming commit messages, and categorizing changes into logical sub-projects. Use when the user wants to write a changelog/release notes, or wants to know what happened between two specified versions. Do not use for summarizing git commit changes.
 license: MIT
 ---
 
 # Write changelog
+
+Format note: the output format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) (MIT, created and maintained by Olivier Lacan). Categories, heading shapes, and section order follow that specification.
 
 ## When to Use
 
@@ -28,7 +30,6 @@ The 5-commit threshold is a default, not a hard rule; a user may override by ign
 | Prior Git Tag/Commit | Yes | The starting point of the changelog range. |
 | Target Branch/Commit | No | The end point of the range. Defaults to current HEAD. |
 | Destination file | No | Path to save the output. If omitted, outputs to the conversation. |
-| Use Emojis | No | Prefix category headings with emoji (🆕 ⚙️ ⚠️ 🗑️ 🐛 📄). Set to "No" for plain text. Defaults to "Yes". |
 
 ## Workflow
 
@@ -49,22 +50,24 @@ The 5-commit threshold is a default, not a hard rule; a user may override by ign
 - **Empty-range guard**: if the retrieved commit list is empty, emit a one-line human-readable explanation ("The commit range is empty - no changelog to generate.") followed by the parseable error marker from `references/ci-integration.md` (`[CHANGELOG-MARKER] empty-range` with `prior:` and `target:` lines). Do not write a changelog. The CI wrapper translates the marker into a non-zero exit code.
 - For each commit, determine the category using a tiered analysis:
     1. **Conventional Commit Check**: if the commit message has a Conventional Commit prefix, map it to the corresponding category using the table below.
-    2. **Diff Analysis**: if the prefix is absent or the mapping is ambiguous, analyze the `git diff` for additions, removals, or modifications.
-    3. **User Guidance**: if still unclear, present the commit message and diff to the user and ask for the correct category and description.
+    2. **Security Check**: if the commit message contains a `security:` prefix, a CVE reference (`CVE-YYYY-NNNNN`), or a GHSA reference (`GHSA-xxxx-xxxx-xxxx`), classify the commit as Security regardless of any other prefix. The security check may be applied at tier 1 alongside the prefix check.
+    3. **Diff Analysis**: if the prefix is absent, the mapping is ambiguous, and no security reference is present, analyze the `git diff` for additions, removals, or modifications.
+    4. **User Guidance**: if still unclear, present the commit message and diff to the user and ask for the correct category and description.
 
 Conventional Commit prefix mapping (co-located with the tier list so the two do not drift):
 
 | Prefix | Category |
 |--------|----------|
-| `feat:` | Additions |
-| `fix:` | Bug Fixes |
-| `refactor:` | Modifications |
-| `perf:` | Modifications |
-| `docs:` | Non Source Code |
-| `chore:` | Modifications |
-| (no prefix) | Modifications (default) |
+| `feat:` | Added |
+| `fix:` | Fixed |
+| `security:` | Security |
+| `refactor:` | Changed |
+| `perf:` | Changed |
+| `docs:` | Changed |
+| `chore:` | Changed |
+| (no prefix) | Changed (default) |
 
-**Autonomous-mode rule** (when the ask-questions skill is unavailable or the user declines): the Conventional Commit prefix mapping above is the primary signal; tier 2 (diff analysis) may be applied, but tier 3 (user prompt) is skipped and the default "Modifications" is used. The dependency-classification rule (Step 5) is the secondary signal that overrides the prefix for `chore:`-prefixed commits that touch dependency files.
+**Autonomous-mode rule** (when the ask-questions skill is unavailable or the user declines): the Conventional Commit prefix mapping above is the primary signal; tier 3 (diff analysis) may be applied, but tier 4 (user prompt) is skipped and the default "Changed" is used. The dependency-classification rule (Step 5) is the secondary signal that overrides the prefix for `chore:`-prefixed commits that touch dependency files.
 
 ### Step 3: Message transformation
 - Rewrite commit messages to be "changelog style":
@@ -73,36 +76,47 @@ Conventional Commit prefix mapping (co-located with the tier list so the two do 
     - Summarize long, rambling messages into concise, impact-focused sentences.
     - Validate the transformation against the diff to ensure no meaning is lost.
 
-### Step 4: Global section title selection
-- Analyze the repo structure to recommend a title for the first changelog section:
+### Step 4: Sub-project section title selection
+- Analyze the repo structure to recommend a title for the first changelog sub-project section (an H3 heading inside the version section, see Step 5):
     - **Global** - recommended when the repo root contains mixed content (docs, CI, scripts, config).
     - **All Packages** - recommended for monorepos with multiple sub-projects (see glossary in Step 1).
     - **All Projects** - recommended for solution-based repos (e.g., .NET `.sln` with multiple `.csproj`).
 - **Step 4.1 - User choice**: present exactly three choices - "Global", "All Packages", "All Projects" - and ask the user to pick one via the ask-questions skill. Do not offer a free-form "Other (specify)" option; the three named options are the only choices.
-- **Step 4.2 - Fallback**: if the ask-questions skill is unavailable or the user declines, default to "Global" and surface the default in the output by appending `(defaulted)` to the section header (e.g., `## Global (defaulted)`). The marker is local to the section header and must not break downstream CHANGELOG consumers (linters, release pipelines) - see `references/ci-integration.md` for the marker contract.
+- **Step 4.2 - Fallback**: if the ask-questions skill is unavailable or the user declines, default to "Global" and surface the default in the output by appending `(defaulted)` to the sub-project section header (e.g., `### Global (defaulted)`). The marker is local to the section header and must not break downstream CHANGELOG consumers (linters, release pipelines) - see `references/ci-integration.md` for the marker contract.
 
 ### Step 5: Markdown construction
-- Start the document with: `## Changes since [Prior Git Tag]`
-- **Emoji-to-category mapping** (table is the source of truth; the prose below uses the same mapping in the same order - update the table and the prose together to prevent drift):
+- **Preamble** (emitted when creating a new file; skipped when appending to an existing file that already has it):
 
-    | Emoji | Category |
-    |-------|----------|
-    | 🆕 | Additions |
-    | ⚙️ | Modifications |
-    | ⚠️ | Deprecations |
-    | 🗑️ | Removals |
-    | 🐛 | Bug Fixes |
-    | 📄 | Non Source Code |
+    ```markdown
+    # Changelog
 
-    *📄 Non Source Code = documentation, configuration, assets, and any other change that is not source code. The Keep-a-Changelog "Documentation" category is a strict subset of this. (The scope note and the category name must be updated together to prevent drift - see the table above and the prose below.)*
+    All notable changes to this project will be documented in this file.
 
-- Organize the layout as follows:
-    1. **Global Section** (title from Step 4): Changes at the root or in global folders. If dependency updates exist, split them into the following sub-sections (only include sub-sections that have entries):
-        - **Runtime Dependencies**: Package/dependency updates for library or runtime projects.
-        - **CI Dependencies**: GitHub Actions, analyzers, build tooling, and CI configuration changes.
-        - **Testing Dependencies**: Test framework packages and test infrastructure updates.
-    2. **Sub-project Sections**: Grouped by the sub-projects identified in Step 1.
-        - **Dependency updates within a sub-project**: appear as inline `⚙️ Modifications` entries within that sub-project's section, with no Runtime/CI/Testing sub-categories.
+    The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
+    and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+    ```
+
+    Omit the "adheres to Semantic Versioning" sentence when the prior tag is not a semver tag.
+
+- **Version heading**: use tag as-is (no semver normalization):
+    - `## [<Prior Tag as-is>] - <YYYY-MM-DD>` where the date is the tag's creation date. The date format is ISO 8601 (year-month-day), per Keep a Changelog.
+    - **Unreleased**: when the target is HEAD and the user did not provide a final version, use `## [Unreleased]` with no date.
+- **Layout hierarchy**:
+    1. `## [<version>] - <date>` (version heading, H2)
+    2. Sub-project section (H3): the title from Step 4, or the sub-project name. Sub-project sections appear only when 2 or more project files were detected (Step 1 threshold).
+    3. Category headings (H4), in Keep a Changelog order, omitted when empty: `#### Added`, `#### Changed`, `#### Deprecated`, `#### Removed`, `#### Fixed`, `#### Security`.
+- **Category definitions** (source: Keep a Changelog - do not rename or reorder): `Added` for new features; `Changed` for changes in existing functionality; `Deprecated` for soon-to-be removed features; `Removed` for now removed features; `Fixed` for any bug fixes; `Security` in case of vulnerabilities. Category headings are plain text - no emoji prefixes.
+- **Uses for each category**:
+
+    | Category | Conventional Commit prefixes | Examples |
+    |----------|------------------------------|----------|
+    | Added | `feat:` | New features, new sub-commands, new package exports |
+    | Changed | `refactor:`, `perf:`, `docs:`, `chore:` | Refactors, performance work, doc/config/asset updates |
+    | Deprecated | (diff analysis) | API marked `[Obsolete]`, deprecation warnings added |
+    | Removed | (diff analysis) | Deleted features, dropped package exports |
+    | Fixed | `fix:` | Bug fixes, crash fixes |
+    | Security | `security:`, CVE/GHSA refs | Vulnerability patches, dependency bumps fixing CVEs |
+
 - **Dependency classification** (source of truth: `references/dependency-classification.md`): classify each dependency update as Runtime, CI, or Testing using the rule in the reference file. Load `references/dependency-classification.md` before classifying any commit that touches a dependency file - the inline summary below mirrors the reference and the two must be updated together.
 
     Inline summary:
@@ -115,35 +129,41 @@ Conventional Commit prefix mapping (co-located with the tier list so the two do 
 
     Tie-breaker for ambiguous cases: classify by file path, not by dependency name. Files in `.github/workflows/`, build scripts, or named `*rc*` / `*.config.*` are CI; files matching `*Tests*` / `*Spec*` / `*Test*` are Testing; everything else is Runtime.
 
-- Within each section, group changes by category. Categories follow Keep-a-Changelog order; the Security category is omitted (security-related fixes land in 🐛 Bug Fixes). Categories appear in the following order: 🆕 Additions, ⚙️ Modifications, ⚠️ Deprecations, 🗑️ Removals, 🐛 Bug Fixes, 📄 Non Source Code. When `Use Emojis: Yes` (the default), each category heading is prefixed with the emoji shown in the table above; when `Use Emojis: No`, each category is rendered as a plain bold heading with no prefix. The table and the prose below share the same mapping and must be updated together if the mapping ever changes.
-- **Non Source Code** = documentation, configuration, assets, and any other change that is not source code. The Keep-a-Changelog "Documentation" category is a strict subset of this. (The scope note and the category name must be updated together to prevent drift - see the table above and this prose.)
+- Within each section, group changes by category using the headings above. The Runtime/CI/Testing dependency sub-groups remain sub-bullets under the section's `#### Changed` (or the category their commits map to) - keep the sub-group labels (Runtime Dependencies, CI Dependencies, Testing Dependencies) as bold run-in labels, not markdown headings.
 - Use markdown bullet points for each entry.
+- **Link footer**: when the remote URL is derivable from `git remote`, append a link-reference definition block at the end of the document comparing the previous tag to this one:
+
+    ```markdown
+    [<version>]: https://github.com/<owner>/<repo>/compare/<previous-tag>...<tag>
+    ```
+
+    Use the repo's actual host (GitHub, GitLab, etc.). Skip the footer silently when no remote is derivable.
 
 ### Step 6: Output phase
-- If a destination file is provided and does not exist, write the final markdown to that path.
+- If a destination file is provided and does not exist, write the final markdown to that path (including the Preamble).
 - If the destination file already exists, present a three-way choice (interactive run):
     1. **Overwrite** - replace the existing file.
-    2. **Append** - append a new `## Changes since <prior>` section to the existing file.
+    2. **Append** - insert a new `## [<version>] - <date>` section above the existing newest version section (Keep a Changelog is reverse chronological); do not duplicate the Preamble.
     3. **Refuse** - do not write to disk. Output the final markdown to the conversation and surface a one-line offer: "Say `write to <path>` to save to a new location."
-- **Autonomous mode**: the three-way choice collapses to a deterministic default (overwrite is the safest for an unattended CI run; the follow-up branch tracked under D003's open follow-up may revise this). When the user explicitly refuses overwrite in interactive mode, no file is written.
+- **Autonomous mode**: the three-way choice collapses to a deterministic default (overwrite is the safest for an unattended CI run; an open follow-up may revise this). When the user explicitly refuses overwrite in interactive mode, no file is written.
 - When no destination is provided, output the final markdown string to the conversation. In non-interactive runs, the skill applies the Step 1, Step 2, and Step 4 fallbacks above and does not prompt the user.
 
 ## Validation
 
-- [ ] The header accurately reflects the starting Git tag.
+- [ ] The version heading matches `## [<tag-as-is>] - <YYYY-MM-DD>` (ISO 8601 date, tag used without rewriting); `## [Unreleased]` is used when the target is HEAD with no final version.
+- [ ] New files carry the Keep a Changelog preamble; appends to existing files do not duplicate it.
 - [ ] Step 1's first-run probe ran and any pre-existing changelog (`CHANGELOG.md`, `HISTORY.md`, `RELEASES.md`, `docs/changelog.md`) was surfaced before the destination was named.
 - [ ] Step 1's directory exclusion used `.gitignore` plus the `docs/` / `.github/` / `tests/` carve-outs (or the inline-list fallback when `.gitignore` is absent or unparseable).
-- [ ] Sub-project sections appear only when 2 or more project files were detected at the top level.
+- [ ] Sub-project sections appear only when 2 or more project files were detected at the top level, as H3 headings.
 - [ ] Step 2's empty-range guard emitted the `[CHANGELOG-MARKER] empty-range` marker when the commit list was empty; no changelog was written.
-- [ ] Each commit's category was determined via the tiered analysis (Conventional Commit prefix → diff analysis → user prompt) using the mapping table in Step 2.
-- [ ] Step 4 presented exactly three named choices ("Global", "All Packages", "All Projects"); no "Other (specify)" option was offered. When the fallback ran, the section header carries the `(defaulted)` marker.
-- [ ] Step 5's emoji table and the prose category order share the same mapping and were updated together.
+- [ ] Each commit's category was determined via the tiered analysis (Conventional Commit prefix → security reference → diff analysis → user prompt) using the mapping table in Step 2.
+- [ ] Category headings are plain `#### Added` / `#### Changed` / `#### Deprecated` / `#### Removed` / `#### Fixed` / `#### Security`, in Keep a Changelog order, with empty categories omitted; no emoji or "Non Source Code" headings appear.
+- [ ] Step 4 presented exactly three named choices ("Global", "All Packages", "All Projects"); no "Other (specify)" option was offered. When the fallback ran, the sub-project heading carries the `(defaulted)` marker.
 - [ ] Step 5's dependency classification used `references/dependency-classification.md` (loaded before any dependency commit was classified) and the inline summary mirrors the reference.
 - [ ] Commit messages are transformed from developer-style to user-facing style.
-- [ ] "Non Source Code" changes are appropriately split between Global and Sub-project sections.
-- [ ] Global dependency sub-sections (Runtime, CI, Testing) are only present when they contain entries.
-- [ ] Toggling the `Use Emojis` input flips the presence of emoji prefixes on category headings (default = emojis present).
-- [ ] Step 6's three-way choice (overwrite / append / refuse) was offered when the destination already existed; on refusal, the final markdown was output to the conversation with the one-line "write to `<path>`" offer.
+- [ ] Global dependency sub-groups (Runtime, CI, Testing) appear as bold run-in labels only when they contain entries.
+- [ ] The link footer contains a compare link for the new version when the remote URL was derivable; no footer when it was not.
+- [ ] Step 6's three-way choice (overwrite / append / refuse) was offered when the destination already existed; on append, the new section was inserted above the existing newest version; on refusal, the final markdown was output to the conversation with the one-line "write to `<path>`" offer.
 
 ## Common pitfalls
 
@@ -151,8 +171,9 @@ Conventional Commit prefix mapping (co-located with the tier list so the two do 
 |---------|----------|
 | Incorrect project mapping | Ensure the discovery process prioritises project files over simple directory names, and only introduces sub-project sections at the 2+ project file threshold. |
 | Over-simplifying messages | Always validate the rewritten message against the `git diff` to ensure technical accuracy. |
-| Missing category | Fall back to "Modifications" if a change is source-code related but doesn't fit elsewhere. |
+| Missing category | Fall back to "Changed" if a change is source-code related but doesn't fit elsewhere. |
+| Prose version heading | Emit `## [X] - YYYY-MM-DD`, never `## Changes since X`. |
+| Rewriting a non-semver tag | Use the tag as-is inside the brackets; never invent a version number. |
 | Treating "Sub-projects" and "Packages" as synonyms | Use "Sub-projects" as the standard term; "Package" is a Sub-project that is BOTH a library AND distributable via a package manager (see glossary in Step 1). |
 | Empty-range commit list | Emit the `[CHANGELOG-MARKER] empty-range` marker from Step 2; do not write a changelog. |
-| Drift between the inline emoji table and the prose category order | Update the table and the prose in the same edit (Step 5). |
 | Drift between the inline dependency-classification summary and the reference file | Update `SKILL.md` and `references/dependency-classification.md` in the same edit (Step 5). |

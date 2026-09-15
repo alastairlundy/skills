@@ -1,7 +1,7 @@
 id: perf-keep-a-changelog-order
 type: performance
-description: Category headings appear in Keep-a-Changelog order, with Security omitted.
+description: Category headings (H4) appear in the Keep-a-Changelog order, inside H3 sub-project sections, with no emoji prefixes.
 input: |
-  Generate a changelog for the repo between v1.0.0 and HEAD. The repo has commits spanning all categories (additions, modifications, deprecations, removals, bug fixes, non-source-code).
+  Generate a changelog for the repo between v1.0.0 and HEAD. The repo has commits spanning all categories (added, changed, deprecated, removed, fixed, security).
 assertion: |
-  Output contains category headings in this order: Additions, Modifications, Deprecations, Removals, Bug Fixes, Non Source Code. No "Security" heading is present.
+  Within the version section (## [<tag>] - <date>), the H3 sub-project section contains category headings in this order: Added, Changed, Deprecated, Removed, Fixed, Security. No heading contains an emoji, and no "Documentation" or "Non Source Code" heading is present.

@@ -1,7 +1,7 @@
 id: perf-deps-inline-in-subproject
 type: performance
-description: Dependency updates within a sub-project appear inline as `⚙️ Modifications` inside that sub-project's section, not under Global.
+description: Dependency updates within a sub-project appear inline as a `Changed` entry inside that sub-project's section, not under Global.
 input: |
   Generate a changelog for this monorepo between v2.0.0 and HEAD. The `packages/api` sub-project had its `package.json` dependency on `express` bumped from 4.x to 5.x.
 assertion: |
-  Output contains a `packages/api` sub-project section. The dependency bump appears as a `⚙️ Modifications` entry inside that section, not under a "Global" / "Runtime Dependencies" / "CI Dependencies" / "Testing Dependencies" sub-section. The Global section's Runtime/CI/Testing sub-categories contain no entry for this bump.
+  Output contains a `packages/api` sub-project section (H3 heading). The dependency bump appears as a `Changed` entry (H4 `#### Changed`) inside that section, not under a "Global" / "Runtime Dependencies" / "CI Dependencies" / "Testing Dependencies" sub-group. The Global section's Runtime/CI/Testing sub-groups contain no entry for this bump.

@@ -1,0 +1,7 @@
+id: perf-kac-heading-format
+type: performance
+description: Version heading follows the Keep-a-Changelog shape with the tag used as-is, and a new file carries the Keep-a-Changelog preamble.
+input: |
+  Create CHANGELOG.md for this repo covering v1.0.0 to HEAD. The tag v1.0.0 was created on 2026-03-04.
+assertion: |
+  Output contains a version heading matching `## [v1.0.0] - 2026-03-04` (tag as-is, ISO 8601 date). The file starts with the Keep-a-Changelog preamble (`# Changelog` and the "based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)" line). No heading of the form `## Changes since ...` and no emoji-prefixed category heading appears. Categories are H4 headings nested under an H3 sub-project section, not under the version heading directly for a multi-project repo (single-project repos may use a single H3 Global section).
