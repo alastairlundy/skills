@@ -31,9 +31,8 @@ and needs to:
   weaving decision). The `Driver` field captures the user's underlying
   principle or motivation.
 - Append a new `Ixxx` clarifying-interaction record before presenting
-  the verbatim review question ("Does this translation of your intent
-  into deterministic actions accurately capture what you want the
-  agent to do?"), the value-proposition clarification (when the
+  the Step 3 review question (asked in the agent's own words, not a
+  fixed script), the value-proposition clarification (when the
   inference is unclear), the scope declaration confirmation, or any
   other clarifying prompt to the user. The `Ixxx` is anchored to the
   prompt that was actually presented.
@@ -122,7 +121,7 @@ only to clarifying interactions as defined under *What counts as a
 clarifying interaction* in the Ixxx record template section below -
 never to a fixed elicitation prompt:
 
-1. **Pre-question append.** Before presenting the verbatim review
+1. **Pre-question append.** Before presenting the Step 3 review
    question, the value-proposition clarification, or any other
    clarifying prompt to the user, append an `Ixxx` record with the
    `Prompt` field filled and the other three fields marked `TBD`,
@@ -209,7 +208,7 @@ not used by `skill-architect`. The full template is in
   sync, fall back to scanning the file for the highest existing `Ixxx`
   and re-seeding the sentinel before the next append.
 - `Prompt` is the **verbatim** agent text that was presented to the
-  user - the verbatim review question, the value-proposition
+  user - the Step 3 review question, the value-proposition
   clarification, the scope-declaration confirmation, or any other
   clarifying prompt. Do not paraphrase the prompt. For a user-posed
   clarifying interaction, prefix the verbatim user question with
@@ -218,9 +217,10 @@ not used by `skill-architect`. The full template is in
   prompt, or a close paraphrase the user has explicitly accepted. It
   is not the agent's summary. If the user answered with multiple
   sentences, capture the load-bearing sentence and put the rest in
-  `Notes`. The three fixed response types in Step 3
-  ("Accept AS IS" / "Requires Modifications" / "Reject") are recorded
-  verbatim here.
+  `Notes`. The Step 3 review outcome (acceptance / modification
+  request / rejection, interpreted from the user's natural-language
+  reply) is recorded here, with the user's own words in `User
+  Response` and the interpreted outcome in `Resolution`.
 - `Resolution` describes what the response was used for - which
   branch it accepted, which modification it requested, which
   constraint it surfaced. If the response is a deferred or non-answer
