@@ -203,6 +203,12 @@ Follow the implementation-planning workflow:
 5. **Consolidated Implementation Plan**: produce the plan in the chosen
    format, grouped by file, citing `Dxxx`/`Txxx`.
 
+**Option credibility rule.** Every option presented in an options table
+must be a credible, achievable choice. Do not include options labelled
+"impossible", "not feasible", or similarly dismissive. If an approach is
+genuinely blocked, omit it from the table and note the constraint
+separately in the Decision Ledger record.
+
 ### Convergence
 
 After the last branch in a round, run the 5-check convergence test from
@@ -327,3 +333,6 @@ transcript:
       Option column carries exactly one bold span - the recommended
       option's full label - and every other cell renders as plain text
       with zero `**` characters.
+- [ ] Every option in every options table is a credible, achievable
+      choice; no option cell contains "impossible", "not feasible", or
+      equivalent dismissive language.
