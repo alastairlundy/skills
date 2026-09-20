@@ -286,7 +286,7 @@ session these are:
 - **Gate A locked-item confirmations** - confirmed settled items are
   recorded as `Dxxx`/`Txxx` with Resolved Answer = "Resolved (by
   provided spec)".
-- **Gate B readiness, output selection, and the exit gate** - fixed
+- **Gate B readiness and blueprint filename confirmation** - fixed
   workflow prompts whose outcomes are recorded in the ledger or the
   plan output.
 - **Term-resolution and ADR offers** - the acceptance is recorded by

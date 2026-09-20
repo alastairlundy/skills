@@ -1,0 +1,7 @@
+id: perf-blueprint-binding-sections-present
+type: performance
+description: Implementation Blueprint carries Scope Binding and Ledger Reference sections with filename#Dxxx/Txxx citations. No fabricated section numbers, step counts, or 'section N of' framing.
+input: |
+  Spec at docs/prds/feature-x.md: build a CLI tool that watches a directory for new markdown files and indexes them into SQLite. Run technical-grilling.
+assertion: |
+  The Implementation Blueprint includes a Scope Binding section (Linked Spec, Decision Ledger path, single-spec validity notice) and a Ledger Reference section listing every cited Dxxx/Txxx record. Body statements that satisfy a functional requirement cite records inline with filename#<Dxxx|Txxx> format. Output does not contain fabricated section numbers, invented step counts, or 'section N of M' style framing (e.g., 'section 3 of 5', 'step 5 of 6').

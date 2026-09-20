@@ -1,0 +1,7 @@
+id: perf-blueprint-emitted-on-every-run
+type: performance
+description: The Implementation Blueprint is produced on every workflow run that reaches Phase 2, not sometimes omitted.
+input: |
+  Spec at docs/prds/payment-service.md: payment service with idempotent charges. Run technical-grilling.
+assertion: |
+  Output contains the Implementation Blueprint at endpoint, grouped by file and citing Dxxx/Txxx records, with a Scope Binding section and a Ledger Reference section. The output is not missing the blueprint.

@@ -83,9 +83,9 @@ reference files exist and are readable. Then load and read in full:
 - recording-decisions.md - *eager*. The `Txxx` record template.
 - interface-and-model-branch.md - *lazy*. Load before Phase 2 interface
   decisions.
-- output-selection.md - *lazy*. Load before the output-format question.
+- output-selection.md - *lazy*. Load before the blueprint filename
+  confirmation.
 - validation.md - *lazy*. Load before convergence.
-- terminal-output.md - *lazy*. Load before the terminal handoff template.
 
 Apply the formats verbatim. If any file is missing or unreadable, abort and
 report the missing path.
@@ -150,11 +150,9 @@ Follow the concept-alignment workflow:
 
 Phase 1 ends here **only** when the captured session intent is
 `concept-only` (the user explicitly stated they wanted terminology or
-concept alignment and nothing further). In that case, proceed to the Exit
-gate and offer "document the decision." For any other intent
+concept alignment and nothing further). In that case, run the convergence check. For any other intent
 (`concept-then-implementation` or `implementation-only`), Phase 1 must flow
-into Gate B and Phase 2 - do **not** stop, and do **not** present the Exit
-gate as a session end.
+into Gate B and Phase 2 - do **not** stop.
 
 ### Gate B: Concept-readiness (anti-skip)
 
@@ -178,8 +176,7 @@ without concept readiness" as a violation.
 (and the session intent is not `concept-only`), the skill proceeds
 **directly** into Phase 2 without re-asking the user whether to continue.
 Immediately open the first Phase 2 foundation branch (Language) using the
-5-row context block. Do not stop at Gate B, do not present the Exit gate,
-and do not wait for the user to request Phase 2 - continuation is
+5-row context block. Do not stop at Gate and do not wait for the user to request Phase 2 - continuation is
 automatic.
 
 ### Phase 2: Implementation planning
@@ -197,15 +194,17 @@ Follow the implementation-planning workflow:
    user; branch titles use the `Txxx` ID.
 3. **Interface & Model Branch** (optional): load
    references/interface-and-model-branch.md before asking.
-4. **Output Selection** (required): load references/output-selection.md;
-   ask the user to choose Implementation Blueprint vs PRD Augmentation and
-   the downstream consumer. Do not produce the plan in this step.
-5. **Consolidated Implementation Plan**: produce the plan in the chosen
-   format, grouped by file, citing `Dxxx`/`Txxx`.
+4. **Blueprint Filename Confirmation** (required): load
+   references/output-selection.md; surface the derived blueprint
+   filename and ask the user to confirm the name before writing. If
+   the user wants a different name, adjust the filename before
+   writing. Do not produce the plan in this step.
+5. **Implementation Blueprint**: produce the Implementation Blueprint,
+   grouped by file, citing `Dxxx`/`Txxx`.
 
 **Option credibility rule.** Every option presented in an options table
-must be a credible, achievable choice. Do not include options labelled
-"impossible", "not feasible", or similarly dismissive. If an approach is
+must be a credible, achievable choice. Do not include options that are
+"impossible", "not feasible", or are otherwise unrealistic. If an approach is
 genuinely blocked, omit it from the table and note the constraint
 separately in the Decision Ledger record.
 
@@ -216,40 +215,10 @@ references/convergence-test.md. If any check fails, continue
 or re-open the affected branch. When all five pass, offer close-out; the
 user decides.
 
-### Exit gate
-
-Before listing exits, ask: "Will resolving this require writing code?"
-with Yes / No / I'm not sure (skip if unambiguous). Every exit that drives
-downstream work includes the Decision Ledger path so downstream skills can
-cite records as filename#`Dxxx`/`Txxx`:
-
-| Path | Drives downstream work? | Ledger path required? |
-|------|------------------------|------------------------|
-| Hand off to `spec-to-tickets` | Yes | Yes |
-| Handoff to another agent | Yes | Yes |
-| Custom Save | No | No |
-
-**Do not auto-execute the exit.** The agent's job ends at emitting the
-handoff template and the Decision Ledger path. It must **not** itself launch
-the downstream consumer (e.g., run `spec-to-tickets`, file issues, or spawn
-the target agent) unless the user has **explicitly requested** that the agent
-perform it in this turn. A user selecting an exit is a decision, not a signal
-to begin execution.
-
-**Prefer a fresh session for the downstream consumer.** If the current
-context is large or the session has produced many branches/records,
-recommend that the user start the downstream workflow (such as
-`spec-to-tickets`) in a **new session** with the Decision Ledger path and
-spec/blueprint as the only inputs. This keeps the downstream run free of
-this session's context and avoids context bloat. State this as a one-line
-suggestion; do not start the new session yourself.
-
 ### Post-session deletion reminder
 
-The Decision Ledger is **persisted by default**. After the chosen exit,
-remind the user in one short turn that it remains on disk and can be
-deleted once implementation is complete. Suppress the reminder when the
-exit hands off to `spec-to-tickets`.
+The Decision Ledger is **persisted by default**. Remind the user that it remains on disk and can be
+deleted once implementation is complete.
 
 ## References
 
@@ -262,7 +231,6 @@ exit hands off to `spec-to-tickets`.
 - interface-and-model-branch.md - lazy
 - output-selection.md - lazy
 - validation.md - lazy
-- terminal-output.md - lazy
 
 ## Validation
 
@@ -276,7 +244,7 @@ transcript:
       and the missing file was reported.
 
 ### Gate A (spec/ledger intake)
-- [ ] Existing Decision Ledger and/or supplied spec/PRD were detected
+- [ ] Existing Decision Ledger and/or supplied spec were detected
       before any branch opened.
 - [ ] Settled decisions from the supplied artifact were summarized to the
       user.
@@ -307,7 +275,7 @@ transcript:
 - [ ] Every record used a fresh `Dxxx`/`Txxx` ID and the inline template.
 - [ ] No `Ixxx` record was appended for a fixed elicitation prompt -
       locked branch questions, the goal-discovery question, re-asks,
-      Gate A/B or exit prompts, or term-resolution/ADR offers; `Ixxx`
+      Gate A/B, or term-resolution/ADR offers; `Ixxx`
       records appear only for clarifying interactions as defined in
       `references/decision-ledger.md`.
 - [ ] Phase 1 used the 4-row context table; Phase 2 used the 5-row context
@@ -318,14 +286,12 @@ transcript:
       branches; branch titles used `Txxx`, never "TDP".
 - [ ] Conflict detection ran before each branch resolution.
 - [ ] Convergence was a per-round check; close-out offered, user decided.
-- [ ] Output-selection question asked; format + consumer recorded before
-      the Consolidated Implementation Plan was produced.
-- [ ] Consolidated Implementation Plan produced at endpoint in chosen
-      format, grouped by file, citing `Dxxx`/`Txxx`.
-- [ ] Exit gate asked; chosen exit handed off with Decision Ledger path.
+- [ ] Blueprint filename confirmation asked; filename confirmed before
+      the Implementation Blueprint was produced.
+- [ ] Implementation Blueprint produced at endpoint, grouped by file,
+      citing `Dxxx`/`Txxx`.
 - [ ] Every citation used filename#`Dxxx`/`Txxx` format.
-- [ ] Post-session deletion reminder emitted (suppressed for
-      `spec-to-tickets` handoff).
+- [ ] Post-session deletion reminder emitted
 - [ ] For every options table emitted during the session, the bolded row
       letter equals the `Recommendation:` letter (mechanical check passed
       before writing the recommendation line).
@@ -334,5 +300,4 @@ transcript:
       option's full label - and every other cell renders as plain text
       with zero `**` characters.
 - [ ] Every option in every options table is a credible, achievable
-      choice; no option cell contains "impossible", "not feasible", or
-      equivalent dismissive language.
+      choice; no option is "impossible" or "not feasible".

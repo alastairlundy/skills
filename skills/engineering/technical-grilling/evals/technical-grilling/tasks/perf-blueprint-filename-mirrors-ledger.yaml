@@ -1,0 +1,7 @@
+id: perf-blueprint-filename-mirrors-ledger
+type: performance
+description: Step 7.1 (filename confirmation) prompt shows a feature-based blueprint filename mirroring the Decision Ledger stem, not a bare IMPLEMENTATION.md.
+input: |
+  Spec at docs/prds/feature-x.md: build a CLI todo app. Run technical-grilling.
+assertion: |
+  Step 7.1 filename confirmation prompt shows a blueprint filename of the form IMPLEMENTATION-<repo>-<feature>.md mirroring the Decision Ledger filename stem (DECISIONS-<repo>-<feature>.md becomes IMPLEMENTATION-<repo>-<feature>.md). The output contains a confirmation prompt of the shape 'I'm going to write the blueprint to IMPLEMENTATION-....md ...' with a feature-based stem indicative of the ledger's work. The output does not propose writing to a bare IMPLEMENTATION.md, a date-stamped name, or an issue-number-only name.

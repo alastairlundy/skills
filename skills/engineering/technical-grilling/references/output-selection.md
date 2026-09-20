@@ -1,57 +1,28 @@
-### Step 7: Output Selection
+### Step 7: Implementation Blueprint Exit
 
-This is a **required** step - do not skip it or defer the format
-decision to Step 8.5. Present the user with the following two-part
-choice, one part at a time. The format and consumer captured here drive
-template selection in the Terminal Output section (Step 8) and the
-production of the Consolidated Implementation Plan (Step 8.5); the
-artifact named "Implementation Blueprint" here is the standalone-file
-form of that plan.
+This is a **required** step - do not skip it. The Implementation
+Blueprint is the sole exit: a standalone-file Consolidated
+Implementation Plan. There is no format selection and no downstream
+consumer selection.
 
-#### Preamble format cap (rule, not example)
-
-Each preamble the agent emits before presenting options for a branch
-question is capped at **2 sentences maximum**, with mandatory
-ID-citation of the relevant prior record(s):
-
-- **1 sentence** for simple questions - the preamble is the ID
-  reference alone.
-- **2 sentences** for complex questions - the first sentence is the
-  ID reference, the second adds the specific constraint or
-  discriminator the user is being asked to weigh.
-
-The rule is a length cap plus an ID-citation requirement; no verbatim
-example is encoded. The preamble must not exceed 2 sentences, and the
-first sentence must always carry the `Dxxx`/`Txxx` reference.
-
-**Part A: Output format**
-
-Each option below uses this skill's 3-field option
-format: **What it is** / **Benefit** / **Cost**, in that
-order. Each field is exactly one sentence. All three fields are
-required.
-
-**Option A: Implementation Blueprint (Recommended)**
+**Implementation Blueprint**
 
 - **What it is**: A standalone blueprint file at the repo root, with
   a `Scope Binding` section that links the blueprint to the source
   spec and the Decision Ledger.
-- **Benefit**: High clarity; is a clean "Context Pointer"
-  for tickets, keeping the PRD focused on "What".
-- **Cost**: A temporary file overhead and an extra artifact to keep
-  in sync with the PRD.
-- **Filename derivation**: Derive the blueprint filename from the
-  spec's identifying token by input type - file path → basename
-  without extension (e.g., `docs/prds/feature-x.md` →
-  `IMPLEMENTATION-feature-x.md`); issue tracker reference → issue
-  number (e.g., `#123` → `IMPLEMENTATION-123.md`); conversation
-  context → date prefix in `YYYY-MM-DD` form (e.g., `Conversation
-  context (2026-06-15)` → `IMPLEMENTATION-2026-06-15.md`). When
-  the spec is referenced by more than one input type, resolve the
-  filename using the strict total ordering **file path > issue
-  tracker reference > conversation context** - pick the
-  highest-precedence source present. The default location is the
-  repo root.
+- **Filename derivation**: Mirror the Decision Ledger filename so the
+  blueprint is paired with the work it records -
+  `docs/decisions/DECISIONS-<repo>-<feature>.md` →
+  `IMPLEMENTATION-<repo>-<feature>.md` (e.g.,
+  `docs/decisions/DECISIONS-acme-store-tab-session-restore.md` →
+  `IMPLEMENTATION-acme-store-tab-session-restore.md`). The
+  `<repo>-<feature>` stem is feature-based and indicative of the
+  work the ledger deals with. If no ledger file exists yet, derive
+  the stem with the ledger path rules in
+  `references/decision-ledger.md` (working repository directory
+  name + kebab-case topic slug from the goal record). The default
+  location is the repo root. Never use a bare `IMPLEMENTATION.md`,
+  a date stamp, or an issue number as the stem.
 - **Scope Binding contents**: The blueprint must include
   `Linked Spec: <path_to_spec>`,
   `Decision Ledger: <ledger-path>`, and a notice that the
@@ -69,56 +40,12 @@ required.
   listing every `Dxxx` and `Txxx` record the blueprint cites, so a
   reader can audit the binding in one pass.
 
-**Option B: PRD Augmentation**
+**Step 7.1: Filename confirmation (required)**
 
-- **What it is**: Appending a "Technical Implementation" section to
-  the existing spec/PRD.
-- **Benefit**: Single source of truth; no fragmented files to
-  reconcile.
-- **Cost**: High-level requirements and low-level technical detail
-  live in the same document, making each harder to scan.
-- **Ledger Binding (Option B)**: The appended Technical
-  Implementation section must inline-cite the `Dxxx`/`Txxx`
-  records using `filename#<Dxxx|Txxx>` format, and must open with a
-  `Decision Ledger: <ledger-path>` pointer so readers can audit
-  the binding.
+Surface the resolved filename in a confirmation prompt (e.g., *"I'm
+going to write the blueprint to
+`IMPLEMENTATION-acme-store-tab-session-restore.md` at
+the repo root - OK?"*). If the user wants a different name, adjust
+the filename before writing.
 
-**Part B: Downstream consumer**
-
-- **Ticket consumer**: hand off to a workflow that auto-decomposes
-  the spec and blueprint into a dependency graph of implementation
-  tickets.
-- **Issue tracker**: hand off to a workflow that files the spec and
-  blueprint as issues in the issue tracker.
-- **Manual handoff**: no automated decomposition; the user takes
-  the artifacts from here.
-
-#### Recommendation rule
-
-Option A (Implementation Blueprint) is the recommended option. When
-presenting Part A:
-
-1. **Table highlight**: Bold the recommended option's full label in
-   the table. Do not append `(Recommended)` or any other annotation;
-   the bold alone is the signal. See
-   `references/options-format.md` for the bolding discipline
-   and inline-code rule that govern the Option column.
-2. **Recommendation text**: The recommendation line below the table
-   must recommend Option A, not Option B. The recommendation text and
-   the table highlight must always agree - if Option A is highlighted,
-   the recommendation must say Option A; if Option B is highlighted,
-   the recommendation must say Option B. Never highlight one option in
-   the table and recommend a different one underneath.
-
-**Step 7.1: Filename confirmation (Option A only)**
-
-If the user chose Option A (Implementation Blueprint), surface the
-resolved filename in a confirmation prompt (e.g., *"I'm going to
-write the blueprint to `IMPLEMENTATION-feature-x.md` at the repo
-root - OK?"*). If the user wants a different name, adjust the
-filename before writing. Skip this step entirely if the user chose
-Option B (PRD Augmentation).
-
-Captured: Output format = Option A | Option B; Downstream consumer
-= ticket consumer | issue tracker | manual handoff. The captured
-choices drive template selection in the Terminal Output section.
+Captured: blueprint filename confirmed before writing.

@@ -1,0 +1,7 @@
+id: perf-no-output-selection-offered
+type: performance
+description: No output-format choice and no downstream-consumer choice is offered; the Implementation Blueprint is the sole exit and no downstream skill is named as a handoff.
+input: |
+  Spec at docs/prds/feature-x.md: build a CLI todo app. Run technical-grilling.
+assertion: |
+  The output contains no output-format question (no Implementation Blueprint vs PRD Augmentation choice) and no downstream-consumer question (no ticket consumer / issue tracker / manual handoff choice). The output names no specific downstream skill (e.g., 'spec-to-tickets', 'to-issues') as a handoff instruction. The workflow proceeds to blueprint filename confirmation and produces the Implementation Blueprint.

@@ -154,7 +154,7 @@ Interface, Contract, DTO, and Model definitions now?"*
   interface resolution means these details must be determined during
   implementation. This will likely result in more 'Collaborative'
   tickets that require human-in-the-loop intervention."* Then skip
-  directly to Step 7 (Output Selection).
+  directly to Step 7 (Blueprint Filename Confirmation).
 - **If Yes**: Walk through three sequenced phases. The phases are
   sequential, not nested - once a phase transitions, do not
   interleave its decisions back into a later phase. Each phase uses
