@@ -125,7 +125,7 @@ reject all, or hybridize.
 - **More than four options.** A question with five-plus options is
   usually two decisions bundled together. Split it.
 - **A "default" option that the user is steered into.** All options must
-  be defensible. If the agent believes one is correct, it is the
+  be defensible and logical. If the agent believes one is correct, it is the
   recommendation, not an option.
 - **"Same as Option N" fields.** Each option must stand on its own. The
   four columns are how the user discriminates; shared columns defeat the

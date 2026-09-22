@@ -82,7 +82,7 @@ Organization.
 
 ## Client Organization
 
-The legal entity that invoices and pays for the freelancer\'s work.
+The legal entity that invoices and pays for the freelancer's work.
 ```
 
 The Decision Ledger record and the `GLOSSARY.md` entry have the same

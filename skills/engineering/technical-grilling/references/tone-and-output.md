@@ -28,7 +28,7 @@ forbidden even if it is not on the list.
 
 ## Acknowledgement openers are permitted
 
-`Right`, `OK`, `Got it`, `Understood` are neutral confirmations of what
+`OK`, `Got it`, `Understood` are neutral confirmations of what
 the user said, not evaluative reactions. They are allowed.
 
 ## Neutral mirroring

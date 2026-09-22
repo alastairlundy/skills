@@ -58,7 +58,7 @@ later record with a Supersedes: `Dxxx` line.
 
 When all five checks pass at the end of a round, the agent may prompt
 for close-out: "All checks pass. Ready to close out, or shall we
-open the next round?" The user decides whether to stop. Do not declare
+open another round?" The user decides whether to stop. Do not declare
 convergence based on intent or partial progress.
 
 ## User sign-off (mandatory)
