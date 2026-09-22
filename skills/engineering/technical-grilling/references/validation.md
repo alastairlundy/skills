@@ -60,8 +60,6 @@ transcript:
 - [ ] **Visible Checklist**: If Interfaces were resolved, was a
       single-line running checklist emitted after each type
       introduction in Phase 3?
-- [ ] **Output Choice**: Did the user choose between a Blueprint
-      and PRD augmentation after seeing trade-offs?
 - [ ] **Alignment Check**: Was a final pass performed to ensure
       the technical "how" supports the functional "what"?
 - [ ] **Goal-aligned reasoning**: Does every recommendation's
@@ -75,15 +73,8 @@ transcript:
 - [ ] **Ledger Coverage**: Does every blueprint body statement
       that satisfies a functional requirement inline-cite a
       `Dxxx`/`Txxx` record using `filename#<Dxxx|Txxx>` format,
-      and does the blueprint (or augmented PRD) list every cited
+      and does the blueprint list every cited
       record in a `## Ledger Reference` / `Decision Ledger:` section?
-- [ ] **Scope Binding**: If the user chose Option A
-      (Implementation Blueprint), does the blueprint explicitly
-      link to the specific PRD, the Decision Ledger, and warn
-      against cross-spec application? If the user chose Option B
-      (PRD Augmentation), does the augmented spec include the
-      Scope Binding notice and the `Decision Ledger:` pointer in
-      the appended Technical Implementation section?
-- [ ] **Pass/Fail Gate**: Has the Terminal Output block been
-      emitted with the Decision Ledger path substituted into
-      `<ledger-path>`? If no, the workflow is incomplete.
+- [ ] **Scope Binding**: Does the blueprint explicitly
+      link to the Decision Ledger, and warn
+      against cross-spec application?
