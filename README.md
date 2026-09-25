@@ -26,6 +26,7 @@ Domain-specific tasks for software development workflows.
 
 | Skill | Description | Notes | 
 |-------|-------------|-------|
+| [architecture-survey](skills/engineering/architecture-survey/) | Survey a codebase for deepening opportunities, present candidates as a visual HTML report, then grill the chosen one via `technical-grilling`. Reads ADRs and Decision Ledgers as survey memory. | Fork of Matt Pocock's ``improve-codebase-architecture`` skill, rewired for this repo's GLOSSARY.md, technical-grilling, and decision-ledger conventions. |
 | [spec-to-tickets](skills/engineering/spec-to-tickets/) | Break specs, PRDs, or conversation context into focused tickets sized by coherence, with dependency ordering. Outputs to issue trackers or local markdown. | Inspired by Matt Pocock's ``to-issues`` skill. |
 | [technical-grilling](skills/engineering/technical-grilling/) | Technical decision elicitation - concept/domain alignment (bounded contexts, glossary, terminology) and spec-driven implementation planning (language, framework, dependencies, structure). | |
 | [write-changelog](skills/engineering/write-changelog/) | Generate user-facing changelogs from git history. Analyzes commits, groups changes by sub-project, supports tag ranges. | |

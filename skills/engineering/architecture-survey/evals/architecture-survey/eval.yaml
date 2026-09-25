@@ -1,0 +1,5 @@
+name: architecture-survey
+description: >-
+  Evaluates architecture-survey trigger discipline (survey vs. build-the-refactor vs. dependency
+  health) and performance on the survey contract: scope-before-scan from git churn, probe-based
+  candidate filtering, HTML report shape, vocabulary discipline, and the technical-grilling handoff.

@@ -1,0 +1,15 @@
+id: no-trigger-pr-diff-review
+name: No trigger on single-diff review
+description: Does NOT trigger when the user wants a review of one PR diff rather than a codebase survey.
+inputs:
+  prompt: |
+    Review the diff on PR 214 and tell me if the new caching layer is structured well.
+expected:
+  should_trigger: false
+graders:
+  - type: trigger
+    name: should-not-trigger-architecture-survey
+    config:
+      skill_path: skills/engineering/architecture-survey
+      mode: negative
+      threshold: 0.4

@@ -1,0 +1,15 @@
+id: no-trigger-build-refactor
+name: No trigger on direct refactor implementation
+description: Does NOT trigger when the user asks to build a chosen refactor immediately.
+inputs:
+  prompt: |
+    Take the OrderIntake class, collapse those four wrapper classes into it and update the tests. Start now.
+expected:
+  should_trigger: false
+graders:
+  - type: trigger
+    name: should-not-trigger-architecture-survey
+    config:
+      skill_path: skills/engineering/architecture-survey
+      mode: negative
+      threshold: 0.4

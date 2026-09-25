@@ -1,0 +1,6 @@
+id: trigger-named-module
+type: trigger
+description: Triggers when the user names a module and asks whether its interface should be deeper.
+input: |
+  The billing module's interface keeps growing and callers still need to know five invariants to use it safely. Survey it for deepening opportunities.
+expected: trigger

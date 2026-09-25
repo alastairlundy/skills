@@ -1,0 +1,15 @@
+id: no-trigger-dependency-health
+name: No trigger on dependency audit
+description: Does NOT trigger when the question is about third-party package health.
+inputs:
+  prompt: |
+    Which of our npm packages are unmaintained, stale, or no longer earning their keep? Generate a dependency report.
+expected:
+  should_trigger: false
+graders:
+  - type: trigger
+    name: should-not-trigger-architecture-survey
+    config:
+      skill_path: skills/engineering/architecture-survey
+      mode: negative
+      threshold: 0.4

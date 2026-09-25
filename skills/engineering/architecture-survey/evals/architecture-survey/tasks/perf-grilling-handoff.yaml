@@ -1,0 +1,17 @@
+id: perf-grilling-handoff
+type: performance
+description: >-
+  After the user picks a candidate, the run hands off to technical-grilling and maintains the
+  domain model: glossary updates inline, ADR offered for load-bearing rejections.
+input: |
+  From your survey report, I want to explore the second candidate, the one about collapsing the
+  invoice pricing wrappers. Actually no - drop that one, we tried consolidating pricing in 2024
+  and the multi-currency constraint means each wrapper must stay independent per regulator.
+  Explore the third candidate instead.
+assertion: |
+  The run invokes the technical-grilling skill on the third candidate rather than interviewing
+  freehand. For the rejected second candidate, the run checks that technical-grilling records
+  the multi-currency regulatory constraint in its Decision Ledger (docs/decisions/, created
+  lazily), and it offers no ADR for the rejection. It does not re-pitch that candidate. If a
+  new domain concept is named during the session, it is added to GLOSSARY.md; no glossary or
+  ledger writes happen before the handoff.

@@ -1,0 +1,15 @@
+id: perf-scope-before-scan
+type: performance
+description: >-
+  Scope is selected from git churn before scanning, and project docs (GLOSSARY.md, docs/adr/)
+  are consulted when present.
+input: |
+  Run an architecture survey on this repository. I have no particular area in mind, just tell me
+  where the deepening opportunities are.
+assertion: |
+  Before reading source code for candidates, the run inspects recent git history (e.g.
+  "git log --oneline") and names the hot-spot paths it chose as the scope (3-5 paths, or an
+  explicit statement that churn is absent or flat so it widened to source roots). It reads
+  GLOSSARY.md, docs/adr/, and docs/decisions/ when they exist, scanning ledgers for records
+  that rejected earlier survey candidates, or states that they are absent. It loads the
+  skill's design vocabulary before producing any candidate.

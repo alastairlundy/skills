@@ -1,0 +1,15 @@
+id: perf-vocabulary-discipline
+type: performance
+description: >-
+  Candidates are phrased in the design vocabulary with probe evidence and the deletion test,
+  and never drift into banned synonyms.
+input: |
+  The reporting code is a mess of handler, processor, manager, and helper classes around one
+  Invoice object. What would you deepen?
+assertion: |
+  Every finding names the files involved, at least one probe from the skill's probe list
+  (concept bouncing, shallowness, locality theft, seam leakage, test surface), and the deletion
+  test result stating whether deleting the module would concentrate complexity or just move it.
+  The prose uses module, interface, depth, seam, adapter, leverage, and locality as defined by
+  the skill's design vocabulary, and does not substitute component, service, API, boundary,
+  layer, or wrapper for those terms.

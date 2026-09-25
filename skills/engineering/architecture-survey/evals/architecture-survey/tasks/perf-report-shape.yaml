@@ -1,0 +1,16 @@
+id: perf-report-shape
+type: performance
+description: >-
+  The report is a self-contained HTML file in the temp directory with cards, badges, diagrams,
+  and a Top recommendation section; nothing is written into the repo.
+input: |
+  Survey the notification subsystem for deepening opportunities and give me the visual report.
+assertion: |
+  The run writes one self-contained HTML file under the OS temp directory (resolved from
+  $TMPDIR, %TEMP%, or /tmp) named architecture-survey-<repo>-<timestamp>.html, opens it for the
+  user, and states the absolute path. No new files land in the repository. The report uses
+  Tailwind and Mermaid from CDNs, gives each candidate (3-7 of them) a card with Files, Problem,
+  Solution, Wins, a before/after diagram, and a strength badge drawn from Strong, Worth
+  exploring, or Speculative, mixes Mermaid with hand-built visuals, ends with a Top
+  recommendation section, and asks the user which candidate to explore without proposing
+  replacement interfaces beforehand.

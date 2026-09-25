@@ -1,0 +1,6 @@
+id: trigger-survey-request
+type: trigger
+description: Triggers when user asks to scan an actively changing codebase for refactoring opportunities before a milestone.
+input: |
+  Our checkout service has gotten harder to change with every feature we add. Can you scan the codebase for refactoring opportunities and show me which modules should be restructured? I want the report before we plan the next milestone.
+expected: trigger
