@@ -1,0 +1,7 @@
+id: perf-clarification-corrections-in-place
+type: performance
+description: A clarifying interaction (ambiguous answer, false assumption, misread spec fact) is folded into the affected Dxxx/Txxx record - no dedicated interaction record, no ledger record left resting on wrong information.
+input: |
+  Spec at docs/prds/feature-x.md: build a CLI tool that watches a directory for new markdown files and indexes them into SQLite. During the session the user reveals mid-branch that the tool must also run offline (the original branch answer assumed online-only), and gives an initially ambiguous answer about who owns the schema. Run technical-grilling.
+assertion: |
+  No dedicated interaction records: the ledger contains only Dxxx and Txxx records (plus the goal record), and no `### [Ixxx]` records exist. The offline requirement and the schema-owner ambiguity resolve into the corresponding Dxxx/Txxx records themselves - the affected record's Normalized Requirement/Constraints are corrected in place (same ID, same position, no replacement record appended), and the offline capability appears as a constraint or its own resolved branch. The record that the ambiguous answer would have weakened is not left carrying the wrong assumption; the transcript shows the agent asking the clarifying question and then updating the record.

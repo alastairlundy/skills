@@ -1,0 +1,23 @@
+id: perf-spec-ambiguity-reclassification
+type: performance
+description: >
+  Gate A must not launder spec vagueness into locked decisions: an item
+  whose spec wording is vague, silent, or contradictory is re-classified
+  open and grilled, even when the user confirms it as locked. Locked
+  status is recorded only where the spec text actually answers the item.
+input: |
+  Spec at docs/prds/feature-x.md for a markdown-to-SQLite indexing CLI.
+  §2 says "storage should be fast" without naming an engine or schema
+  ownership; §3.1 says "the CLI should also export the index";
+  §3.2 says exports must be atomic. The user confirms every spec item as
+  locked ("the spec covers all of it"). Run technical-grilling.
+assertion: |
+  The agent did not record Resolved (by provided spec) for items the spec
+  does not answer. Items whose spec wording is vague, silent, or
+  contradictory ("storage should be fast" - no engine or schema owner;
+  "should also export" - undefined export surface) were re-classified as
+  open and told to the user, and branches were opened for them instead of
+  being recorded as spec-locked. Recorded Resolved (by provided spec)
+  appears only where the spec text actually resolves an item; locked
+  items counted as surface coverage are cited to the specific spec
+  section that answers them.

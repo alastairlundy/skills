@@ -73,8 +73,16 @@ contexts. The map identifies the location of each.
 - When re-opening a branch, state which new information triggered it
   and what specifically needs revisiting.
 - **Convergence check.** Before declaring convergence, run the
-  four-check convergence test from
-  `references/convergence-test.md`.
+  six-check convergence test from `references/convergence-test.md`.
+  Check 6 (Coverage) walks the decision surface defined
+  in `references/coverage-sweep.md`.
+- **Scope exclusions at re-open time.** When a later discovery
+  narrows or extends the session's scope, record the exclusion or
+  the new scope in the goal record's `Constraints` (or a Supersedes
+  goal record per `references/decision-ledger.md`) at that turn.
+  Exclusions recorded only at close-out are discovered by the
+  coverage sweep as unsupported Out-of-scope outcomes; record them
+  at the turn they arise.
 
 ### Challenge against the glossary
 

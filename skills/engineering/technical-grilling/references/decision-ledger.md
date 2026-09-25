@@ -1,13 +1,12 @@
 # Decision Ledger
 
-The Decision Ledger is the durable record of every branch and clarifying
-interaction resolved during a `technical-grilling` session. It is a single
-markdown file that uses stable `Dxxx`, `Txxx`, and `Ixxx` IDs as the
-cross-reference key for every downstream consumer (memos, tickets,
-blueprints). When citing a record from
-outside the ledger file, use the `filename#<Dxxx|Txxx|Ixxx>` format
-(e.g., `DECISIONS-repo-feature.md#D001`,
-`DECISIONS-repo-feature.md#I002`).
+The Decision Ledger is the durable record of every branch resolved
+during a `technical-grilling` session. It is a single markdown file
+that uses stable `Dxxx` and `Txxx` IDs as the cross-reference key for
+every downstream consumer (memos, tickets, blueprints). When citing a
+record from outside the ledger file, use the
+`filename#<Dxxx|Txxx>` format (e.g.,
+`DECISIONS-repo-feature.md#D001`).
 
 The canonical reference is this file. Two other consumers
 (`skill-architect`, `spec-to-tickets`) ship their own copies
@@ -38,28 +37,29 @@ Examples:
 
 ## File format
 
-A ledger file uses three parallel ID streams:
+A ledger file uses two parallel ID streams:
 
 - `Dxxx` - formal design decisions. Zero-padded sequence: `D001`, `D002`,
   `D003`, …
 - `Txxx` - technical decisions emitted by `technical-grilling`.
   Zero-padded sequence: `T001`, `T002`, `T003`, …
-- `Ixxx` - clarifying interactions. Zero-padded sequence: `I001`, `I002`,
-  `I003`, …
 
-Each stream is independent - `Dxxx` and `Ixxx` counters both start at
-`001` and are bumped separately. The streams do not share ID space.
+Each stream is independent - the `Dxxx` and `Txxx` counters both start
+at `001` and are bumped separately. The streams do not share ID space.
+
+Legacy compatibility: older ledgers may contain an `Ixxx` stream
+(clarifying interactions). Read those records as historical interactives
+but do not append new ones, edit them, or maintain their sentinel.
 
 ### Sentinel comments for next append IDs
 
 Every ledger file ends with one HTML-style sentinel comment per active
-stream. A `technical-grilling` ledger records `Dxxx`, `Txxx`, and
-`Ixxx` and ends with three sentinels:
+stream. A `technical-grilling` ledger records `Dxxx` and `Txxx` and
+ends with two sentinels:
 
 ```md
 <!-- next-d: Dxxx -->
 <!-- next-t: Txxx -->
-<!-- next-i: Ixxx -->
 ```
 
 The agent reads each sentinel (via a targeted `read` or `grep`) to find
@@ -70,8 +70,10 @@ sentinel to the next available ID.
 
 If a sentinel is missing or out of sync with the highest existing ID
 in its stream, fall back to scanning the file for the highest existing
-`Dxxx` / `Txxx` / `Ixxx` and re-seeding the sentinel before the next
-append on that stream.
+`Dxxx` / `Txxx` and re-seeding the sentinel before the next
+append on that stream. A legacy ledger may still carry a
+`<!-- next-i: Ixxx -->` sentinel; leave it in place (do not maintain,
+re-seed, or interpret it as an active append point).
 
 ## Lazy creation
 
@@ -81,9 +83,9 @@ create the directory during the initialization summary; create it on
 the first real append.
 
 When the ledger file is created
-lazily on first append, it must include all three ID-stream sentinels
-(`next-d`, `next-t`, `next-i`), seeded at the initial IDs (`D001`,
-`T001`, `I001`), not only the stream being appended.
+lazily on first append, it must include both ID-stream sentinels
+(`next-d`, `next-t`), seeded at the initial IDs (`D001`,
+`T001`), not only the stream being appended.
 
 ## Real-time appending
 
@@ -106,21 +108,22 @@ its own records in a new single tool call, and verifies again. The trailing
 `<!-- next-d: Dxxx -->` sentinel is the single source of truth for
 the next ID.
 
-For `Ixxx` records, the append fires in two steps. Both steps apply
-only to clarifying interactions as defined under *What counts as a
-clarifying interaction* in the Ixxx record template section below -
-never to a fixed elicitation prompt:
+## Record correction
 
-1. **Pre-question append.** Before presenting a clarifying question,
-   append an `Ixxx` record with the `Prompt` field filled and the
-   other three fields marked `TBD`, then bump the
-   `<!-- next-i: Ixxx -->` sentinel. The `TBD` placeholders are
-   placeholders, not a permanent state.
-2. **Post-response complete.** After the user answers, edit the same
-   `Ixxx` record in place to fill `User Response`, `Resolution`, and
-   `Notes` with the user's exact words and the agent's notes. Read-back
-   to confirm the four fields are now filled and the `Ixxx` is in its
-   expected position in the file.
+When a resolved: `Dxxx`/`Txxx` record turns out to rest on a false
+assumption or wrong information (a misread spec, a clarified fact, an
+invalidated premise), correct the record itself. Identify which field
+carries the false content and rewrite that field in place: the
+`Normalized Requirement` and `Constraints` are the usual candidates,
+since they carry the agent's testable restatement of the decision.
+Never rewrite `Resolved Answer` except to correct a transcription
+error, and never move the record. For minor corrections, the field
+rewrite suffices; for load-bearing reversals, the dynamic-conflict
+mechanic applies instead (Supersedes record).
+
+If a record rests on an unresolved premise instead of a false one, do
+not silently correct: open the deferred branch, ask the user, and
+resolve it, then correct any affected records.
 
 ## Conflict resolution mechanics
 
@@ -150,18 +153,43 @@ Once the user confirms the new resolution, the new record gains a
 Supersedes: Dxxx line in Constraints pointing to the earlier record it
 replaces.
 
-### DEFERRED re-ask closure
+### DEFERRED closure
 
-Each branch may be re-asked at most once. After 1 re-ask with no
-clear answer, the branch closes with Resolved Answer = "DEFERRED"
-and a Constraints line noting why (e.g., "User did not provide a
-clear answer after final re-ask"). If a Dxxx record already exists
-for this branch, update it in place. If no Dxxx record exists yet
-(e.g., the user never provided a clear initial answer), create a
-new DEFERRED Dxxx record with the branch name and the constraints
-line. No separate record is created for the re-ask itself.
+A branch closes as DEFERRED **only** when the user explicitly defers
+it: the user's response names the deferral (a clear "defer",
+"later", or equivalent) or declines the branch after being shown the
+full resolution path. Silence, an unrelated answer, or an
+unacknowledged skip never produces a DEFERRED record - an
+unresolved branch stays open, and the convergence test keeps it on
+the surface until the user settles or defers it.
 
-The re-ask preamble is fixed and cited in locked-question-format.md.
+At closure: if a `Dxxx`/`Txxx` record already exists for the branch,
+update it in place; otherwise create a DEFERRED record for the
+branch. The DEFERRED record's `Constraints` line carries two
+entries: the user's deferral (verbatim, e.g., `User deferred: "defer
+to implementation"`) and the **fallback default** - the agent's
+recommendation from the round, stated as the resting state a
+downstream implementer falls back to when the user never settles the
+branch (e.g., `Default if unowned: the round's recommended
+option`). A DEFERRED record with no default leaves downstream readers
+no resting state; the convergence test's coverage check surfaces the
+gap at the next round boundary (`references/convergence-test.md`,
+check 6). Restating a fallback default in a later consumer (blueprint,
+tickets) must mark it as the agent-applied default, not as a
+user-confirmed decision.
+
+## DECLINED optional branches
+
+An optional branch the user declines (e.g., the Interface & Model
+branch) is a record, not a skip. Append a `Dxxx`/`Txxx` record for the
+declined branch with Resolved Answer = "DECLINED" and a `Constraints`
+line recording the decline reason and the recommended path forward
+(e.g., `Interfaces deferred to implementation; expect more
+Collaborative tickets`). The governing SKILL.md supplies the
+warning text before the decline is finalized; this rule fixes how the
+outcome is recorded. A DECLINED record appears in the close-out
+residual inventory as Deferred and in the blueprint's `## Deferrals
+and Defaults` section (`references/output-selection.md`).
 
 ## Dxxx record template
 
@@ -191,16 +219,28 @@ The re-ask preamble is fixed and cited in locked-question-format.md.
   a PRD acceptance criterion.
 - `Constraints` are negative requirements, edge cases, or defaults the
   user named (e.g., "Do not collapse multiple tabs into one session",
-  "All open tabs must survive restart"). If none, write `None.`
+  "All open tabs must survive restart"), and the unpinned sub-parts
+  of a composite answer: when the user's pick settles some sub-parts
+  of a branch and leaves others open, the unpinned sub-parts are
+  enumerated here (or promoted to follow-up branches at that turn -
+  see `references/convergence-test.md`, check 6). If none, write
+  `None.`
+- **Approval turn (mandatory).** For every resolved branch, the
+  content of `Normalized Requirement` and `Constraints` is drafted
+  by the agent but requires user approval before the session
+  continues. Emit the drafted fields and ask the user to confirm or
+  revise them; on revision, update the record in place and re-confirm.
+  The next branch does not open until the approval lands. A pick
+  without an approval turn is an unresolved branch, not a resolved
+  decision.
 
 ## Anti-fabrication rules
 
 - **Resolved Answer must come from a user response.** Never write a
   `Dxxx` record with a `Resolved Answer` that was not spoken by the
-  user. Do not fill the answer yourself. A skip or decline on the first
-  encounter triggers the single permitted re-ask (see DEFERRED re-ask
-  closure above); only after the re-ask also receives no clear answer
-  does the branch close with `DEFERRED`.
+  user. Do not fill the answer yourself. An unresolved branch stays
+  open, it does not close as DEFERRED without the user's explicit
+  deferral (see DEFERRED closure above).
 - **Never mark foundation or convergence complete without explicit user
   confirmation.** The LLM may observe that checks pass; it must not
   declare convergence or foundation-complete on its own authority. The
@@ -209,114 +249,39 @@ The re-ask preamble is fixed and cited in locked-question-format.md.
 - **Never fabricate or reconstruct a ledger from partial context.** If
   the ledger is lost or incomplete, surface the gap to the user and
   ask how to proceed. Do not synthesize `Resolved Answer` fields from
-  memory or reasoning. Valid `Ixxx` records containing permitted `TBD`
-  placeholders (i.e. awaiting user response) are expected and must not
-  be treated as gaps; resume completion of those records in place.
+  memory or reasoning. Legacy `Ixxx` records are historical artifacts;
+  do not fabricate companions for them, and do not treat them as
+  gaps to fill.
 
 ## Txxx record template
 
 `Txxx` records are emitted by `technical-grilling` and use
-the same four fields as `Dxxx`, plus an optional `Cites` field for
+the same four fields as `Dxxx`, plus a `Cites` field for
 spec links. The full template is in
 `technical-grilling/references/recording-decisions.md`.
 
-## Ixxx record template
+### Approval turn and detail extraction (Txxx)
 
-```md
-### [Ixxx] - <short question label>
+The approval turn and the detail-extraction rules apply to `Txxx`
+records exactly as to `Dxxx` records.
 
-- **Prompt**: <verbatim agent prompt that was presented to the user>
-- **User Response**: <verbatim user answer, or the closest paraphrase
-  the user has explicitly accepted; or TBD if awaiting the response>
-- **Resolution**: <how this response was used in the next step - what
-  decision it drove, what option it steered toward, what constraint it
-  surfaced; or TBD if awaiting the response>
-- **Notes**: <anything the agent should remember for the rest of the
-  session or for a future reader; or TBD if awaiting the response>
-```
+### Detail extraction from composite answers
 
-- `Ixxx` is a zero-padded sequence: `I001`, `I002`, `I003`, … The next
-  available ID is read from the trailing `<!-- next-i: Ixxx -->`
-  sentinel. Do not reuse IDs. If the sentinel is missing or out of
-  sync, fall back to scanning the file for the highest existing `Ixxx`
-  and re-seeding the sentinel before the next append.
-- `Prompt` is the **verbatim** agent text that was presented to the
-  user - a clarifying question posed outside the fixed elicitation
-  prompts (see *What counts as a clarifying interaction* below). Do not
-  paraphrase the prompt, and never use a locked question line, options
-  table, gate prompt, or exit prompt here. For a user-posed clarifying
-  interaction, prefix the verbatim user question with `<user-posed>`;
-  the agent's answer goes in `Resolution`.
-- `User Response` is the **verbatim** user text that answered the
-  prompt, or a close paraphrase the user has explicitly accepted. It
-  is not the agent's summary. If the user answered with multiple
-  sentences, capture the load-bearing sentence and put the rest in
-  `Notes`.
-- `Resolution` describes what the response was used for - which option
-  it steered, which branch it opened, which constraint it surfaced. If
-  the response is a deferred or non-answer (e.g., "skip", "as-is",
-  silence), the resolution still records what the agent did in
-  response.
-- `Notes` is for context the next reader needs that does not fit in the
-  other three fields - non-load-bearing parts of the user response,
-  cross-references to a `Dxxx`/`Txxx` record the interaction drove, or
-  edge cases the user named in passing.
+A composite pick names a technology or approach without exhausting
+its load-bearing sub-decisions. When the user resolves a branch with
+such a pick (e.g., "we'll use EF Core"/"we'll use unit testing"),
+the agent must extract the pick's sub-decisions at that turn, before
+the approval turn closes:
 
-### What counts as a clarifying interaction
+1. Identify the sub-decisions the pick leaves open (mechanism,
+   tooling, scope, configuration, ownership).
+2. Open follow-up branches for them in the same round, or pin them
+   on the record's `Constraints`.
+3. The approval turn then covers the pick and its extracted
+   sub-decisions together.
 
-An `Ixxx` record is appended only for a **clarifying interaction**: a
-question that resolves an ambiguity, contradiction, or missing piece of
-information that the fixed elicitation prompts do not already elicit,
-and without which the current step cannot proceed. The interaction may
-be agent-posed (the agent asks the user) or user-posed (the user asks
-the agent mid-step).
-
-**Never append an `Ixxx` record for a fixed elicitation prompt** - a
-question the workflow asks in every session, in a fixed format, whose
-outcome is already captured elsewhere. In a `technical-grilling`
-session these are:
-
-- **The goal-discovery question** - the response is the goal record
-  (`Dxxx`).
-- **Locked branch questions** - the context block, options table, and
-  recommendation are the fixed elicitation format; the user's choice is
-  recorded as a `Dxxx`/`Txxx` record.
-- **Re-asks** - the DEFERRED re-ask closure records the outcome on the
-  branch's own record; no separate record is created for the re-ask.
-- **Gate A locked-item confirmations** - confirmed settled items are
-  recorded as `Dxxx`/`Txxx` with Resolved Answer = "Resolved (by
-  provided spec)".
-- **Gate B readiness and blueprint filename confirmation** - fixed
-  workflow prompts whose outcomes are recorded in the ledger or the
-  plan output.
-- **Term-resolution and ADR offers** - the acceptance is recorded by
-  the `GLOSSARY.md` write, the ADR, or the branch's own record.
-
-Other skills govern their own fixed elicitation prompts in their
-`SKILL.md` and `## When to Use` sections.
-
-**Clarifying interactions include** (non-exhaustive):
-
-- The user's answer to a prior prompt is ambiguous, contradictory, or
-  missing a load-bearing detail, and a single-sentence follow-up
-  resolves it before the current step proceeds.
-- The spec, codebase, or ledger surfaces a conflict or coverage gap the
-  fixed prompts cannot express, and the question is asked before the
-  affected step commits.
-- The session's scope or intent is ambiguous and the workflow permits
-  one clarifying question to pin it down.
-- The user poses a clarifying question mid-step that affects how the
-  step resolves.
-
-### TBD placeholder pattern
-
-While waiting for the user response, an `Ixxx` record is appended with
-`Prompt` filled and the other three fields marked `TBD`. The `TBD`
-marker is a literal string, not a fill-in for the agent to interpret.
-After the user answers, edit the same record in place to fill the
-three `TBD` fields - do not amend the `Prompt` field, do not create a
-new `Ixxx` record for the same interaction, and do not move the record
-in the file. The `Ixxx` keeps its original position.
+Gaps that persist after this extraction are deliberate gaps the user
+named during the session, not unasked gaps.
 
 ## Goal record
 
@@ -349,20 +314,22 @@ traceability.
 
 ## Soft cap
 
-If a single Decision Ledger reaches **~30 `Dxxx`/`Txxx` records**,
+If a single Decision Ledger reaches **~50 `Dxxx`/`Txxx` records**,
 consider closing it and opening a new one for the next phase of the
 interview. The cap is a trigger for reflection, not a hard limit;
-override with reasoning if the interview genuinely needs more. The cap
-does not apply to `Ixxx` records - interaction records are typically
-short-lived and the count can grow without the same reflection
-trigger.
+override with reasoning if the interview genuinely needs more.
 
 ## Lifecycle
 
 `docs/decisions/DECISIONS-*.md` is **persisted by default**. The agent
 issues a **post-session reminder** to delete the ledger from
 `docs/decisions/` once implementation of the resolved decisions is
-complete. The reminder is non-blocking - the user can defer or decline.
+complete. When an Implementation Blueprint was produced, the reminder
+also states the dependency: the blueprint's inline citations and its
+`## Ledger Reference` section resolve against this ledger file, so
+deleting the ledger orphans the blueprint's binding. The user decides
+when both artifacts are no longer needed. The reminder is
+non-blocking - the user can defer or decline.
 The ledger is not deleted automatically; the user decides.
 
 `skill-architect` creates a `.design-ledger.md` that is **deleted on
@@ -396,18 +363,6 @@ about ledgers when none is provided.
   the payment flow.
 - **Constraints**: `None.`
 
-### [I001] - payer ambiguity
-
-- **Prompt**: "When you say the contact pays - do you mean the person
-  messaging, or the client organization they act for?"
-- **User Response**: "The client organization - and the platform fee
-  is transparent and deducted before the freelancer receives funds."
-- **Resolution**: disambiguated the payer before D002 resolved; the
-  client organization is the payer in D002's Normalized Requirement,
-  and the fee-transparency motivation is D003's Driver.
-- **Notes**: agent-posed follow-up after the user's initial answer for
-  D002 was ambiguous; the fee detail was stated in passing.
-
 ### [D002] - who hires whom
 
 - **Driver**: the user wants the model to reflect real-world agency  - 
@@ -434,4 +389,3 @@ about ledgers when none is provided.
 
 <!-- next-d: D004 -->
 <!-- next-t: T001 -->
-<!-- next-i: I002 -->

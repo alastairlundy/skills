@@ -102,21 +102,16 @@ A compliant continuation:
 
 ## Per-Round Convergence
 
-After the last branch in a round, the agent runs the 5-check convergence
-test. If all five pass, the agent may prompt for close-out:
+After the last branch in a round, the agent runs the 6-check convergence
+test (the sixth check, Coverage, walks the decision surface per
+`references/coverage-sweep.md`). If all six pass, the agent may prompt
+for close-out with the residual inventory table:
 
-> All checks pass. Ready to close out, or shall we open the next round?
+> All checks pass. See the residual inventory above; [K] items are
+> Deferred or Out of scope. Ready to close out, or shall we open the
+> next round?
 
 The user decides whether to stop.
-
-## Exit Gate
-
-Before listing exits, ask: "Will resolving this require writing
-code?" with options Yes / No / I'm not sure.
-
-- **Yes** → recommend technical-grilling.
-- **No** → recommend `to-prd`.
-- **I'm not sure** → list all exits without a recommendation.
 
 ## Workflow Quality Checklist
 
@@ -133,5 +128,12 @@ output:
 - [ ] No forbidden filler word appeared in any agent turn.
 - [ ] Every glossary term was proposed to the user before being written to GLOSSARY.md.
 - [ ] GLOSSARY.md was created lazily on first write (not pre-emptively).
-- [ ] Convergence was a per-round check; the agent offered close-out but the user decided.
-- [ ] The exit gate question was asked (unless context made the answer unambiguous) and the answer was used to pick the recommended exit.
+- [ ] Convergence was a per-round 6-check; the agent offered close-out
+      with the residual inventory table (Resolved / Deferred / Out of
+      scope per surface item) but the user decided.
+- [ ] Any DEFERRED record's `Constraints` carried the user's explicit
+      deferral verbatim plus the failed round's recommended option as
+      the fallback default.
+- [ ] The Implementation Blueprint carried a `## Deferrals and
+      Defaults` section when any DEFERRED record or DECLINED branch
+      exists.

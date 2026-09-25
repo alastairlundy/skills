@@ -146,21 +146,26 @@ Present the 2-line lean recommendation block from
 that reference for the exact format (option letter + period, reasoning
 sentence).
 
-## Re-ask mechanic
+## Re-ask mechanic and explicit deferral
 
-Each branch may be re-asked at most once. The re-ask uses the same
-1-turn wrapper format with a fixed preamble:
+There is no limit on re-asks. When the user's response to a branch is
+unclear, incomplete, or evasive, the agent re-emits the branch in the
+same 1-turn wrapper format (without the "final" preamble) and waits:
 
 ```md
-> **Final re-ask.** No answer was provided for [branch name]. This is your last chance to clarify, confirm, or
-> revise your answer on [branch name]. If no clear answer is provided,
-> the branch will close without resolution.
+> **Re-ask.** Your answer for [branch name] didn't settle [the open
+> point]. Please clarify, confirm, or revise your answer on
+> [branch name].
 ```
 
-The preamble is emitted before the context block. After 1 re-ask with
-no clear answer, the branch closes with `Resolved Answer = "DEFERRED"`
-and a `Constraints` line noting why. The same `filename#Dxxx` record is
-updated; no new record is created for the re-ask itself.
+The branch stays open until the user resolves it. The branch closes
+with `Resolved Answer = "DEFERRED"` **only** when the user explicitly
+defers it (per `references/decision-ledger.md`, DEFERRED closure):
+the user's response names the deferral, and the DEFERRED record's
+`Constraints` line records that deferral verbatim plus the fallback
+default. Silence, an unrelated answer, or a repeated non-answer never
+auto-closes a branch; it stays open and the convergence test keeps it
+on the surface.
 
 It uses the identical wrapper format as the initial branch emission.
 

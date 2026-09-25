@@ -80,6 +80,8 @@ reference files exist and are readable. Then load and read in full:
 - ADR-FORMAT.md - *eager*. ADR structure and when to offer one.
 - locked-question-format.md - *eager*. The 5-row code-impl context
   table.
+- coverage-sweep.md - *lazy*. Load before Phase 2 TDP extraction and
+  before running the convergence test.
 - recording-decisions.md - *eager*. The `Txxx` record template.
 - interface-and-model-branch.md - *lazy*. Load before Phase 2 interface
   decisions.
@@ -107,8 +109,18 @@ Detect any existing decision artifact **before** opening any branch:
    prior record or supplied spec as binding until the user confirms.
    Settled items are recorded as `Dxxx`/`Txxx` with Resolved Answer =
    "Resolved (by provided spec)" and are **never re-grilled**.
-4. **Open only open items.** Branches are opened only for items the user
-   confirms are still open.
+4. **Re-classify ambiguous items.** For each spec-locked item, verify
+   the spec text resolves the item unambiguously. If the item's spec
+   wording is vague, silent, or contradictory, the item is **open**,
+   not locked: re-classify it, tell the user which items moved from
+   locked to open and why, and open branches for them. The user's
+   "locked" confirmation on a vague item is a confirmation that the
+   item *matters*, not that the spec resolves it. Do not record
+   `Resolved (by provided spec)` for an item whose spec text does
+   not answer it.
+5. **Open only open items.** Branches are opened only for items the
+   user confirms are still open (including items re-classified in
+   step 4).
 
 **Stop and wait for the user to confirm or change the locked-item
 determinations before the first append.** If no artifact exists and the
@@ -188,10 +200,15 @@ Follow the implementation-planning workflow:
    rounds of up to 3 using the 1-turn wrapper with the 5-row context block
    (Goal, Prior decisions, Scope, Spec section). Optional foundational
    preferences step.
-2. **Spec-Driven Technical Extraction**: identify TDPs from the spec/ledger
-   (or from Phase 1 outcomes), surface them in dependency-ordered rounds
-   of at most 3, resolve with the 1-turn wrapper. Never use "TDP" with the
-   user; branch titles use the `Txxx` ID.
+2. **Spec-Driven Technical Extraction**: load
+   `references/coverage-sweep.md` and run the minimum sweep: walk
+   every spec section/functional requirement (or named goal-record
+   area when no spec exists) and every implementation-ambiguity
+   taxonomy category, mapping each to a planned branch or an explicit
+   out-of-scope entry. The unblocked planned branches are the TDPs.
+   Surface them in dependency-ordered rounds of at most 3, resolve
+   with the 1-turn wrapper. Never use "TDP" with the user; branch
+   titles use the `Txxx` ID.
 3. **Interface & Model Branch** (optional): load
    references/interface-and-model-branch.md before asking.
 4. **Blueprint Filename Confirmation** (required): load
@@ -210,15 +227,24 @@ separately in the Decision Ledger record.
 
 ### Convergence
 
-After the last branch in a round, run the 5-check convergence test from
-references/convergence-test.md. If any check fails, continue
-or re-open the affected branch. When all five pass, offer close-out; the
-user decides.
+After the last branch in a round, run the 6-check convergence test from
+references/convergence-test.md. Check 6 (coverage) requires the
+decision-surface walkthrough from references/coverage-sweep.md: every
+surface item maps to Resolved, Deferred, or Out of scope. If any check
+fails, continue or re-open the affected branch. When all six pass,
+emit the close-out prompt with the residual inventory table; the
+user's close-out confirmation is recorded against the inventory, and
+the user decides.
 
 ### Post-session deletion reminder
 
 The Decision Ledger is **persisted by default**. Remind the user that it remains on disk and can be
-deleted once implementation is complete.
+deleted once implementation is complete. When an Implementation
+Blueprint was produced, the reminder also states the dependency: every
+inline citation in the blueprint resolves against this ledger file
+(`references/output-selection.md`, Ledger Binding), so deleting the
+ledger orphans the blueprint's binding and its `## Ledger Reference`
+section. The user decides when both artifacts are no longer needed.
 
 ## References
 
@@ -230,6 +256,7 @@ deleted once implementation is complete.
 - recording-decisions.md - eager
 - interface-and-model-branch.md - lazy
 - output-selection.md - lazy
+- coverage-sweep.md - lazy
 - validation.md - lazy
 
 ## Validation
@@ -252,6 +279,10 @@ transcript:
       none were assumed binding.
 - [ ] Settled decisions were recorded as `Dxxx`/`Txxx` with Resolved Answer
       = "Resolved (by provided spec)" and were **not** re-grilled.
+- [ ] Spec-locked items with vague, silent, or contradictory spec text
+      were re-classified as open (Gate A step 4); the user was told
+      which items moved and why; `Resolved (by provided spec)` was not
+      recorded for any item whose spec text does not answer it.
 - [ ] Branches were opened only for items the user confirmed still open.
 
 ### Gate B (concept-readiness)
@@ -274,22 +305,47 @@ transcript:
       branch (no batching). Multi-pick rounds wrote all records in one call.
 - [ ] Every record used a fresh `Dxxx`/`Txxx` ID and the inline template.
 - [ ] No `Ixxx` record was appended for a fixed elicitation prompt -
-      locked branch questions, the goal-discovery question, re-asks,
-      Gate A/B, or term-resolution/ADR offers; `Ixxx`
-      records appear only for clarifying interactions as defined in
+      Ixxx records are legacy and no new ones were created; decision
+      records alone (`Dxxx`/`Txxx`) plus the goal record captured all
+      outcomes as defined in
       `references/decision-ledger.md`.
+- [ ] Every appended record's `Normalized Requirement` and
+      `Constraints` received the user's explicit approval before the
+      next branch opened; on revision, the record was corrected in
+      place and re-confirmed (`references/decision-ledger.md`).
+- [ ] Records that rested on false assumptions or wrong information
+      were corrected in place (record correction in
+      `references/decision-ledger.md`) - no side records.
 - [ ] Phase 1 used the 4-row context table; Phase 2 used the 5-row context
       table (with Spec section).
 - [ ] Term Resolution ran as a post-pick step; glossary terms proposed
       before writing to GLOSSARY.md.
 - [ ] TDPs grouped into rounds of at most 3; no round surfaced more than 3
       branches; branch titles used `Txxx`, never "TDP".
+- [ ] The Phase 2 minimum sweep ran before TDP rounds were planned:
+      every spec section/functional requirement (or named goal area)
+      and every taxonomy category mapped to a planned branch or an
+      explicit out-of-scope entry (`references/coverage-sweep.md`).
+- [ ] After every record append, the agent sought the user's explicit
+      approval of the `Normalized Requirement` and `Constraints`
+      before opening the next branch; revisions were corrected in
+      place and re-confirmed (`references/decision-ledger.md`).
+- [ ] Composite picks were decomposed at pick time (`references/decision-ledger.md`,
+      Detail extraction from composite answers): every load-bearing
+      sub-decision the user's answer left open was surfaced as a
+      follow-up branch in the same round or pinned in the record's
+      `Constraints`. Only deliberate gaps persisted.
 - [ ] Conflict detection ran before each branch resolution.
-- [ ] Convergence was a per-round check; close-out offered, user decided.
+- [ ] Convergence was a per-round 6-check; close-out was offered with
+      the residual inventory table; every DEFERRED row evidenced the
+      user's explicit deferral plus its fallback default; the user
+      decided.
 - [ ] Blueprint filename confirmation asked; filename confirmed before
       the Implementation Blueprint was produced.
 - [ ] Implementation Blueprint produced at endpoint, grouped by file,
-      citing `Dxxx`/`Txxx`.
+      citing `Dxxx`/`Txxx`, and included a `## Deferrals and Defaults`
+      section (when any DEFERRED record or DECLINED branch exists)
+      sourced from the residual inventory.
 - [ ] Every citation used filename#`Dxxx`/`Txxx` format.
 - [ ] Post-session deletion reminder emitted
 - [ ] For every options table emitted during the session, the bolded row

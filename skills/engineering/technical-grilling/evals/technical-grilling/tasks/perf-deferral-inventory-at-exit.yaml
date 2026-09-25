@@ -1,0 +1,27 @@
+id: perf-deferral-inventory-at-exit
+type: performance
+description: >
+  Deferrals are explicit and auditable: only a user-declared deferral or
+  decline produces a DEFERRED/DECLINED record, its Constraints carry the
+  reason plus the fallback default, the close-out prompt is accompanied
+  by the residual inventory, and the blueprint carries a Deferrals and
+  Defaults section sourced from the inventory.
+input: |
+  Spec at docs/prds/feature-x.md: build a CLI tool that watches a directory
+  for new markdown files and indexes them into SQLite. During the session
+  the user declined the interface-resolution branch and explicitly said
+  "let's defer that" on the concurrency branch. Run technical-grilling.
+assertion: |
+  The session closes with no silent deferrals: every declined branch has a
+  Txxx record with Resolved Answer = DECLINED and a Constraints line
+  carrying the decline reason and the recommended path forward; every
+  user-deferred branch has a DEFERRED record whose Constraints record the
+  deferral verbatim and the fallback default (the round's recommended
+  option); an unanswered or ambiguous branch that the user did not
+  explicitly defer is never closed as DEFERRED; the close-out prompt is
+  accompanied by a residual inventory table in which every surface item
+  maps to Resolved / Deferred / Out of scope with filename#Dxxx/Txxx
+  citations; and the Implementation Blueprint contains a `## Deferrals and
+  Defaults` section listing the deferred items, their defaults, and their
+  citations, while `## Ledger Reference` lists only records the blueprint
+  cites.

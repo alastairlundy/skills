@@ -132,6 +132,15 @@ reject all, or hybridize.
   test.
 - **Dropping a field to fit the cap.**   All four columns are mandatory
   in every row.
+- **Unenumerated load-bearing sub-decisions.** An option whose cost,
+  tooling, or configuration depends on a further unfixed choice (e.g.,
+  "EF Core" without a migration strategy; "Dapper" without a code-gen
+  policy) is presented without pinning or deferring that sub-decision.
+  Either name the pinned value in the cell or list the sub-decision as
+  a planned follow-up branch - the lead-in mention is not a record.
+  Unenumerated sub-decisions resurface downstream as silent defaults
+  unless the coverage sweep (`references/coverage-sweep.md`) or the
+  branch's `Constraints` carries them.
 - **Stray `**` characters in non-recommended option cells.** A cell
   that renders as `B — Few-shot prompting with example diversity**`
   (note the trailing `**`) is a rendering bug. The bold span is

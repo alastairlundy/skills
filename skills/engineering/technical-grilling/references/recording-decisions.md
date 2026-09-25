@@ -1,6 +1,8 @@
 ### Recording Technical Decisions to the Ledger
 
-After every resolved decision in Steps 4, 5, and 6, append a `Txxx`
+After every resolved Phase 2 decision (foundation establishment,
+spec-driven technical extraction, and interface & model branches),
+append a `Txxx`
 record to the ledger using this template:
 
 ```md
@@ -33,6 +35,14 @@ record to the ledger using this template:
   the same turn the user resolves the decision, before asking the
   next question. See
    `references/decision-ledger.md` for the rule.
+- **Echo the record in the same turn.** The append is not silent:
+  after the write, restate the record's `Normalized Requirement` and
+  `Constraints` verbatim to the user in a single short callout (for
+  example: `Recorded: T004 - <Normalized Requirement> - Constraints:
+  <Constraints>`). The user confirmed the pick, not the paraphrase;
+  the echo is the spot to catch a weakened or wrong restatement
+  before the next branch opens (the paraphrasing failure mode in
+  `references/convergence-test.md`, diverge mode 1).
 - The next available `Txxx` ID is read from the trailing
   `<!-- next-t: Txxx -->` sentinel at the end of the ledger file.
   The sentinel is documented in

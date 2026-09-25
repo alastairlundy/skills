@@ -39,6 +39,18 @@ consumer selection.
   The blueprint must also include a `## Ledger Reference` section
   listing every `Dxxx` and `Txxx` record the blueprint cites, so a
   reader can audit the binding in one pass.
+- **Deferrals and Defaults section**: The blueprint must include a
+  `## Deferrals and Defaults` section listing every DEFERRED
+  record's item, the agent's recommended default, and the
+  `filename#<Dxxx|Txxx>` citation. The same row lists optional
+  branches the user declined (e.g., the Interface & Model branch,
+  recorded with Resolved Answer = `DECLINED`). Where the blueprint
+  body applies a deferred default, the affected statements are
+  marked as carrying the default rather than as user-confirmed
+  decisions. The `## Ledger Reference` section does not list a
+  record cited only by the Deferrals section. The residual inventory
+  in `references/coverage-sweep.md` is the source for this section's
+  rows.
 
 **Step 7.1: Filename confirmation (required)**
 

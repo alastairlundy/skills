@@ -153,8 +153,15 @@ Interface, Contract, DTO, and Model definitions now?"*
 - **If No**: Provide the following warning: *"Skipping detailed
   interface resolution means these details must be determined during
   implementation. This will likely result in more 'Collaborative'
-  tickets that require human-in-the-loop intervention."* Then skip
-  directly to Step 7 (Blueprint Filename Confirmation).
+  tickets that require human-in-the-loop intervention."* Then append
+  a `Txxx` record for the declined branch with Resolved Answer =
+  "DECLINED" and a `Constraints` line recording the warning and the
+  recommended path forward (e.g., `Interfaces deferred to
+  implementation; expect more Collaborative tickets`). The decline
+  is a record, not a skip: it appears in the close-out residual
+  inventory as Deferred and in the blueprint's Deferrals section
+  (`references/output-selection.md`). Then skip directly to Step 7
+  (Blueprint Filename Confirmation).
 - **If Yes**: Walk through three sequenced phases. The phases are
   sequential, not nested - once a phase transitions, do not
   interleave its decisions back into a later phase. Each phase uses

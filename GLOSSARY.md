@@ -61,10 +61,6 @@ The output artifact of `technical-grilling`: a resolved set of *technical* decis
 
 The output artifact of `technical-grilling`: a resolved set of *conceptual* decisions - bounded contexts, ubiquitous language, glossary terms, and shared vocabulary - derived from a vague idea or an existing spec. Lives in `GLOSSARY.md` (terms), `docs/adr/` (ADRs for cross-cutting decisions), and the Decision Ledger (`Dxxx` records). Distinct from a **general plan** (any non-code strategy, ops plan, business plan), a **code implementation plan** (see Code implementation plan), and a **spec/PRD** (the input document, when one exists).
 
-## code/technical problem
-
-A problem whose resolution requires a programming/code related or technical solution. Used by `technical-grilling` to decide whether its exit applies at convergence.
-
 ## ask_question
 A discrete-choice clarification tool. Refers to a tool that lets an LLM pose multi-option questions to the user, with optional free-text override. The name is used in two ways: (1) the abstract affordance name in the `ask-questions` SKILL, and (2) the literal tool name in some agents (e.g., Claude Code's `ask_question` tool). In opencode, the tool that implements this affordance is named `question`; both names refer to the same affordance class.
 
@@ -103,14 +99,10 @@ A subjective-judgement word used to begin a sentence (e.g., `Good`, `Great`, `Ni
 
 A neutral-confirmation word used to begin a sentence (e.g., `Right`, `OK`, `Got it`, `Understood`). Permitted by the `technical-grilling` SKILL. Distinguished from an **evaluative opener** - a subjective judgement that is forbidden.
 
-## in-session signal
-
-A behaviour in which a skill detects a property of the problem during a session and surfaces that detection at a convergence point to tailor recommendations. Used by `technical-grilling` to decide whether to ask the explicit confirmation question "Is this a code/technical problem?" at convergence, before listing exits.
-
 ## concrete natural option
 
 A `concrete natural option` shall satisfy all of the following: (1) **actionable** - describes a specific single-step action the user could commit to right now; (2) **phrased in the user's words** - preserves the user's own terminology and phrasing as much as possible, with the LLM paraphrasing rather than inventing; (3) **substantively or semantically different** from the other options in the set such that each could be justified as the answer on its own; (4) **not contrived** - must arise from the user's stated context, not be created for the sake of having options; (5) **contextually sensible** - must make sense given the context the user has provided; (6) **performable** - must have a basis in reality, the user can reasonably perform it; (7) **individually defensible** - each option must stand on its own merits; (8) **aim-advancing** - each option must advance the user's stated aim(s)/objective(s). The LLM shall present at most 4 concrete natural options per branch. If the scope of a branch is too broad to resolve into 2–4 options, the LLM shall ask the user to name the scope or direction to take before presenting options.
 
 ## Clarifying interaction
 
-A question that resolves an ambiguity, contradiction, or missing piece of information that a workflow's fixed elicitation prompts do not already elicit, and without which the current step cannot proceed. Recorded as an `Ixxx` record in a Decision Ledger (canonical definition: `technical-grilling/references/decision-ledger.md`). Distinguished from a **fixed elicitation prompt** - a question the workflow asks in every session, in a fixed format, whose outcome is already captured by a `Dxxx`/`Txxx` record, the goal record, or the workflow's own outputs.
+A question that resolves an ambiguity, contradiction, or missing piece of information that a workflow's fixed elicitation prompts do not already elicit, and without which the current step cannot proceed. Its outcome is folded into the affected `Dxxx`/`Txxx` Decision Ledger record itself: as the record's `Normalized Requirement`/`Constraints` content (for the branch being resolved) or as an in-place correction of a previous record that rested on a false assumption (canonical definition: `technical-grilling/references/decision-ledger.md`, Record correction). No separate interaction record is created. Distinguished from a **fixed elicitation prompt** - a question the workflow asks in every session, in a fixed format, whose outcome is already captured by a `Dxxx`/`Txxx` record or the goal record.
