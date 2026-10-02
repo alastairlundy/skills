@@ -11,7 +11,7 @@ The original review of `skill-architect` (ticket 001, reviewed at `docs/decision
 
 ## Decision
 
-`skill-architect` does NOT create eval suites. Eval creation is the job of `waza-skill-evaluator` (or a successor tool with the same scope). The `skill-architect` workflow ends with a designed `SKILL.md`; the user is responsible for invoking `waza-skill-evaluator` (or its successor) to generate the suite. The transitions to `waza-skill-evaluator` in `skill-architect`'s Transitions section (Phase 1: generate the suite; Phase 2: run baseline - per D007) are the canonical hand-off path.
+`skill-architect` does NOT create eval suites. Eval creation is the job of `waza-skill-evaluator` (or a successor tool with the same scope). The `skill-architect` workflow ends with a designed `SKILL.md`; the user is responsible for invoking `waza-skill-evaluator` (or its successor) to generate the suite. The transitions to `waza-skill-evaluator` in `skill-architect`'s Transitions section (Phase 1: generate the suite; Phase 2: run baseline) are the canonical hand-off path.
 
 ## Consequences
 

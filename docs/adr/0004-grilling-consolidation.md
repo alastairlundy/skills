@@ -15,13 +15,13 @@ Consolidate into a single skill: `technical-grilling`. Remove the generic `grill
 
 ### Motivation
 
-One grilling skill instead of a parent/child pair. `technical-grilling` must not depend on a separate generic skill's reference files. The self-containment goal (D001) drives every downstream choice: ported references, merged question tables, a standalone ADR, and a clean sweep of live-doc pointers.
+One grilling skill instead of a parent/child pair. `technical-grilling` must not depend on a separate generic skill's reference files. The self-containment goal drives every downstream choice: ported references, merged question tables, a standalone ADR, and a clean sweep of live-doc pointers.
 
 ### Alternatives considered
 
 - **Keeping the parent/child pair** - rejected. The relative-path dependency means `technical-grilling` cannot load without `grilling` installed. The two skills share reference content (tone, options, recommendations, convergence, ledger) that is identical except for wording about "grilling group" vs. single-skill terms. Maintaining two copies invites drift.
-- **Keeping `grilling` as a non-technical home** - rejected (D002). The vacated trigger space for non-technical vague decisions is not worth widening the skill for. The boundary stays technical-only.
-- **Adding a conversational-fallback line** - rejected (D007). Consistent with D002: structured elicitation exists only for technical decisions. The three-round soft cap in `ask-questions` stands alone without a handoff target.
+- **Keeping `grilling` as a non-technical home** - rejected. The vacated trigger space for non-technical vague decisions is not worth widening the skill for. The boundary stays technical-only.
+- **Adding a conversational-fallback line** - rejected. Consistent with the technical-only boundary: structured elicitation exists only for technical decisions. The three-round soft cap in `ask-questions` stands alone without a handoff target.
 
 ### Consequences
 
@@ -34,7 +34,7 @@ One grilling skill instead of a parent/child pair. `technical-grilling` must not
 
 **Negative**
 
-- Non-technical vague decisions have no dedicated skill. This is the deliberate trade-off per D002.
+- Non-technical vague decisions have no dedicated skill. This is the deliberate trade-off.
 - The over-trigger boundary is enforced empirically by existing no-trigger eval tasks (business-pricing, vague-plan, non-code-idea) rather than by a second skill's deferral pointer.
 
 ## Lineage narrative
