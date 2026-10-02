@@ -14,8 +14,6 @@ license: MIT
 
 Scaffolds the per-repo configuration that the alastairlundy AI-agent skill family assumes. Produces four `docs/agents/*.md` files plus an in-place `## Agent skills` block in the host repo's `AGENTS.md` (or `CLAUDE.md`).
 
-The skill is a fork of `setup-matt-pocock-skills`, adapted to this repo's requirements - extended with multi-host support and a decision-ledger-audit section.
-
 ## When to Use
 
 - When the user wants to set up a new host repository to use the alastairlundy AI-agent skill family.
