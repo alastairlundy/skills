@@ -2,8 +2,8 @@
 name: setup-alastairlundy-skills
 description: >-
   Configures a host repository to use the alastairlundy AI-agent skill
-  family by writing four agent-consumable docs (issue-tracker,
-  triage-labels, domain/GLOSSARY, decision-ledger-audit) and adding the
+  family by writing three agent-consumable docs (issue-tracker,
+  triage-labels, domain/GLOSSARY) and adding the
   `## Agent skills` block to AGENTS.md or CLAUDE.md. Use when setting
   up a new repo for AI agents, switching the repo's issue tracker, or
   re-running after a config change.
@@ -12,13 +12,13 @@ license: MIT
 
 # Setup Alastairlundy Skills
 
-Scaffolds the per-repo configuration that the alastairlundy AI-agent skill family assumes. Produces four `docs/agents/*.md` files plus an in-place `## Agent skills` block in the host repo's `AGENTS.md` (or `CLAUDE.md`).
+Scaffolds the per-repo configuration that the alastairlundy AI-agent skill family assumes. Produces three `docs/agents/*.md` files plus an in-place `## Agent skills` block in the host repo's `AGENTS.md` (or `CLAUDE.md`).
 
 ## When to Use
 
 - When the user wants to set up a new host repository to use the alastairlundy AI-agent skill family.
 - When the user wants to switch the host repository's issue tracker (e.g., GitHub → Gitea, GitLab → Local Markdown, or any host → Other non git workflow).
-- When the user wants to re-run setup after a config change (new triage labels, new domain layout, new decision-ledger convention, or a new host).
+- When the user wants to re-run setup after a config change (new triage labels, new domain layout, or a new host).
 - When the user must pick between issue-tracker variants, Git Host sub-options, domain layout (single- vs multi-context), or label-mapping overrides, invoke the `ask-questions` skill to surface the choice before proceeding.
 
 ## When Not to Use
@@ -27,8 +27,8 @@ Scaffolds the per-repo configuration that the alastairlundy AI-agent skill famil
 
 ## Output Mode
 
-- Default behaviour is **file-writing**: the skill writes four `docs/agents/*.md` files and updates the `## Agent skills` block in the host repo's `AGENTS.md` (or `CLAUDE.md` if `AGENTS.md` does not exist).
-- The Confirm step (Step 6) is the **per-file opt-out**: the user can decline any individual file before it is written.
+- Default behaviour is **file-writing**: the skill writes three `docs/agents/*.md` files and updates the `## Agent skills` block in the host repo's `AGENTS.md` (or `CLAUDE.md` if `AGENTS.md` does not exist).
+- The Confirm step (Step 5) is the **per-file opt-out**: the user can decline any individual file before it is written.
 - No top-level dry-run flag, no preview mode. The Confirm step is the only safety net.
 - The skill does not overwrite user edits to sections of `AGENTS.md` / `CLAUDE.md` that are outside the `## Agent skills` block.
 
@@ -93,26 +93,19 @@ Load `references/domain.md` and fill in the chosen layout. The consumer rules in
 
 Completion criterion: a `docs/agents/domain.md` candidate is presented to the user, with the consumer rules referencing `GLOSSARY.md`.
 
-### Step 5: Present decision-ledger-audit
+### Step 5: Confirm
 
-Load `references/decision-ledger-audit.md` and present the proposed `docs/agents/decision-ledger-audit.md`. The content is the canonical seed documenting the `filename#Dxxx` citation rule - bare `Dxxx` references are prohibited.
+Present the three candidates from Steps 2-4 in a single summary table. For each file, the user accepts or declines. Declined files are not written in Step 6. The `## Agent skills` block (Step 6) is included in the summary as a fourth item with the same accept/decline treatment - if declined, only the three `docs/agents/*.md` files are written.
 
-Completion criterion: a `docs/agents/decision-ledger-audit.md` candidate is presented to the user.
+Completion criterion: each of the three candidates (plus the `## Agent skills` block) has an explicit accept/decline from the user; the accepted list is recorded.
 
-### Step 6: Confirm
-
-Present the four candidates from Steps 2-5 in a single summary table. For each file, the user accepts or declines. Declined files are not written in Step 7. The `## Agent skills` block (Step 7) is included in the summary as a fifth item with the same accept/decline treatment - if declined, only the four `docs/agents/*.md` files are written.
-
-Completion criterion: each of the four candidates (plus the `## Agent skills` block) has an explicit accept/decline from the user; the accepted list is recorded.
-
-### Step 7: Write
+### Step 6: Write
 
 For each accepted file, write it to the host repo:
 
 - Write `docs/agents/issue-tracker.md` (if accepted).
 - Write `docs/agents/triage-labels.md` (if accepted).
 - Write `docs/agents/domain.md` (if accepted).
-- Write `docs/agents/decision-ledger-audit.md` (if accepted).
 
 For the `## Agent skills` block (if accepted):
 
@@ -138,12 +131,12 @@ For the `## Agent skills` block (if accepted):
 
 Completion criterion: every accepted file is written; the `## Agent skills` block is updated; `git status` shows only the expected changes; surrounding user content in `AGENTS.md` / `CLAUDE.md` is preserved.
 
-### Step 8: Done
+### Step 7: Done
 
 Report the following four components:
 
-- (a) **Confirmation** that the four `docs/agents/*.md` files were written (or skipped, per Step 6 declines) and the `## Agent skills` block was updated.
-- (b) **Skill mapping** - a small table mapping each `docs/agents/*.md` file to the skills that read it (e.g., `issue-tracker.md` ← `triage`, `domain.md` ← `technical-grilling`, `decision-ledger-audit.md` ← `technical-grilling` / `dependency-review`).
+- (a) **Confirmation** that the three `docs/agents/*.md` files were written (or skipped, per Step 5 declines) and the `## Agent skills` block was updated.
+- (b) **Skill mapping** - a small table mapping each `docs/agents/*.md` file to the skills that read it (e.g., `issue-tracker.md` ← `triage`, `domain.md` ← `technical-grilling`).
 - (c) **Edit-directly note** - "you can edit any of these files directly; the in-place update logic preserves your changes on re-run".
 - (d) **Re-run note** - "re-run this skill to switch issue trackers, update triage labels, or change the domain-docs layout".
 
@@ -157,8 +150,7 @@ Do not mark the skill as complete until every item below passes.
 - [ ] For a Git Host variant, `docs/agents/issue-tracker.md` records the PR-as-issue-surface note (yes / no) in the `## Conventions` section.
 - [ ] `docs/agents/triage-labels.md` exists and has 5 rows in the label-mapping table (or the user's overridden mapping).
 - [ ] `docs/agents/domain.md` exists and references `GLOSSARY.md` in its consumer rules; for multi-context, it also references `GLOSSARY-MAP.md`.
-- [ ] `docs/agents/decision-ledger-audit.md` exists and contains the `filename#Dxxx` citation rule (bare `Dxxx` references prohibited).
-- [ ] The `## Agent skills` block in `AGENTS.md` (or `CLAUDE.md`) references all four `docs/agents/*.md` files and uses the parse-the-block in-place update (no duplicate block).
+- [ ] The `## Agent skills` block in `AGENTS.md` (or `CLAUDE.md`) references all three `docs/agents/*.md` files and uses the parse-the-block in-place update (no duplicate block).
 - [ ] `git status` shows only the expected files; no surrounding user content in `AGENTS.md` / `CLAUDE.md` was overwritten.
 
 ## Reference files (load triggers)
@@ -175,8 +167,7 @@ Load each `references/*.md` file only when its load-trigger condition is met. Do
   - `references/issue-tracker-other-nongit.md` - Other non git workflow (User specified)
 - Before presenting a triage-labels candidate (Step 3), load `references/triage-labels.md`.
 - Before presenting a domain-docs candidate (Step 4), load `references/domain.md`.
-- Before presenting a decision-ledger-audit candidate (Step 5), load `references/decision-ledger-audit.md`.
 
 ## Attribution
 
-Adapted from the `setup-matt-pocock-skills` skill in the [`mattpocock/skills`](https://github.com/mattpocock/skills) repository, licensed under MIT by Matt Pocock and Contributors. The issue-tracker, triage-labels, and domain-docs features are extended with multi-host support (Gitea, Codeberg, other Forgejo-based hosts, other Git hosts, and other non-git workflows) and a decision-ledger-audit section, per `docs/decisions/DECISIONS-skills-setup-skill-replace.md`.
+Adapted from the `setup-matt-pocock-skills` skill in the [`mattpocock/skills`](https://github.com/mattpocock/skills) repository, licensed under MIT by Matt Pocock and Contributors. The issue-tracker, triage-labels, and domain-docs features are extended with multi-host support (Gitea, Codeberg, other Forgejo-based hosts, other Git hosts, and other non-git workflows), per `docs/decisions/DECISIONS-skills-setup-skill-replace.md`.

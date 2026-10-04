@@ -55,7 +55,7 @@ Short templates (<20 lines) live inline in `SKILL.md`. Longer templates (≥20 l
 
 ### Decision ledger references
 
-When citing a Decision Ledger record from outside `docs/decisions/DECISIONS-*.md`, use the format `filename#Dxxx` (e.g. `DECISIONS-repo-feature.md#D001`). Bare `Dxxx`/`Txxx` references outside ledger files are prohibited. See `docs/agents/decision-ledger-audit.md`.
+When citing a Decision Ledger record from outside `docs/decisions/DECISIONS-*.md`, use the format `filename#Dxxx` (e.g. `DECISIONS-repo-feature.md#D001`). Bare `Dxxx`/`Txxx` references outside ledger files are prohibited.
 
 ### Attribution
 
