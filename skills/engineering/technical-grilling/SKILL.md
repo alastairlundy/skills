@@ -78,8 +78,8 @@ reference files exist and are readable. Then load and read in full:
   language, scenario discussion, ADR offer.
 - term-resolution.md - *eager*. Writing resolved terms to GLOSSARY.md.
 - ADR-FORMAT.md - *eager*. ADR structure and when to offer one.
-- locked-question-format.md - *eager*. The 5-row code-impl context
-  table.
+- locked-question-format.md - *eager*. The branch heading + header +
+  5-data-row code-impl context table.
 - coverage-sweep.md - *lazy*. Load before Phase 2 TDP extraction and
   before running the convergence test.
 - recording-decisions.md - *eager*. The `Txxx` record template.
@@ -188,7 +188,7 @@ without concept readiness" as a violation.
 (and the session intent is not `concept-only`), the skill proceeds
 **directly** into Phase 2 without re-asking the user whether to continue.
 Immediately open the first Phase 2 foundation branch (Language) using the
-5-row context block. Do not stop at Gate and do not wait for the user to request Phase 2 - continuation is
+branch heading + header + 5-data-row context block. Do not stop at Gate and do not wait for the user to request Phase 2 - continuation is
 automatic.
 
 ### Phase 2: Implementation planning
@@ -197,8 +197,9 @@ Follow the implementation-planning workflow:
 
 1. **Foundation Establishment** (mandatory): resolve Language, Framework,
    Key Dependencies, Project Structure, Sub-projects, Project Type in
-   rounds of up to 3 using the 1-turn wrapper with the 5-row context block
-   (Goal, Prior decisions, Scope, Spec section). Optional foundational
+   rounds of up to 3 using the 1-turn wrapper with the branch heading
+   plus header + 5-data-row context block
+   (Decision, Goal, Prior decisions, Scope, Spec section). Optional foundational
    preferences step.
 2. **Spec-Driven Technical Extraction**: load
    `references/coverage-sweep.md` and run the minimum sweep: walk
@@ -252,7 +253,7 @@ section. The user decides when both artifacts are no longer needed.
 - ddd-initialization.md - eager
 - term-resolution.md - eager
 - ADR-FORMAT.md - eager
-- locked-question-format.md - eager (5-row code-impl variant)
+- locked-question-format.md - eager (branch heading + header + 5-data-row code-impl variant)
 - recording-decisions.md - eager
 - interface-and-model-branch.md - lazy
 - output-selection.md - lazy
@@ -316,8 +317,17 @@ transcript:
 - [ ] Records that rested on false assumptions or wrong information
       were corrected in place (record correction in
       `references/decision-ledger.md`) - no side records.
-- [ ] Phase 1 used the 4-row context table; Phase 2 used the 5-row context
-      table (with Spec section).
+- [ ] Every per-decision branch (`Dxxx` and `Txxx` alike) opened with
+      the branch heading (`#### Dxxx/Txxx` plus one open-point sentence)
+      and the header + 5-data-row context table (Decision, Goal, Prior
+      decisions, Scope, Spec section, with Decision first). Phase 1
+      uses the 4-row concept table variant; the heading and Decision
+      row WHAT context is still mandatory there.
+- [ ] Every Prior decisions row carried one matching
+      `filename#Dxxx` / `filename#Txxx` citation per claim (or the
+      explicit empty form naming the next slot in the branch's own
+      stream); no ledger file was cited as the spec path
+      in any Spec section row.
 - [ ] Term Resolution ran as a post-pick step; glossary terms proposed
       before writing to GLOSSARY.md.
 - [ ] TDPs grouped into rounds of at most 3; no round surfaced more than 3

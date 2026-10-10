@@ -1,35 +1,42 @@
 ### Step 6: Interface & Model Branch (Optional)
 
-## Code-impl context block (5-row table)
+## Code-impl context block (branch heading + header + 5-data-row table)
 
 Every per-decision question in this file (architectural decisions in
 Phase 1, source-of-truth conflicts in Phase 2, type introductions in
 Phase 3) is emitted using the 1-turn wrapper, grouped in rounds of up
-to 3 unblocked decisions. The 5-row context block is defined in
-`references/locked-question-format.md`; the first 3 data rows
-(Goal, Prior decisions, Scope) match this skill's context block,
-and the 4th data row (Spec
-section) is the code-impl addition. See
+to 3 unblocked decisions, whether the branch records a `Dxxx` or a
+`Txxx` decision. The branch heading and header + 5-data-row
+context block are defined in
+`references/locked-question-format.md`; the first 4 data rows
+(Decision, Goal, Prior decisions, Scope) match this skill's context block,
+and the 5th data row (Spec
+section) is the code-impl addition. The heading and Decision row WHAT
+context is mandatory for `Dxxx` branches and `Txxx` branches alike. See
 `references/locked-question-format.md` for the full template, the
-citation format, and the requirement that the Spec section row is not
+citation format, and the requirement that the Decision row and Spec section row are not
 optional. The context block is not a free-form prose summary, a
 "current state" reading, a code investigation, a domain-glossary
 recap, or any other kind of analysis.
 
 ### Worked example (Interface & Model Branch)
 
-A Type Loop decision (Contact type) presented in the 5-row
-code-impl format:
+A Type Loop decision (Contact type) presented in the branch heading +
+header + 5-data-row code-impl format:
 
 ```md
 ### Round 1
 
 4 branches remain, 2 unblocked this round.
 
+#### T003 – Contact type
+This branch decides which shape the `Contact` record takes, which blocks message-passing implementation.
+
 | Element          | Content                                                                     |
 |------------------|-----------------------------------------------------------------------------|
-| **Goal**         | Define the type for the freelancing platform's contact record (D001).       |
-| **Prior decisions** | D002 established that the contact acts for a client organization; D003 established the payment flow. |
+| **Decision**     | T003 – Contact type: decide whether `Contact` is a record or a class with identity, which blocks message passing. |
+| **Goal**         | Define the type for the freelancing platform's contact record (DECISIONS-demo.md#D001).       |
+| **Prior decisions** | DECISIONS-demo.md#D002 established that the contact acts for a client organization and DECISIONS-demo.md#D003 established the payment flow. |
 | **Scope**        | This decision covers the `Contact` type's fields and invariants; not `ClientOrganization` or `Invoice`. |
 | **Spec section** | `specs/freelancing-platform.md §3.2 (Contact record)` - Contact must carry identity, display name, and reference to a single `ClientOrganization`. |
 
@@ -83,9 +90,9 @@ For each per-decision question, the agent emits the 1-turn wrapper
 in a single agent turn, grouped in rounds of up to 3 unblocked
 decisions:
 
-- The full wrapper: round header, frontier statement, 5-row context
-  block (Goal, Prior decisions, Scope, Spec section), conflict callout
-  (if any), options table (4-column), recommendation (2-line). No
+- The full wrapper: round header, frontier statement, branch heading,
+  header + 5-data-row context block (Decision, Goal, Prior decisions, Scope, Spec section), conflict callout
+  (if any), locked question line, options table (4-column), recommendation (2-line). No
   Socratic elicitation question is emitted. Stop and wait for the
   user's response.
 
@@ -102,10 +109,14 @@ the 1-turn wrapper:
 
 4 branches remain, 2 unblocked this round.
 
+#### T002 – layer boundaries
+This branch decides where one layer ends and the next begins, which blocks dependency-direction selection.
+
 | Element          | Content                                                                     |
 |------------------|-----------------------------------------------------------------------------|
-| **Goal**         | Establish the architectural shape for the freelancing platform (D001).      |
-| **Prior decisions** | D002 established the contact-vs-organization model; T001 established C# as primary language. |
+| **Decision**     | T002 – layer boundaries: decide where one layer ends and the next begins, which blocks dependency-direction selection. |
+| **Goal**         | Establish the architectural shape for the freelancing platform (DECISIONS-demo.md#D001).      |
+| **Prior decisions** | DECISIONS-demo.md#D002 established the contact-vs-organization model and DECISIONS-demo.md#T001 established C# as primary language. |
 | **Scope**        | This decision covers where one layer ends and the next begins; not dependency direction or separation mechanism. |
 | **Spec section** | `specs/freelancing-platform.md §2.1 (Architecture)` - domain model must be free of infrastructure concerns. |
 
@@ -186,7 +197,7 @@ Interface, Contract, DTO, and Model definitions now?"*
 
   Present each decision using the 1-turn wrapper described
   in the "Format" section above: emit the full wrapper (round header,
-  frontier statement, 5-row context block, options table, recommendation)
+  frontier statement, branch heading, header + 5-data-row context block, locked question line, options table, recommendation)
   in a single turn. Wait
   for the user's response before the next round.
 
@@ -202,7 +213,7 @@ Interface, Contract, DTO, and Model definitions now?"*
   (typical: 0-2), resolve in rounds of up to 3, each with its own
   gate. For each conflict, use the 1-turn wrapper described
   in the "Format" section above: emit the full wrapper (round header,
-  frontier statement, 5-row context block, options table, recommendation)
+  frontier statement, branch heading, header + 5-data-row context block, locked question line, options table, recommendation)
   in a single turn. Wait for the user's response before the next round.
 
   When all conflicts are resolved (or none were found), ask: *"Ready
@@ -213,8 +224,8 @@ Interface, Contract, DTO, and Model definitions now?"*
 
   Introduce types in rounds of up to 3 per turn. For each type, use the
   1-turn wrapper described in the "Format" section above:
-  emit the full wrapper (round header, frontier statement, 5-row context
-  block, options table, recommendation) in a single turn. Present the
+  emit the full wrapper (round header, frontier statement, branch heading, header + 5-data-row context
+  block, locked question line, options table, recommendation) in a single turn. Present the
   type's full signature, fields or properties, and a 1–2 sentence
   rationale for why it exists in the recommendation's Reasoning field.
    2. **Family carve-out**: If the type system supports closed sum
