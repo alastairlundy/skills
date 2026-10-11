@@ -6,7 +6,7 @@ license: MIT
 ---
 
 ## When to Use
-- When the user asks whether a project is ready for its first public release, an initial release, or a 1.0 - phrases like "is this ready to release", "can I ship this", "is this 1.0 ready", "should I cut a first release", "do a pre-release check".
+- When the user asks whether a project is ready for its first public release, an initial release, or a 1.0 - phrases like "is this ready to release", "can I ship this", "is this 1.0 ready", "should I cut a first release", "do a pre-release check". The quoted `cut` phrasing is recognized as a trigger only; the skill's own prose uses `publish` or `ship`, never `cut`.
 - When the user says "release readiness", "ship it", or "is this ready to ship" about a new project.
 - When the user wants a structured gap analysis before publishing a project for the first time.
 - When the detected project type or intended distribution channel is ambiguous and the workflow needs user clarification, invoke the `ask-questions` skill to resolve it before triaging.
@@ -15,7 +15,7 @@ license: MIT
 - For post-1.0 releases (patch or minor version bumps to an already-published project) - use a standard review or PR review skill.
 - For ongoing code quality, architecture, or security review unrelated to a release decision.
 - When the project is not intended for distribution or public release (e.g. a personal scratch script) and the user has not asked for a release assessment.
-- For deep source-level code review, security audit, or test-strategy design - use the dedicated skills for those.
+- For thorough source-level code review, security audit, or test-strategy design - use the dedicated skills for those.
 - When the user wants an automated release pipeline or CI/CD setup - use a dedicated deployment skill.
 
 ## Workflow

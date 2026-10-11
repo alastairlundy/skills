@@ -13,7 +13,7 @@ license: MIT
 
 # Automate Workflow As Skill
 
-A guided flow for turning the user's working conventions into a new or updated
+A guided sequence for turning the user's working conventions into a new or updated
 `SKILL.md` that other agents will follow when invoked. The output is a single
 `SKILL.md` the user names (for example `alastair-style` or `priya-style`).
 
@@ -43,7 +43,7 @@ in the loop at every step.
   working-style skills specifically.
 - The user wants the agent to follow their style without producing a skill
   artifact - that is a system prompt / instruction, not a skill.
-- The user is in a non-interactive flow and cannot answer clarifying
+- The user is in a non-interactive run and cannot answer clarifying
   questions - this skill requires user input at multiple gates.
 
 ## Output Mode
@@ -75,7 +75,7 @@ that signal is met.
 Ask the user - using the `ask-questions` skill - whether this is **a new
 skill** or **an update to an existing one**. If new, ask the user to name
 the skill (no naming convention is imposed). If update, ask the user for
-the path to the existing `SKILL.md` so the rest of the flow can preserve
+the path to the existing `SKILL.md` so the rest of the steps can preserve
 sections the user has not contradicted.
 
 **Completion signal:** the user has confirmed new vs update, named the
@@ -193,7 +193,7 @@ that need a second `skill-architect` pass.
 
 ### Step 6: Save the skill
 
-Hand the draft to `skill-architect`'s save flow (it loads
+Hand the draft to `skill-architect`'s save steps (it loads
 `references/saving-the-skill.md`). Confirm the target directory and skill
 name with the user via `ask-questions` before any file is written. Do not
 open a pull request or push to a remote unless the user explicitly asks.
@@ -234,7 +234,7 @@ condition.
 
 Adapted from `cursor/plugins` repository's
 `pstack/skills/automate-me/SKILL.md` (MIT, © Cursor). The original skill's
-flow is preserved at the step level (confirm → gather evidence →
+sequence is preserved at the step level (confirm → gather evidence →
 interview → cluster → author → save); the cross-harness portability, the
 swap of Cursor's `create-skill` for the local `skill-architect`, and the
 removal of the source's auto PR/push step are the adaptations for this

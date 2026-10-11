@@ -370,7 +370,7 @@ about ledgers when none is provided.
 
 - **Driver**: the user wants to track session restore behaviour in
   the desktop client.
-- **Resolved Answer**: "clarify the tab session restore flow."
+- **Resolved Answer**: "clarify the tab session restore steps."
 - **Normalized Requirement**: The session shall produce a
   decomposition into implementation tickets that respects the
   resolved tab-restore decisions.

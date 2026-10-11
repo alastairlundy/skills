@@ -135,10 +135,10 @@ Phrasings that fit:
 - "Consolidate: one interface, one place to test."
 - "Two implementations share one interface: HTTP in prod, in-memory in tests."
 
-Wins bullets name the gain in vocabulary terms with a number or location: "concentration: pricing bugs land in Order intake", "reuse: one interface, 4 call sites", "interface shrinks; implementation absorbs the wrappers". "Easier to maintain" and "cleaner code" say nothing; cut them.
+Wins bullets name the gain in vocabulary terms with a number or location: "concentration: pricing bugs land in Order intake", "reuse: one interface, 4 call sites", "interface shrinks; implementation absorbs the wrappers". "Easier to maintain" and "cleaner code" say nothing; delete them.
 
-Every Problem, Solution, and Wins bullet must carry file evidence or a number. A bullet with only an adjective and no file, count, or named module is slop. Cut adjectives that name a feeling. Name the mechanism or the count: not "robust handling" but "retries 3 times then returns `ErrTimeout`"; not "seamless integration" but "1 call replaces 6".
+Every Problem, Solution, and Wins bullet must carry file evidence or a number. A bullet with only an adjective and no file, count, or named module is slop. Delete adjectives that name a feeling. Name the mechanism or the count: not "robust handling" but "retries 3 times then returns `ErrTimeout`"; not "seamless integration" but "1 call replaces 6".
 
 Banned in report prose: `crucial`, `delve`, `robust`, `seamless`, `comprehensive`, `pivotal`, `landscape`, `showcase`, `tapestry`, `testament`, `utilize`, `leverage`, `facilitate`, `groundbreaking`, `vibrant`, bare `flow`, puffery (`pivotal moment`, `setting the stage`), vague attributions (`experts believe`), `-ing` clause chains (`highlighting... ensuring...`), em dashes, rule-of-three triplets, generic conclusions (`the future looks bright`). `reuse` and `concentration` are allowed only with their required number or location. `flow` is allowed only as `steps`/`sequence` with actor plus action plus location, or `call chain` with the chain spelled out. Before writing the file, scan each card for these and rewrite.
 
-No hedging, no throat-clearing, no "it is worth noting that...". If a sentence could be a bullet, make it a bullet. If a bullet could be cut, cut it. If a term is not in the design vocabulary, pick one that is before inventing a new one.
+No hedging, no throat-clearing, no "it is worth noting that...". If a sentence could be a bullet, make it a bullet. If a bullet could be deleted, delete it. If a term is not in the design vocabulary, pick one that is before inventing a new one. Never use `cut` in report prose; say `delete` or `remove`.

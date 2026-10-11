@@ -144,7 +144,7 @@ Completion signal: the draft exists in the private channel, passes the dilution 
 **Branch 5 — Public-repo fix port (embargoed).** Require the Step 1 gate classification
 before any porting action — no porting on user word alone. Select the route; choose Route B
 if any is true, otherwise Route A: (a) the diff is self-identifying (input-sanitization
-around an obvious sink, auth-flow rework, credential handling); (b) the repo's policy or the
+around an obvious sink, auth-steps rework, credential handling); (b) the repo's policy or the
 coordination agreement requires zero public trace before publication; (c) a patched release
 would surface prematurely through tooling (for example, Dependabot alerts). Route A — quiet
 direct port: merge the approved fix into the public repo using Branch 1 wording, framed as

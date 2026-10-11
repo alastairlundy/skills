@@ -12,7 +12,7 @@ input: |
 
   **Approach**: Combine cart and checkout into a single page with inline validation. Add a payment provider abstraction.
 
-  **Scope**: Frontend checkout page, payment provider interface, two provider implementations (Stripe, PayPal), order creation flow.
+  **Scope**: Frontend checkout page, payment provider interface, two provider implementations (Stripe, PayPal), order creation steps.
 
   **Acceptance**: User completes checkout in one page; payment provider can be swapped without UI changes.
 assertion: |

@@ -96,7 +96,7 @@ Once all four elements (plus the inferred value proposition) are captured, appen
 The completion criterion is: all four explicit elements are captured; the workflow advances only when the user has provided an example or a description of the desired output's shape. An anti-example (what the skill should NOT do) is not a substitute for either.
 
 ### Step 2: Domain Analysis
-Break down the goal into logical "branches" or decision trees. Use a Mermaid diagram to visualize the branches and intended flow when the skill has three or more branches, or any non-linear flow. For simpler skills, prose decomposition is sufficient. Map the prerequisites and the intended end state. Determine what "success" looks like for this skill.
+Break down the goal into logical "branches" or decision trees. Use a Mermaid diagram to visualize the branches and intended sequence when the skill has three or more branches, or any non-linear sequence. For simpler skills, prose decomposition is sufficient. Map the prerequisites and the intended end state. Determine what "success" looks like for this skill.
 
 Each structural branch decision in Step 2 (e.g., "this skill has
 three branches", "the prerequisite is X", "success is the agent
@@ -160,7 +160,7 @@ To ensure the quality and determinism of the resulting skill, the agent must ver
 
 - [ ] **Structural Integrity**: Does the skill contain the 5 always-present sections (Frontmatter, When to Use, When Not to Use, Workflow, Validation)? The 2 conditional sections (Output Mode, Transitions) are required only when their trigger condition applies - Output Mode is required if the design has a non-default output behaviour; Transitions is required if the design depends on a downstream tool or skill.
 - [ ] **Determinism Audit**: Every workflow step must (a) start with a verb, (b) name a concrete action, and (c) end with a specific completion signal - for example, a returned value, a check result, a state change, a file produced, or an equivalent named artefact. If a step fails any of (a)–(c), rewrite it.
-- [ ] **Collaborative Alignment**: Was every translation of vague intent explicitly presented to the user, confirmed via the review question (paraphrased, not a fixed script) with an interpreted acceptance / modification / rejection outcome, and resolved through the appropriate follow-up flow?
+- [ ] **Collaborative Alignment**: Was every translation of vague intent explicitly presented to the user, confirmed via the review question (paraphrased, not a fixed script) with an interpreted acceptance / modification / rejection outcome, and resolved through the appropriate follow-up steps?
 - [ ] **Constraint Adherence**: Did the agent refrain from saving the design to file by default? If the user indicated intent to save, did the agent follow the save procedure? Did the agent announce the output mode at the start of Step 1?
 - [ ] **Validation Utility**: Does every item in the generated Validation section name a specific pass/fail condition (yes/no) that an agent can determine from the design alone? This check covers per-validation-item verifiability only; per-step verifiability is the scope of the Determinism Audit above.
 - [ ] **Design ledger initialized**: Was `references/decision-ledger.md` loaded in full before the first user question, and was `<target-skill-dir>/.design-ledger.md` initialized with the file-format header and the two trailing sentinels `next-d: D001` and `next-i: I001` (or lazily on the first real append if the target skill directory did not yet exist)?

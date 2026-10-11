@@ -12,7 +12,7 @@ input: |
 
   **Approach**: Add TOTP-based 2FA with backup codes.
 
-  **Scope**: User model, API endpoints, frontend enrollment flow, recovery codes.
+  **Scope**: User model, API endpoints, frontend enrollment steps, recovery codes.
 
   **Acceptance**: Users can enroll in 2FA, log in with TOTP, and use backup codes to recover.
 assertion: |

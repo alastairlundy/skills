@@ -124,7 +124,7 @@ Before selecting a decomposition pattern, reconcile the PR count across sources.
 ##### 6.1 Decomposition Pattern Choice
 
 **Decomposition patterns** - choose one based on the spec's structure -
-- **Vertical slices** - each ticket cuts end-to-end through all layers (schema, API, UI, tests). For non-code projects, "layers" means the distinct deliverable components - e.g., for a documentation skill - instructions, reference documents, agent definitions, test suite. Each slice delivers a narrow but complete path and is demoable or verifiable on its own. Best for feature work with clear functional boundaries.
+- **Vertical slices** - each ticket spans end-to-end through all layers (schema, API, UI, tests). For non-code projects, "layers" means the distinct deliverable components - e.g., for a documentation skill - instructions, reference documents, agent definitions, test suite. Each slice delivers a narrow but complete path and is demoable or verifiable on its own. Best for feature work with clear functional boundaries.
 - **Domain** - group tickets by domain concept or module. Best for large refactors or work organized around distinct subsystems.
 - **Features** - group tickets by user-facing capability or user story. Best for product-oriented specs with clear feature boundaries.
 
@@ -243,7 +243,7 @@ For the ticket body schema, see [ticket-template.md](./references/ticket-templat
 **Parent field values by input type** - the 1-3 sentence summary is required only for the conversation-context input type. For issue-tracker-reference and file-path input types, the issue number or relative file path is sufficient.
 - Issue tracker reference - the issue number or URL (e.g., `#123`)
 - File path - the relative file path (e.g., `docs/prds/feature-x.md`)
-- Conversation context - the date and a 1-3 sentence summary sufficient for a reader who was not part of the original conversation (e.g., `Conversation context (2026-06-07) - Implementing user authentication with OAuth2 and session management. Agreed on PKCE flow with refresh token rotation. Out of scope - social login providers.`)
+- Conversation context - the date and a 1-3 sentence summary sufficient for a reader who was not part of the original conversation (e.g., `Conversation context (2026-06-07) - Implementing user authentication with OAuth2 and session management. Agreed on PKCE steps with refresh token rotation. Out of scope - social login providers.`)
 
 **Context pointers rules** -
 - Include only files directly relevant to this ticket's scope.

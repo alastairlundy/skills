@@ -31,7 +31,7 @@ Load `references/dependency-review-guide.md` before Step 1. The Guide is the sou
 
 ## Workflow
 
-The workflow has seven numbered steps. Steps 1 and 2 are deterministic; Steps 3-7 are judgement. Each step's tag is recorded in the Guide and is the seam the future CLI cuts along.
+The workflow has seven numbered steps. Steps 1 and 2 are deterministic; Steps 3-7 are judgement. Each step's tag is recorded in the Guide for the future CLI to reuse.
 
 ### Step 1 - Discovery [deterministic]
 
@@ -66,7 +66,7 @@ Report the sub-criteria that fired and an overall tier per the tier-composition 
 
 ### Step 4 - Tightly-Coupled analysis [judgement]
 
-For each dependency, examine the import graph to identify tight coupling: many call sites, deep reach into dependency internals, or application code that mirrors dependency types. Report an overall tier only. Apply the import-surface thresholds (5+ sites baseline; a higher relative percentage of the project's total files counts as wider).
+For each dependency, examine the import graph to identify tight coupling: many call sites, far reach into dependency internals, or application code that mirrors dependency types. Report an overall tier only. Apply the import-surface thresholds (5+ sites baseline; a higher relative percentage of the project's total files counts as wider).
 
 ### Step 5 - Unmaintained-Deprecated analysis [judgement]
 
