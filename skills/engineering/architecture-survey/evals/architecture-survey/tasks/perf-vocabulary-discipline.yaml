@@ -5,11 +5,13 @@ description: >-
   and never drift into banned synonyms.
 input: |
   The reporting code is a mess of handler, processor, manager, and helper classes around one
-  Invoice object. What would you deepen?
+  Invoice object. What would you consolidate?
 assertion: |
   Every finding names the files involved, at least one probe from the skill's probe list
-  (concept bouncing, shallowness, locality theft, seam leakage, test surface), and the deletion
+  (concept bouncing, thin interface, scattered fix, interface leakage, test surface), and the deletion
   test result stating whether deleting the module would concentrate complexity or just move it.
-  The prose uses module, interface, depth, seam, adapter, leverage, and locality as defined by
+  The prose uses module, interface, implementation, consolidate, consolidated, thin, adapter, reuse,
+  and concentration as defined by
   the skill's design vocabulary, and does not substitute component, service, API, boundary,
-  layer, or wrapper for those terms.
+  layer, or wrapper for those terms. It never uses depth, deep, shallow, deepen, seam, leverage,
+  or locality. Every claim carries file evidence or a number.

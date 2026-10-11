@@ -103,12 +103,27 @@ transcript:
       the technical "how" supports the functional "what"?
 - [ ] **Goal-aligned reasoning**: Does every recommendation's
       `Reasoning` field explicitly tie to the session-level goal
-      (the current goal record) using phrasing like "aligns
-      with your goal of X" or "serves your goal of X"? Citing
+      (the current goal record) using one of the three approved phrasings ("aligns
+      with your goal of X", "serves your goal of X", "advances your goal of X by <mechanism>"),
+      varied across rounds, and name the accepted sacrifice via the option table Cost cell?
+      Citing
       ledger records without naming the user's goal is insufficient  - 
       the goal must be surfaced explicitly. See
       `references/recommendation-format.md` Goal-alignment
       rule.
+- [ ] **Concrete benefits and costs**: Does every Benefit and Cost cell name a mechanism,
+      a number, or a citation (`spec §`, `filename#Dxxx`/`Txxx`, code path)? No cell
+      is a bare adjective (`robust`, `seamless`, `flexible`). See
+      `references/options-format.md`.
+- [ ] **Slop-free prose**: Is user-facing prose free of AI vocabulary (`crucial`, `delve`,
+      `robust`, `seamless`, `comprehensive`, `pivotal`, `landscape`, `utilize`, `leverage`,
+      `facilitate`), puffery, vague attributions, `-ing` chains, em dashes, rule-of-three
+      triplets, and generic conclusions? See `references/tone-and-output.md`.
+- [ ] **Grounded groupings**: Does no user-facing turn use a bare `set`, `canonical`,
+      `placeholder`, or `flow` grouping without members plus count plus location (for `set`),
+      source plus approver (for `canonical`), known members plus missing item plus
+      owning `Txxx` (for `placeholder`), or ordered steps with actor plus action plus
+      location / spelled-out `call chain` (for `flow`)? See `references/tone-and-output.md`.
 - [ ] **Ledger Coverage**: Does every blueprint body statement
       that satisfies a functional requirement inline-cite a
       `Dxxx`/`Txxx` record using `filename#<Dxxx|Txxx>` format,

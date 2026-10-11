@@ -35,7 +35,7 @@ reject all.
 
 Typically 2–4. Do not present more than 5 options or less than 1 option. An option is defensible if all four columns below can be
 filled with non-trivial, option-specific content, and if the option genuinely makes sense given the decision - an option that is a strawman is not defensible. If any column would read
-`TBD`, `same as Option N`, `none`, or as if it is a strawman then the option is not defensible - replace it.
+`TBD`, `same as Option N`, `none`, or as if it is a strawman then the option is not defensible - replace it. When an option is distinguishable only by puffery (`robust`, `seamless`, `comprehensive`, `enhanced scalability` with no mechanism), drop the option instead of inventing a distinction.
 
 ## The four-column table
 
@@ -55,9 +55,9 @@ Option column.
   never write `Option A —` inside the cell.
 - **What it is** - one sentence describing the option.
 - **Benefit** - one sentence describing the gain. Answers: "What do I
-  get?"
+  get?" Must name a mechanism, a number, or a citation (`spec §`, `filename#Dxxx`/`Txxx`, code path). A bare adjective (`robust`, `seamless`, `flexible`, `efficient`) with no mechanism is slop. Rewrite or drop the option.
 - **Cost** - one sentence describing the realistic sacrifice. Answers:
-  "What do I definitely give up?"
+  "What do I definitely give up?" Must name what is lost concretely (a call-site change, a constraint, a fallback). Never pad with a mirrored benefit.
 
 ### Cell-level caps (enforceable)
 

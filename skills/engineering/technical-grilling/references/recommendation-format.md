@@ -46,12 +46,11 @@ the recommendation marker.
 ## Goal-alignment rule
 
 The `Reasoning` field **must explicitly tie the recommended option to
-the user's stated goal**. Use phrasing like *"aligns with your goal of
-X"* or *"serves your goal of X"*, where X is the session-level goal
+the user's stated goal**. Use one of the three approved phrasings, where X is the session-level goal
 recorded in the current goal record (or a new goal record, if a `Supersedes`
-has been issued). The reasoning must explain *why* this option serves
+has been issued): *"aligns with your goal of X"*, *"serves your goal of X"*, or *"advances your goal of X by <mechanism>"*. Vary the phrasing across rounds so consecutive recommendations do not repeat verbatim. The reasoning must explain *why* this option serves
 the goal; it must not compare options against each other or
-re-justify the rejected options.
+re-justify the rejected options. The same sentence must name the accepted sacrifice by pointing at the option table Cost cell (for example: `accepting the Cost in Option B`). A reasoning with only praise and no cost is slop.
 
 A reasoning that cites ledger records (`Dxxx`/`Txxx`) without naming
 the user's goal is insufficient. The agent must always surface the
@@ -68,7 +67,7 @@ block entirely.
 
 ```md
 **Recommendation: Option B - Per seat pricing.**
-**Reasoning:** Per-seat pricing aligns with your goal of growth-friendly revenue - adoption drives cost, which is the signal you need.
+**Reasoning:** Per-seat pricing advances your goal of growth-friendly revenue by tying cost to adoption, accepting the per-seat accounting Cost in Option B.
 ```
 
 ## Violation and correction
@@ -82,8 +81,8 @@ clause or adds a third line:
 
 **Correction.** Drop the clause and the third line:
 
-> **Recommendation: Option A -Constructor check,  with a "spirit-of-the-rule" extension for test scaffolding.**
-> **Reasoning:** Synchronous failure at construction aligns with your goal of catching precondition failures early.
+> **Recommendation: Option A - Constructor check.**
+> **Reasoning:** Synchronous failure at construction aligns with your goal of catching precondition failures early, accepting the serialization Cost in Option A.
 
 ## Why the lean format
 The 2-line format keeps the recommendation a pure pointer; nuance belongs in the option table's Cost column

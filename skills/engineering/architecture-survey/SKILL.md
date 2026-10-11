@@ -1,22 +1,22 @@
 ---
 name: architecture-survey
 description: >-
-  Surveys a codebase for deepening opportunities and delivers them as a visual HTML report, then grills the chosen candidate through to a decision. Use when a user asks to improve codebase architecture, find refactoring or module-deepening candidates, review how module design has degraded, or run a periodic architecture survey on an actively changing codebase. Defer building the chosen refactor to technical-grilling and spec-to-tickets; defer third-party dependency health to dependency-review.
+  Surveys a codebase for consolidation opportunities and delivers them as a visual HTML report, then grills the chosen candidate through to a decision. Use when a user asks to improve codebase architecture, find refactoring or module-consolidation candidates, review how module design has degraded, or run a periodic architecture survey on an actively changing codebase. Defer building the chosen refactor to technical-grilling and spec-to-tickets; defer third-party dependency health to dependency-review.
 license: MIT
 ---
 
 # Architecture Survey
 
-Surface architectural friction and propose **deepening opportunities**: refactors that turn shallow modules into deep ones. The aim is testability and AI-navigability. The survey finds and ranks candidates. Building them is a separate job.
+Surface architectural friction and propose **consolidation opportunities**: refactors that turn thin modules into consolidated ones. The aim is testability and AI-navigability. The survey finds and ranks candidates. Building them is a separate job.
 
-Everything uses the shared design vocabulary (module, interface, depth, seam, adapter, leverage, locality) in `references/design-vocabulary.md`. `GLOSSARY.md` names the domain. `docs/adr/` holds settled cross-cutting architecture decisions; `docs/decisions/` ledgers hold session decisions, including past rejections of survey candidates. The survey reads both and re-litigates neither.
+Everything uses the shared design vocabulary (module, interface, implementation, consolidate, consolidated, thin, adapter, reuse, concentration) in `references/design-vocabulary.md`. `GLOSSARY.md` names the domain. `docs/adr/` holds settled cross-cutting architecture decisions; `docs/decisions/` ledgers hold session decisions, including past rejections of survey candidates. The survey reads both and re-litigates neither.
 
 ## When to Use
 
-- A user asks to find architectural friction or deepening opportunities in a codebase
-- A user asks which modules are too shallow, hard to test, or hard to navigate
+- A user asks to find architectural friction or consolidation opportunities in a codebase
+- A user asks which modules are too thin, hard to test, or hard to navigate
 - A user asks for an architecture review or survey report, or wants one on a schedule (every few days fits active repos)
-- A user names a module or subsystem and asks whether its interface should be deeper
+- A user names a module or subsystem and asks whether its interface should be consolidated
 - A user asks what changed architecturally since the last survey
 - An agent needs a ranked list of refactoring candidates before planning a larger change
 - When user input would clarify the request, invoke `ask-questions`
@@ -25,7 +25,7 @@ Everything uses the shared design vocabulary (module, interface, depth, seam, ad
 
 - The user wants a chosen refactor built now. Hand the decision to `technical-grilling`, then `spec-to-tickets` or direct implementation.
 - The question is about third-party packages rather than internal module design. Use `dependency-review`.
-- The target is not source code (docs, skill definitions, content repos). There are no modules to deepen.
+- The target is not source code (docs, skill definitions, content repos). There are no modules to consolidate.
 - The review covers a single diff or PR. Review the diff; a whole-codebase survey answers a different question.
 
 ## Workflow
@@ -35,7 +35,7 @@ Six steps. Load `references/design-vocabulary.md` before Step 2 and `references/
 ### Step 1 - Select scope
 
 1. If the user named a direction (module, subsystem, pain point), record it as the scope and go to Step 2.
-2. Otherwise run `git log --oneline -n 200` and count how often each file path appears. Take the 3-5 paths with the most churn as the scope. A deepening pays back only where code keeps changing.
+2. Otherwise run `git log --oneline -n 200` and count how often each file path appears. Take the 3-5 paths with the most churn as the scope. A consolidation pays back only where code keeps changing.
 3. If history has fewer than 30 commits or churn is flat, widen the scope to the repo's source roots (`src/`, `app/`, `lib/`, or language equivalents) and say so in the report header.
 
 ### Step 2 - Load context
@@ -47,14 +47,14 @@ Six steps. Load `references/design-vocabulary.md` before Step 2 and `references/
 
 ### Step 3 - Explore for friction
 
-Spawn one subagent to walk the scope. Give it the probe list below verbatim. Each candidate it returns records: **Files**, the probe ids that fired, **Evidence** (paths plus what the code shows), **Proposed change**, and the **deletion test** answer, either "complexity concentrates here" or "complexity just moves".
+Spawn one subagent to walk the scope. Give it the probe list plus the output and tone rules below verbatim. Each candidate it returns records: **Files**, the probe ids that fired, **Evidence** (paths plus what the code shows: call chains, method and parameter counts, named invariants), **Proposed change** (the mechanism: what moves behind which interface, which wrappers are deleted), and the **deletion test** answer, either "complexity concentrates here" or "complexity just moves". Proposed changes without a mechanism or a count are rejected. Banned in all fields: `depth`, `deep`, `shallow`, `deepen`, `seam`, `leverage`, `locality`, bare `flow`, `crucial`, `delve`, `robust`, `seamless`, `comprehensive`, `pivotal`, `landscape`, `utilize`, `facilitate`, puffery, vague attributions, `-ing` clause chains, em dashes, rule-of-three triplets. Use `consolidate`, `consolidated`, `thin`, `reuse` (with N call sites and M tests), `concentration` (with location), `steps`/`sequence` with actor plus action plus location (never bare `flow`), `call chain` with the chain spelled out from `references/design-vocabulary.md`.
 
 Probes:
 
 - **P1 Concept bouncing** - does understanding one concept require tracing through 3 or more modules?
-- **P2 Shallowness** - is the interface nearly as complex as the implementation, counting exported surface, parameters, and the invariants a caller must know?
-- **P3 Locality theft** - are pure functions extracted in the name of testability while the bugs live in how callers orchestrate them?
-- **P4 Seam leakage** - does private knowledge of one module, such as its types, ordering, or configuration, leak into callers across the interface?
+- **P2 Thin interface** - is the interface nearly as complex as the implementation, counting exported surface, parameters, and the invariants a caller must know?
+- **P3 Scattered fix** - are pure functions extracted in the name of testability while the bugs live in how callers orchestrate them?
+- **P4 Interface leakage** - does private knowledge of one module, such as its types, ordering, or configuration, leak into callers across the interface?
 - **P5 Test surface** - is the area untested, or testable only by driving a public entry point because the interface is the wrong shape?
 
 Filter and rank:
@@ -79,12 +79,12 @@ Filter and rank:
 
 ### Step 6 - Grill the chosen candidate
 
-1. Invoke the `technical-grilling` skill on the picked candidate: constraints, dependencies, the shape of the deepened module, what sits behind the seam, which tests survive.
+1. Invoke the `technical-grilling` skill on the picked candidate: constraints, dependencies, the shape of the consolidated module, what sits behind the interface, which tests survive.
 2. Keep the domain model current as decisions crystallize:
    - A concept named that `GLOSSARY.md` lacks: add the term. Create `GLOSSARY.md` when the repo has none.
    - A fuzzy term sharpened in conversation: update `GLOSSARY.md` in place.
    - The user rejects a candidate for a load-bearing reason: make sure `technical-grilling` records the rejection in its Decision Ledger (`docs/decisions/DECISIONS-<repo>-<slug>.md`, created lazily). Step 4 of future surveys screens candidates against that record. A rejection never earns an ADR. An ADR records a cross-cutting architecture decision that meets `technical-grilling`'s criteria, and that skill owns the offer.
-   - The user wants alternative interfaces for the deepened module: run the design-it-twice pattern in `references/design-vocabulary.md`.
+   - The user wants alternative interfaces for the consolidated module: run the design-it-twice pattern in `references/design-vocabulary.md`.
 
 ## Output Mode
 
@@ -99,14 +99,15 @@ The default artifact is one self-contained HTML file in the OS temp directory pl
 - [ ] ADR contradictions carry a callout or a drop; ledger rejections drop the candidate with a `filename#Dxxx` citation; every dropped candidate appears in the not-proposed footer
 - [ ] The report is a self-contained HTML file in the temp directory, named `architecture-survey-<repo>-<timestamp>.html`, opened for the user with its absolute path stated
 - [ ] Every card has Files, Problem, Solution, Wins, a before/after diagram, and a strength badge; the report ends with a Top recommendation section
-- [ ] Output uses the vocabulary exactly: module, interface, depth, seam, adapter, leverage, locality; component, service, API, and boundary never substitute
+- [ ] Output uses the vocabulary exactly: module, interface, implementation, consolidate, consolidated, thin, adapter, reuse, concentration; component, service, API, boundary, layer, and wrapper never substitute; depth, deep, shallow, deepen, seam, leverage, and locality never appear
+- [ ] Every Problem, Solution, and Wins bullet carries file evidence or a number; no bullet is an adjective alone; banned slop terms (`crucial`, `delve`, `robust`, `seamless`, `comprehensive`, `pivotal`, `landscape`, `utilize`, `facilitate`, puffery, `-ing` chains, em dashes, triplets) absent
 - [ ] No interface proposal was made before the user picked a candidate
 - [ ] The picked candidate was handed to `technical-grilling`; glossary and ledger writes happened only in Step 6 with agreement; no ADR was offered for a candidate rejection
 
 ## Transitions
 
 - **Before**: `technical-grilling` sharpens the domain concepts this survey names; a glossary it keeps current makes later surveys more precise.
-- **After**: a resolved deepening design becomes tickets via `spec-to-tickets`, or one focused refactor via `technical-grilling` into implementation.
+- **After**: a resolved consolidation design becomes tickets via `spec-to-tickets`, or one focused refactor via `technical-grilling` into implementation.
 - **Adjacent**: `dependency-review` audits third-party packages; this skill audits internal module structure.
 
 ## Attribution

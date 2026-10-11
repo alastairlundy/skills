@@ -5,7 +5,7 @@ description: >-
   are consulted when present.
 input: |
   Run an architecture survey on this repository. I have no particular area in mind, just tell me
-  where the deepening opportunities are.
+  where the consolidation opportunities are.
 assertion: |
   Before reading source code for candidates, the run inspects recent git history (e.g.
   "git log --oneline") and names the hot-spot paths it chose as the scope (3-5 paths, or an

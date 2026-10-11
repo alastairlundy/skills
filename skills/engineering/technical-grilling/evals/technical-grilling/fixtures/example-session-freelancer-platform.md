@@ -50,7 +50,7 @@ Recorded as D001 in the Decision Ledger.
 |------------------|--------------------------------------------------------------------------|
 | **Goal**         | Establish the core domain vocabulary for the freelancer-client platform (D001). |
 | **Prior decisions** | No prior branch decisions yet.                                        |
-| **Scope**        | This branch covers who the buyer is; it does not cover payment flow.    |
+| **Scope**        | This branch covers who the buyer is; it does not cover payment steps.    |
 
 **For D002 – who hires whom: pick an option, hybridize, or provide
 your own answer.**
@@ -60,7 +60,7 @@ reject all, or hybridize.
 
 | Option | What it is | Benefit | Cost |
 |------------------|-----------|---------|------|
-| **A - Client-as-buyer** | The client (entity paying) is the counterparty to the freelancer. | Matches common B2B invoicing flows. | Blurs client (org) and contact (person) into one term. |
+| **A - Client-as-buyer** | The client (entity paying) is the counterparty to the freelancer. | Matches common B2B invoicing steps. | Blurs client (org) and contact (person) into one term. |
 | B - Contact-on-behalf-of-client | The contact is a person acting for a client organization; the org is the payer. | Cleanly separates invoicing target from conversational contact. | Extra term to maintain in the glossary. |
 | C - Two-sided marketplace | Freelancer and client are peers, no organization layer. | Simpler model. | No place to model enterprise clients with multiple contacts. |
 

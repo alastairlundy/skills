@@ -25,10 +25,10 @@ The survey renders as a single self-contained HTML file in the OS temp directory
     </script>
     <style>
       /* small custom layer for things Tailwind doesn't cover cleanly:
-         dashed seam lines, hand-drawn-feeling arrow heads, etc. */
-      .seam { stroke-dasharray: 4 4; }
+         dashed interface lines, hand-drawn-feeling arrow heads, etc. */
+      .iface { stroke-dasharray: 4 4; }
       .leak { stroke: #dc2626; }
-      .deep { background: linear-gradient(135deg, #0f172a, #1e293b); }
+      .consolidated { background: linear-gradient(135deg, #0f172a, #1e293b); }
     </style>
   </head>
   <body class="bg-stone-50 text-slate-900 font-sans">
@@ -46,7 +46,7 @@ Name the file `architecture-survey-<repo>-<YYYYMMDD-HHMM>.html`. Every run gets 
 
 ## Header
 
-Repo name, date, the scope the survey walked (user-named direction, or the hot-spot paths from git churn), and a compact legend: solid box = module, dashed line = seam, red arrow = leakage, thick dark box = deep module. No introduction paragraph. Straight into the candidates.
+Repo name, date, the scope the survey walked (user-named direction, or the hot-spot paths from git churn), and a compact legend: solid box = module, dashed line = interface, red arrow = leakage, thick dark box = consolidated module. No introduction paragraph. Straight into the candidates.
 
 ## Candidate card
 
@@ -54,13 +54,13 @@ The diagrams carry the weight. Prose stays sparse and plain, using the terms fro
 
 Each candidate is one `<article>`:
 
-- **Title** - short, names the deepening (e.g. "Collapse the Order intake pipeline").
+- **Title** - short, names the consolidation (e.g. "Collapse the Order intake pipeline").
 - **Badge row** - recommendation strength (`Strong` = emerald, `Worth exploring` = amber, `Speculative` = slate), plus the dependency category (`in-process`, `local-substitutable`, `ports & adapters`, `mock`).
 - **Files** - monospaced list, `font-mono text-sm`.
 - **Before / After diagram** - the centrepiece, two columns side by side. See patterns below.
 - **Problem** - one sentence. What hurts.
 - **Solution** - one sentence. What changes.
-- **Wins** - bullets, 6 words or fewer each. e.g. "Tests hit one interface", "Pricing logic stops leaking", "Delete 4 shallow wrappers".
+- **Wins** - bullets, 6 words or fewer each, each carrying a number or a module name. e.g. "Tests hit one interface", "Pricing logic stops leaking", "Delete 4 thin wrappers".
 - **ADR callout** (when the candidate contradicts one) - one line in an amber-tinted box.
 
 No paragraphs of explanation. If a diagram needs a paragraph to be understood, redraw the diagram.
@@ -69,9 +69,9 @@ No paragraphs of explanation. If a diagram needs a paragraph to be understood, r
 
 Pick the pattern that fits the candidate. Mix them. Variety is part of the point.
 
-### Mermaid graph (the workhorse for dependencies and call flow)
+### Mermaid graph (the workhorse for dependencies and call chains)
 
-Use a Mermaid `flowchart` or `graph` when the point is "X calls Y calls Z, and look at the mess." Wrap it in a Tailwind-styled card so it matches the page. Style with classDef to colour leakage edges red and the deep module dark. Sequence diagrams work well for "before: 6 round-trips; after: 1."
+Use a Mermaid `flowchart` or `graph` when the point is "X calls Y calls Z, and look at the mess." Wrap it in a Tailwind-styled card so it matches the page. Style with classDef to colour leakage edges red and the consolidated module dark. Sequence diagrams work well for "before: 6 round-trips; after: 1."
 
 ```html
 <div class="rounded-lg border border-slate-200 bg-white p-4">
@@ -88,15 +88,15 @@ Use a Mermaid `flowchart` or `graph` when the point is "X calls Y calls Z, and l
 
 ### Hand-built boxes and arrows (when Mermaid's layout fights you)
 
-Modules as `<div>`s with borders and labels. Arrows as inline SVG `<line>` or `<path>` elements positioned over a relative container. Reach for this when the "after" diagram should read as one thick-bordered deep module with greyed-out internals, because Mermaid cannot render that with the right weight.
+Modules as `<div>`s with borders and labels. Arrows as inline SVG `<line>` or `<path>` elements positioned over a relative container. Reach for this when the "after" diagram should read as one thick-bordered consolidated module with greyed-out internals, because Mermaid cannot render that with the right weight.
 
-### Cross-section (for layered shallowness)
+### Cross-section (for layered thinness)
 
 Stack horizontal bands (`h-12 border-l-4`) to show the layers a call passes through. Before: 6 thin layers each doing nothing. After: 1 thick band labelled with the consolidated responsibility.
 
 ### Mass diagram (for "interface as wide as implementation")
 
-Two rectangles per module: interface surface area and implementation. Before: the interface rectangle is nearly as tall as the implementation rectangle, which is shallow. After: interface short, implementation tall.
+Two rectangles per module: interface surface area and implementation. Before: the interface rectangle is nearly as tall as the implementation rectangle, which is thin. After: interface short, implementation tall.
 
 ### Call-graph collapse
 
@@ -122,19 +122,23 @@ One larger card. Candidate name, one sentence on why, anchor link to its card. N
 
 Plain English, concise, with the architectural nouns and verbs straight from `references/design-vocabulary.md`. Concision is not an excuse to drift.
 
-Use exactly: module, interface, implementation, depth, deep, shallow, seam, adapter, leverage, locality.
+Use exactly: module, interface, implementation, consolidate, consolidated, thin, adapter, reuse, concentration.
 
-Never say, when the glossary term fits: component, service, or unit for module; API or signature for interface; boundary for seam; layer or wrapper for module.
+Never say, when the glossary term fits: component, service, or unit for module; API or signature for interface; boundary for the interface location; layer or wrapper for module. Never use depth, deep, shallow, deepen, seam, leverage, or locality.
 
 For domain names, use `GLOSSARY.md` vocabulary. If `GLOSSARY.md` defines "Order", write "the Order intake module", not "the FooBarHandler" and not "the Order service".
 
 Phrasings that fit:
 
-- "Order intake module is shallow: interface nearly matches the implementation."
-- "Pricing leaks across the seam."
-- "Deepen: one interface, one place to test."
-- "Two adapters justify the seam: HTTP in prod, in-memory in tests."
+- "Order intake module is thin: 9-method interface for 2 behaviors."
+- "Pricing leaks across the interface."
+- "Consolidate: one interface, one place to test."
+- "Two implementations share one interface: HTTP in prod, in-memory in tests."
 
-Wins bullets name the gain in vocabulary terms: "locality: bugs concentrate in one module", "leverage: one interface, N call sites", "interface shrinks; implementation absorbs the wrappers". "Easier to maintain" and "cleaner code" say nothing; cut them.
+Wins bullets name the gain in vocabulary terms with a number or location: "concentration: pricing bugs land in Order intake", "reuse: one interface, 4 call sites", "interface shrinks; implementation absorbs the wrappers". "Easier to maintain" and "cleaner code" say nothing; cut them.
+
+Every Problem, Solution, and Wins bullet must carry file evidence or a number. A bullet with only an adjective and no file, count, or named module is slop. Cut adjectives that name a feeling. Name the mechanism or the count: not "robust handling" but "retries 3 times then returns `ErrTimeout`"; not "seamless integration" but "1 call replaces 6".
+
+Banned in report prose: `crucial`, `delve`, `robust`, `seamless`, `comprehensive`, `pivotal`, `landscape`, `showcase`, `tapestry`, `testament`, `utilize`, `leverage`, `facilitate`, `groundbreaking`, `vibrant`, bare `flow`, puffery (`pivotal moment`, `setting the stage`), vague attributions (`experts believe`), `-ing` clause chains (`highlighting... ensuring...`), em dashes, rule-of-three triplets, generic conclusions (`the future looks bright`). `reuse` and `concentration` are allowed only with their required number or location. `flow` is allowed only as `steps`/`sequence` with actor plus action plus location, or `call chain` with the chain spelled out. Before writing the file, scan each card for these and rewrite.
 
 No hedging, no throat-clearing, no "it is worth noting that...". If a sentence could be a bullet, make it a bullet. If a bullet could be cut, cut it. If a term is not in the design vocabulary, pick one that is before inventing a new one.

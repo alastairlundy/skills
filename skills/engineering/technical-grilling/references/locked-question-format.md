@@ -349,7 +349,7 @@ reject all, or hybridize.
 
 **Recommendation: A.**
 **Reasoning:** C# natively supports sealed class hierarchies, which
-aligns with your goal of a testable domain model (D001).
+aligns with your goal of a testable domain model (D001), accepting the expertise Cost in Option A.
 
 <user picks A>
 
@@ -378,5 +378,5 @@ reject all, or hybridize.
 | B — Dapper | Lightweight micro-ORM with raw SQL control. | Full SQL control; minimal overhead. | No built-in migration tooling. |
 
 **Recommendation: Option A - EF Core.**
-**Reasoning:** EF Core's LINQ integration aligns with your goal of a testable domain model (D001) by keeping queries in managed code.
+**Reasoning:** EF Core's LINQ integration aligns with your goal of a testable domain model (D001) by keeping queries in managed code, accepting the migration Cost in Option A.
 ```

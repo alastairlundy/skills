@@ -4,7 +4,7 @@ description: >-
   The report is a self-contained HTML file in the temp directory with cards, badges, diagrams,
   and a Top recommendation section; nothing is written into the repo.
 input: |
-  Survey the notification subsystem for deepening opportunities and give me the visual report.
+  Survey the notification subsystem for consolidation opportunities and give me the visual report.
 assertion: |
   The run writes one self-contained HTML file under the OS temp directory (resolved from
   $TMPDIR, %TEMP%, or /tmp) named architecture-survey-<repo>-<timestamp>.html, opens it for the

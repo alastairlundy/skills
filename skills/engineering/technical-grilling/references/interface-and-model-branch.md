@@ -36,7 +36,7 @@ This branch decides which shape the `Contact` record takes, which blocks message
 |------------------|-----------------------------------------------------------------------------|
 | **Decision**     | T003 – Contact type: decide whether `Contact` is a record or a class with identity, which blocks message passing. |
 | **Goal**         | Define the type for the freelancing platform's contact record (DECISIONS-demo.md#D001).       |
-| **Prior decisions** | DECISIONS-demo.md#D002 established that the contact acts for a client organization and DECISIONS-demo.md#D003 established the payment flow. |
+| **Prior decisions** | DECISIONS-demo.md#D002 established that the contact acts for a client organization and DECISIONS-demo.md#D003 established the payment steps. |
 | **Scope**        | This decision covers the `Contact` type's fields and invariants; not `ClientOrganization` or `Invoice`. |
 | **Spec section** | `specs/freelancing-platform.md §3.2 (Contact record)` - Contact must carry identity, display name, and reference to a single `ClientOrganization`. |
 
@@ -52,7 +52,7 @@ reject all, or hybridize.
 | B - Class with Identity | Contact is a class implementing `IHasIdentity`. | Reference equality; familiar pattern. | Mutable; requires `IEquatable` implementation. |
 
 **Recommendation: A.**
-**Reasoning:** A record type aligns with your goal of a serializable contact that carries identity - value equality is the natural fit for message passing.
+**Reasoning:** A record type aligns with your goal of a serializable contact that carries identity, accepting the identity-check Cost in Option A.
 ```
 
 ## Format: meta-questions vs. per-decision questions
@@ -132,7 +132,7 @@ reject all, or hybridize.
 | B - Hexagonal ports | Domain exposes ports; adapters implement them. | Clear boundary; easy to swap adapters. | Port definitions add abstraction overhead. |
 
 **Recommendation: A.**
-**Reasoning:** Clean Architecture aligns with your goal of testable domain logic - the zero-dependency rule is the enforcement mechanism.
+**Reasoning:** Clean Architecture aligns with your goal of testable domain logic, accepting the DI wiring Cost in Option A.
 ```
 
 <user answers or says "skip">
@@ -149,7 +149,7 @@ one, reject all, or hybridize.
 | B - Shared kernel | Shared kernel project holds types both layers consume. | Less ceremony for cross-cutting types. | Shared kernel becomes a dumping ground. |
 
 **Recommendation: A.**
-**Reasoning:** Keeping the domain free of infrastructure aligns with your goal of a testable domain model (D001).
+**Reasoning:** Keeping the domain free of infrastructure aligns with your goal of a testable domain model (D001), accepting the adapter Cost in Option A.
 ```
 
 The meta-question that follows ("Ready to move to Source of Truth?")

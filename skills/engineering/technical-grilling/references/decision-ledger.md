@@ -147,7 +147,7 @@ their mind), the agent detects the drift before the new branch can
 resolve. The agent pauses, surfaces a fixed "Contradiction detected"
 callout naming the prior record and the new resolution, and re-asks
 the branch with the new context. The user confirms, revises, or opens
-a goal-change flow.
+a goal-change steps.
 
 Once the user confirms the new resolution, the new record gains a
 Supersedes: Dxxx line in Constraints pointing to the earlier record it
@@ -360,7 +360,7 @@ about ledgers when none is provided.
   platform where contacts message on behalf of client organizations."
 - **Normalized Requirement**: The session shall produce a domain model
   that distinguishes contacts from client organizations and defines
-  the payment flow.
+  the payment steps.
 - **Constraints**: `None.`
 
 ### [D002] - who hires whom
@@ -381,7 +381,7 @@ about ledgers when none is provided.
   deducted before the freelancer receives funds.
 - **Resolved Answer**: "client organization is the payer; freelancer
   is the payee; platform takes a percentage fee."
-- **Normalized Requirement**: Payment flow shall route funds from
+- **Normalized Requirement**: Payment steps shall route funds from
   `ClientOrganization` to `Freelancer` with a platform fee deducted
   before the freelancer payout.
 - **Constraints**: `None.`

@@ -78,10 +78,15 @@ reference files exist and are readable. Then load and read in full:
   language, scenario discussion, ADR offer.
 - term-resolution.md - *eager*. Writing resolved terms to GLOSSARY.md.
 - ADR-FORMAT.md - *eager*. ADR structure and when to offer one.
+- tone-and-output.md - *eager*. Neutral tone, slop patterns, grouping nouns, pre-emit audit.
 - locked-question-format.md - *eager*. The branch heading + header +
   5-data-row code-impl context table.
+- options-format.md - *eager*. The 4-column table with concrete benefits and costs.
+- recommendation-format.md - *eager*. The 2-line lean block with goal plus cost.
+- decision-ledger.md - *eager*. Ledger format, approval turn, conflict mechanics.
 - coverage-sweep.md - *lazy*. Load before Phase 2 TDP extraction and
   before running the convergence test.
+- convergence-test.md - *lazy*. Load before running the convergence test.
 - recording-decisions.md - *eager*. The `Txxx` record template.
 - interface-and-model-branch.md - *lazy*. Load before Phase 2 interface
   decisions.
@@ -163,7 +168,7 @@ Follow the concept-alignment workflow:
 Phase 1 ends here **only** when the captured session intent is
 `concept-only` (the user explicitly stated they wanted terminology or
 concept alignment and nothing further). In that case, run the convergence check. For any other intent
-(`concept-then-implementation` or `implementation-only`), Phase 1 must flow
+(`concept-then-implementation` or `implementation-only`), Phase 1 must continue
 into Gate B and Phase 2 - do **not** stop.
 
 ### Gate B: Concept-readiness (anti-skip)
@@ -253,8 +258,13 @@ section. The user decides when both artifacts are no longer needed.
 - ddd-initialization.md - eager
 - term-resolution.md - eager
 - ADR-FORMAT.md - eager
+- tone-and-output.md - eager
 - locked-question-format.md - eager (branch heading + header + 5-data-row code-impl variant)
+- options-format.md - eager
+- recommendation-format.md - eager
+- decision-ledger.md - eager
 - recording-decisions.md - eager
+- convergence-test.md - lazy
 - interface-and-model-branch.md - lazy
 - output-selection.md - lazy
 - coverage-sweep.md - lazy
@@ -367,3 +377,6 @@ transcript:
       with zero `**` characters.
 - [ ] Every option in every options table is a credible, achievable
       choice; no option is "impossible" or "not feasible".
+- [ ] Every Benefit and Cost cell names a mechanism, a number, or a citation; no cell is a bare adjective.
+- [ ] Every recommendation's `Reasoning` uses one of the three approved goal phrasings, varied across rounds, and names the accepted Cost.
+- [ ] No user-facing turn contains AI vocabulary, puffery, `-ing` chains, em dashes, triplets, generic conclusions, or an ungrounded `set` / `canonical` / `placeholder` / `flow` grouping (`references/tone-and-output.md`).
