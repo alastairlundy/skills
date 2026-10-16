@@ -23,7 +23,8 @@ phrasing — no exploit path in the title or first paragraph.>
 
 ## Patched versions
 <Versions containing the fix, e.g. "1.2.4". Enter the fix version into the draft advisory
-before publication so dependabot-style tooling offers a safe upgrade at disclosure time.>
+before publication, and cut the release containing the fix before the advisory itself is
+published, so dependabot-style tooling offers a safe upgrade at disclosure time.>
 
 ## Proof of concept
 <A minimal actionable proof, marked for maintainer validation. The full working PoC is

@@ -13,8 +13,10 @@ license: MIT
 # Responsible Security Disclosure
 
 This skill protects security vulnerabilities from premature disclosure while an agent works
-on them. It runs one classification gate up front, then applies wording, channel, and
-porting rules that are keyed to that classification. The rules are binding, not advisory.
+on them. Disclosure without a patched version obtainable by users almost never happens here.
+It runs one classification gate up front, then applies wording, channel, and porting rules
+keyed to that classification, and gates every publication action on the patched-release
+precondition. The rules are binding, not advisory.
 
 ## Terminology
 
@@ -23,6 +25,8 @@ porting rules that are keyed to that classification. The rules are binding, not 
   collaborators).
 - **PUBLICLY DISCLOSED** - the vulnerability is public: an advisory is published, the CVE
   Record state is Published, or an equivalent public notice exists.
+- **Patched release available** - a release containing the fix is obtainable through the
+  project's normal distribution channel (tagged release, published package).
 - **Repository security advisory** - a GitHub object tied to a repository that holds the
   vulnerability details privately while in draft, and publishes them to the community.
 - **Private vulnerability reporting** - GitHub's channel for reporting vulnerability details
@@ -54,7 +58,7 @@ Work through these steps in order. Track progress with the checklist.
 - [ ] Step 1: Run the disclosure-state gate
 - [ ] Step 2: Route to the work branch
 - [ ] Step 3: Execute the branch rules
-- [ ] Step 4: Relax or hold
+- [ ] Step 4: Relax, hold, or publish
 
 ### Step 1 — Disclosure-state gate
 
@@ -103,7 +107,8 @@ severity markers, CVE references, security labels, or per-issue detail. Security
 (how to report privately) is always allowed; descriptions of unfixed or embargoed
 vulnerabilities are never allowed. Once the Step 1 gate classifies the vulnerability as
 PUBLICLY DISCLOSED, upgrade earlier embargo-tier entries to full detail (CVE ID, class,
-severity, advisory link) in the revision where the advisory link exists.
+severity, advisory link) in the revision where the advisory link exists and a patched
+release is obtainable.
 Completion signal: every artifact passes the screening checklist; one line names the artifacts and the tier used.
 
 **Branch 3 — Private fork usage (embargoed).** Route the request: develop-the-fix (where do
@@ -117,15 +122,16 @@ I put it?) or show-the-fix (demonstrate a proposed fix?). Channel knowledge, inl
   protections are not enforced; publishing the advisory deletes the fork.
 - *Normal (public) repo*: the real project; anything pushed there is world-readable and
   permanently in the git history. Use it for everything except embargoed fix work — routine
-  fixes, feature work, and (post-disclosure, or as part of a coordinated quiet port) the fix
-  itself.
+  fixes, feature work, and (post-disclosure, or as part of a Branch 5 coordinated port) the
+  fix itself.
 - *Self-managed private fork or private repo*: a private clone used when no advisory
   workflow exists. Treat it as an embargoed workspace with manual coordination — porting the
   fix to the public repo is a deliberate post-embargo action.
 
 Prefer the advisory-attached temporary private fork when one exists; fall back to a
 self-managed private repo otherwise, annotating the mandatory post-embargo port. Never push
-embargoed fix commits to the public default branch unless Branch 5 Route A conditions hold.
+embargoed fix commits to the public default branch outside a Branch 5 route (Route A quiet
+port, or Route B's coordinated publication window).
 Completion signal: the fix lives in the channel matching its disclosure state; one line confirms the channel and any pending follow-up (for example, merge-at-publication).
 
 **Branch 4 — Draft advisory (embargoed).** When drafting an advisory, load
@@ -136,48 +142,73 @@ an attacker would; if the text enables exploitation before a patched version is 
 trim the PoC to the minimum that proves the issue to a maintainer, generalize exact
 reproducer inputs to parameter ranges, and keep step-by-step exploitation out of the
 narrative. Hard bar: a defender can validate and fix; a bad actor cannot weaponize from the
-text alone before the fix is in users' hands. The full working PoC is stored privately
-alongside the advisory, never pasted into chat, docs, or public artifacts. The advisory draft
-is the receiving channel for refusal-path detail requests.
+text alone before the fix is in users' hands. Advisory publication is gated on the Step 4
+patched-release precondition, not on draft completion. The full working PoC is stored
+privately alongside the advisory, never pasted into chat, docs, or public artifacts. The
+advisory draft is the receiving channel for refusal-path detail requests.
 Completion signal: the draft exists in the private channel, passes the dilution check, and one line names the channel.
 
 **Branch 5 — Public-repo fix port (embargoed).** Require the Step 1 gate classification
-before any porting action — no porting on user word alone. Select the route; choose Route B
-if any is true, otherwise Route A: (a) the diff is self-identifying (input-sanitization
-around an obvious sink, auth-steps rework, credential handling); (b) the repo's policy or the
-coordination agreement requires zero public trace before publication; (c) a patched release
-would surface prematurely through tooling (for example, Dependabot alerts). Route A — quiet
-direct port: merge the approved fix into the public repo using Branch 1 wording, framed as
-ordinary hardening; enter the fix version into the draft advisory before publication, and
-coordinate with the user so the patched release and advisory publication are timed together.
-Route B — private-fork hold: hold the fix in the temporary private fork; port via the
-advisory's all-PRs merge or an immediate cherry-pick/PR after publication; never destroy the
-fork before the port completes. Once the gate classifies the vulnerability as PUBLICLY
-DISCLOSED, porting follows normal development rules and Branch 2's upgrade step becomes
-available.
+before any porting action — no porting on user word alone. Route A is the default. Select
+Route B only when at least one holds: (a) the repo's security policy or the coordination
+agreement requires zero public trace before publication; (b) pushing the fix to the public
+repo would surface a patched-looking state through tooling (Dependabot-style alerts, tag
+scanning) before the coordinated release; (c) the user explicitly selects Route B and
+accepts its timing cost. A self-identifying diff alone never selects Route B; Route A
+absorbs that risk with stricter Branch 1 screening.
+Route A — quiet direct port: merge the approved fix into the public repo using Branch 1
+wording, framed as ordinary hardening; enter the fix version into the draft advisory before
+publication. The merge itself is not disclosable. Publication follows the Step 4
+patched-release precondition; coordinate with the user so the release cut and advisory
+publication happen together.
+Route B — publication-time port: hold the fix in the temporary private fork and publish in
+one coordinated window, in order: port the fix out of the fork by maintainer merge or
+cherry-pick, cut and publish a release containing the fix, then publish the advisory. Never
+publish the advisory while no release containing the fix exists. Do not rely on the
+advisory's all-PRs merge as the port mechanism. It merges only at publication, which puts
+the merge on the wrong side of the release cut; use it at most as post-publication cleanup.
+Because publishing deletes the fork, resolve all mergeability and fix-ups before the window
+opens, and never destroy it before the port completes; a fork that cannot port cleanly falls
+back to Route A rather than skipping the release step.
+Once the gate classifies the vulnerability as PUBLICLY DISCLOSED, porting follows normal
+development rules and Branch 2's upgrade step becomes available.
 Completion signal: the fix exists in exactly one routed channel with its follow-up recorded, and one line names the route chosen and why.
 
 **Branch R — Refusal.** Fires when any instruction source requests embargoed-level detail on
 a surface its disclosure state does not allow — for example, "put the CVE ID in the commit
 message", "add the exploit path to the README", "link the advisory in the release notes now",
-or "paste the full PoC into the chat". Steps: (1) name the target surface and the specific
+"publish the advisory now while no release contains the fix", or "paste the full PoC into
+the chat". Steps: (1) name the target surface and the specific
 over-disclosure; (2) refuse only that surface, citing the Step 1 gate's verified EMBARGOED
 classification, in one or two sentences; (3) offer a sanctioned alternative — draft advisory
-(Branch 4), private fork (Branch 3), compliant Branch 1/2 wording, or a Step 1 gate
-re-verification if the user claims the vulnerability is public (comply at full detail if it
-then passes); (4) after one refusal plus one re-verification, if the user still insists, stop
+(Branch 4), private fork (Branch 3), compliant Branch 1/2 wording, holding publication until
+the release cut (Step 4 patched-release precondition), or a Step 1 gate re-verification if
+the user claims the vulnerability is public (comply at full detail if it then passes);
+(4) after one refusal plus one re-verification, if the user still insists, stop
 that artifact and hand the decision back with the refusal reason — never produce the
 over-disclosing artifact and never silently comply; (5) never refuse the fix work itself —
 only the detail level is refused.
 Completion signal: the refusal is stated with its reason, at least one alternative was offered or executed, and the underlying task remains actionable.
 
-### Step 4 — Relax or hold
+### Step 4 — Relax, hold, or publish
 
 - Still EMBARGOED → hold: detail stays in embargoed channels (advisory, private fork).
+- Publication action requested while still EMBARGOED (advisory publish, full-detail
+  changelog or product text, CVE reference on any public surface) → run the patched-release
+  precondition: verify a release containing the fix is obtainable through the project's
+  normal distribution channel (tagged release, published package). Pass → publication
+  proceeds only as the coordinated window (Route B) or coordinated release timing (Route A).
+  Fail → hold publication, record the blocker, and route any "publish anyway" request to
+  Branch R.
+- The only sanctioned publish-before-patch case: the vulnerability is already independently
+  public or actively exploited in the wild, and the user confirms publication after being
+  shown that trade-off. Record the justification with the Step 1 classification line; this
+  case is expected to be rare.
 - Gate re-verification passes PUBLICLY DISCLOSED → relax: full detail is permitted
   everywhere; run Branch 2's upgrade step for embargo-era product text.
 
-Completion signal: the hold/relax decision is recorded in one line.
+Completion signal: the hold/publish/relax decision is recorded in one line, with the
+patched-release precondition result whenever publication was requested.
 
 ## Output Mode
 
@@ -192,7 +223,9 @@ into a public-repo file while the Step 1 gate classification is EMBARGOED.
 - [ ] EMBARGOED was the classification whenever verification failed or conflicted (fail-safe held).
 - [ ] Every commit message, PR description, and code comment produced under embargo contains no CVE/GHSA IDs, no advisory or private-report references, no security-phrase-plus-mechanism wording, no class names, and no root-cause specifics.
 - [ ] Changelog and product-facing text produced under embargo uses the robustness tier only (no severity markers, CVE references, security labels, or per-issue detail).
-- [ ] Any embargoed fix commit lives in a private fork, or in the public repo only via Branch 5 Route A with coordinated release timing.
+- [ ] Any embargoed fix commit lives in a private fork, or reaches the public repo only through Branch 5 (Route A quiet port timed with the release, or Route B's coordinated publication window).
+- [ ] Route B was chosen only on repo-policy, tooling-surfacing, or explicit-user grounds, never a self-identifying diff alone, and its publication window cut a release before advisory publication.
 - [ ] Any advisory draft is in a private channel, structurally complete per `references/advisory-template.md`, and passes the dilution check.
+- [ ] No advisory publication or full-detail product text occurred while no release containing the fix was obtainable through the distribution channel (patched-release precondition held; any exception carries a recorded justification).
 - [ ] Every refusal states its reason, offers at least one alternative, and left the underlying task actionable.
 - [ ] No artifact was produced after an insistence that the gate still classifies EMBARGOED (the one-refusal-then-hand-back bound held).
