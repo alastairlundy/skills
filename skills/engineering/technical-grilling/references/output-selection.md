@@ -28,17 +28,32 @@ consumer selection.
   `Decision Ledger: <ledger-path>`, and a notice that the
   blueprint is a context pointer valid ONLY for the linked spec
   and must not be applied to other specifications without explicit
-  authorization.
+  authorization. The blueprint must also include the traceability
+  boundary, verbatim:
+
+  > Citations to `Dxxx`/`Txxx` records appear only in this
+  > blueprint and in the Decision Ledger. Do not write them into
+  > source code, code comments, docstrings, commit messages, PR
+  > descriptions, README files, or any other repository file.
+  > When code or docs need the rationale inline, name the decision's
+  > topic instead of its ID.
+
+  The implementing session never loads this skill, so the blueprint
+  itself is the only place the boundary can be stated before code is
+  written.
 - **Ledger Binding**: Every technical statement in the blueprint
-  body that satisfies a functional requirement must reference the
-  `Dxxx` (or earlier `Txxx`) record it satisfies using the
-  `filename#<Dxxx|Txxx>` format in square brackets, inline
-  (e.g., *"The store [`DECISIONS-repo-feature.md#D012`] will use
-  Redis with per-tab key namespaces, so a failed write to one tab
-  does not corrupt siblings [`DECISIONS-repo-feature.md#D014`]."*).
-  The blueprint must also include a `## Ledger Reference` section
-  listing every `Dxxx` and `Txxx` record the blueprint cites, so a
-  reader can audit the binding in one pass.
+  body that satisfies a functional requirement is covered by a
+  section-level citation: each file section (or coherent work unit)
+  cites, once, the set of `Dxxx`/`Txxx` records its statements
+  satisfy, using the `filename#<Dxxx|Txxx>` format in square
+  brackets at the end of the section (e.g., *"### `store/session.py`
+  ... `[`DECISIONS-repo-feature.md#D012`, `DECISIONS-repo-feature.md#D014`]"*).
+  Statements inside a section carry no inline citations; the
+  section-level grouping is the binding. Coarser or finer placement
+  than section-level is a binding miss that the convergence test can
+  surface. The blueprint must also include a `## Ledger Reference`
+  section listing every `Dxxx` and `Txxx` record the blueprint
+  cites, so a reader can audit the binding in one pass.
 - **Deferrals and Defaults section**: The blueprint must include a
   `## Deferrals and Defaults` section listing every DEFERRED
   record's item, the agent's recommended default, and the

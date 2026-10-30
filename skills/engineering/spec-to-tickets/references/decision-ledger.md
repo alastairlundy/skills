@@ -16,6 +16,16 @@ for the `## When to Use` section below, which lists the skill-specific
 triggers for consulting this reference. The other consumer that
 ships its own copy is `skill-architect`.
 
+## Citation scope
+
+The `filename#<Dxxx|Txxx|Ixxx>` format and bare `Dxxx`/`Txxx`/`Ixxx`
+IDs are confined to the elicitation artifacts. A citation may appear
+only in the input Decision Ledger file itself and in the ticket files
+this skill writes from it. Every other repository file stays
+reference-free: source code, code comments, commit messages, and other
+docs name a decision by its topic, never by a record ID. The ledger
+and the tickets are the traceability layer; the codebase is not.
+
 ## When to Use
 
 Use this reference when the agent is operating under `spec-to-tickets`

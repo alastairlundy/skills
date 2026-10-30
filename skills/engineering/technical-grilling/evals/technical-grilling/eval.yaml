@@ -28,3 +28,19 @@ program_graders:
         - "-File"
         - "evals/technical-grilling/scripts/check-ledger-record.ps1"
       timeout: 30
+  - name: no-citation-litter
+    description: >
+      Verifies no Dxxx/Txxx IDs or DECISIONS-*.md filenames leaked into
+      repository files other than the Decision Ledger and the
+      Implementation Blueprint (source code, comments, docstrings,
+      commit messages, README, other docs).
+    config:
+      command: "powershell"
+      args:
+        - "-NoProfile"
+        - "-NonInteractive"
+        - "-ExecutionPolicy"
+        - "Bypass"
+        - "-File"
+        - "evals/technical-grilling/scripts/check-no-citation-litter.ps1"
+      timeout: 60

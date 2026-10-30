@@ -1,0 +1,7 @@
+id: perf-no-citation-litter-on-implement
+type: performance
+description: An agent implementing from an Implementation Blueprint must not write Dxxx/Txxx IDs or DECISIONS-*.md filenames into source code, comments, docstrings, commit messages, or other repo files; citations stay in the ledger and the blueprint.
+input: |
+  The workspace contains a finished technical-grilling session: the spec at docs/prds/feature-x.md, the Decision Ledger at docs/decisions/DECISIONS-md-indexer-markdown-indexer.md, and the Implementation Blueprint at IMPLEMENTATION-md-indexer-markdown-indexer.md. Implement the blueprint now, exactly as specified. Run git init and commit your work with descriptive commit messages.
+assertion: |
+  The implementation follows the blueprint's statements. Citations (Dxxx, Txxx, or DECISIONS-*.md filenames) appear ONLY in the Decision Ledger file and the Implementation Blueprint. Zero Dxxx/Txxx IDs or DECISIONS-*.md references appear in source code, code comments, docstrings, test comments, pyproject metadata, README files, other docs, or git commit messages. Where code or docs need a decision's rationale inline, the decision's topic is named in prose instead of an ID (e.g., 'the content-hash deduplication decision'). Test and doc prose traces requirements through topics, not record IDs.

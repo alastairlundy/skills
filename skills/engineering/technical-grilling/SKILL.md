@@ -223,7 +223,10 @@ Follow the implementation-planning workflow:
    the user wants a different name, adjust the filename before
    writing. Do not produce the plan in this step.
 5. **Implementation Blueprint**: produce the Implementation Blueprint,
-   grouped by file, citing `Dxxx`/`Txxx`.
+   grouped by file, with section-level `Dxxx`/`Txxx` citation groups
+   confined to the blueprint (`references/output-selection.md`,
+   Ledger Binding), and include the traceability boundary notice in
+   the Scope Binding section.
 
 **Option credibility rule.** Every option presented in an options table
 must be a credible, achievable choice. Do not include options that are
@@ -246,8 +249,8 @@ the user decides.
 
 The Decision Ledger is **persisted by default**. Remind the user that it remains on disk and can be
 deleted once implementation is complete. When an Implementation
-Blueprint was produced, the reminder also states the dependency: every
-inline citation in the blueprint resolves against this ledger file
+Blueprint was produced, the reminder also states the dependency: every section-level citation in the blueprint
+resolves against this ledger file
 (`references/output-selection.md`, Ledger Binding), so deleting the
 ledger orphans the blueprint's binding and its `## Ledger Reference`
 section. The user decides when both artifacts are no longer needed.
@@ -363,10 +366,17 @@ transcript:
 - [ ] Blueprint filename confirmation asked; filename confirmed before
       the Implementation Blueprint was produced.
 - [ ] Implementation Blueprint produced at endpoint, grouped by file,
-      citing `Dxxx`/`Txxx`, and included a `## Deferrals and Defaults`
-      section (when any DEFERRED record or DECLINED branch exists)
-      sourced from the residual inventory.
+      with section-level `Dxxx`/`Txxx` citation groups (no per-statement
+      inline citations), a `## Deferrals and Defaults` section (when any
+      DEFERRED record or DECLINED branch exists) sourced from the
+      residual inventory, and the traceability boundary notice in the
+      Scope Binding section.
 - [ ] Every citation used filename#`Dxxx`/`Txxx` format.
+- [ ] No `Dxxx`/`Txxx` ID or `DECISIONS-*.md` filename was written to
+      any file other than the ledger and the blueprint. Source code,
+      comments, docstrings, commit messages, and other repo docs name
+      decisions by topic, not by ID (`references/decision-ledger.md`,
+      Citation scope).
 - [ ] Post-session deletion reminder emitted
 - [ ] For every options table emitted during the session, the bolded row
       letter equals the `Recommendation:` letter (mechanical check passed

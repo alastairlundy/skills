@@ -8,6 +8,30 @@ record from outside the ledger file, use the
 `filename#<Dxxx|Txxx>` format (e.g.,
 `DECISIONS-repo-feature.md#D001`).
 
+## Citation scope
+
+The `filename#<Dxxx|Txxx>` format and bare `Dxxx`/`Txxx` IDs are
+confined to the elicitation artifacts. A citation may appear only in:
+
+- the Decision Ledger file itself;
+- the Implementation Blueprint (section-level citations, the
+  `## Ledger Reference` section, and `## Deferrals and Defaults`
+  rows) when the skill produced one;
+- ticket files written by `spec-to-tickets` from a user-supplied
+  ledger;
+- the conversation's own context and options tables while a branch
+  references prior records.
+
+Every other repository file stays reference-free. Source code, code
+comments, docstrings, test names, commit messages, PR descriptions,
+README files, `GLOSSARY.md` entries, and other docs name a decision by
+its topic (for example, "the content-hash deduplication decision"),
+never by a `Dxxx`/`Txxx` ID or a `DECISIONS-*.md` filename. The ledger
+and, when present, the blueprint are the traceability layer; the
+codebase is not. Stating decision topics in prose keeps the codebase
+readable once the ledger is deleted (Lifecycle), while the IDs keep
+their meaning for as long as the ledger exists.
+
 The canonical reference is this file. Two other consumers
 (`skill-architect`, `spec-to-tickets`) ship their own copies
 in their own `references/` directories, with a `## When to Use` section
@@ -325,7 +349,7 @@ override with reasoning if the interview genuinely needs more.
 issues a **post-session reminder** to delete the ledger from
 `docs/decisions/` once implementation of the resolved decisions is
 complete. When an Implementation Blueprint was produced, the reminder
-also states the dependency: the blueprint's inline citations and its
+also states the dependency: the blueprint's section-level citations and its
 `## Ledger Reference` section resolve against this ledger file, so
 deleting the ledger orphans the blueprint's binding. The user decides
 when both artifacts are no longer needed. The reminder is
