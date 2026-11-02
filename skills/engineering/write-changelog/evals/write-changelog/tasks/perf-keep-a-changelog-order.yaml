@@ -1,7 +1,18 @@
 id: perf-keep-a-changelog-order
-type: performance
+name: Keep a Changelog category order
 description: Category headings (H4) appear in the Keep-a-Changelog order, inside H3 sub-project sections, with no emoji prefixes.
-input: |
-  Generate a changelog for the repo between v1.0.0 and HEAD. The repo has commits spanning all categories (added, changed, deprecated, removed, fixed, security).
-assertion: |
-  Within the version section (## [<tag>] - <date>), the H3 sub-project section contains category headings in this order: Added, Changed, Deprecated, Removed, Fixed, Security. No heading contains an emoji, and no "Documentation" or "Non Source Code" heading is present.
+tags:
+  - performance
+inputs:
+  prompt: |
+    Generate a changelog for the repo between v1.0.0 and HEAD. The repo has commits spanning all categories (added, changed, deprecated, removed, fixed, security).
+graders:
+  - type: prompt
+    name: kac-category-order
+    config:
+      prompt: |
+        Judge the generated changelog against this requirement:
+
+        Within the version section (## [<tag>] - <date>), the H3 sub-project section contains category headings in this order: Added, Changed, Deprecated, Removed, Fixed, Security. No heading contains an emoji, and no "Documentation" or "Non Source Code" heading is present.
+
+        Call set_waza_grade_pass only if the output fully satisfies the requirement. Otherwise call set_waza_grade_fail with a short reason.

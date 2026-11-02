@@ -1,7 +1,18 @@
 id: perf-deps-inline-in-subproject
-type: performance
+name: Dependency bump stays inline in sub-project section
 description: Dependency updates within a sub-project appear inline as a `Changed` entry inside that sub-project's section, not under Global.
-input: |
-  Generate a changelog for this monorepo between v2.0.0 and HEAD. The `packages/api` sub-project had its `package.json` dependency on `express` bumped from 4.x to 5.x.
-assertion: |
-  Output contains a `packages/api` sub-project section (H3 heading). The dependency bump appears as a `Changed` entry (H4 `#### Changed`) inside that section, not under a "Global" / "Runtime Dependencies" / "CI Dependencies" / "Testing Dependencies" sub-group. The Global section's Runtime/CI/Testing sub-groups contain no entry for this bump.
+tags:
+  - performance
+inputs:
+  prompt: |
+    Generate a changelog for this monorepo between v2.0.0 and HEAD. The `packages/api` sub-project had its `package.json` dependency on `express` bumped from 4.x to 5.x.
+graders:
+  - type: prompt
+    name: deps-inline-in-subproject
+    config:
+      prompt: |
+        Judge the generated changelog against this requirement:
+
+        Output contains a `packages/api` sub-project section (H3 heading). The dependency bump appears as a `Changed` entry (H4 `#### Changed`) inside that section, not under a "Global" / "Runtime Dependencies" / "CI Dependencies" / "Testing Dependencies" sub-group. The Global section's Runtime/CI/Testing sub-groups contain no entry for this bump.
+
+        Call set_waza_grade_pass only if the output fully satisfies the requirement. Otherwise call set_waza_grade_fail with a short reason.

@@ -47,7 +47,7 @@ The 5-commit threshold is a default, not a hard rule; a user may override by ign
 
 ### Step 2: Commit retrieval & analysis
 - Retrieve git history for the specified range.
-- **Empty-range guard**: if the retrieved commit list is empty, emit a one-line human-readable explanation ("The commit range is empty - no changelog to generate.") followed by the parseable error marker from `references/ci-integration.md` (`[CHANGELOG-MARKER] empty-range` with `prior:` and `target:` lines). Do not write a changelog. The CI wrapper translates the marker into a non-zero exit code.
+- **Empty-range guard**: if the retrieved commit list is empty, emit a one-line human-readable explanation ("The commit range is empty - no changelog to generate."). Do not write a changelog.
 - For each commit, determine the category using a tiered analysis:
     1. **Conventional Commit Check**: if the commit message has a Conventional Commit prefix, map it to the corresponding category using the table below.
     2. **Security Check**: if the commit message contains a `security:` prefix, a CVE reference (`CVE-YYYY-NNNNN`), or a GHSA reference (`GHSA-xxxx-xxxx-xxxx`), classify the commit as Security regardless of any other prefix. The security check may be applied at tier 1 alongside the prefix check.
@@ -82,7 +82,7 @@ Conventional Commit prefix mapping (co-located with the tier list so the two do 
     - **All Packages** - recommended for monorepos with multiple sub-projects (see glossary in Step 1).
     - **All Projects** - recommended for solution-based repos (e.g., .NET `.sln` with multiple `.csproj`).
 - **Step 4.1 - User choice**: present exactly three choices - "Global", "All Packages", "All Projects" - and ask the user to pick one via the ask-questions skill. Do not offer a free-form "Other (specify)" option; the three named options are the only choices.
-- **Step 4.2 - Fallback**: if the ask-questions skill is unavailable or the user declines, default to "Global" and surface the default in the output by appending `(defaulted)` to the sub-project section header (e.g., `### Global (defaulted)`). The marker is local to the section header and must not break downstream CHANGELOG consumers (linters, release pipelines) - see `references/ci-integration.md` for the marker contract.
+- **Step 4.2 - Fallback**: if the ask-questions skill is unavailable or the user declines, default to "Global" (e.g., `### Global`).
 
 ### Step 5: Markdown construction
 - **Preamble** (emitted when creating a new file; skipped when appending to an existing file that already has it):
@@ -155,10 +155,10 @@ Conventional Commit prefix mapping (co-located with the tier list so the two do 
 - [ ] Step 1's first-run probe ran and any pre-existing changelog (`CHANGELOG.md`, `HISTORY.md`, `RELEASES.md`, `docs/changelog.md`) was surfaced before the destination was named.
 - [ ] Step 1's directory exclusion used `.gitignore` plus the `docs/` / `.github/` / `tests/` carve-outs (or the inline-list fallback when `.gitignore` is absent or unparseable).
 - [ ] Sub-project sections appear only when 2 or more project files were detected at the top level, as H3 headings.
-- [ ] Step 2's empty-range guard emitted the `[CHANGELOG-MARKER] empty-range` marker when the commit list was empty; no changelog was written.
+- [ ] Step 2's empty-range guard emitted the one-line empty-range explanation when the commit list was empty; no changelog was written.
 - [ ] Each commit's category was determined via the tiered analysis (Conventional Commit prefix → security reference → diff analysis → user prompt) using the mapping table in Step 2.
 - [ ] Category headings are plain `#### Added` / `#### Changed` / `#### Deprecated` / `#### Removed` / `#### Fixed` / `#### Security`, in Keep a Changelog order, with empty categories omitted; no emoji or "Non Source Code" headings appear.
-- [ ] Step 4 presented exactly three named choices ("Global", "All Packages", "All Projects"); no "Other (specify)" option was offered. When the fallback ran, the sub-project heading carries the `(defaulted)` marker.
+- [ ] Step 4 presented exactly three named choices ("Global", "All Packages", "All Projects"); no "Other (specify)" option was offered. When the fallback ran, the sub-project heading is `### Global`.
 - [ ] Step 5's dependency classification used `references/dependency-classification.md` (loaded before any dependency commit was classified) and the inline summary mirrors the reference.
 - [ ] Commit messages are transformed from developer-style to user-facing style.
 - [ ] Global dependency sub-groups (Runtime, CI, Testing) appear as bold run-in labels only when they contain entries.
@@ -175,5 +175,5 @@ Conventional Commit prefix mapping (co-located with the tier list so the two do 
 | Prose version heading | Emit `## [X] - YYYY-MM-DD`, never `## Changes since X`. |
 | Rewriting a non-semver tag | Use the tag as-is inside the brackets; never invent a version number. |
 | Treating "Sub-projects" and "Packages" as synonyms | Use "Sub-projects" as the standard term; "Package" is a Sub-project that is BOTH a library AND distributable via a package manager (see glossary in Step 1). |
-| Empty-range commit list | Emit the `[CHANGELOG-MARKER] empty-range` marker from Step 2; do not write a changelog. |
+| Empty-range commit list | Emit the one-line empty-range explanation from Step 2; do not write a changelog. |
 | Drift between the inline dependency-classification summary and the reference file | Update `SKILL.md` and `references/dependency-classification.md` in the same edit (Step 5). |

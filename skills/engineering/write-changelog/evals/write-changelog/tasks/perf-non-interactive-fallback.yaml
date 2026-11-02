@@ -1,7 +1,18 @@
 id: perf-non-interactive-fallback
-type: performance
+name: Non-interactive fallback grouping and title
 description: Non-interactive run uses top-level-dirs grouping for Step 1 and "Global" as the default title for Step 4.
-input: |
-  Generate a changelog for the repo between v1.0.0 and HEAD. (No user input will be provided; treat this as a non-interactive run.)
-assertion: |
-  Output groups changes by top-level directories (excluding `docs/`, `.github/`, and `tests/`), matching the Step 1 no-project-files fallback. The first sub-project section's heading is `### Global (defaulted)` (the Step 4 fallback, H3 under the version heading). No user prompts were issued during the run.
+tags:
+  - performance
+inputs:
+  prompt: |
+    Generate a changelog for the repo between v1.0.0 and HEAD. (No user input will be provided; treat this as a non-interactive run.)
+graders:
+  - type: prompt
+    name: non-interactive-fallback
+    config:
+      prompt: |
+        Judge the generated changelog against this requirement:
+
+        Output groups changes by top-level directories (excluding `docs/`, `.github/`, and `tests/`), matching the Step 1 no-project-files fallback. The first sub-project section's heading is `### Global` (the Step 4 fallback, H3 under the version heading, with no extra marker text on the heading). No user prompts were issued during the run.
+
+        Call set_waza_grade_pass only if the output fully satisfies the requirement. Otherwise call set_waza_grade_fail with a short reason.
