@@ -170,4 +170,4 @@ Load each `references/*.md` file only when its load-trigger condition is met. Do
 
 ## Attribution
 
-Adapted from the `setup-matt-pocock-skills` skill in the [`mattpocock/skills`](https://github.com/mattpocock/skills) repository, licensed under MIT by Matt Pocock and Contributors. The issue-tracker, triage-labels, and domain-docs features are extended with multi-host support (Gitea, Codeberg, other Forgejo-based hosts, other Git hosts, and other non-git workflows), per `docs/decisions/DECISIONS-skills-setup-skill-replace.md`.
+Adapted from the `setup-matt-pocock-skills` skill in the [`mattpocock/skills`](https://github.com/mattpocock/skills) repository, licensed under MIT by Matt Pocock and Contributors. The issue-tracker, triage-labels, and domain-docs features are extended with multi-host support (Gitea, Codeberg, other Forgejo-based hosts, other Git hosts, and other non-git workflows).

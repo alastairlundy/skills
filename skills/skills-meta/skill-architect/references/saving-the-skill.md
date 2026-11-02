@@ -57,7 +57,7 @@ Write the file with the schema inlined in `SKILL.md` Step 4:
 
 If the skill is being saved into a repository that uses the Waza Eval Suite convention (one example: this repo, `skills/<category>/<skill-name>/`), create a stub `evals/<skill-name>/` directory with:
 
-- `eval.yaml` - evaluation configuration. Defer content to the `waza-skill-evaluator` skill if available.
+- `eval.yaml` - evaluation configuration with a non-empty `description`. If a dedicated evaluation-authoring skill exists in the environment, defer the content to it; otherwise write a minimal placeholder the maintainer can fill in later.
 - `tasks/` - task definitions (initially empty).
 - `fixtures/` - test inputs and expected outputs (initially empty).
 

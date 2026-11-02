@@ -61,32 +61,8 @@ The output artifact of `technical-grilling`: a resolved set of *technical* decis
 
 The output artifact of `technical-grilling`: a resolved set of *conceptual* decisions - bounded contexts, ubiquitous language, glossary terms, and shared vocabulary - derived from a vague idea or an existing spec. Lives in `GLOSSARY.md` (terms), `docs/adr/` (ADRs for cross-cutting decisions), and the Decision Ledger (`Dxxx` records). Distinct from a **general plan** (any non-code strategy, ops plan, business plan), a **code implementation plan** (see Code implementation plan), and a **spec/PRD** (the input document, when one exists).
 
-## ask_question
-A discrete-choice clarification tool. Refers to a tool that lets an LLM pose multi-option questions to the user, with optional free-text override. The name is used in two ways: (1) the abstract affordance name in the `ask-questions` SKILL, and (2) the literal tool name in some agents (e.g., Claude Code's `ask_question` tool). In opencode, the tool that implements this affordance is named `question`; both names refer to the same affordance class.
-
-## question
-The concrete name of the `ask_question` tool in opencode. See `ask_question` for the full definition.
-
-## label
-The short, scannable title of an option in an `ask_question` tool call. Subject to a length cap defined by the relevant SKILL's shaping rules.
-
-## question description
-The short, discriminative explanation shown beneath a `label` in the `ask_question` UI. Must answer "why pick this over the others?"; teaching content belongs in context prose, not in descriptions.
-
-## context prose
-The LLM's message text *before* an `ask_question` tool call. Carries the longer setup, framing, and reasoning that the tool's options alone cannot hold. Subject to prose discipline: focused, scannable, not bloated.
-
-## question tool call
-A single invocation of the `ask_question` tool. The natural unit of "asking" for shaping purposes; questions batched within one call share a single user-response round.
-
-## fit test
-The second gate. Determines whether a candidate question is a fit for the `ask_question` tool: must be a decision question, or an honestly bracketed continuum. Questions that fail the fit test are rephrased or routed to a prose fallback.
-
 ## gate
 A hard verification step in a workflow procedure whose failure prevents the next step. Distinguished from a checklist item by its enforcement: the LLM cannot proceed to the next gate without satisfying the current one.
-
-## prose fallback
-A question the LLM asks in its message text *without* invoking `ask_question`. Used as a last resort when the option set genuinely exceeds 2-4 honest options and no tool-compatible adaptation (raise abstraction, sequence, subsume, consolidate) preserves the question's meaning. Subject to the same prose discipline as context prose.
 
 ## load trigger
 A sentence or "When to Use" bullet in a SKILL.md that tells the LLM when to load a `references/` file. Mitigates the self-referential under-trigger risk that arises when a long template is moved out of the inline skill to reduce context cost: the LLM only loads the reference if it recognizes the situation the trigger describes. Mirrors the convention for skills that need user clarification to invoke the `ask-questions` skill.

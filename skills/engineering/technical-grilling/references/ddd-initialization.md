@@ -12,7 +12,7 @@ Upon activation:
    then scan for `docs/adr/` and any existing Decision Ledger files at
    `docs/decisions/DECISIONS-*.md`. Report the `GLOSSARY.md` state:
    - **Missing** - no glossary file found; will be created lazily on
-     first term. Suggest the `setup-matt-pocock-skills` skill to
+     first term. Suggest the `setup-alastairlundy-skills` skill to
      establish the glossary and ADR infrastructure.
    - **Empty** - `GLOSSARY.md` exists but is empty or whitespace-only;
      will be populated as terms are resolved.
@@ -136,8 +136,7 @@ the corresponding rule:
 
 ### Offer ADRs sparingly
 
-Only offer to create an ADR when all three criteria in
-`references/ADR-FORMAT.md` hold:
+Only offer to create an ADR when all three criteria hold:
 
 1. **Hard to reverse** - the cost of changing your mind later is
    meaningful.
@@ -148,6 +147,12 @@ Only offer to create an ADR when all three criteria in
 
 When suggesting an ADR, explicitly state which of these three
 criteria triggered the suggestion.
+
+When the user accepts an ADR offer, create the file through the
+`repo-docs` skill (Lane 2: ADR Creation). That skill owns the
+authoritative ADR template (`references/ADR-FORMAT.md` within
+`repo-docs`), the sequential-ID rule, and index updates. Do not
+write the ADR file directly from this skill.
 
 If the user declines an ADR suggestion for a decision that meets all
 three criteria, the decline is itself an ADR-worthy event. Re-offer

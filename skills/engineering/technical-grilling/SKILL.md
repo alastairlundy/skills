@@ -77,7 +77,10 @@ reference files exist and are readable. Then load and read in full:
 - ddd-initialization.md - *eager*. DDD scan, glossary/ADR challenge, fuzzy
   language, scenario discussion, ADR offer.
 - term-resolution.md - *eager*. Writing resolved terms to GLOSSARY.md.
-- ADR-FORMAT.md - *eager*. ADR structure and when to offer one.
+- ADR-FORMAT.md is not shipped by this skill. When the session offers
+  an ADR and the user accepts it, create the file through the
+  `repo-docs` skill (its Lane 2: ADR Creation), which owns the
+  authoritative ADR template (`repo-docs/references/ADR-FORMAT.md`).
 - tone-and-output.md - *eager*. Neutral tone, slop patterns, grouping nouns, pre-emit audit.
 - locked-question-format.md - *eager*. The branch heading + header +
   5-data-row code-impl context table.
@@ -154,7 +157,7 @@ Follow the concept-alignment workflow:
 1. **DDD initialization** (references/ddd-initialization.md): scan
    `GLOSSARY.md`, `docs/adr/`, and any existing Decision Ledger; summarize
    the known domain state *before* the first question. If `GLOSSARY.md` is
-   missing, suggest `setup-matt-pocock-skills` but do not create it
+   missing, suggest `setup-alastairlundy-skills` but do not create it
    pre-emptively.
 2. **Open branches in rounds** using the 1-turn wrapper from
    references/locked-question-format.md (the 4-row table for Phase 1).
@@ -260,7 +263,6 @@ section. The user decides when both artifacts are no longer needed.
 ### Skill-local references (references/*)
 - ddd-initialization.md - eager
 - term-resolution.md - eager
-- ADR-FORMAT.md - eager
 - tone-and-output.md - eager
 - locked-question-format.md - eager (branch heading + header + 5-data-row code-impl variant)
 - options-format.md - eager

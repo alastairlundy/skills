@@ -109,5 +109,5 @@ Completion signal: a complete markdown report with header, all three buckets (po
 - [ ] Items not applicable to the detected type are absent from the report.
 
 ## Transitions
-- After the report, if the user wants to act on findings, hand off to `spec-to-tickets` to turn blockers/should-haves into implementation tickets, or `implement-tickets` to execute them.
+- After the report, if the user wants to act on findings, hand off to `spec-to-tickets` to turn blockers/should-haves into implementation tickets; executing those tickets is a separate step, run by the implementer in its own session.
 - If the user wants a dedicated review of code quality or security before release, point them to the relevant review/audit skill instead of re-running this one.

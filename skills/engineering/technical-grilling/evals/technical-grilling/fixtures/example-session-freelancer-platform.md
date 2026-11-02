@@ -19,13 +19,13 @@ User prompt (matches `tasks/trigger-vague-idea-domain-modeling.yaml`):
 Before the first question, the agent should:
 
 1. **Load the reference files.** Read all nine reference files in full.
-2. **Summarize domain state.** State explicitly that GLOSSARY.md and docs/adr/ are not present in the workspace, and offer the setup-matt-pocock-skills skill as a one-line suggestion.
+2. **Summarize domain state.** State explicitly that GLOSSARY.md and docs/adr/ are not present in the workspace, and offer the setup-alastairlundy-skills skill as a one-line suggestion.
 3. **Confirm the Decision Ledger path.**
 
 A compliant opener:
 
 > No prior domain state - GLOSSARY.md and docs/adr/ are absent. If you want
-> the glossary/ADR infrastructure scaffolded now, load setup-matt-pocock-skills.
+> the glossary/ADR infrastructure scaffolded now, load setup-alastairlundy-skills.
 > Otherwise, I'll create GLOSSARY.md lazily on the first resolved term.
 >
 > Fresh file at docs/decisions/DECISIONS-freelancer-platform.md. Confirm the path.
