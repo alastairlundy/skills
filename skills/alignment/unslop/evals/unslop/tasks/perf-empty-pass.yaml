@@ -1,0 +1,13 @@
+id: perf-empty-pass
+type: performance
+description: >-
+  A pass over text with no genuine tells outside protected spans reports an empty outcome instead of inventing edits.
+input: |
+  /unslop this release note:
+
+  Release 2.4.0 adds batch inserts. The importer validates each row and
+  skips malformed ones, which previously failed the whole run. See
+  docs/import.md for the new flags.
+
+assertion: |
+  The agent reports that no rule matched. It does not edit the text into something stilted, does not delete legitimate content, and does not claim to have found tells that were not there.

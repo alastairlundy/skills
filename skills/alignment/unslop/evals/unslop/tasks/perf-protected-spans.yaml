@@ -1,0 +1,17 @@
+id: perf-protected-spans
+type: performance
+description: >-
+  Banned words inside quoted text, proper nouns, and code identifiers are left untouched and listed as untouched.
+input: |
+  /unslop this changelog entry:
+
+  The `DataSource.showcase()` method is a testament to our intricate design.
+  Additionally, the "vibrant" theme complements Crucial Ideas Inc.'s new
+  showcase page. Interviews with the team show that, in one user's words,
+  "I didn't delve into the settings at first, but now I enhance everything."
+  The method signature keeps `showcase` for backwards compatibility.
+
+  Fix the tells. Keep the quoted user quote, the company name, and the
+  identifiers intact.
+assertion: |
+  The rewritten text preserves every protected span unchanged: the identifier `DataSource.showcase()`, the company name "Crucial Ideas Inc.", the quoted user sentence ('I didn't delve into the settings at first, but now I enhance everything.'), and the quoted theme name "vibrant" where it names a theme. Outside those spans, the tells are fixed ("testament to our intricate design" rewritten plainly, connector "Additionally" removed). The report lists every protected span explicitly as left untouched and gives its reason (quote, proper noun, identifier).

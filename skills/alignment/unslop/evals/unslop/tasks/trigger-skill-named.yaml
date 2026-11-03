@@ -1,0 +1,8 @@
+id: trigger-skill-named
+type: trigger
+description: Triggers when the user names unslop and a text target in one message, without the slash form.
+input: |
+  Can you unslop this PR description before I post it?
+  
+  "This PR enhances the import pipeline. It's not just faster, it's a tapestry of improvements."
+expected: trigger

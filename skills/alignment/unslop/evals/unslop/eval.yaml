@@ -1,0 +1,2 @@
+name: unslop
+description: Evaluates unslop skill trigger discipline (explicit invocation only, never auto-applied to prose work) and rewrite-pass coverage (rule 7 word list, protected spans, rule coverage reporting, empty pass)

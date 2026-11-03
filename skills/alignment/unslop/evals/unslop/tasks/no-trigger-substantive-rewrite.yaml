@@ -1,0 +1,7 @@
+id: no-trigger-substantive-rewrite
+type: trigger
+description: Does NOT trigger when the work is a substantive rewrite (missing facts, changed meaning) even though the prose is slop-like.
+input: |
+  This README section never mentions which database backend we're on, and the argument
+  order is backwards. Rewrite it so both problems are fixed.
+expected: no-trigger

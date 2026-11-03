@@ -40,6 +40,7 @@ Skills that keep LLMs aligned on expectations and behaviour whilst performing ta
 | Skill | Description | Notes | 
 |-------|-------------|-------|
 | [ask-questions](skills/alignment/ask-questions/) | Guide agents on when and how to ask questions via discrete-choice tools or prose. Teaches a four-gate procedure to balance over-asking and under-asking. | |
+| [unslop](skills/alignment/unslop/) | Explicitly-invoked rewrite pass (/unslop, "unslop this") that removes AI tells - banned vocabulary, slop patterns, and mannerisms - and reports one line per matched rule. | Fork of Cursor's pstack `unslop` skill (© Lauren Tan, MIT, pinned to upstream commit `bc697d0`) with fork additions: extra rule-7 words, a sparingly-list (bare, so, leg), an idiom clause, and "essentially" in rule 23. |
 
 ### "Meta" Skills
 

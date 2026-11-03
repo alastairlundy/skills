@@ -1,0 +1,22 @@
+id: perf-word-list
+type: performance
+description: >-
+  A rewrite pass removes rule-7 banned words and the other matched patterns from a slop paragraph, preserving meaning.
+input: |
+  /unslop the following paragraph:
+
+  One of the things that makes our platform special is that it's not just a
+  database, it's a comprehensive data tapestry. This is a testament to our
+  intricate architecture, highlighting our commitment to excellence.
+  Additionally, the seamless integration serves as a bedrock for our
+  developers, and our vibrant community plays a pivotal role. Importantly,
+  the three pillars of speed, scalability, and, crucially, security - which
+  is crucial - underpin everything. Experts believe this will enhance
+  productivity by a lot.
+
+  The deep dive into the importer is empowering: a bare retry command
+  streamlines each leg of the run, so the safeguarding ends up belt and
+  braces. Essentially, repeated runs get closer and closer to zero
+  failures.
+assertion: |
+  The rewritten text contains none of the rule-7 banned words (additionally, crucial/crucially, delve, enduring, enhance, fostering, garner, interplay, intricate, pivotal, showcase, tapestry, testament, underscore, vibrant, empowering, deep dive, streamline/streamlines) outside quoted text. "Serves as" is replaced with "is". The "not just X, it's Y" construction is gone. The "-ing" flourish ("highlighting our commitment to excellence") is deleted or backed by a real claim. "Experts believe" is either named as a source or removed. The forced rule of three is replaced with the natural number. No em dash remains. "Belt and braces" is replaced with the literal phrase ("redundant safeguards" or "two independent checks"). "Essentially" is deleted. Each sparingly-list word (bare, so, leg) appears at most once, and "a bare retry command" is rewritten to the state it names or dropped. Meaning is preserved: the result still says the platform is fast, scalable, and secure, that retries exist per run, and that repeated runs approach zero failures. No new factual claims were invented.

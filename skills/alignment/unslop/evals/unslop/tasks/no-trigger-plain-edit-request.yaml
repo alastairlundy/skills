@@ -1,0 +1,6 @@
+id: no-trigger-plain-edit-request
+type: trigger
+description: Does NOT trigger on a generic edit request with no unslop invocation - the skill is explicitly invoked only.
+input: |
+  Could you fix the grammar and tighten the wording in this paragraph?
+expected: no-trigger

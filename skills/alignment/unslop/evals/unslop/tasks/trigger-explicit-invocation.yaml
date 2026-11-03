@@ -1,0 +1,6 @@
+id: trigger-explicit-invocation
+type: trigger
+description: Triggers when the user explicitly invokes /unslop on a named text target.
+input: |
+  /unslop the intro paragraph of docs/getting-started.md
+expected: trigger
