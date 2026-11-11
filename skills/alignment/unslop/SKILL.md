@@ -14,9 +14,7 @@ disable-model-invocation: true
 
 Attribution: adapted from the [unslop
 skill](https://github.com/cursor/plugins/blob/main/pstack/skills/unslop/SKILL.md)
-in `cursor/plugins` (pstack plugin), © 2026 Lauren Tan, MIT License. Fork point:
-upstream commit `bc697d0a5a163cec979e362b601e36f5616083fd` (2026-10-12). See
-[Upstream syncing](#upstream-syncing) for the update procedure.
+in `cursor/plugins` (pstack plugin), © 2026 Lauren Tan, MIT License.
 
 ## When to Use
 
@@ -109,17 +107,6 @@ Rule numbers are stable ids that other skills cite. A removed rule leaves a gap 
 32. **Mannered prose.** Metaphor or flourish where a literal phrase exists: aphorisms ("wire it or delete it"), rhetorical fragments for effect, personified code ("the plan holds it"), figurative verbs ("rides along", "stands on"), stock framing phrases. "A dial worth turning" becomes "a parameter worth varying". Say what you mean. Rule 26 covers the metaphor nouns.
 33. **Over-compression.** Dropped articles, verbless fragments, symbol-speak, and abbreviations that make the reader decode instead of read. "Parser rejects bad date → exit 2, no write" becomes "The parser rejects a bad date, exits with code 2, and writes nothing." Write whole sentences with their articles and verbs, and spell out arrows and abbreviations.
 
-## Upstream syncing
-
-Re-apply upstream improvements occasionally (a few times a year, or whenever the skill misses tells in real output); most upstream commits are cosmetic rewordings, so chasing every commit is churn:
-
-1. Fetch the current upstream file:
-   `https://raw.githubusercontent.com/cursor/plugins/main/pstack/skills/unslop/SKILL.md`
-2. Diff it against this file, ignoring this fork's local deltas: the attribution header, the repo-required sections (When to Use / When Not to Use / Workflow / Validation), rule 7's fork additions and its fork-note block, and rule 23's fork addition.
-3. Port upstream rule-text changes into the rule list verbatim. Update the fork-point commit SHA in the attribution header to the upstream commit you synced from.
-4. Verify the union of detected rules: upstream's new rules appear with their upstream numbers, rule 7's fork additions ("empowering", "deep dive", "streamline"), the fork-note block (sparingly-list and idiom clause), and rule 23's "essentially" addition all survive, and the gap list ("Rule numbers are stable ids" paragraph) gains any gaps upstream newly removed.
-
-Two upstream lines carry fork edits: rule 7's word list and rule 23. If an upstream sync edits either, resolve by union - take the upstream list/text plus the fork additions - never replace fork additions with upstream's list.
 
 ## Validation
 
@@ -128,7 +115,6 @@ Two upstream lines carry fork edits: rule 7's word list and rule 23. If an upstr
 - [ ] Banned words inside quoted text, proper nouns, and identifiers were left untouched and reported as untouched.
 - [ ] Meaning and the surrounding tone were preserved; only tell-removal edits were made.
 - [ ] The report lists every matched rule with a change or an explicit untouched note; a pass with no matches is reported as empty rather than skipped silently.
-- [ ] Rule numbering in the rule list is intact: gaps at 1, 2, 4, 6, 21 are gaps, no rule was renumbered. Fork additions live where they are marked: rule 7's word list carries "empowering", "deep dive", and "streamline"; rule 23 carries "essentially"; the fork-note block under rule 7 carries the sparingly-list (bare, so, leg) and the idiom clause (belt and braces).
 - [ ] Sparing-list words (bare, so, leg) were rewritten only when repeated in one passage or used in their named misuse; single correct uses survive.
 - [ ] Idioms were replaced with the literal phrase only when niche, difficult to parse, or overused; common idioms survive.
 - [ ] The attribution header names the upstream skill, author, license, and fork-point commit SHA.
