@@ -1,13 +1,9 @@
 ---
 name: unslop
 description: >-
-  Edit text to remove AI tells: banned vocabulary, slop patterns, and structural
-  mannerisms that signal automated origin. Adapted from the unslop skill in
-  cursor/plugins. Use only when the user explicitly invokes it (/unslop, "unslop
-  this", "de-slop the README"). Do not use for substantive rewrites, factual
+  Use when writing user facing documentation, README content, commit messages, or editing text files. Do not use for substantive rewrites, factual
   revision, or formatting-only edits.
 license: MIT
-disable-model-invocation: true
 ---
 
 # Unslop
@@ -21,11 +17,7 @@ in `cursor/plugins` (pstack plugin), © 2026 Lauren Tan, MIT License.
 - The user explicitly invokes the skill: `/unslop`, "unslop this", "unslop the PR description", "de-slop the changelog".
 - The user names the skill and a text target in one message: that invocation is the trigger.
 
-This skill never applies by default. It is an explicitly-invoked rewrite pass, not a standing style policy. When the user wants a permanent style rule rather than a one-pass edit, write it into the user's memory, rules file, or a dedicated skill instead.
-
 ## When Not to Use
-
-- Implicit prose work: do not run this on every reply, commit message, or document by default, and do not infer an unslop pass from generic edit requests.
 - Substantive rewrites that change meaning, add missing facts, or restructure arguments. Fix the content first, then invoke this skill on the result.
 - Formatting-only edits (HTML/Markdown conversion, whitespace, layout).
 - Translations, quoted text (dialogue, citations, code comments in other files), and text whose "tells" are intentional (parody).
@@ -34,7 +26,7 @@ This skill never applies by default. It is an explicitly-invoked rewrite pass, n
 
 ### Step 1: Scan
 
-Treat the text the user pointed at as the full scan target (a pinned file, a pasted passage, or the last reply). Scan it for every pattern in the rule list below. For each rule that matches, record the matching span before rewriting anything - the rewrite step consumes the record, and skipping the record makes the fix step drop matches under time pressure.
+Scan the relevant target for every pattern in the rule list below. For each rule that matches, record the matching span before rewriting anything - the rewrite step consumes the record.
 
 ### Step 2: Rewrite
 
@@ -45,10 +37,6 @@ A banned word is not banned inside quoted text, a proper noun, or a named API/co
 ### Step 3: Report
 
 After editing, report one line per rule that matched: rule number, what changed, and any match left untouched (quoted text, identifiers). If no rule matched, say that plainly - an empty pass is a valid outcome.
-
-## Rule list
-
-Rule numbers are stable ids that other skills cite. A removed rule leaves a gap - never renumber. The gaps (1, 2, 4, 6, 21) are upstream deletions, preserved so rules keep their upstream numbers across syncs.
 
 ### Content
 
