@@ -5,6 +5,12 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+- **write-commit-message** - Draft git commit messages from a diff, with an early format-selection step for Conventional Commits vs plain output (migrated from CommitGen, merging `commit-message-writer` and `conventional-commit-message-writer`)
+- **review-commit-message** - Judge commit message quality against its diff (migrated from CommitGen as `commit-message-evaluation`)
+
 ## [1.0.0] - 2026-07-16
 
 Initial stable release. 10 skills across 3 categories.
