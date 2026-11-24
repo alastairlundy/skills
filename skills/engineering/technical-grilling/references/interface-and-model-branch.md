@@ -1,20 +1,19 @@
 ### Step 6: Interface & Model Branch (Optional)
 
-## Code-impl context block (branch heading + header + 5-data-row table)
+## Code-impl context block (branch heading + header + 3-data-row table)
 
 Every per-decision question in this file (architectural decisions in
 Phase 1, source-of-truth conflicts in Phase 2, type introductions in
 Phase 3) is emitted using the 1-turn wrapper, grouped in rounds of up
 to 3 unblocked decisions, whether the branch records a `Dxxx` or a
-`Txxx` decision. The branch heading and header + 5-data-row
+`Txxx` decision. The branch heading and header + 3-data-row
 context block are defined in
-`references/locked-question-format.md`; the first 4 data rows
-(Decision, Goal, Prior decisions, Scope) match this skill's context block,
-and the 5th data row (Spec
-section) is the code-impl addition. The heading and Decision row WHAT
+`references/locked-question-format.md`; its data rows
+(Decision, Goal, Scope) are the context block used in every phase of
+this skill. The heading and Decision row WHAT
 context is mandatory for `Dxxx` branches and `Txxx` branches alike. See
 `references/locked-question-format.md` for the full template, the
-citation format, and the requirement that the Decision row and Spec section row are not
+citation format, and the requirement that the Decision row is not
 optional. The context block is not a free-form prose summary, a
 "current state" reading, a code investigation, a domain-glossary
 recap, or any other kind of analysis.
@@ -22,7 +21,7 @@ recap, or any other kind of analysis.
 ### Worked example (Interface & Model Branch)
 
 A Type Loop decision (Contact type) presented in the branch heading +
-header + 5-data-row code-impl format:
+header + 3-data-row code-impl format:
 
 ```md
 ### Round 1
@@ -36,9 +35,7 @@ This branch decides which shape the `Contact` record takes, which blocks message
 |------------------|-----------------------------------------------------------------------------|
 | **Decision**     | T003 – Contact type: decide whether `Contact` is a record or a class with identity, which blocks message passing. |
 | **Goal**         | Define the type for the freelancing platform's contact record (DECISIONS-demo.md#D001).       |
-| **Prior decisions** | DECISIONS-demo.md#D002 established that the contact acts for a client organization and DECISIONS-demo.md#D003 established the payment steps. |
 | **Scope**        | This decision covers the `Contact` type's fields and invariants; not `ClientOrganization` or `Invoice`. |
-| **Spec section** | `specs/freelancing-platform.md §3.2 (Contact record)` - Contact must carry identity, display name, and reference to a single `ClientOrganization`. |
 
 **For T003 – Contact type: pick an option, hybridize, or provide
 your own answer.**
@@ -91,7 +88,7 @@ in a single agent turn, grouped in rounds of up to 3 unblocked
 decisions:
 
 - The full wrapper: round header, frontier statement, branch heading,
-  header + 5-data-row context block (Decision, Goal, Prior decisions, Scope, Spec section), conflict callout
+  header + 3-data-row context block (Decision, Goal, Scope), conflict callout
   (if any), locked question line, options table (4-column), recommendation (2-line). No
   Socratic elicitation question is emitted. Stop and wait for the
   user's response.
@@ -116,9 +113,7 @@ This branch decides where one layer ends and the next begins, which blocks depen
 |------------------|-----------------------------------------------------------------------------|
 | **Decision**     | T002 – layer boundaries: decide where one layer ends and the next begins, which blocks dependency-direction selection. |
 | **Goal**         | Establish the architectural shape for the freelancing platform (DECISIONS-demo.md#D001).      |
-| **Prior decisions** | DECISIONS-demo.md#D002 established the contact-vs-organization model and DECISIONS-demo.md#T001 established C# as primary language. |
 | **Scope**        | This decision covers where one layer ends and the next begins; not dependency direction or separation mechanism. |
-| **Spec section** | `specs/freelancing-platform.md §2.1 (Architecture)` - domain model must be free of infrastructure concerns. |
 
 **For T002 – layer boundaries: pick an option, hybridize, or provide
 your own answer.**
@@ -197,7 +192,7 @@ Interface, Contract, DTO, and Model definitions now?"*
 
   Present each decision using the 1-turn wrapper described
   in the "Format" section above: emit the full wrapper (round header,
-  frontier statement, branch heading, header + 5-data-row context block, locked question line, options table, recommendation)
+  frontier statement, branch heading, header + 3-data-row context block, locked question line, options table, recommendation)
   in a single turn. Wait
   for the user's response before the next round.
 
@@ -213,7 +208,7 @@ Interface, Contract, DTO, and Model definitions now?"*
   (typical: 0-2), resolve in rounds of up to 3, each with its own
   gate. For each conflict, use the 1-turn wrapper described
   in the "Format" section above: emit the full wrapper (round header,
-  frontier statement, branch heading, header + 5-data-row context block, locked question line, options table, recommendation)
+  frontier statement, branch heading, header + 3-data-row context block, locked question line, options table, recommendation)
   in a single turn. Wait for the user's response before the next round.
 
   When all conflicts are resolved (or none were found), ask: *"Ready
@@ -224,7 +219,7 @@ Interface, Contract, DTO, and Model definitions now?"*
 
   Introduce types in rounds of up to 3 per turn. For each type, use the
   1-turn wrapper described in the "Format" section above:
-  emit the full wrapper (round header, frontier statement, branch heading, header + 5-data-row context
+  emit the full wrapper (round header, frontier statement, branch heading, header + 3-data-row context
   block, locked question line, options table, recommendation) in a single turn. Present the
   type's full signature, fields or properties, and a 1–2 sentence
   rationale for why it exists in the recommendation's Reasoning field.

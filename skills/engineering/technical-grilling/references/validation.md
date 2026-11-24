@@ -16,8 +16,8 @@ transcript:
       foundation items, TDP branches, and any re-ask or follow-up  - 
       emit the full 1-turn wrapper in a single agent turn: round
       header, frontier statement, branch heading (`#### Dxxx/Txxx` plus
-      one open-point sentence), header + 5-data-row context block
-      (Decision, Goal, Prior decisions, Scope, Spec section), conflict
+      one open-point sentence), header + 3-data-row context block
+      (Decision, Goal, Scope), conflict
       callout (if any), locked question line, options table,
       recommendation. Up to 3 unblocked branches may
       appear in a single round. No Socratic elicitation question was
@@ -30,11 +30,11 @@ transcript:
       matters now, with the ID and label matching the Decision row
       and locked question line verbatim?
       See `references/locked-question-format.md`.
-- [ ] **Context block (header + 5 data rows)**: Every per-decision context
-      block (`Dxxx` and `Txxx` alike) was emitted as the markdown table (header + 5 data
-      rows: Decision, Goal, Prior decisions, Scope, Spec section) in that order,
+- [ ] **Context block (header + 3 data rows)**: Every per-decision context
+      block (`Dxxx` and `Txxx` alike) was emitted as the markdown table (header + 3 data
+      rows: Decision, Goal, Scope) in that order,
       each element exactly one sentence, with ledger citations in
-      Decision, Goal, and Prior decisions rows. The Decision row cited
+      Decision and Goal rows. The Decision row cited
       the current branch ID in its own stream with its verbatim label and stated the
       open variable plus blocker. The
       context block was not replaced with a free-form prose summary,
@@ -42,21 +42,6 @@ transcript:
       recap, or any other kind of analysis.
       See `references/locked-question-format.md` for the template and
       the citation format.
-- [ ] **Prior-decision citation integrity**: Did every Prior decisions
-      row state each prior-decision claim with its own matching
-      `filename#Dxxx` / `filename#Txxx` citation (no reused ID covering
-      two claims), or the explicit empty form when no priors exist?
-      See `references/locked-question-format.md`.
-- [ ] **Spec section required**: Every code-impl per-decision context
-      block included the Spec section row as a single sentence naming
-      the spec file path and the specific section or functional
-      requirement the branch addresses, with an inline citation such
-      as `specs/feature-x.md §3.2`, or the explicit `No separate spec;
-      grounded in ...` form when no spec exists. A ledger file was
-      never cited as the spec path (`§Dxxx` / `§Txxx` belongs in Decision, Goal,
-      or Prior decisions rows only). The Spec section row is required,
-      not optional, and the citation format is fixed.
-      See `references/locked-question-format.md`.
 - [ ] **Decision Ledger Located**: Was the existing Decision
       Ledger located, read end-to-end, and its path confirmed with
       the user before the first question?

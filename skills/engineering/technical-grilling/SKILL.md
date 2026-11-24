@@ -83,7 +83,7 @@ reference files exist and are readable. Then load and read in full:
   authoritative ADR template (`repo-docs/references/ADR-FORMAT.md`).
 - tone-and-output.md - *eager*. Neutral tone, slop patterns, grouping nouns, pre-emit audit.
 - locked-question-format.md - *eager*. The branch heading + header +
-  5-data-row code-impl context table.
+  3-data-row context table.
 - options-format.md - *eager*. The 4-column table with concrete benefits and costs.
 - recommendation-format.md - *eager*. The 2-line lean block with goal plus cost.
 - decision-ledger.md - *eager*. Ledger format, approval turn, conflict mechanics.
@@ -160,7 +160,7 @@ Follow the concept-alignment workflow:
    missing, suggest `setup-alastairlundy-skills` but do not create it
    pre-emptively.
 2. **Open branches in rounds** using the 1-turn wrapper from
-   references/locked-question-format.md (the 4-row table for Phase 1).
+   references/locked-question-format.md (the 3-row table for Phase 1).
    Apply the DDD techniques (challenge against glossary, sharpen fuzzy
    language, discuss concrete scenarios, cross-reference with code, offer
    ADRs sparingly).
@@ -196,7 +196,7 @@ without concept readiness" as a violation.
 (and the session intent is not `concept-only`), the skill proceeds
 **directly** into Phase 2 without re-asking the user whether to continue.
 Immediately open the first Phase 2 foundation branch (Language) using the
-branch heading + header + 5-data-row context block. Do not stop at Gate and do not wait for the user to request Phase 2 - continuation is
+branch heading + header + 3-data-row context block. Do not stop at Gate and do not wait for the user to request Phase 2 - continuation is
 automatic.
 
 ### Phase 2: Implementation planning
@@ -206,8 +206,8 @@ Follow the implementation-planning workflow:
 1. **Foundation Establishment** (mandatory): resolve Language, Framework,
    Key Dependencies, Project Structure, Sub-projects, Project Type in
    rounds of up to 3 using the 1-turn wrapper with the branch heading
-   plus header + 5-data-row context block
-   (Decision, Goal, Prior decisions, Scope, Spec section). Optional foundational
+   plus header + 3-data-row context block
+   (Decision, Goal, Scope). Optional foundational
    preferences step.
 2. **Spec-Driven Technical Extraction**: load
    `references/coverage-sweep.md` and run the minimum sweep: walk
@@ -264,7 +264,7 @@ section. The user decides when both artifacts are no longer needed.
 - ddd-initialization.md - eager
 - term-resolution.md - eager
 - tone-and-output.md - eager
-- locked-question-format.md - eager (branch heading + header + 5-data-row code-impl variant)
+- locked-question-format.md - eager (branch heading + header + 3-data-row variant)
 - options-format.md - eager
 - recommendation-format.md - eager
 - decision-ledger.md - eager
@@ -334,15 +334,9 @@ transcript:
       `references/decision-ledger.md`) - no side records.
 - [ ] Every per-decision branch (`Dxxx` and `Txxx` alike) opened with
       the branch heading (`#### Dxxx/Txxx` plus one open-point sentence)
-      and the header + 5-data-row context table (Decision, Goal, Prior
-      decisions, Scope, Spec section, with Decision first). Phase 1
-      uses the 4-row concept table variant; the heading and Decision
-      row WHAT context is still mandatory there.
-- [ ] Every Prior decisions row carried one matching
-      `filename#Dxxx` / `filename#Txxx` citation per claim (or the
-      explicit empty form naming the next slot in the branch's own
-      stream); no ledger file was cited as the spec path
-      in any Spec section row.
+      and the header + 3-data-row context table (Decision, Goal, Scope,
+      with Decision first). Phase 1 uses the same 3-row table; the
+      heading and Decision row WHAT context are mandatory there too.
 - [ ] Term Resolution ran as a post-pick step; glossary terms proposed
       before writing to GLOSSARY.md.
 - [ ] TDPs grouped into rounds of at most 3; no round surfaced more than 3

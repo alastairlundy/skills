@@ -48,8 +48,8 @@ Recorded as D001 in the Decision Ledger.
 
 | Element          | Content                                                                  |
 |------------------|--------------------------------------------------------------------------|
+| **Decision**     | D002 – who hires whom: decide whether the buyer is a client organization, a contact acting for one, or a peer freelancer, which blocks the glossary terms this branch resolves. |
 | **Goal**         | Establish the core domain vocabulary for the freelancer-client platform (D001). |
-| **Prior decisions** | No prior branch decisions yet.                                        |
 | **Scope**        | This branch covers who the buyer is; it does not cover payment steps.    |
 
 **For D002 – who hires whom: pick an option, hybridize, or provide
@@ -121,7 +121,7 @@ output:
 - [ ] Reference files loaded before the first question.
 - [ ] Domain state summary given before the first question.
 - [ ] Every round used the 1-turn wrapper: round header, frontier statement, context block (3-row table), options table, recommendation. Up to 3 unblocked branches per round. No Socratic elicitation question.
-- [ ] Every context block was the 3-row table (Goal, Prior decisions, Scope).
+- [ ] Every context block was the 3-row table (Decision, Goal, Scope).
 - [ ] Every options block was the 4-column table format.
 - [ ] Every recommendation used the 2-line format.
 - [ ] No sentence began with a word whose function is to praise or judge the user's prior input.
